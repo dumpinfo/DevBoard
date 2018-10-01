@@ -1,0 +1,2011 @@
+                        .module SD.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile ..\..\DMAVR-~3\FAT-NE~1\SD.c
+ 0000                   .dbfile E:\DMAVR-~3\FAT-NE~1\SD.c
+ 0000                   .dbfunc e initMMC _initMMC fc
+ 0000           ;              i -> R20,R21
+                        .even
+ 0000           _initMMC::
+ 0000 4A93              st -y,R20
+ 0002 5A93              st -y,R21
+ 0004                   .dbline -1
+ 0004                   .dbline 18
+ 0004           ; //******************************************************************************
+ 0004           ; //MMC/SD卡驱动，SPI模式下MMC/SD卡驱动，可识别MMC/SD卡类型
+ 0004           ; //版本号：Ver1.0
+ 0004           ; //编译环境：ICCAVR 7.22A
+ 0004           ; //作者：www.avrgcc.com
+ 0004           ; //时间：2010.08.01
+ 0004           ; //******************************************************************************  
+ 0004           ; 
+ 0004           ; #include <SD.h>           //配置头文件，配置CS片选信号等，根据硬件调整相关IO口
+ 0004           ; #include <math.h>
+ 0004           ; 
+ 0004           ; /***********************************************************************
+ 0004           ; 函数功能：MMC/SD卡初始化
+ 0004           ; 操作内容：1、拉高CS片选和MOSI至少74个时钟周期
+ 0004           ;           2、SPI发送10个FF
+ 0004           ; ***********************************************************************/
+ 0004           ; uint8 initMMC (void)
+ 0004           ; {
+ 0004                   .dbline 20
+ 0004           ;   int i;
+ 0004           ;   spiInit();                          //初始化SPI接口，准备与MMC/SD卡通信
+ 0004 0E940000          xcall _spiInit
+ 0008                   .dbline 22
+ 0008           ;  
+ 0008           ;   MMC_CS_DDR |= (1<<MMC_CS_PIN);      //MMC/SD卡片选IO设置输出模式
+ 0008 80916400          lds R24,100
+ 000C 8860              ori R24,8
+ 000E 80936400          sts 100,R24
+ 0012                   .dbline 23
+ 0012           ;   CS_HIGH();                          //MMC/SD卡片选IO设置为1，拉高   
+ 0012 80916500          lds R24,101
+ 0016 8860              ori R24,8
+ 0018 80936500          sts 101,R24
+ 001C                   .dbline 24
+ 001C           ;  for(i=0;i<=9;i++)
+ 001C 4427              clr R20
+ 001E 5527              clr R21
+ 0020           L2:
+ 0020                   .dbline 25
+ 0020           ;   spiSendByte(0xff);                  //上电后进行一个延时，至少74个时钟周期
+ 0020 0FEF              ldi R16,255
+ 0022 0E940000          xcall _spiSendByte
+ 0026           L3:
+ 0026                   .dbline 24
+ 0026 4F5F              subi R20,255  ; offset = 1
+ 0028 5F4F              sbci R21,255
+ 002A                   .dbline 24
+ 002A 89E0              ldi R24,9
+ 002C 90E0              ldi R25,0
+ 002E 8417              cp R24,R20
+ 0030 9507              cpc R25,R21
+ 0032 B4F7              brge L2
+ 0034           X0:
+ 0034                   .dbline 26
+ 0034           ;   return (mmcGoIdle());
+ 0034 03D0              xcall _mmcGoIdle
+ 0036                   .dbline -2
+ 0036           L1:
+ 0036                   .dbline 0 ; func end
+ 0036 5991              ld R21,y+
+ 0038 4991              ld R20,y+
+ 003A 0895              ret
+ 003C                   .dbsym r i 20 I
+ 003C                   .dbend
+ 003C                   .dbfunc e mmcGoIdle _mmcGoIdle fc
+ 003C           ;         sdcard -> R20
+ 003C           ;       response -> R22
+ 003C           ;              i -> R10
+                        .even
+ 003C           _mmcGoIdle::
+ 003C 0E940000          xcall push_xgsetF03C
+ 0040 2397              sbiw R28,3
+ 0042                   .dbline -1
+ 0042                   .dbline 36
+ 0042           ; }
+ 0042           ; 
+ 0042           ; /***********************************************************************
+ 0042           ; 函数功能：MMC/SD卡空闲模式及初始化
+ 0042           ; 操作内容：1、初始化MMC/SD卡工作在SPI模式，无论MMC还是SD卡都发送CMD0进行复位
+ 0042           ;           2、判断MMC卡还是SD卡
+ 0042           ;           3、SD卡循环10次发送CMD55+ACMD41，MMC卡发送CMD1
+ 0042           ; ***********************************************************************/
+ 0042           ; uint8 mmcGoIdle()
+ 0042           ; {
+ 0042                   .dbline 37
+ 0042           ;   uint8 response=0x01;
+ 0042 61E0              ldi R22,1
+ 0044                   .dbline 39
+ 0044           ;   uint8 i;
+ 0044           ;   uint8 sdcard=0x00;                               //SD卡标志位，为0表示SD卡，为1表示为MMC卡
+ 0044 4427              clr R20
+ 0046                   .dbline 40
+ 0046           ;   CS_LOW();                                        //选中MMC/SD卡，拉低片选，进入SPI模式，默认为MMC/SD模式
+ 0046 80916500          lds R24,101
+ 004A 877F              andi R24,247
+ 004C 80936500          sts 101,R24
+ 0050                   .dbline 41
+ 0050           ;   mmcSendCmd(MMC_GO_IDLE_STATE,0,0x95);            //发送CMD0，复位MMC/SD卡，0x95为CRC值
+ 0050 85E9              ldi R24,149
+ 0052 8A83              std y+2,R24
+ 0054 80E0              ldi R24,0
+ 0056 90E0              ldi R25,0
+ 0058 A0E0              ldi R26,0
+ 005A B0E0              ldi R27,0
+ 005C A883              std y+0,R26
+ 005E B983              std y+1,R27
+ 0060 9C01              movw R18,R24
+ 0062 00E4              ldi R16,64
+ 0064 2FD2              xcall _mmcSendCmd
+ 0066                   .dbline 43
+ 0066           ; 
+ 0066           ;   if(mmcGetResponse()!=0x01)                       //CMD0命令的返回值为0x01则继续下一个命令
+ 0066 5FD0              xcall _mmcGetResponse
+ 0068 0130              cpi R16,1
+ 006A 09F4              brne X7
+ 006C 4DC0              xjmp L10
+ 006E           X7:
+ 006E           X1:
+ 006E                   .dbline 44
+ 006E           ;     return MMC_INIT_ERROR;
+ 006E 04E0              ldi R16,4
+ 0070 57C0              xjmp L6
+ 0072           L9:
+ 0072                   .dbline 47
+ 0072           ; 
+ 0072           ;   while(response==0x01)
+ 0072           ;   {
+ 0072                   .dbline 48
+ 0072           ;     CS_HIGH();
+ 0072 80916500          lds R24,101
+ 0076 8860              ori R24,8
+ 0078 80936500          sts 101,R24
+ 007C                   .dbline 49
+ 007C           ;     spiSendByte(0xff);
+ 007C 0FEF              ldi R16,255
+ 007E 0E940000          xcall _spiSendByte
+ 0082                   .dbline 50
+ 0082           ;     CS_LOW();
+ 0082 80916500          lds R24,101
+ 0086 877F              andi R24,247
+ 0088 80936500          sts 101,R24
+ 008C                   .dbline 51
+ 008C           ;   if(sdcard==0x00)                                //先识别是否为SD卡，发送SD卡命令CMD55+ACMD41
+ 008C 4423              tst R20
+ 008E 71F5              brne L12
+ 0090           X2:
+ 0090                   .dbline 52
+ 0090           ;   {
+ 0090                   .dbline 53
+ 0090           ;    for(i=0;i<10;i++)                              //循环10次，如果为SD卡，一般2次即可正确返回0x00
+ 0090 AA24              clr R10
+ 0092 28C0              xjmp L17
+ 0094           L14:
+ 0094                   .dbline 54
+ 0094           ;    {
+ 0094                   .dbline 55
+ 0094           ;     mmcSendCmd(SD_APP_COND,0x00,0xff);            //发送SD卡CMD55命令，接下来应用激活初始化命令ACMD41
+ 0094 8FEF              ldi R24,255
+ 0096 8A83              std y+2,R24
+ 0098 80E0              ldi R24,0
+ 009A 90E0              ldi R25,0
+ 009C A0E0              ldi R26,0
+ 009E B0E0              ldi R27,0
+ 00A0 A883              std y+0,R26
+ 00A2 B983              std y+1,R27
+ 00A4 9C01              movw R18,R24
+ 00A6 07E7              ldi R16,119
+ 00A8 0DD2              xcall _mmcSendCmd
+ 00AA           L18:
+ 00AA                   .dbline 56
+ 00AA           ;     while(mmcGetResponse()!=0x01);                //返回值为0x01，则表示处于空闲状态，再发ACMD41命令
+ 00AA           L19:
+ 00AA                   .dbline 56
+ 00AA 3DD0              xcall _mmcGetResponse
+ 00AC 0130              cpi R16,1
+ 00AE E9F7              brne L18
+ 00B0           X3:
+ 00B0                   .dbline 58
+ 00B0           ;     
+ 00B0           ;     mmcSendCmd(SD_APP_OP_COND,0x00,0xff);         //发送ACMD41命令，激活初始化
+ 00B0 8FEF              ldi R24,255
+ 00B2 8A83              std y+2,R24
+ 00B4 80E0              ldi R24,0
+ 00B6 90E0              ldi R25,0
+ 00B8 A0E0              ldi R26,0
+ 00BA B0E0              ldi R27,0
+ 00BC A883              std y+0,R26
+ 00BE B983              std y+1,R27
+ 00C0 9C01              movw R18,R24
+ 00C2 09E6              ldi R16,105
+ 00C4 FFD1              xcall _mmcSendCmd
+ 00C6                   .dbline 59
+ 00C6           ;     if(mmcGetResponse()==0x00)                    //返回值为0x00，则初始化成功，否则使用MMC命令CMD1继续初始化
+ 00C6 2FD0              xcall _mmcGetResponse
+ 00C8 C02E              mov R12,R16
+ 00CA 0023              tst R16
+ 00CC 51F4              brne L21
+ 00CE           X4:
+ 00CE                   .dbline 60
+ 00CE           ;      {
+ 00CE                   .dbline 61
+ 00CE           ;       CS_HIGH();
+ 00CE 80916500          lds R24,101
+ 00D2 8860              ori R24,8
+ 00D4 80936500          sts 101,R24
+ 00D8                   .dbline 62
+ 00D8           ;       spiSendByte(0xff);
+ 00D8 0FEF              ldi R16,255
+ 00DA 0E940000          xcall _spiSendByte
+ 00DE                   .dbline 63
+ 00DE           ;       return (MMC_SUCCESS);                       //返回初始化成功代码
+ 00DE 0027              clr R16
+ 00E0 1FC0              xjmp L6
+ 00E2           L21:
+ 00E2                   .dbline 65
+ 00E2           ;      }
+ 00E2           ;    }
+ 00E2           L15:
+ 00E2                   .dbline 53
+ 00E2 A394              inc R10
+ 00E4           L17:
+ 00E4                   .dbline 53
+ 00E4 8A2D              mov R24,R10
+ 00E6 8A30              cpi R24,10
+ 00E8 A8F2              brlo L14
+ 00EA           X5:
+ 00EA                   .dbline 66
+ 00EA           ;    sdcard=0x01;                                   //为1表示SD卡命令无效，卡为MMC卡，准备下面发送CMD1命令
+ 00EA 41E0              ldi R20,1
+ 00EC                   .dbline 67
+ 00EC           ;   }
+ 00EC           L12:
+ 00EC                   .dbline 68
+ 00EC           ;     response=0x01;                                //准备发送MMC卡命令CMD1
+ 00EC                   .dbline 69
+ 00EC           ;     mmcSendCmd(MMC_SEND_OP_COND,0x00,0xff);       //发送MMC卡CMD1命令，成功则返回0x00
+ 00EC 8FEF              ldi R24,255
+ 00EE 8A83              std y+2,R24
+ 00F0 80E0              ldi R24,0
+ 00F2 90E0              ldi R25,0
+ 00F4 A0E0              ldi R26,0
+ 00F6 B0E0              ldi R27,0
+ 00F8 A883              std y+0,R26
+ 00FA B983              std y+1,R27
+ 00FC 9C01              movw R18,R24
+ 00FE 01E4              ldi R16,65
+ 0100 E1D1              xcall _mmcSendCmd
+ 0102                   .dbline 70
+ 0102           ;     response=mmcGetResponse();                    //返回值为0x00，则表示MMC卡初始化成功
+ 0102 11D0              xcall _mmcGetResponse
+ 0104 A02E              mov R10,R16
+ 0106 6A2D              mov R22,R10
+ 0108                   .dbline 71
+ 0108           ;   }
+ 0108           L10:
+ 0108                   .dbline 46
+ 0108 6130              cpi R22,1
+ 010A 09F4              brne X8
+ 010C B2CF              xjmp L9
+ 010E           X8:
+ 010E           X6:
+ 010E                   .dbline 73
+ 010E           ;   
+ 010E           ;   CS_HIGH();                                      //MMC/SD卡片选无效
+ 010E 80916500          lds R24,101
+ 0112 8860              ori R24,8
+ 0114 80936500          sts 101,R24
+ 0118                   .dbline 74
+ 0118           ;   spiSendByte(0xff);
+ 0118 0FEF              ldi R16,255
+ 011A 0E940000          xcall _spiSendByte
+ 011E                   .dbline 75
+ 011E           ;   return (MMC_SUCCESS);                           //返回初始化成功代码
+ 011E 0027              clr R16
+ 0120                   .dbline -2
+ 0120           L6:
+ 0120                   .dbline 0 ; func end
+ 0120 2396              adiw R28,3
+ 0122 0C940000          xjmp pop_xgsetF03C
+ 0126                   .dbsym r sdcard 20 c
+ 0126                   .dbsym r response 22 c
+ 0126                   .dbsym r i 10 c
+ 0126                   .dbend
+ 0126                   .dbfunc e mmcGetResponse _mmcGetResponse fc
+ 0126           ;              i -> R22,R23
+ 0126           ;       response -> R20
+                        .even
+ 0126           _mmcGetResponse::
+ 0126 0E940000          xcall push_xgsetF000
+ 012A                   .dbline -1
+ 012A                   .dbline 85
+ 012A           ; }
+ 012A           ; 
+ 012A           ; /***********************************************************************
+ 012A           ; 函数功能：MMC/SD卡发送命令后返回的响应值
+ 012A           ; 操作内容：1、SPI模式下响应值长度1~8bytes，参考SD卡手册关于响应值的描述
+ 012A           ;           2、响应值最高位总是为0，紧跟着为错误代码
+ 012A           ;           3、如果响应值为FF，则表示命令无效或超时
+ 012A           ; ***********************************************************************/
+ 012A           ; uint8 mmcGetResponse(void)
+ 012A           ; {
+ 012A                   .dbline 86
+ 012A           ;   int i=0;
+ 012A 6627              clr R22
+ 012C 7727              clr R23
+ 012E 0CC0              xjmp L25
+ 0130           L24:
+ 0130                   .dbline 90
+ 0130           ;   uint8 response;
+ 0130           ; 
+ 0130           ;   while(i<=64)
+ 0130           ;   {
+ 0130                   .dbline 91
+ 0130           ;     response=spiSendByte(0xff);
+ 0130 0FEF              ldi R16,255
+ 0132 0E940000          xcall _spiSendByte
+ 0136 402F              mov R20,R16
+ 0138                   .dbline 92
+ 0138           ;     if(response==0x00)break;
+ 0138 0023              tst R16
+ 013A 09F4              brne L27
+ 013C           X9:
+ 013C                   .dbline 92
+ 013C 0AC0              xjmp L26
+ 013E           L27:
+ 013E                   .dbline 93
+ 013E           ;     if(response==0x01)break;
+ 013E 4130              cpi R20,1
+ 0140 09F4              brne L29
+ 0142           X10:
+ 0142                   .dbline 93
+ 0142 07C0              xjmp L26
+ 0144           L29:
+ 0144                   .dbline 94
+ 0144           ;     i++;
+ 0144 6F5F              subi R22,255  ; offset = 1
+ 0146 7F4F              sbci R23,255
+ 0148                   .dbline 95
+ 0148           ;   }
+ 0148           L25:
+ 0148                   .dbline 89
+ 0148 80E4              ldi R24,64
+ 014A 90E0              ldi R25,0
+ 014C 8617              cp R24,R22
+ 014E 9707              cpc R25,R23
+ 0150 7CF7              brge L24
+ 0152           X11:
+ 0152           L26:
+ 0152                   .dbline 96
+ 0152           ;   return response;
+ 0152 042F              mov R16,R20
+ 0154                   .dbline -2
+ 0154           L23:
+ 0154                   .dbline 0 ; func end
+ 0154 0C940000          xjmp pop_xgsetF000
+ 0158                   .dbsym r i 22 I
+ 0158                   .dbsym r response 20 c
+ 0158                   .dbend
+ 0158                   .dbfunc e mmcGetXXResponse _mmcGetXXResponse fc
+ 0158           ;       response -> R10
+ 0158           ;              i -> R20,R21
+ 0158           ;           resp -> R12
+                        .even
+ 0158           _mmcGetXXResponse::
+ 0158 0E940000          xcall push_xgset303C
+ 015C C02E              mov R12,R16
+ 015E                   .dbline -1
+ 015E                   .dbline 107
+ 015E           ; }
+ 015E           ; 
+ 015E           ; /***********************************************************************
+ 015E           ; 函数功能：MMC/SD卡发送读写数据命令后返回的响应值
+ 015E           ; 操作内容：1、SPI模式下响应值长度1~8bytes，参考SD卡手册关于响应值的描述
+ 015E           ;           2、响应值最高位总是为0，紧跟着为错误代码
+ 015E           ;           3、响应之前，数据一直为0xff
+ 015E           ; ***********************************************************************/
+ 015E           ; 
+ 015E           ; uint8 mmcGetXXResponse(uint8 resp)
+ 015E           ; {
+ 015E                   .dbline 108
+ 015E           ;   int i=0;
+ 015E 4427              clr R20
+ 0160 5527              clr R21
+ 0162 09C0              xjmp L33
+ 0164           L32:
+ 0164                   .dbline 112
+ 0164           ;   uint8 response;
+ 0164           ; 
+ 0164           ;   while(i<=1000)
+ 0164           ;   {
+ 0164                   .dbline 113
+ 0164           ;     response=spiSendByte(0xff);
+ 0164 0FEF              ldi R16,255
+ 0166 0E940000          xcall _spiSendByte
+ 016A A02E              mov R10,R16
+ 016C                   .dbline 114
+ 016C           ;     if(response==resp)break;
+ 016C 0C15              cp R16,R12
+ 016E 09F4              brne L35
+ 0170           X12:
+ 0170                   .dbline 114
+ 0170 07C0              xjmp L34
+ 0172           L35:
+ 0172                   .dbline 115
+ 0172           ;     i++;
+ 0172 4F5F              subi R20,255  ; offset = 1
+ 0174 5F4F              sbci R21,255
+ 0176                   .dbline 116
+ 0176           ;   }
+ 0176           L33:
+ 0176                   .dbline 111
+ 0176 88EE              ldi R24,1000
+ 0178 93E0              ldi R25,3
+ 017A 8417              cp R24,R20
+ 017C 9507              cpc R25,R21
+ 017E 94F7              brge L32
+ 0180           X13:
+ 0180           L34:
+ 0180                   .dbline 117
+ 0180           ;   return response;
+ 0180 0A2D              mov R16,R10
+ 0182                   .dbline -2
+ 0182           L31:
+ 0182                   .dbline 0 ; func end
+ 0182 0C940000          xjmp pop_xgset303C
+ 0186                   .dbsym r response 10 c
+ 0186                   .dbsym r i 20 I
+ 0186                   .dbsym r resp 12 c
+ 0186                   .dbend
+ 0186                   .dbfunc e mmcCheckBusy _mmcCheckBusy fc
+ 0186           ;         rvalue -> R10
+ 0186           ;              i -> R22,R23
+ 0186           ;       response -> R20
+                        .even
+ 0186           _mmcCheckBusy::
+ 0186 0E940000          xcall push_xgsetF00C
+ 018A                   .dbline -1
+ 018A                   .dbline 129
+ 018A           ; }
+ 018A           ; 
+ 018A           ; /***********************************************************************
+ 018A           ; 函数功能：MMC/SD卡判忙程序
+ 018A           ; 操作内容：1、SPI模式下响应值长度1~8bytes，参考SD卡手册关于响应值的描述
+ 018A           ;           2、响应值最高位总是为0，紧跟着为错误代码
+ 018A           ;           3、如果响应值为FF，则表示命令无效或超时
+ 018A           ;           4、进行数据块写入的时候，写入数据后都会有响应值，定义了错误代码
+ 018A           ; ***********************************************************************/
+ 018A           ; 
+ 018A           ; uint8 mmcCheckBusy(void)
+ 018A           ; {
+ 018A                   .dbline 131
+ 018A           ; 
+ 018A           ;   int i=0;
+ 018A 6627              clr R22
+ 018C 7727              clr R23
+ 018E 27C0              xjmp L39
+ 0190           L38:
+ 0190                   .dbline 136
+ 0190           ; 
+ 0190           ;   uint8 response;
+ 0190           ;   uint8 rvalue;
+ 0190           ;   while(i<=64)
+ 0190           ;   {
+ 0190                   .dbline 137
+ 0190           ;     response=spiSendByte(0xff);
+ 0190 0FEF              ldi R16,255
+ 0192 0E940000          xcall _spiSendByte
+ 0196 402F              mov R20,R16
+ 0198                   .dbline 138
+ 0198           ;     response &= 0x1f;
+ 0198 4F71              andi R20,31
+ 019A                   .dbline 139
+ 019A           ;     switch(response)
+ 019A A42E              mov R10,R20
+ 019C BB24              clr R11
+ 019E C501              movw R24,R10
+ 01A0 853E              cpi R24,229
+ 01A2 E0E0              ldi R30,0
+ 01A4 9E07              cpc R25,R30
+ 01A6 71F0              breq L44
+ 01A8           X14:
+ 01A8 853E              cpi R24,229
+ 01AA E0E0              ldi R30,0
+ 01AC 9E07              cpc R25,R30
+ 01AE 84F0              brlt L41
+ 01B0           X15:
+ 01B0           L47:
+ 01B0 C501              movw R24,R10
+ 01B2 8B3E              cpi R24,235
+ 01B4 E0E0              ldi R30,0
+ 01B6 9E07              cpc R25,R30
+ 01B8 39F0              breq L45
+ 01BA           X16:
+ 01BA 8D3E              cpi R24,237
+ 01BC E0E0              ldi R30,0
+ 01BE 9E07              cpc R25,R30
+ 01C0 29F0              breq L46
+ 01C2           X17:
+ 01C2 06C0              xjmp L41
+ 01C4           L44:
+ 01C4                   .dbline 141
+ 01C4           ;     {
+ 01C4           ;       case 0xe5: rvalue=MMC_SUCCESS;break;      //表示MMC/SD卡正确成功接收数据
+ 01C4 AA24              clr R10
+ 01C6                   .dbline 141
+ 01C6 06C0              xjmp L42
+ 01C8           L45:
+ 01C8                   .dbline 142
+ 01C8           ;       case 0xeb: return(MMC_CRC_ERROR);         //表示CRC校验错误，数据被拒绝
+ 01C8 00E1              ldi R16,16
+ 01CA 19C0              xjmp L37
+ 01CC           L46:
+ 01CC                   .dbline 143
+ 01CC           ;       case 0xed: return(MMC_WRITE_ERROR);       //表示MMC/SD卡写错误，数据被拒绝
+ 01CC 01E1              ldi R16,17
+ 01CE 17C0              xjmp L37
+ 01D0           L41:
+ 01D0                   .dbline 145
+ 01D0           ;       default:
+ 01D0           ;         rvalue = MMC_OTHER_ERROR;               //其他错误
+ 01D0 82E1              ldi R24,18
+ 01D2 A82E              mov R10,R24
+ 01D4                   .dbline 146
+ 01D4           ;         break;
+ 01D4           L42:
+ 01D4                   .dbline 148
+ 01D4           ;     }
+ 01D4           ;     if(rvalue==MMC_SUCCESS)break;
+ 01D4 AA20              tst R10
+ 01D6 09F4              brne L48
+ 01D8           X18:
+ 01D8                   .dbline 148
+ 01D8 07C0              xjmp L40
+ 01DA           L48:
+ 01DA                   .dbline 149
+ 01DA           ;     i++;
+ 01DA 6F5F              subi R22,255  ; offset = 1
+ 01DC 7F4F              sbci R23,255
+ 01DE                   .dbline 150
+ 01DE           ;   }
+ 01DE           L39:
+ 01DE                   .dbline 135
+ 01DE 80E4              ldi R24,64
+ 01E0 90E0              ldi R25,0
+ 01E2 8617              cp R24,R22
+ 01E4 9707              cpc R25,R23
+ 01E6 A4F6              brge L38
+ 01E8           X19:
+ 01E8           L40:
+ 01E8                   .dbline 151
+ 01E8           ;   i=0;
+ 01E8 6627              clr R22
+ 01EA 7727              clr R23
+ 01EC           L50:
+ 01EC                   .dbline 153
+ 01EC           ;   do
+ 01EC           ;   {
+ 01EC                   .dbline 154
+ 01EC           ;     response=spiSendByte(0xff);
+ 01EC 0FEF              ldi R16,255
+ 01EE 0E940000          xcall _spiSendByte
+ 01F2 402F              mov R20,R16
+ 01F4                   .dbline 155
+ 01F4           ;     i++;
+ 01F4 6F5F              subi R22,255  ; offset = 1
+ 01F6 7F4F              sbci R23,255
+ 01F8                   .dbline 156
+ 01F8           ;   }while(response==0);
+ 01F8           L51:
+ 01F8                   .dbline 156
+ 01F8 4423              tst R20
+ 01FA C1F3              breq L50
+ 01FC           X20:
+ 01FC                   .dbline 157
+ 01FC           ;   return response;
+ 01FC 042F              mov R16,R20
+ 01FE                   .dbline -2
+ 01FE           L37:
+ 01FE                   .dbline 0 ; func end
+ 01FE 0C940000          xjmp pop_xgsetF00C
+ 0202                   .dbsym r rvalue 10 c
+ 0202                   .dbsym r i 22 I
+ 0202                   .dbsym r response 20 c
+ 0202                   .dbend
+ 0202                   .dbfunc e mmcEreaseBlock _mmcEreaseBlock fc
+ 0202           ;       response -> R10
+ 0202           ;         Sector -> y+9
+                        .even
+ 0202           _mmcEreaseBlock::
+ 0202 0E940000          xcall push_arg4
+ 0206 0E940000          xcall push_xgsetF00C
+ 020A 2397              sbiw R28,3
+ 020C                   .dbline -1
+ 020C                   .dbline 168
+ 020C           ; }
+ 020C           ; 
+ 020C           ; /***********************************************************************
+ 020C           ; 函数功能：MMC/SD卡数据擦除函数
+ 020C           ; 操作内容：1、包括读取的地址、长度以及存入的缓冲区
+ 020C           ;                 2、数据擦除需要设定块区间，没有直接全盘擦除命令
+ 020C           ;           3、数据后面是16位CRC值
+ 020C           ;                 4、块大小要大于512个字节，擦除后数据可能是0x00或0xff
+ 020C           ; ***********************************************************************/
+ 020C           ; uint8 mmcEreaseBlock(uint32 Sector)
+ 020C           ; {
+ 020C                   .dbline 169
+ 020C           ;       uint8 response=0x01;
+ 020C AA24              clr R10
+ 020E A394              inc R10
+ 0210                   .dbline 171
+ 0210           ; 
+ 0210           ;     CS_LOW ();
+ 0210 80916500          lds R24,101
+ 0214 877F              andi R24,247
+ 0216 80936500          sts 101,R24
+ 021A                   .dbline 173
+ 021A           ;       
+ 021A           ;       mmcSendCmd(MMC_TAG_SECTOR_START,Sector*512,0xff);         //需要擦除的起始地址
+ 021A 8FEF              ldi R24,255
+ 021C 8A83              std y+2,R24
+ 021E 2984              ldd R2,y+9
+ 0220 3A84              ldd R3,y+10
+ 0222 4B84              ldd R4,y+11
+ 0224 5C84              ldd R5,y+12
+ 0226 40E0              ldi R20,0
+ 0228 52E0              ldi R21,2
+ 022A 60E0              ldi R22,0
+ 022C 70E0              ldi R23,0
+ 022E 5A92              st -y,R5
+ 0230 4A92              st -y,R4
+ 0232 3A92              st -y,R3
+ 0234 2A92              st -y,R2
+ 0236 8A01              movw R16,R20
+ 0238 9B01              movw R18,R22
+ 023A 0E940000          xcall empy32u
+ 023E 2883              std y+0,R18
+ 0240 3983              std y+1,R19
+ 0242 9801              movw R18,R16
+ 0244 00E6              ldi R16,96
+ 0246 3ED1              xcall _mmcSendCmd
+ 0248                   .dbline 175
+ 0248           ; 
+ 0248           ;       mmcSendCmd(MMC_TAG_SECTOR_END,(Sector+1)*512,0xff);       //需要擦除的结束地址
+ 0248 8FEF              ldi R24,255
+ 024A 8A83              std y+2,R24
+ 024C 41E0              ldi R20,1
+ 024E 50E0              ldi R21,0
+ 0250 60E0              ldi R22,0
+ 0252 70E0              ldi R23,0
+ 0254 2984              ldd R2,y+9
+ 0256 3A84              ldd R3,y+10
+ 0258 4B84              ldd R4,y+11
+ 025A 5C84              ldd R5,y+12
+ 025C 240E              add R2,R20
+ 025E 351E              adc R3,R21
+ 0260 461E              adc R4,R22
+ 0262 571E              adc R5,R23
+ 0264 40E0              ldi R20,0
+ 0266 52E0              ldi R21,2
+ 0268 60E0              ldi R22,0
+ 026A 70E0              ldi R23,0
+ 026C 5A92              st -y,R5
+ 026E 4A92              st -y,R4
+ 0270 3A92              st -y,R3
+ 0272 2A92              st -y,R2
+ 0274 8A01              movw R16,R20
+ 0276 9B01              movw R18,R22
+ 0278 0E940000          xcall empy32u
+ 027C 2883              std y+0,R18
+ 027E 3983              std y+1,R19
+ 0280 9801              movw R18,R16
+ 0282 01E6              ldi R16,97
+ 0284 1FD1              xcall _mmcSendCmd
+ 0286                   .dbline 177
+ 0286           ; 
+ 0286           ;       mmcSendCmd(MMC_EREASE,0x00,0xff);                         //发送块擦除命令，使用CMD38命令    
+ 0286 8FEF              ldi R24,255
+ 0288 8A83              std y+2,R24
+ 028A 40E0              ldi R20,0
+ 028C 50E0              ldi R21,0
+ 028E 60E0              ldi R22,0
+ 0290 70E0              ldi R23,0
+ 0292 6883              std y+0,R22
+ 0294 7983              std y+1,R23
+ 0296 9A01              movw R18,R20
+ 0298 06E6              ldi R16,102
+ 029A 14D1              xcall _mmcSendCmd
+ 029C           L54:
+ 029C                   .dbline 179
+ 029C           ;  
+ 029C           ;   while(mmcGetResponse()!=0);
+ 029C           L55:
+ 029C                   .dbline 179
+ 029C 44DF              xcall _mmcGetResponse
+ 029E 0023              tst R16
+ 02A0 E9F7              brne L54
+ 02A2           X21:
+ 02A2                   .dbline 181
+ 02A2           ; 
+ 02A2           ;     response=0;
+ 02A2 AA24              clr R10
+ 02A4                   .dbline 183
+ 02A4           ;   
+ 02A4           ;       CS_HIGH();
+ 02A4 80916500          lds R24,101
+ 02A8 8860              ori R24,8
+ 02AA 80936500          sts 101,R24
+ 02AE                   .dbline 185
+ 02AE           ;       
+ 02AE           ;       return response;
+ 02AE 0A2D              mov R16,R10
+ 02B0                   .dbline -2
+ 02B0           L53:
+ 02B0                   .dbline 0 ; func end
+ 02B0 2396              adiw R28,3
+ 02B2 0E940000          xcall pop_xgsetF00C
+ 02B6 2496              adiw R28,4
+ 02B8 0895              ret
+ 02BA                   .dbsym r response 10 c
+ 02BA                   .dbsym l Sector 9 l
+ 02BA                   .dbend
+ 02BA                   .dbfunc e mmcReadBlock _mmcReadBlock fc
+ 02BA           ;         rvalue -> R10
+ 02BA           ;              i -> y+3
+ 02BA           ;        pBuffer -> R14,R15
+ 02BA           ;          count -> y+21
+ 02BA           ;        address -> y+17
+                        .even
+ 02BA           _mmcReadBlock::
+ 02BA 0E940000          xcall push_arg4
+ 02BE 0E940000          xcall push_xgsetF0FC
+ 02C2 2797              sbiw R28,7
+ 02C4 EF88              ldd R14,y+23
+ 02C6 F88C              ldd R15,y+24
+ 02C8                   .dbline -1
+ 02C8                   .dbline 197
+ 02C8           ; }
+ 02C8           ; 
+ 02C8           ; 
+ 02C8           ; /***********************************************************************
+ 02C8           ; 函数功能：MMC/SD卡单块数据读取
+ 02C8           ; 操作内容：1、包括读取的地址、长度以及存入的缓冲区
+ 02C8           ;                 2、块大小可以设置，若为512，可以认为是一个标准扇区大小
+ 02C8           ;           3、数据后面是16位CRC值
+ 02C8           ; ***********************************************************************/
+ 02C8           ; 
+ 02C8           ; uint8 mmcReadBlock(uint32 address, uint16 count, uint8 *pBuffer)
+ 02C8           ; {
+ 02C8                   .dbline 198
+ 02C8           ;   unsigned long i = 0;
+ 02C8 80E0              ldi R24,0
+ 02CA 8B83              std y+3+0,R24
+ 02CC 8C83              std y+3+1,R24
+ 02CE 8D83              std y+3+2,R24
+ 02D0 8E83              std y+3+3,R24
+ 02D2                   .dbline 199
+ 02D2           ;   uint8 rvalue = MMC_RESPONSE_ERROR;
+ 02D2 82E0              ldi R24,2
+ 02D4 A82E              mov R10,R24
+ 02D6                   .dbline 201
+ 02D6           ; 
+ 02D6           ;   if (mmcSetBlockLength (count) == MMC_SUCCESS)  //设置MMC/SD卡块长度,全局变量BlockLength
+ 02D6 0D89              ldd R16,y+21
+ 02D8 1E89              ldd R17,y+22
+ 02DA 32D1              xcall _mmcSetBlockLength
+ 02DC 0023              tst R16
+ 02DE 09F0              breq X26
+ 02E0 60C0              xjmp L58
+ 02E2           X26:
+ 02E2           X22:
+ 02E2                   .dbline 202
+ 02E2           ;   {
+ 02E2                   .dbline 204
+ 02E2           ; 
+ 02E2           ;     CS_LOW ();
+ 02E2 80916500          lds R24,101
+ 02E6 877F              andi R24,247
+ 02E8 80936500          sts 101,R24
+ 02EC                   .dbline 206
+ 02EC           ; 
+ 02EC           ;     mmcSendCmd (MMC_READ_SINGLE_BLOCK,address*512, 0xFF); //发送读单块操作命令CMD17，实际地址是扇区号numSector*512
+ 02EC 8FEF              ldi R24,255
+ 02EE 8A83              std y+2,R24
+ 02F0 2988              ldd R2,y+17
+ 02F2 3A88              ldd R3,y+18
+ 02F4 4B88              ldd R4,y+19
+ 02F6 5C88              ldd R5,y+20
+ 02F8 40E0              ldi R20,0
+ 02FA 52E0              ldi R21,2
+ 02FC 60E0              ldi R22,0
+ 02FE 70E0              ldi R23,0
+ 0300 5A92              st -y,R5
+ 0302 4A92              st -y,R4
+ 0304 3A92              st -y,R3
+ 0306 2A92              st -y,R2
+ 0308 8A01              movw R16,R20
+ 030A 9B01              movw R18,R22
+ 030C 0E940000          xcall empy32u
+ 0310 2883              std y+0,R18
+ 0312 3983              std y+1,R19
+ 0314 9801              movw R18,R16
+ 0316 01E5              ldi R16,81
+ 0318 D5D0              xcall _mmcSendCmd
+ 031A                   .dbline 207
+ 031A           ;     if (mmcGetResponse() == 0x00)                         //返回值为00，表示发送命令被成功接收
+ 031A 05DF              xcall _mmcGetResponse
+ 031C 0023              tst R16
+ 031E 09F0              breq X27
+ 0320 3DC0              xjmp L60
+ 0322           X27:
+ 0322           X23:
+ 0322                   .dbline 208
+ 0322           ;     {
+ 0322                   .dbline 209
+ 0322           ;       if (mmcGetXXResponse(MMC_START_DATA_BLOCK_TOKEN) == MMC_START_DATA_BLOCK_TOKEN) //接收数据包开始标志，为0xfe
+ 0322 0EEF              ldi R16,254
+ 0324 19DF              xcall _mmcGetXXResponse
+ 0326 C02E              mov R12,R16
+ 0328 8C2D              mov R24,R12
+ 032A 0E3F              cpi R16,254
+ 032C A1F5              brne L62
+ 032E           X24:
+ 032E                   .dbline 210
+ 032E           ;       {
+ 032E                   .dbline 211
+ 032E           ;         for (i = 0; i < count; i++)
+ 032E 80E0              ldi R24,0
+ 0330 8B83              std y+3+0,R24
+ 0332 8C83              std y+3+1,R24
+ 0334 8D83              std y+3+2,R24
+ 0336 8E83              std y+3+3,R24
+ 0338 19C0              xjmp L67
+ 033A           L64:
+ 033A                   .dbline 212
+ 033A           ;           pBuffer[i] = spiSendByte(0xff);   // 接收读出的数据
+ 033A 0FEF              ldi R16,255
+ 033C 0E940000          xcall _spiSendByte
+ 0340 C02E              mov R12,R16
+ 0342 EB81              ldd R30,y+3
+ 0344 FC81              ldd R31,y+4
+ 0346 EE0D              add R30,R14
+ 0348 FF1D              adc R31,R15
+ 034A C082              std z+0,R12
+ 034C           L65:
+ 034C                   .dbline 211
+ 034C 41E0              ldi R20,1
+ 034E 50E0              ldi R21,0
+ 0350 60E0              ldi R22,0
+ 0352 70E0              ldi R23,0
+ 0354 2B80              ldd R2,y+3
+ 0356 3C80              ldd R3,y+4
+ 0358 4D80              ldd R4,y+5
+ 035A 5E80              ldd R5,y+6
+ 035C 240E              add R2,R20
+ 035E 351E              adc R3,R21
+ 0360 461E              adc R4,R22
+ 0362 571E              adc R5,R23
+ 0364 2B82              std y+3,R2
+ 0366 3C82              std y+4,R3
+ 0368 4D82              std y+5,R4
+ 036A 5E82              std y+6,R5
+ 036C           L67:
+ 036C                   .dbline 211
+ 036C 2D88              ldd R2,y+21
+ 036E 3E88              ldd R3,y+22
+ 0370 4424              clr R4
+ 0372 5524              clr R5
+ 0374 6B80              ldd R6,y+3
+ 0376 7C80              ldd R7,y+4
+ 0378 8D80              ldd R8,y+5
+ 037A 9E80              ldd R9,y+6
+ 037C 6214              cp R6,R2
+ 037E 7304              cpc R7,R3
+ 0380 8404              cpc R8,R4
+ 0382 9504              cpc R9,R5
+ 0384 D0F2              brlo L64
+ 0386           X25:
+ 0386                   .dbline 214
+ 0386           ; 
+ 0386           ;         spiSendByte(0xff);                  //16位CRC值
+ 0386 0FEF              ldi R16,255
+ 0388 0E940000          xcall _spiSendByte
+ 038C                   .dbline 215
+ 038C           ;         spiSendByte(0xff);                  //16位CRC值，不是真正的CRC值，这里忽略，但是实际数据后面跟16位CRC值
+ 038C 0FEF              ldi R16,255
+ 038E 0E940000          xcall _spiSendByte
+ 0392                   .dbline 216
+ 0392           ;         rvalue = MMC_SUCCESS;               //接收成功，返回成功代码
+ 0392 AA24              clr R10
+ 0394                   .dbline 217
+ 0394           ;       }
+ 0394 08C0              xjmp L59
+ 0396           L62:
+ 0396                   .dbline 219
+ 0396           ;       else
+ 0396           ;       {
+ 0396                   .dbline 220
+ 0396           ;         rvalue = MMC_DATA_TOKEN_ERROR;      // 如果没有收到数据包的开始标志，则返回错误代码
+ 0396 83E0              ldi R24,3
+ 0398 A82E              mov R10,R24
+ 039A                   .dbline 221
+ 039A           ;       }
+ 039A                   .dbline 222
+ 039A           ;     }
+ 039A 05C0              xjmp L59
+ 039C           L60:
+ 039C                   .dbline 224
+ 039C           ;     else
+ 039C           ;     {
+ 039C                   .dbline 225
+ 039C           ;       rvalue = MMC_RESPONSE_ERROR;          //返回命令未成功接收错误代码
+ 039C 82E0              ldi R24,2
+ 039E A82E              mov R10,R24
+ 03A0                   .dbline 226
+ 03A0           ;     }
+ 03A0                   .dbline 227
+ 03A0           ;   }
+ 03A0 02C0              xjmp L59
+ 03A2           L58:
+ 03A2                   .dbline 229
+ 03A2           ;   else
+ 03A2           ;   {
+ 03A2                   .dbline 230
+ 03A2           ;     rvalue = MMC_BLOCK_SET_ERROR;           //返回卡块长度设置失败错误代码
+ 03A2 AA24              clr R10
+ 03A4 A394              inc R10
+ 03A6                   .dbline 231
+ 03A6           ;   }
+ 03A6           L59:
+ 03A6                   .dbline 232
+ 03A6           ;   CS_HIGH ();
+ 03A6 80916500          lds R24,101
+ 03AA 8860              ori R24,8
+ 03AC 80936500          sts 101,R24
+ 03B0                   .dbline 233
+ 03B0           ;   spiSendByte(0xff);
+ 03B0 0FEF              ldi R16,255
+ 03B2 0E940000          xcall _spiSendByte
+ 03B6                   .dbline 234
+ 03B6           ;   return rvalue;                            //返回读取函数代码
+ 03B6 0A2D              mov R16,R10
+ 03B8                   .dbline -2
+ 03B8           L57:
+ 03B8                   .dbline 0 ; func end
+ 03B8 2796              adiw R28,7
+ 03BA 0E940000          xcall pop_xgsetF0FC
+ 03BE 2496              adiw R28,4
+ 03C0 0895              ret
+ 03C2                   .dbsym r rvalue 10 c
+ 03C2                   .dbsym l i 3 l
+ 03C2                   .dbsym r pBuffer 14 pc
+ 03C2                   .dbsym l count 21 i
+ 03C2                   .dbsym l address 17 l
+ 03C2                   .dbend
+ 03C2                   .dbfunc e mmcWriteBlock _mmcWriteBlock fc
+ 03C2           ;         rvalue -> R10
+ 03C2           ;              i -> y+3
+ 03C2           ;        pBuffer -> R14,R15
+ 03C2           ;          count -> R12,R13
+ 03C2           ;        address -> y+17
+                        .even
+ 03C2           _mmcWriteBlock::
+ 03C2 0E940000          xcall push_arg4
+ 03C6 0E940000          xcall push_xgsetF0FC
+ 03CA 2797              sbiw R28,7
+ 03CC CD88              ldd R12,y+21
+ 03CE DE88              ldd R13,y+22
+ 03D0 EF88              ldd R14,y+23
+ 03D2 F88C              ldd R15,y+24
+ 03D4                   .dbline -1
+ 03D4                   .dbline 247
+ 03D4           ; }
+ 03D4           ; 
+ 03D4           ; 
+ 03D4           ; 
+ 03D4           ; /***********************************************************************
+ 03D4           ; 函数功能：MMC/SD卡单块数据写入
+ 03D4           ; 操作内容：1、包括读取的地址、长度以及存入的缓冲区
+ 03D4           ;                 2、块大小可以设置，若为512，可以认为是一个标准扇区大小
+ 03D4           ;           3、数据后面是16位CRC值
+ 03D4           ; ***********************************************************************/
+ 03D4           ; 
+ 03D4           ; uint8 mmcWriteBlock(uint32 address, uint16 count, uint8 *pBuffer)
+ 03D4           ; {
+ 03D4                   .dbline 248
+ 03D4           ;   unsigned long i = 0;
+ 03D4 80E0              ldi R24,0
+ 03D6 8B83              std y+3+0,R24
+ 03D8 8C83              std y+3+1,R24
+ 03DA 8D83              std y+3+2,R24
+ 03DC 8E83              std y+3+3,R24
+ 03DE                   .dbline 249
+ 03DE           ;   uint8 rvalue = MMC_RESPONSE_ERROR;         
+ 03DE 82E0              ldi R24,2
+ 03E0 A82E              mov R10,R24
+ 03E2                   .dbline 251
+ 03E2           ; 
+ 03E2           ;   if (mmcSetBlockLength (count) == MMC_SUCCESS)    //设置MMC/SD块的长度，全局变量BlockLength
+ 03E2 8601              movw R16,R12
+ 03E4 ADD0              xcall _mmcSetBlockLength
+ 03E6 0023              tst R16
+ 03E8 09F0              breq X31
+ 03EA 5CC0              xjmp L69
+ 03EC           X31:
+ 03EC           X28:
+ 03EC                   .dbline 252
+ 03EC           ;   {
+ 03EC                   .dbline 253
+ 03EC           ;     CS_LOW ();                                                                           //拉低片选信号，多个卡，选择需要操作的片选拉低
+ 03EC 80916500          lds R24,101
+ 03F0 877F              andi R24,247
+ 03F2 80936500          sts 101,R24
+ 03F6                   .dbline 254
+ 03F6           ;     mmcSendCmd (MMC_WRITE_BLOCK,address*512, 0xFF);//发送单块写数据命令CMD24，地址为扇区numSector*512
+ 03F6 8FEF              ldi R24,255
+ 03F8 8A83              std y+2,R24
+ 03FA 2988              ldd R2,y+17
+ 03FC 3A88              ldd R3,y+18
+ 03FE 4B88              ldd R4,y+19
+ 0400 5C88              ldd R5,y+20
+ 0402 40E0              ldi R20,0
+ 0404 52E0              ldi R21,2
+ 0406 60E0              ldi R22,0
+ 0408 70E0              ldi R23,0
+ 040A 5A92              st -y,R5
+ 040C 4A92              st -y,R4
+ 040E 3A92              st -y,R3
+ 0410 2A92              st -y,R2
+ 0412 8A01              movw R16,R20
+ 0414 9B01              movw R18,R22
+ 0416 0E940000          xcall empy32u
+ 041A 2883              std y+0,R18
+ 041C 3983              std y+1,R19
+ 041E 9801              movw R18,R16
+ 0420 08E5              ldi R16,88
+ 0422 50D0              xcall _mmcSendCmd
+ 0424                   .dbline 256
+ 0424           ; 
+ 0424           ;     if (mmcGetXXResponse(MMC_R1_RESPONSE) == MMC_R1_RESPONSE) //收到返回值，检查MMC/SD卡是否正确接收命令
+ 0424 0027              clr R16
+ 0426 98DE              xcall _mmcGetXXResponse
+ 0428 0023              tst R16
+ 042A 09F0              breq X32
+ 042C 38C0              xjmp L71
+ 042E           X32:
+ 042E           X29:
+ 042E                   .dbline 257
+ 042E           ;     {
+ 042E                   .dbline 258
+ 042E           ;       spiSendByte(0xff);
+ 042E 0FEF              ldi R16,255
+ 0430 0E940000          xcall _spiSendByte
+ 0434                   .dbline 259
+ 0434           ;       spiSendByte(0xfe);                           //发送数据起始标志0xfe，表示接下来是数据包，一个块长度的数据
+ 0434 0EEF              ldi R16,254
+ 0436 0E940000          xcall _spiSendByte
+ 043A                   .dbline 261
+ 043A           ; 
+ 043A           ;       for (i = 0; i < count; i++)                  //写一个块长度的数据到MMC/SD卡
+ 043A 80E0              ldi R24,0
+ 043C 8B83              std y+3+0,R24
+ 043E 8C83              std y+3+1,R24
+ 0440 8D83              std y+3+2,R24
+ 0442 8E83              std y+3+3,R24
+ 0444 17C0              xjmp L76
+ 0446           L73:
+ 0446                   .dbline 262
+ 0446           ;         spiSendByte(pBuffer[i]);            
+ 0446 EB81              ldd R30,y+3
+ 0448 FC81              ldd R31,y+4
+ 044A EE0D              add R30,R14
+ 044C FF1D              adc R31,R15
+ 044E 0081              ldd R16,z+0
+ 0450 0E940000          xcall _spiSendByte
+ 0454           L74:
+ 0454                   .dbline 261
+ 0454 41E0              ldi R20,1
+ 0456 50E0              ldi R21,0
+ 0458 60E0              ldi R22,0
+ 045A 70E0              ldi R23,0
+ 045C 2B80              ldd R2,y+3
+ 045E 3C80              ldd R3,y+4
+ 0460 4D80              ldd R4,y+5
+ 0462 5E80              ldd R5,y+6
+ 0464 240E              add R2,R20
+ 0466 351E              adc R3,R21
+ 0468 461E              adc R4,R22
+ 046A 571E              adc R5,R23
+ 046C 2B82              std y+3,R2
+ 046E 3C82              std y+4,R3
+ 0470 4D82              std y+5,R4
+ 0472 5E82              std y+6,R5
+ 0474           L76:
+ 0474                   .dbline 261
+ 0474 1601              movw R2,R12
+ 0476 4424              clr R4
+ 0478 5524              clr R5
+ 047A 6B80              ldd R6,y+3
+ 047C 7C80              ldd R7,y+4
+ 047E 8D80              ldd R8,y+5
+ 0480 9E80              ldd R9,y+6
+ 0482 6214              cp R6,R2
+ 0484 7304              cpc R7,R3
+ 0486 8404              cpc R8,R4
+ 0488 9504              cpc R9,R5
+ 048A E8F2              brlo L73
+ 048C           X30:
+ 048C                   .dbline 264
+ 048C           ; 
+ 048C           ;       spiSendByte(0xff);                           //传送16位CRC值，不是必须的，可以不用些真实CRC值
+ 048C 0FEF              ldi R16,255
+ 048E 0E940000          xcall _spiSendByte
+ 0492                   .dbline 265
+ 0492           ;       spiSendByte(0xff);
+ 0492 0FEF              ldi R16,255
+ 0494 0E940000          xcall _spiSendByte
+ 0498                   .dbline 266
+ 0498           ;       mmcCheckBusy();                              //MMC/SD卡判忙，返回参数参考对应函数，这里不存取
+ 0498 76DE              xcall _mmcCheckBusy
+ 049A                   .dbline 267
+ 049A           ;       rvalue = MMC_SUCCESS;                        //操作成功
+ 049A AA24              clr R10
+ 049C                   .dbline 268
+ 049C           ;     }
+ 049C 05C0              xjmp L70
+ 049E           L71:
+ 049E                   .dbline 270
+ 049E           ;     else
+ 049E           ;     {
+ 049E                   .dbline 271
+ 049E           ;       rvalue = MMC_RESPONSE_ERROR;                       //接收命令失败，返回错误代码
+ 049E 82E0              ldi R24,2
+ 04A0 A82E              mov R10,R24
+ 04A2                   .dbline 272
+ 04A2           ;     }
+ 04A2                   .dbline 273
+ 04A2           ;   }
+ 04A2 02C0              xjmp L70
+ 04A4           L69:
+ 04A4                   .dbline 275
+ 04A4           ;   else
+ 04A4           ;   {
+ 04A4                   .dbline 276
+ 04A4           ;     rvalue = MMC_BLOCK_SET_ERROR;                  //设置块长度失败，返回错误代码
+ 04A4 AA24              clr R10
+ 04A6 A394              inc R10
+ 04A8                   .dbline 277
+ 04A8           ;   }
+ 04A8           L70:
+ 04A8                   .dbline 279
+ 04A8           ; 
+ 04A8           ;   CS_HIGH ();                                      //拉高片选，释放SD卡
+ 04A8 80916500          lds R24,101
+ 04AC 8860              ori R24,8
+ 04AE 80936500          sts 101,R24
+ 04B2                   .dbline 280
+ 04B2           ;   spiSendByte(0xff);                               //小延时
+ 04B2 0FEF              ldi R16,255
+ 04B4 0E940000          xcall _spiSendByte
+ 04B8                   .dbline 281
+ 04B8           ;   return rvalue;                                   //函数状态返回值
+ 04B8 0A2D              mov R16,R10
+ 04BA                   .dbline -2
+ 04BA           L68:
+ 04BA                   .dbline 0 ; func end
+ 04BA 2796              adiw R28,7
+ 04BC 0E940000          xcall pop_xgsetF0FC
+ 04C0 2496              adiw R28,4
+ 04C2 0895              ret
+ 04C4                   .dbsym r rvalue 10 c
+ 04C4                   .dbsym l i 3 l
+ 04C4                   .dbsym r pBuffer 14 pc
+ 04C4                   .dbsym r count 12 i
+ 04C4                   .dbsym l address 17 l
+ 04C4                   .dbend
+ 04C4                   .dbfunc e mmcSendCmd _mmcSendCmd fV
+ 04C4           ;           temp -> R12
+ 04C4           ;          frame -> y+0
+ 04C4           ;              i -> R20,R21
+ 04C4           ;            crc -> R10
+ 04C4           ;           data -> y+12
+ 04C4           ;            cmd -> R20
+                        .even
+ 04C4           _mmcSendCmd::
+ 04C4 3A93              st -y,r19
+ 04C6 2A93              st -y,r18
+ 04C8 0E940000          xcall push_xgset303C
+ 04CC 402F              mov R20,R16
+ 04CE 2697              sbiw R28,6
+ 04D0 A888              ldd R10,y+16
+ 04D2                   .dbline -1
+ 04D2                   .dbline 291
+ 04D2           ; } 
+ 04D2           ; 
+ 04D2           ; /***********************************************************************
+ 04D2           ; 函数功能：MMC/SD卡命令发送函数
+ 04D2           ; 操作内容：1、发送整个长度为48位的MMC/SD卡命令
+ 04D2           ;                 2、实际命令长度是6位，48位中还包括命令的参数，不同命令参数不同
+ 04D2           ; ***********************************************************************/
+ 04D2           ; 
+ 04D2           ; void mmcSendCmd (uint8 cmd, uint32 data, uint8 crc)
+ 04D2           ; {
+ 04D2                   .dbline 295
+ 04D2           ;   uint8 frame[6];                                  //MMC/SD卡命令长度为48位,6个字节
+ 04D2           ;   uint8 temp;
+ 04D2           ;   int i;
+ 04D2           ;   frame[0]=(cmd|0x40);                             //命令格式中最高的两位为01，对于单字节来说，"或"上0x40
+ 04D2 842F              mov R24,R20
+ 04D4 8064              ori R24,64
+ 04D6 8883              std y+0,R24
+ 04D8                   .dbline 296
+ 04D8           ;   for(i=3;i>=0;i--)                                //4个字节长度的参数，或没有，或为地址，不同命令下参数不同
+ 04D8 43E0              ldi R20,3
+ 04DA 50E0              ldi R21,0
+ 04DC           L78:
+ 04DC                   .dbline 297
+ 04DC           ;       {
+ 04DC                   .dbline 298
+ 04DC           ;       temp=(uint8)(data>>(8*i));
+ 04DC 1A01              movw R2,R20
+ 04DE 220C              lsl R2
+ 04E0 331C              rol R3
+ 04E2 220C              lsl R2
+ 04E4 331C              rol R3
+ 04E6 220C              lsl R2
+ 04E8 331C              rol R3
+ 04EA 0C85              ldd R16,y+12
+ 04EC 1D85              ldd R17,y+13
+ 04EE 2E85              ldd R18,y+14
+ 04F0 3F85              ldd R19,y+15
+ 04F2 2A92              st -y,R2
+ 04F4 0E940000          xcall lsr32
+ 04F8 C02E              mov R12,R16
+ 04FA                   .dbline 299
+ 04FA           ;       frame[4-i]=(temp);
+ 04FA E4E0              ldi R30,4
+ 04FC F0E0              ldi R31,0
+ 04FE E41B              sub R30,R20
+ 0500 F50B              sbc R31,R21
+ 0502 CE01              movw R24,R28
+ 0504 E80F              add R30,R24
+ 0506 F91F              adc R31,R25
+ 0508 C082              std z+0,R12
+ 050A                   .dbline 300
+ 050A           ;       }
+ 050A           L79:
+ 050A                   .dbline 296
+ 050A 4150              subi R20,1
+ 050C 5040              sbci R21,0
+ 050E                   .dbline 296
+ 050E 4030              cpi R20,0
+ 0510 E0E0              ldi R30,0
+ 0512 5E07              cpc R21,R30
+ 0514 1CF7              brge L78
+ 0516           X33:
+ 0516                   .dbline 301
+ 0516           ;   frame[5]=(crc);                                  //1个字节的CRC值
+ 0516 AD82              std y+5,R10
+ 0518                   .dbline 302
+ 0518           ;   for(i=0;i<6;i++)
+ 0518 4427              clr R20
+ 051A 5527              clr R21
+ 051C           L83:
+ 051C                   .dbline 303
+ 051C           ;       spiSendByte(frame[i]);                     //传送命令
+ 051C CE01              movw R24,R28
+ 051E FA01              movw R30,R20
+ 0520 E80F              add R30,R24
+ 0522 F91F              adc R31,R25
+ 0524 0081              ldd R16,z+0
+ 0526 0E940000          xcall _spiSendByte
+ 052A           L84:
+ 052A                   .dbline 302
+ 052A 4F5F              subi R20,255  ; offset = 1
+ 052C 5F4F              sbci R21,255
+ 052E                   .dbline 302
+ 052E 4630              cpi R20,6
+ 0530 E0E0              ldi R30,0
+ 0532 5E07              cpc R21,R30
+ 0534 9CF3              brlt L83
+ 0536           X34:
+ 0536                   .dbline -2
+ 0536           L77:
+ 0536                   .dbline 0 ; func end
+ 0536 2696              adiw R28,6
+ 0538 0E940000          xcall pop_xgset303C
+ 053C 2296              adiw R28,2
+ 053E 0895              ret
+ 0540                   .dbsym r temp 12 c
+ 0540                   .dbsym l frame 0 A[6:6]c
+ 0540                   .dbsym r i 20 I
+ 0540                   .dbsym r crc 10 c
+ 0540                   .dbsym l data 12 l
+ 0540                   .dbsym r cmd 20 c
+ 0540                   .dbend
+ 0540                   .dbfunc e mmcSetBlockLength _mmcSetBlockLength fc
+ 0540           ;    blocklength -> R10,R11
+                        .even
+ 0540           _mmcSetBlockLength::
+ 0540 AA92              st -y,R10
+ 0542 BA92              st -y,R11
+ 0544 5801              movw R10,R16
+ 0546 2397              sbiw R28,3
+ 0548                   .dbline -1
+ 0548                   .dbline 313
+ 0548           ; }
+ 0548           ; 
+ 0548           ; /**********************************************************************
+ 0548           ; 函数功能：MMC/SD卡块长度设置
+ 0548           ; 操作内容：1、设置块长度，必须为2^n大小，一般为512
+ 0548           ;                 2、对于RAM小的单片机，可以定义小的块长度，这样节省数据空间
+ 0548           ; ***********************************************************************/
+ 0548           ; 
+ 0548           ; uint8 mmcSetBlockLength (uint16 blocklength)
+ 0548           ; {
+ 0548                   .dbline 315
+ 0548           ; 
+ 0548           ;   CS_LOW ();                                       //选中SD卡片选信号
+ 0548 80916500          lds R24,101
+ 054C 877F              andi R24,247
+ 054E 80936500          sts 101,R24
+ 0552                   .dbline 316
+ 0552           ;   mmcSendCmd(MMC_SET_BLOCKLEN, blocklength, 0xFF); //传送设置块长度命令CMD16
+ 0552 8FEF              ldi R24,255
+ 0554 8A83              std y+2,R24
+ 0556 1501              movw R2,R10
+ 0558 4424              clr R4
+ 055A 5524              clr R5
+ 055C 4882              std y+0,R4
+ 055E 5982              std y+1,R5
+ 0560 9101              movw R18,R2
+ 0562 00E5              ldi R16,80
+ 0564 AFDF              xcall _mmcSendCmd
+ 0566                   .dbline 317
+ 0566           ;   if(mmcGetResponse()!=0x00)                       //命令传送不成功，则重新复位MMC/SD卡，然后重新设置
+ 0566 DFDD              xcall _mmcGetResponse
+ 0568 0023              tst R16
+ 056A 61F0              breq L88
+ 056C           X35:
+ 056C                   .dbline 318
+ 056C           ;       { 
+ 056C                   .dbline 319
+ 056C           ;               initMMC();
+ 056C 49DD              xcall _initMMC
+ 056E                   .dbline 320
+ 056E           ;       mmcSendCmd(MMC_SET_BLOCKLEN, blocklength, 0xFF);
+ 056E 8FEF              ldi R24,255
+ 0570 8A83              std y+2,R24
+ 0572 1501              movw R2,R10
+ 0574 4424              clr R4
+ 0576 5524              clr R5
+ 0578 4882              std y+0,R4
+ 057A 5982              std y+1,R5
+ 057C 9101              movw R18,R2
+ 057E 00E5              ldi R16,80
+ 0580 A1DF              xcall _mmcSendCmd
+ 0582                   .dbline 321
+ 0582           ;       mmcGetResponse();
+ 0582 D1DD              xcall _mmcGetResponse
+ 0584                   .dbline 322
+ 0584           ;       }
+ 0584           L88:
+ 0584                   .dbline 324
+ 0584           ; 
+ 0584           ;   CS_HIGH ();                                      //释放MMC/SD卡
+ 0584 80916500          lds R24,101
+ 0588 8860              ori R24,8
+ 058A 80936500          sts 101,R24
+ 058E                   .dbline 326
+ 058E           ;  
+ 058E           ;   spiSendByte(0xff);                               //8个时钟的延时
+ 058E 0FEF              ldi R16,255
+ 0590 0E940000          xcall _spiSendByte
+ 0594                   .dbline 328
+ 0594           ; 
+ 0594           ;   return MMC_SUCCESS;                              //返回操作成功命令
+ 0594 0027              clr R16
+ 0596                   .dbline -2
+ 0596           L87:
+ 0596                   .dbline 0 ; func end
+ 0596 2396              adiw R28,3
+ 0598 B990              ld R11,y+
+ 059A A990              ld R10,y+
+ 059C 0895              ret
+ 059E                   .dbsym r blocklength 10 i
+ 059E                   .dbend
+ 059E                   .dbfunc e mmcReadRegister _mmcReadRegister fc
+ 059E           ;         rvalue -> R20
+ 059E           ;              i -> R10
+ 059E           ;        pBuffer -> R14,R15
+ 059E           ;         length -> R12
+ 059E           ;   cmd_register -> R22
+                        .even
+ 059E           _mmcReadRegister::
+ 059E 0E940000          xcall push_xgsetF0FC
+ 05A2 C22E              mov R12,R18
+ 05A4 602F              mov R22,R16
+ 05A6 2397              sbiw R28,3
+ 05A8 ED84              ldd R14,y+13
+ 05AA FE84              ldd R15,y+14
+ 05AC                   .dbline -1
+ 05AC                   .dbline 338
+ 05AC           ; } 
+ 05AC           ; 
+ 05AC           ; /**********************************************************************
+ 05AC           ; 函数功能：读CSD或者CID寄存器值
+ 05AC           ; 操作内容：1、CSD和CID寄存器记录了卡的相关信息
+ 05AC           ;                 2、可以通过CSD卡获取卡的容量
+ 05AC           ; ***********************************************************************/
+ 05AC           ; 
+ 05AC           ; uint8 mmcReadRegister (uint8 cmd_register, uint8 length, uint8 *pBuffer)
+ 05AC           ; {
+ 05AC                   .dbline 339
+ 05AC           ;   uint8 i = 0;
+ 05AC AA24              clr R10
+ 05AE                   .dbline 340
+ 05AE           ;   uint8 rvalue = MMC_TIMEOUT_ERROR;
+ 05AE 4FEF              ldi R20,255
+ 05B0                   .dbline 342
+ 05B0           ; 
+ 05B0           ;   if (mmcSetBlockLength (length) == MMC_SUCCESS)   //设置块长度
+ 05B0 0C2D              mov R16,R12
+ 05B2 1127              clr R17
+ 05B4 C5DF              xcall _mmcSetBlockLength
+ 05B6 0023              tst R16
+ 05B8 09F0              breq X40
+ 05BA 36C0              xjmp L91
+ 05BC           X40:
+ 05BC           X36:
+ 05BC                   .dbline 343
+ 05BC           ;   {
+ 05BC                   .dbline 344
+ 05BC           ;     CS_LOW ();
+ 05BC 80916500          lds R24,101
+ 05C0 877F              andi R24,247
+ 05C2 80936500          sts 101,R24
+ 05C6                   .dbline 346
+ 05C6           ; 
+ 05C6           ;     mmcSendCmd(cmd_register, 0x00, 0xff);          //发送对寄存器操作命令
+ 05C6 8FEF              ldi R24,255
+ 05C8 8A83              std y+2,R24
+ 05CA 80E0              ldi R24,0
+ 05CC 90E0              ldi R25,0
+ 05CE A0E0              ldi R26,0
+ 05D0 B0E0              ldi R27,0
+ 05D2 A883              std y+0,R26
+ 05D4 B983              std y+1,R27
+ 05D6 9C01              movw R18,R24
+ 05D8 062F              mov R16,R22
+ 05DA 74DF              xcall _mmcSendCmd
+ 05DC                   .dbline 348
+ 05DC           ; 
+ 05DC           ;     if (mmcGetResponse() == 0x00)                  //返回成功代码
+ 05DC A4DD              xcall _mmcGetResponse
+ 05DE 0023              tst R16
+ 05E0 D1F4              brne L93
+ 05E2           X37:
+ 05E2                   .dbline 349
+ 05E2           ;     {
+ 05E2                   .dbline 350
+ 05E2           ;       if (mmcGetXXResponse(MMC_START_DATA_BLOCK_TOKEN)==MMC_START_DATA_BLOCK_TOKEN) //数据起始标志位，0xfe
+ 05E2 0EEF              ldi R16,254
+ 05E4 B9DD              xcall _mmcGetXXResponse
+ 05E6 602F              mov R22,R16
+ 05E8 0E3F              cpi R16,254
+ 05EA 69F4              brne L95
+ 05EC           X38:
+ 05EC                   .dbline 351
+ 05EC           ;         for (i = 0; i < length; i++)
+ 05EC 0AC0              xjmp L100
+ 05EE           L97:
+ 05EE                   .dbline 352
+ 05EE           ;           pBuffer[i] = spiSendByte(0xff);          //读取数据，即寄存器的值
+ 05EE 0FEF              ldi R16,255
+ 05F0 0E940000          xcall _spiSendByte
+ 05F4 602F              mov R22,R16
+ 05F6 EA2D              mov R30,R10
+ 05F8 FF27              clr R31
+ 05FA EE0D              add R30,R14
+ 05FC FF1D              adc R31,R15
+ 05FE 6083              std z+0,R22
+ 0600           L98:
+ 0600                   .dbline 351
+ 0600 A394              inc R10
+ 0602           L100:
+ 0602                   .dbline 351
+ 0602 AC14              cp R10,R12
+ 0604 A0F3              brlo L97
+ 0606           X39:
+ 0606           L95:
+ 0606                   .dbline 353
+ 0606           ;       spiSendByte(0xff);                           //16位CRC值，不是必须的
+ 0606 0FEF              ldi R16,255
+ 0608 0E940000          xcall _spiSendByte
+ 060C                   .dbline 354
+ 060C           ;       spiSendByte(0xff);
+ 060C 0FEF              ldi R16,255
+ 060E 0E940000          xcall _spiSendByte
+ 0612                   .dbline 355
+ 0612           ;       rvalue = MMC_SUCCESS;                        //返回成功代码
+ 0612 4427              clr R20
+ 0614                   .dbline 356
+ 0614           ;     }
+ 0614 01C0              xjmp L94
+ 0616           L93:
+ 0616                   .dbline 358
+ 0616           ;     else
+ 0616           ;       rvalue = MMC_RESPONSE_ERROR;                 //操作命令不成功，返回错误代码
+ 0616 42E0              ldi R20,2
+ 0618           L94:
+ 0618                   .dbline 360
+ 0618           ; 
+ 0618           ;     CS_HIGH ();                                    //释放MMC/SD卡
+ 0618 80916500          lds R24,101
+ 061C 8860              ori R24,8
+ 061E 80936500          sts 101,R24
+ 0622                   .dbline 362
+ 0622           ; 
+ 0622           ;     spiSendByte(0xff);                                                           //延时8个时钟周期
+ 0622 0FEF              ldi R16,255
+ 0624 0E940000          xcall _spiSendByte
+ 0628                   .dbline 363
+ 0628           ;   }
+ 0628           L91:
+ 0628                   .dbline 364
+ 0628           ;   CS_HIGH ();                                      //释放MMC/SD卡
+ 0628 80916500          lds R24,101
+ 062C 8860              ori R24,8
+ 062E 80936500          sts 101,R24
+ 0632                   .dbline 365
+ 0632           ;   return rvalue;                                   //返回状态值
+ 0632 042F              mov R16,R20
+ 0634                   .dbline -2
+ 0634           L90:
+ 0634                   .dbline 0 ; func end
+ 0634 2396              adiw R28,3
+ 0636 0C940000          xjmp pop_xgsetF0FC
+ 063A                   .dbsym r rvalue 20 c
+ 063A                   .dbsym r i 10 c
+ 063A                   .dbsym r pBuffer 14 pc
+ 063A                   .dbsym r length 12 c
+ 063A                   .dbsym r cmd_register 22 c
+ 063A                   .dbend
+ 063A                   .dbfunc e MMC_ReadCardSize _MMC_ReadCardSize fl
+ 063A           ;       response -> R12,R13
+ 063A           ; mmc_READ_BL_LEN -> y+10
+ 063A           ; mmc_C_SIZE_MULT -> y+9
+ 063A           ;     mmc_C_SIZE -> y+7
+ 063A           ;   MMC_CardSize -> y+3
+ 063A           ;              i -> R10,R11
+ 063A           ;              b -> R10,R11
+ 063A           ;              j -> R12,R13
+                        .even
+ 063A           _MMC_ReadCardSize::
+ 063A 0E940000          xcall push_xgsetF0FC
+ 063E 2B97              sbiw R28,11
+ 0640                   .dbline -1
+ 0640                   .dbline 376
+ 0640           ; } 
+ 0640           ; 
+ 0640           ; /**********************************************************************
+ 0640           ; 函数功能：MMC/SD卡容量读取
+ 0640           ; 操作内容：1、先获取CSD寄存器数据
+ 0640           ;                 2、根据容量计算公式获取容量大小
+ 0640           ;                 3、容量大小为用户使用空间大小，不包括保护区
+ 0640           ; ***********************************************************************/
+ 0640           ; 
+ 0640           ; uint32 MMC_ReadCardSize(void)
+ 0640           ; {
+ 0640                   .dbline 379
+ 0640           ; 
+ 0640           ;   uint32 MMC_CardSize;
+ 0640           ;   uint16 i, j,b,response,mmc_C_SIZE=0;     
+ 0640 0024              clr R0
+ 0642 1124              clr R1
+ 0644 1886              std y+8,R1
+ 0646 0F82              std y+7,R0
+ 0648                   .dbline 381
+ 0648           ; 
+ 0648           ;   uint8 mmc_READ_BL_LEN=0;                                      //块大小
+ 0648 0A86              std y+10,R0
+ 064A                   .dbline 382
+ 064A           ;   uint8 mmc_C_SIZE_MULT=0;                                      //乘数大小
+ 064A 0986              std y+9,R0
+ 064C                   .dbline 384
+ 064C           ; 
+ 064C           ;   CS_LOW ();
+ 064C 80916500          lds R24,101
+ 0650 877F              andi R24,247
+ 0652 80936500          sts 101,R24
+ 0656                   .dbline 386
+ 0656           ;   
+ 0656           ;   mmcSendCmd(MMC_READ_CSD, 0x00, 0xff);                         //发送读取CSD寄存器命令CMD9
+ 0656 8FEF              ldi R24,255
+ 0658 8A83              std y+2,R24
+ 065A 40E0              ldi R20,0
+ 065C 50E0              ldi R21,0
+ 065E 60E0              ldi R22,0
+ 0660 70E0              ldi R23,0
+ 0662 6883              std y+0,R22
+ 0664 7983              std y+1,R23
+ 0666 9A01              movw R18,R20
+ 0668 09E4              ldi R16,73
+ 066A 2CDF              xcall _mmcSendCmd
+ 066C                   .dbline 388
+ 066C           ; 
+ 066C           ;   response = mmcGetResponse();
+ 066C 5CDD              xcall _mmcGetResponse
+ 066E C02E              mov R12,R16
+ 0670 DD24              clr R13
+ 0672                   .dbline 390
+ 0672           ; 
+ 0672           ;   b = spiSendByte(0xFF);                          //读取返回值，数据开始标志总是0xfe
+ 0672 0FEF              ldi R16,255
+ 0674 0E940000          xcall _spiSendByte
+ 0678 A02E              mov R10,R16
+ 067A BB24              clr R11
+ 067C                   .dbline 392
+ 067C           ; 
+ 067C           ;   if( !response )
+ 067C CC20              tst R12
+ 067E 09F0              breq X47
+ 0680 96C0              xjmp L102
+ 0682           X47:
+ 0682 DD20              tst R13
+ 0684 09F0              breq X48
+ 0686 93C0              xjmp L102
+ 0688           X48:
+ 0688           X41:
+ 0688                   .dbline 393
+ 0688           ;   {
+ 0688 06C0              xjmp L105
+ 068A           L104:
+ 068A                   .dbline 394
+ 068A           ;     while (b != 0xfe) b = spiSendByte(0xff);      //等待接收到数据起始标志位
+ 068A 0FEF              ldi R16,255
+ 068C 0E940000          xcall _spiSendByte
+ 0690 C02E              mov R12,R16
+ 0692 AC2C              mov R10,R12
+ 0694 BB24              clr R11
+ 0696           L105:
+ 0696                   .dbline 394
+ 0696 C501              movw R24,R10
+ 0698 8E3F              cpi R24,254
+ 069A E0E0              ldi R30,0
+ 069C 9E07              cpc R25,R30
+ 069E A9F7              brne L104
+ 06A0           X42:
+ 06A0                   .dbline 396
+ 06A0           ; 
+ 06A0           ;     for(j=5; j>0; j--)                            //前5个字节的数据不用，Bit[127:88]
+ 06A0 85E0              ldi R24,5
+ 06A2 90E0              ldi R25,0
+ 06A4 6C01              movw R12,R24
+ 06A6 09C0              xjmp L110
+ 06A8           L107:
+ 06A8                   .dbline 397
+ 06A8           ;       b = spiSendByte(0xff);
+ 06A8 0FEF              ldi R16,255
+ 06AA 0E940000          xcall _spiSendByte
+ 06AE E02E              mov R14,R16
+ 06B0 AE2C              mov R10,R14
+ 06B2 BB24              clr R11
+ 06B4           L108:
+ 06B4                   .dbline 396
+ 06B4 C601              movw R24,R12
+ 06B6 0197              sbiw R24,1
+ 06B8 6C01              movw R12,R24
+ 06BA           L110:
+ 06BA                   .dbline 396
+ 06BA CC20              tst R12
+ 06BC A9F7              brne L107
+ 06BE DD20              tst R13
+ 06C0 99F7              brne L107
+ 06C2           X43:
+ 06C2                   .dbline 399
+ 06C2           ; 
+ 06C2           ;     b =spiSendByte(0xff);                         
+ 06C2 0FEF              ldi R16,255
+ 06C4 0E940000          xcall _spiSendByte
+ 06C8 E02E              mov R14,R16
+ 06CA AE2C              mov R10,R14
+ 06CC BB24              clr R11
+ 06CE                   .dbline 400
+ 06CE           ;     mmc_READ_BL_LEN = b & 0x0F;                   //Bit[83:80]记录了块大小，参考CSD寄存器相关说明
+ 06CE C501              movw R24,R10
+ 06D0 8F70              andi R24,15
+ 06D2 9070              andi R25,0
+ 06D4 8A87              std y+10,R24
+ 06D6                   .dbline 402
+ 06D6           ; 
+ 06D6           ;     b = spiSendByte(0xff);
+ 06D6 0FEF              ldi R16,255
+ 06D8 0E940000          xcall _spiSendByte
+ 06DC E02E              mov R14,R16
+ 06DE AE2C              mov R10,R14
+ 06E0 BB24              clr R11
+ 06E2                   .dbline 404
+ 06E2           ; 
+ 06E2           ;     mmc_C_SIZE = (b & 0x03) << 10;               //Bit[73:62]记录了C_SIZE的大小，参考CSD寄存器说明
+ 06E2 2AE0              ldi R18,10
+ 06E4 30E0              ldi R19,0
+ 06E6 8501              movw R16,R10
+ 06E8 0370              andi R16,3
+ 06EA 1070              andi R17,0
+ 06EC 0E940000          xcall lsl16
+ 06F0 1887              std y+8,R17
+ 06F2 0F83              std y+7,R16
+ 06F4                   .dbline 405
+ 06F4           ;     b = spiSendByte(0xff);
+ 06F4 0FEF              ldi R16,255
+ 06F6 0E940000          xcall _spiSendByte
+ 06FA E02E              mov R14,R16
+ 06FC AE2C              mov R10,R14
+ 06FE BB24              clr R11
+ 0700                   .dbline 406
+ 0700           ;     mmc_C_SIZE += b << 2;
+ 0700 1501              movw R2,R10
+ 0702 220C              lsl R2
+ 0704 331C              rol R3
+ 0706 220C              lsl R2
+ 0708 331C              rol R3
+ 070A 0F80              ldd R0,y+7
+ 070C 1884              ldd R1,y+8
+ 070E 020C              add R0,R2
+ 0710 131C              adc R1,R3
+ 0712 1886              std y+8,R1
+ 0714 0F82              std y+7,R0
+ 0716                   .dbline 407
+ 0716           ;     b = spiSendByte(0xff);
+ 0716 0FEF              ldi R16,255
+ 0718 0E940000          xcall _spiSendByte
+ 071C E02E              mov R14,R16
+ 071E AE2C              mov R10,R14
+ 0720 BB24              clr R11
+ 0722                   .dbline 408
+ 0722           ;     mmc_C_SIZE += b >> 6;
+ 0722 26E0              ldi R18,6
+ 0724 30E0              ldi R19,0
+ 0726 8501              movw R16,R10
+ 0728 0E940000          xcall lsr16
+ 072C 0F80              ldd R0,y+7
+ 072E 1884              ldd R1,y+8
+ 0730 000E              add R0,R16
+ 0732 111E              adc R1,R17
+ 0734 1886              std y+8,R1
+ 0736 0F82              std y+7,R0
+ 0738                   .dbline 410
+ 0738           ; 
+ 0738           ;     b = spiSendByte(0xff);
+ 0738 0FEF              ldi R16,255
+ 073A 0E940000          xcall _spiSendByte
+ 073E E02E              mov R14,R16
+ 0740 AE2C              mov R10,R14
+ 0742 BB24              clr R11
+ 0744                   .dbline 413
+ 0744           ; 
+ 0744           ; 
+ 0744           ;     mmc_C_SIZE_MULT = (b & 0x03) << 1;           //Bit[49:47]记录了乘数的大小
+ 0744 C501              movw R24,R10
+ 0746 8370              andi R24,3
+ 0748 9070              andi R25,0
+ 074A 1C01              movw R2,R24
+ 074C 220C              lsl R2
+ 074E 331C              rol R3
+ 0750 2986              std y+9,R2
+ 0752                   .dbline 414
+ 0752           ;     b = spiSendByte(0xff);
+ 0752 0FEF              ldi R16,255
+ 0754 0E940000          xcall _spiSendByte
+ 0758 E02E              mov R14,R16
+ 075A AE2C              mov R10,R14
+ 075C BB24              clr R11
+ 075E                   .dbline 415
+ 075E           ;     mmc_C_SIZE_MULT += b >> 7;
+ 075E 27E0              ldi R18,7
+ 0760 30E0              ldi R19,0
+ 0762 8501              movw R16,R10
+ 0764 0E940000          xcall lsr16
+ 0768 2984              ldd R2,y+9
+ 076A 3324              clr R3
+ 076C 200E              add R2,R16
+ 076E 311E              adc R3,R17
+ 0770 2986              std y+9,R2
+ 0772                   .dbline 418
+ 0772           ; 
+ 0772           ; 
+ 0772           ;     b = spiSendByte(0xff);                       //之后的数据与容量无关
+ 0772 0FEF              ldi R16,255
+ 0774 0E940000          xcall _spiSendByte
+ 0778 E02E              mov R14,R16
+ 077A AE2C              mov R10,R14
+ 077C BB24              clr R11
+ 077E                   .dbline 420
+ 077E           ; 
+ 077E           ;     b = spiSendByte(0xff);
+ 077E 0FEF              ldi R16,255
+ 0780 0E940000          xcall _spiSendByte
+ 0784 E02E              mov R14,R16
+ 0786 AE2C              mov R10,R14
+ 0788 BB24              clr R11
+ 078A                   .dbline 422
+ 078A           ; 
+ 078A           ;     b = spiSendByte(0xff);
+ 078A 0FEF              ldi R16,255
+ 078C 0E940000          xcall _spiSendByte
+ 0790 E02E              mov R14,R16
+ 0792 AE2C              mov R10,R14
+ 0794 BB24              clr R11
+ 0796                   .dbline 424
+ 0796           ; 
+ 0796           ;     b = spiSendByte(0xff);
+ 0796 0FEF              ldi R16,255
+ 0798 0E940000          xcall _spiSendByte
+ 079C E02E              mov R14,R16
+ 079E AE2C              mov R10,R14
+ 07A0 BB24              clr R11
+ 07A2                   .dbline 426
+ 07A2           ; 
+ 07A2           ;     b = spiSendByte(0xff);
+ 07A2 0FEF              ldi R16,255
+ 07A4 0E940000          xcall _spiSendByte
+ 07A8 E02E              mov R14,R16
+ 07AA AE2C              mov R10,R14
+ 07AC BB24              clr R11
+ 07AE                   .dbline 428
+ 07AE           ; 
+ 07AE           ;   }
+ 07AE           L102:
+ 07AE                   .dbline 430
+ 07AE           ; 
+ 07AE           ;   for(j=4; j>0; j--)                                                  // 主机至少保持32个时钟周期的SCK
+ 07AE 84E0              ldi R24,4
+ 07B0 90E0              ldi R25,0
+ 07B2 6C01              movw R12,R24
+ 07B4 09C0              xjmp L114
+ 07B6           L111:
+ 07B6                   .dbline 431
+ 07B6           ;     b = spiSendByte(0xff);                                     
+ 07B6 0FEF              ldi R16,255
+ 07B8 0E940000          xcall _spiSendByte
+ 07BC E02E              mov R14,R16
+ 07BE AE2C              mov R10,R14
+ 07C0 BB24              clr R11
+ 07C2           L112:
+ 07C2                   .dbline 430
+ 07C2 C601              movw R24,R12
+ 07C4 0197              sbiw R24,1
+ 07C6 6C01              movw R12,R24
+ 07C8           L114:
+ 07C8                   .dbline 430
+ 07C8 CC20              tst R12
+ 07CA A9F7              brne L111
+ 07CC DD20              tst R13
+ 07CE 99F7              brne L111
+ 07D0           X44:
+ 07D0                   .dbline 433
+ 07D0           ;                                                                       
+ 07D0           ;   b = spiSendByte(0xff);
+ 07D0 0FEF              ldi R16,255
+ 07D2 0E940000          xcall _spiSendByte
+ 07D6 E02E              mov R14,R16
+ 07D8 AE2C              mov R10,R14
+ 07DA BB24              clr R11
+ 07DC                   .dbline 434
+ 07DC           ;   CS_LOW ();
+ 07DC 80916500          lds R24,101
+ 07E0 877F              andi R24,247
+ 07E2 80936500          sts 101,R24
+ 07E6                   .dbline 436
+ 07E6           ; 
+ 07E6           ;   MMC_CardSize = (mmc_C_SIZE + 1);              //卡容量计算，参考容量计算公式
+ 07E6 8F81              ldd R24,y+7
+ 07E8 9885              ldd R25,y+8
+ 07EA 0196              adiw R24,1
+ 07EC 1C01              movw R2,R24
+ 07EE 4424              clr R4
+ 07F0 5524              clr R5
+ 07F2 2B82              std y+3,R2
+ 07F4 3C82              std y+4,R3
+ 07F6 4D82              std y+5,R4
+ 07F8 5E82              std y+6,R5
+ 07FA                   .dbline 438
+ 07FA           ; 
+ 07FA           ;   for(i = 2,j=mmc_C_SIZE_MULT+2; j>1; j--)      //容量大小：块长度×块数量，不含保护区，一般保护区为总大小的1%
+ 07FA 82E0              ldi R24,2
+ 07FC 90E0              ldi R25,0
+ 07FE 5C01              movw R10,R24
+ 0800 8985              ldd R24,y+9
+ 0802 9927              clr R25
+ 0804 0296              adiw R24,2
+ 0806 6C01              movw R12,R24
+ 0808 05C0              xjmp L118
+ 080A           L115:
+ 080A                   .dbline 439
+ 080A           ;     i <<= 1;
+ 080A AA0C              lsl R10
+ 080C BB1C              rol R11
+ 080E           L116:
+ 080E                   .dbline 438
+ 080E C601              movw R24,R12
+ 0810 0197              sbiw R24,1
+ 0812 6C01              movw R12,R24
+ 0814           L118:
+ 0814                   .dbline 438
+ 0814 81E0              ldi R24,1
+ 0816 90E0              ldi R25,0
+ 0818 8C15              cp R24,R12
+ 081A 9D05              cpc R25,R13
+ 081C B0F3              brlo L115
+ 081E           X45:
+ 081E                   .dbline 440
+ 081E           ;   MMC_CardSize *= i;
+ 081E 1501              movw R2,R10
+ 0820 4424              clr R4
+ 0822 5524              clr R5
+ 0824 0B81              ldd R16,y+3
+ 0826 1C81              ldd R17,y+4
+ 0828 2D81              ldd R18,y+5
+ 082A 3E81              ldd R19,y+6
+ 082C 5A92              st -y,R5
+ 082E 4A92              st -y,R4
+ 0830 3A92              st -y,R3
+ 0832 2A92              st -y,R2
+ 0834 0E940000          xcall empy32u
+ 0838 0B83              std y+3,R16
+ 083A 1C83              std y+4,R17
+ 083C 2D83              std y+5,R18
+ 083E 3E83              std y+6,R19
+ 0840                   .dbline 442
+ 0840           ; 
+ 0840           ;   for(i = 2,j=mmc_READ_BL_LEN; j>1; j--)
+ 0840 82E0              ldi R24,2
+ 0842 90E0              ldi R25,0
+ 0844 5C01              movw R10,R24
+ 0846 CA84              ldd R12,y+10
+ 0848 DD24              clr R13
+ 084A 05C0              xjmp L122
+ 084C           L119:
+ 084C                   .dbline 443
+ 084C           ;     i <<= 1;
+ 084C AA0C              lsl R10
+ 084E BB1C              rol R11
+ 0850           L120:
+ 0850                   .dbline 442
+ 0850 C601              movw R24,R12
+ 0852 0197              sbiw R24,1
+ 0854 6C01              movw R12,R24
+ 0856           L122:
+ 0856                   .dbline 442
+ 0856 81E0              ldi R24,1
+ 0858 90E0              ldi R25,0
+ 085A 8C15              cp R24,R12
+ 085C 9D05              cpc R25,R13
+ 085E B0F3              brlo L119
+ 0860           X46:
+ 0860                   .dbline 444
+ 0860           ;   MMC_CardSize *= i;
+ 0860 1501              movw R2,R10
+ 0862 4424              clr R4
+ 0864 5524              clr R5
+ 0866 0B81              ldd R16,y+3
+ 0868 1C81              ldd R17,y+4
+ 086A 2D81              ldd R18,y+5
+ 086C 3E81              ldd R19,y+6
+ 086E 5A92              st -y,R5
+ 0870 4A92              st -y,R4
+ 0872 3A92              st -y,R3
+ 0874 2A92              st -y,R2
+ 0876 0E940000          xcall empy32u
+ 087A 0B83              std y+3,R16
+ 087C 1C83              std y+4,R17
+ 087E 2D83              std y+5,R18
+ 0880 3E83              std y+6,R19
+ 0882                   .dbline 446
+ 0882           ; 
+ 0882           ;   return MMC_CardSize;                        //返回容量值大小，单位为字节
+ 0882 0B81              ldd R16,y+3
+ 0884 1C81              ldd R17,y+4
+ 0886 2D81              ldd R18,y+5
+ 0888 3E81              ldd R19,y+6
+ 088A                   .dbline -2
+ 088A           L101:
+ 088A                   .dbline 0 ; func end
+ 088A 2B96              adiw R28,11
+ 088C 0C940000          xjmp pop_xgsetF0FC
+ 0890                   .dbsym r response 12 i
+ 0890                   .dbsym l mmc_READ_BL_LEN 10 c
+ 0890                   .dbsym l mmc_C_SIZE_MULT 9 c
+ 0890                   .dbsym l mmc_C_SIZE 7 i
+ 0890                   .dbsym l MMC_CardSize 3 l
+ 0890                   .dbsym r i 10 i
+ 0890                   .dbsym r b 10 i
+ 0890                   .dbsym r j 12 i
+ 0890                   .dbend
+ 0890           ; 
+ 0890           ; }
+ 0890           ; 
+ 0890           ; 

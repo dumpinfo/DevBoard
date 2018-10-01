@@ -1,0 +1,414 @@
+//DMAVR-128开发板12864型液晶显示实时时钟驱动程序
+//编译环境 编译环境 ICCAVR 7.16A
+//系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+//作者：阿迪 www.avrgcc.com
+//日期：2010.12.112
+
+//***********************************************************************
+//			包含文件
+//***********************************************************************
+
+#include <string.h>
+#include <stdio.h>
+#include <delay.h>
+#include <iom128v.h>
+
+//***********************************************************************
+//	定义变量区
+//***********************************************************************
+#define uchar unsigned char
+#define uint  unsigned int
+
+#define RS_CLR	PORTF &= ~(1 << PF1)                 //RS置低
+#define RS_SET	PORTF |= (1 << PF1)                  //RS置高
+
+#define RW_CLR	PORTF &= ~(1 << PF2)                 //RW置低
+#define RW_SET	PORTF |= (1 << PF2)                  //RW置高
+
+#define EN_CLR	PORTF &= ~(1 << PF3)                 //E置低
+#define EN_SET	PORTF |= (1 << PF3)                  //E置高
+
+#define PSB_CLR	PORTF &= ~(1 << PE2)                 //PSB置低，串口方式
+#define PSB_SET	PORTF |= (1 << PE2)                  //PSB置高，并口方式
+
+#define LOW		0
+#define HIGH    1
+
+//初始化指令
+#define CLEAR_SCREEN	0x01		//清屏指令：清屏且AC值为00H
+#define AC_INIT		    0x02		//将AC设置为00H。且游标移到原点位置
+#define CURSE_ADD		0x06		//设定游标移到方向及图像整体移动方向（默认游标右移，图像整体不动）
+#define FUN_MODE		0x30		//工作模式：8位基本指令集
+#define DISPLAY_ON		0x0c		//显示开,显示游标，且游标位置反白
+#define DISPLAY_OFF		0x08		//显示关
+#define CURSE_DIR		0x14		//游标向右移动:AC=AC+1
+#define SET_CG_AC		0x40		//设置AC，范围为：00H~3FH
+#define SET_DD_AC		0x80
+
+#define Data_IO	        PORTA                //液晶数据口
+#define Data_DDR        DDRA                 //数据口方向寄存器
+#define D_LE0	        PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+#define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+#define W_LE0	        PORTD &= ~(1 << PD5) //数码管位控制位为0
+#define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+
+/*复位脚*/
+#define RST_CLR	PORTE &= ~(1 << PE7)              //电平置低
+#define RST_SET	PORTE |= (1 << PE7)               //电平置高
+#define RST_IN	DDRE &= ~(1 << PE7)               //方向输入
+#define RST_OUT	DDRE |= (1 << PE7)                //方向输出
+
+/*双向数据*/
+#define IO_CLR	PORTE &= ~(1 << PE6)              //电平置低
+#define IO_SET	PORTE |= (1 << PE6)               //电平置高
+#define IO_R	PINE & (1 << PE6)                 //电平读取
+#define IO_IN	DDRE &= ~(1 << PE6)               //方向输入
+#define IO_OUT	DDRE |= (1 << PE6)                //方向输出
+
+/*时钟信号*/
+#define SCK_CLR	PORTE &= ~(1 << PE5)              //时钟信号
+#define SCK_SET	PORTE |= (1 << PE5)               //电平置高
+#define SCK_IN	DDRE &= ~(1 << PE5)               //方向输入
+#define SCK_OUT	DDRE |= (1 << PE5)                //方向输出
+
+/*ds1302命令与相关地址*/
+#define ds1302_sec_add			0x80		//秒数据地址
+#define ds1302_min_add			0x82		//分数据地址
+#define ds1302_hr_add			0x84		//时数据地址
+#define ds1302_date_add			0x86		//日数据地址
+#define ds1302_month_add		0x88		//月数据地址
+#define ds1302_day_add			0x8a		//星期数据地址
+#define ds1302_year_add			0x8c		//年数据地址
+#define ds1302_control_add		0x8e		//控制数据地址
+#define ds1302_charger_add		0x90 					 
+#define ds1302_clkburst_add		0xbe
+
+volatile unsigned char time_buf[8] = {0x20,0x10,0x12,0x13,0x09,0x50,0x00,0x00};
+
+
+//*************************************************************************
+//			初始化子程序
+//*************************************************************************
+void system_init()
+{
+
+	Data_IO = 0xFF;				        //电平设置
+	Data_DDR = 0xFF;				        //方向输出
+	PORTF = 0xFF;                       //电平设置
+	DDRF = 0xFF;                        //方向输出
+    PORTD=0xFF;
+	DDRD=0xFF;
+	PORTE=0xFF;                        //PSB对应于PE2
+	DDRE=0xFF;
+	D_LE1;                             //关掉数码管，以免显示乱码                   
+    W_LE1;                     
+    Data_IO=0xFF;                      //关数码管            
+    W_LE0; 
+
+	PSB_SET;						   //液晶并口方式
+}
+
+//***********************************************************************
+//向DS1302写入一字节数据
+//***********************************************************************
+void ds1302_write_byte(unsigned char addr, unsigned char d) 
+{
+
+	unsigned char i;
+	RST_SET;					//启动DS1302总线
+	
+	                                                //写入目标地址：addr
+	IO_OUT;
+	addr = addr & 0xFE;                            //最低位置零
+	for (i = 0; i < 8; i ++) {
+		if (addr & 0x01) {
+			IO_SET;
+			}
+		else {
+			IO_CLR;
+			}
+		SCK_SET;
+		SCK_CLR;
+		addr = addr >> 1;
+		}
+	
+	                                              //写入数据：d
+	IO_OUT;
+	for (i = 0; i < 8; i ++) {
+		if (d & 0x01) {
+			IO_SET;
+			}
+		else {
+			IO_CLR;
+			}
+		SCK_SET;
+		SCK_CLR;
+		d = d >> 1;
+		}
+	RST_CLR;					//停止DS1302总线
+}
+
+//***********************************************************************
+//                   从DS1302读出一字节数据
+//***********************************************************************
+unsigned char ds1302_read_byte(unsigned char addr)
+ {
+
+	unsigned char i;
+	unsigned char temp;
+	RST_SET;					//启动DS1302总线
+
+	                                                //写入目标地址：addr
+	IO_OUT;
+	addr = addr | 0x01;                             //最低位置高
+	for (i = 0; i < 8; i ++) {
+		if (addr & 0x01) {
+			IO_SET;
+			}
+		else {
+			IO_CLR;
+			}
+		SCK_SET;
+		SCK_CLR;
+		addr = addr >> 1;
+		}
+	
+	/*输出数据：temp*/
+	IO_IN;
+	for (i = 0; i < 8; i ++) {
+		temp = temp >> 1;
+		if (IO_R) {
+			temp |= 0x80;
+			}
+		else {
+			temp &= 0x7F;
+			}
+		SCK_SET;
+		SCK_CLR;
+		}
+	
+	RST_CLR;					//停止DS1302总线
+	return temp;
+}
+
+//***********************************************************************
+//                   向DS302写入时钟数据
+//***********************************************************************
+
+void ds1302_write_time(void)
+ {
+
+	ds1302_write_byte(ds1302_control_add,0x00);		//关闭写保护 
+	ds1302_write_byte(ds1302_sec_add,0x80);			//暂停 
+	//ds1302_write_byte(ds1302_charger_add,0xa9);		//涓流充电 
+	ds1302_write_byte(ds1302_year_add,time_buf[1]);		//年 
+	ds1302_write_byte(ds1302_month_add,time_buf[2]);	//月 
+	ds1302_write_byte(ds1302_date_add,time_buf[3]);		//日 
+	ds1302_write_byte(ds1302_day_add,time_buf[7]);		//周 
+	ds1302_write_byte(ds1302_hr_add,time_buf[4]);		//时 
+	ds1302_write_byte(ds1302_min_add,time_buf[5]);		//分
+	ds1302_write_byte(ds1302_sec_add,time_buf[6]);		//秒
+	ds1302_write_byte(ds1302_day_add,time_buf[7]);		//周 
+	ds1302_write_byte(ds1302_control_add,0x80);		//打开写保护 
+}
+
+//***********************************************************************
+//                     从DS302读出时钟数据
+//***********************************************************************
+
+void ds1302_read_time(void)  
+{ 
+
+	time_buf[1]=ds1302_read_byte(ds1302_year_add);		//年 
+	time_buf[2]=ds1302_read_byte(ds1302_month_add);		//月 
+	time_buf[3]=ds1302_read_byte(ds1302_date_add);		//日 
+	time_buf[4]=ds1302_read_byte(ds1302_hr_add);		//时 
+	time_buf[5]=ds1302_read_byte(ds1302_min_add);		//分 
+	time_buf[6]=(ds1302_read_byte(ds1302_sec_add))&0x7F;//秒 
+	time_buf[7]=ds1302_read_byte(ds1302_day_add);		//周 
+}
+
+//***********************************************************************
+//               DS302初始化函数
+//***********************************************************************
+
+void ds1302_init(void) 
+{
+	
+	RST_CLR;			//RST脚置低
+	SCK_CLR;			//SCK脚置低
+	RST_OUT;			//RST脚设置为输出
+	SCK_OUT;			//SCK脚设置为输出
+}
+
+//***********************************************************************
+//	显示屏命令写入函数
+//***********************************************************************
+
+
+void LCD_write_com(unsigned char com) 
+{	
+	RS_CLR;
+	RW_CLR;
+	EN_SET;
+	Data_IO = com;
+	delay_nms(5);
+	EN_CLR;
+}
+
+//***********************************************************************
+//	显示屏数据写入函数
+//***********************************************************************
+
+void LCD_write_data(unsigned char data) 
+{
+	RS_SET;
+	RW_CLR;
+	EN_SET;
+	Data_IO = data;
+	delay_nms(5);
+	EN_CLR;
+}
+
+//***********************************************************************
+//	显示屏单字符写入函数
+//***********************************************************************
+
+void LCD_write_char(unsigned char x,unsigned char y,unsigned char data) 
+{
+	
+    if (y == 0) 
+    {
+    	LCD_write_com(0x80 + x);
+    }
+    else 
+    {
+    	LCD_write_com(0x90 + x);
+    }
+    delay_nms(2);
+    LCD_write_data( data);  
+}
+
+//***********************************************************************
+//	显示屏清空显示
+//***********************************************************************
+
+void LCD_clear(void) 
+{
+	LCD_write_com(0x01);
+	delay_nms(5);
+}
+
+//***********************************************************************
+//函数名称：DisplayCgrom(uchar hz)显示CGROM里的汉字
+//入口参数：无
+//返回参数：无
+//***********************************************************************
+void DisplayCgrom(uchar addr,uchar *hz)
+{
+	LCD_write_com(addr);
+    delay_nms(5);
+	while(*hz != '\0')
+	{
+		LCD_write_data(*hz);
+		hz++;
+        delay_nms(5);
+	}
+
+}
+ 
+//****************************************************************
+//函数名称：Display()显示测试结果
+//入口参数：无
+//返回参数：无
+//****************************************************************
+void Display(void)
+{
+	//DisplayCgrom(0x80,"欣世纪电子欢迎你");
+	DisplayCgrom(0x81,"实时时钟演示");
+
+}
+
+//***********************************************************************
+//	显示屏初始化函数
+//***********************************************************************
+
+void LCD_init(void) 
+{
+	DDRA = 0xFF;				        //I/O口方向设置
+	DDRA |= (1 << PA5) | (1 << PA6) | (1 << PA7);
+	LCD_write_com(FUN_MODE);			//显示模式设置
+	delay_nms(5);
+	LCD_write_com(FUN_MODE);			//显示模式设置
+	delay_nms(5);
+    LCD_write_com(DISPLAY_ON);			//显示开
+	delay_nms(5);
+    LCD_write_com(CLEAR_SCREEN);			//清屏
+	delay_nms(5);
+}
+//***********************************************************************
+//			主程序
+//***********************************************************************
+int main(void)
+{
+     volatile unsigned char temp,temp1,temp2;
+
+
+    system_init();                                //系统初始化，设置IO口属性
+	delay_nms(100);                                //延时100ms
+	LCD_init();                                   //液晶参数初始化设置
+	LCD_clear();                                  //清屏
+    
+	ds1302_init();                                //DS1302初始化
+	delay_nms(10);
+	ds1302_write_time();                          //向DS1302写初始数据，如年月和时间等
+	Display();
+ while(1)
+	{
+		delay_nms(200);
+		//ds1302_read_time();                		  //读DS1302数据
+	    LCD_write_com(0x88);
+	    delay_nms(5);
+        temp = (time_buf[0] >> 4) + '0';          //在LCD上写要显示的数据	
+        LCD_write_data(temp);
+		temp = (time_buf[0] & 0x0F) + '0';		
+        LCD_write_data(temp);
+		temp = (time_buf[1] >> 4) + '0';		
+        LCD_write_data(temp);
+		temp = (time_buf[1] & 0x0F) + '0';
+		LCD_write_data(temp);
+	    LCD_write_data('-');
+
+		temp = (time_buf[2] >> 4) + '0';		
+        LCD_write_data(temp);
+		temp = (time_buf[2] & 0x0F) + '0';
+		LCD_write_data(temp);
+		LCD_write_data('-');
+
+		temp = (time_buf[3] >> 4) + '0';		
+        LCD_write_data(temp);
+		temp = (time_buf[3] & 0x0F) + '0';
+		LCD_write_data(temp);
+
+		LCD_write_com(0x9C);
+	    delay_nms(5);
+
+		temp = (time_buf[4] >> 4) + '0';		
+        LCD_write_data(temp);
+		temp = (time_buf[4] & 0x0F) + '0';
+		LCD_write_data(temp);
+	    LCD_write_data(':');
+
+		temp = (time_buf[5] >> 4) + '0';		
+        LCD_write_data(temp);
+		temp = (time_buf[5] & 0x0F) + '0';
+		LCD_write_data(temp);
+		LCD_write_data(':');
+
+		temp = (time_buf[6] >> 4) + '0';		
+        LCD_write_data(temp);
+		temp = (time_buf[6] & 0x0F) + '0';
+		LCD_write_data(temp);
+	}
+}
+

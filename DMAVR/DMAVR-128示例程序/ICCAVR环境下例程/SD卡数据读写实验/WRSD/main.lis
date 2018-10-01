@@ -1,0 +1,824 @@
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0000                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //********************************************************************
+ 0000           ; /*函 数 名：delay_us
+ 0000           ; 建立日期：2010年1月28日
+ 0000           ; 编译环境：ICCAVR7.16A
+ 0000           ; 函数作用：微秒级的延时程序
+ 0000           ; 说    明：7.3728M晶振下
+ 0000           ; ********************************************************************/
+ 0000           ; void delay_1us(void);
+ 0000           ; void delay_3us(void);
+ 0000           ; void delay_10us(void);
+ 0000           ; void delay_50us(void);
+ 0000           ; void delay_100us(void);
+ 0000           ; void delay_n100us(unsigned char n100us);
+ 0000           ; void delay_1ms(void);
+ 0000           ; void delay_nms(unsigned int nms);
+ 0000           ; void delay_ns(unsigned char ns);
+ 0000           ; 
+ 0000           ; 
+ 0000           ; void delay_1us(void)                 //1us延时函数，不能连续调用， 
+ 0000           ; { 
+ 0000                   .dbline 21
+ 0000           ;    asm("nop");                       //1时钟周期
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ;    asm("nop");
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ;    asm("nop");
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ;    asm("nop");
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ;    asm("nop");                       //1T
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ;    asm("nop");
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; 
+ 000E           ; }
+ 000E           ; void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+ 000E           ; { 
+ 000E                   .dbline 32
+ 000E           ;    
+ 000E           ;    asm("nop");
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ;    asm("nop");
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ;    asm("nop");                       
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ;    asm("nop");
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ;    asm("nop");
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ;    asm("nop");
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ;    asm("nop");                       
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ;    asm("nop");
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ;    asm("nop");
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ;    asm("nop");
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ;    asm("nop");                       
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;    asm("nop");
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ;    asm("nop");
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ;    asm("nop");
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ;    asm("nop");                       
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ;    asm("nop");
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ;    asm("nop");
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ;    asm("nop");
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ;    asm("nop");
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ;    asm("nop");
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ;    asm("nop");                       
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ; } 
+ 003A           ; 
+ 003A           ; void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+ 003A           ; {
+ 003A                   .dbline 57
+ 003A           ;    delay_3us();
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;    delay_3us(); 
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;    delay_3us();  
+ 003E                   .dbline -2
+ 003E           L3:
+ 003E                   .dbline 0 ; func end
+ 003E E7CF              xjmp _delay_3us
+ 0040                   .dbend
+ 0040                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0040           _delay_50us::
+ 0040                   .dbline -1
+ 0040                   .dbline 63
+ 0040           ; }
+ 0040           ;   
+ 0040           ; void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+ 0040           ; { 
+ 0040                   .dbline 64
+ 0040           ;    delay_10us();
+ 0040 FCDF              xcall _delay_10us
+ 0042                   .dbline 65
+ 0042           ;    delay_10us(); 
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 66
+ 0044           ;    delay_10us();
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 67
+ 0046           ;    delay_10us();
+ 0046                   .dbline -2
+ 0046           L4:
+ 0046                   .dbline 0 ; func end
+ 0046 F9CF              xjmp _delay_10us
+ 0048                   .dbend
+ 0048                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 0048           _delay_100us::
+ 0048                   .dbline -1
+ 0048                   .dbline 70
+ 0048           ; }
+ 0048           ; void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+ 0048           ; {
+ 0048                   .dbline 71
+ 0048           ;  delay_50us();
+ 0048 FBDF              xcall _delay_50us
+ 004A                   .dbline 72
+ 004A           ;  delay_50us();
+ 004A                   .dbline -2
+ 004A           L5:
+ 004A                   .dbline 0 ; func end
+ 004A FACF              xjmp _delay_50us
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_n100us _delay_n100us fV
+ 004C           ;         n100us -> R20
+                        .even
+ 004C           _delay_n100us::
+ 004C 4A93              st -y,R20
+ 004E 402F              mov R20,R16
+ 0050                   .dbline -1
+ 0050                   .dbline 75
+ 0050           ; }
+ 0050           ; void delay_n100us(unsigned char n100us)
+ 0050           ; {
+ 0050 01C0              xjmp L8
+ 0052           L7:
+ 0052                   .dbline 77
+ 0052           ;  while(n100us--)                          
+ 0052           ;  delay_100us();
+ 0052 FADF              xcall _delay_100us
+ 0054           L8:
+ 0054                   .dbline 76
+ 0054 242E              mov R2,R20
+ 0056 3324              clr R3
+ 0058 4150              subi R20,1
+ 005A 2220              tst R2
+ 005C D1F7              brne L7
+ 005E           X0:
+ 005E                   .dbline -2
+ 005E           L6:
+ 005E                   .dbline 0 ; func end
+ 005E 4991              ld R20,y+
+ 0060 0895              ret
+ 0062                   .dbsym r n100us 20 c
+ 0062                   .dbend
+ 0062                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 0062           _delay_1ms::
+ 0062                   .dbline -1
+ 0062                   .dbline 89
+ 0062           ; }
+ 0062           ; /*delay_n100us(2)        250us
+ 0062           ; delay_n100us(3)          360us
+ 0062           ; delay_n100us(4)          470us
+ 0062           ; delay_n100us(5)          580us
+ 0062           ; delay_n100us(6)          690us
+ 0062           ; delay_n100us(7)       800us
+ 0062           ; delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+ 0062           ; 
+ 0062           ; */
+ 0062           ; void delay_1ms()
+ 0062           ; {
+ 0062                   .dbline 90
+ 0062           ;  delay_100us();
+ 0062 F2DF              xcall _delay_100us
+ 0064                   .dbline 91
+ 0064           ;  delay_100us();
+ 0064 F1DF              xcall _delay_100us
+ 0066                   .dbline 92
+ 0066           ;  delay_100us();
+ 0066 F0DF              xcall _delay_100us
+ 0068                   .dbline 93
+ 0068           ;  delay_100us();
+ 0068 EFDF              xcall _delay_100us
+ 006A                   .dbline 94
+ 006A           ;  delay_100us();
+ 006A EEDF              xcall _delay_100us
+ 006C                   .dbline 95
+ 006C           ;  delay_100us();
+ 006C EDDF              xcall _delay_100us
+ 006E                   .dbline 96
+ 006E           ;  delay_100us();
+ 006E ECDF              xcall _delay_100us
+ 0070                   .dbline 97
+ 0070           ;  delay_100us();
+ 0070 EBDF              xcall _delay_100us
+ 0072                   .dbline 98
+ 0072           ;  delay_100us();
+ 0072 EADF              xcall _delay_100us
+ 0074                   .dbline 99
+ 0074           ;  delay_100us();
+ 0074                   .dbline -2
+ 0074           L10:
+ 0074                   .dbline 0 ; func end
+ 0074 E9CF              xjmp _delay_100us
+ 0076                   .dbend
+ 0076                   .dbfunc e delay_nms _delay_nms fV
+ 0076           ;            nms -> R20,R21
+                        .even
+ 0076           _delay_nms::
+ 0076 4A93              st -y,R20
+ 0078 5A93              st -y,R21
+ 007A A801              movw R20,R16
+ 007C                   .dbline -1
+ 007C                   .dbline 109
+ 007C           ; }
+ 007C           ; /********************************************************************
+ 007C           ; 函 数 名：Delay_ms
+ 007C           ; 建立日期：2010年1月28日
+ 007C           ; 修改日期：
+ 007C           ; 函数作用：毫秒级的精确延时程序
+ 007C           ; 说    明：
+ 007C           ; ********************************************************************/
+ 007C           ; void delay_nms(unsigned int nms)
+ 007C           ; {
+ 007C 01C0              xjmp L13
+ 007E           L12:
+ 007E                   .dbline 111
+ 007E           ;  while(nms--) 
+ 007E           ;  delay_1ms();
+ 007E F1DF              xcall _delay_1ms
+ 0080           L13:
+ 0080                   .dbline 110
+ 0080 1A01              movw R2,R20
+ 0082 4150              subi R20,1
+ 0084 5040              sbci R21,0
+ 0086 2220              tst R2
+ 0088 D1F7              brne L12
+ 008A 3320              tst R3
+ 008C C1F7              brne L12
+ 008E           X1:
+ 008E                   .dbline -2
+ 008E           L11:
+ 008E                   .dbline 0 ; func end
+ 008E 5991              ld R21,y+
+ 0090 4991              ld R20,y+
+ 0092 0895              ret
+ 0094                   .dbsym r nms 20 i
+ 0094                   .dbend
+ 0094                   .dbfunc e delay_ns _delay_ns fV
+ 0094           ;             ns -> R20
+                        .even
+ 0094           _delay_ns::
+ 0094 4A93              st -y,R20
+ 0096 402F              mov R20,R16
+ 0098                   .dbline -1
+ 0098                   .dbline 114
+ 0098           ; }
+ 0098           ; void delay_ns(unsigned char ns)
+ 0098           ; {
+ 0098 03C0              xjmp L17
+ 009A           L16:
+ 009A                   .dbline 116
+ 009A           ;  while(ns--) 
+ 009A           ;  delay_nms(1000);
+ 009A 08EE              ldi R16,1000
+ 009C 13E0              ldi R17,3
+ 009E EBDF              xcall _delay_nms
+ 00A0           L17:
+ 00A0                   .dbline 115
+ 00A0 242E              mov R2,R20
+ 00A2 3324              clr R3
+ 00A4 4150              subi R20,1
+ 00A6 2220              tst R2
+ 00A8 C1F7              brne L16
+ 00AA           X2:
+ 00AA                   .dbline -2
+ 00AA           L15:
+ 00AA                   .dbline 0 ; func end
+ 00AA 4991              ld R20,y+
+ 00AC 0895              ret
+ 00AE                   .dbsym r ns 20 c
+ 00AE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0000           _sectorwr::
+ 0000                   .blkb 4
+                        .area idata
+ 0000 C8000000          .word 200,0
+                        .area data(ram, con, rel)
+ 0004                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0004                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0004                   .dbsym e sectorwr _sectorwr l
+ 0004           _buffer1::
+ 0004                   .blkb 1
+                        .area idata
+ 0004 08                .byte 8
+                        .area data(ram, con, rel)
+ 0005                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0005                   .dbsym e buffer1 _buffer1 A[1:1]c
+                        .area text(rom, con, rel)
+ 00AE                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 00AE                   .dbfunc e LED_Off _LED_Off fV
+                        .even
+ 00AE           _LED_Off::
+ 00AE                   .dbline -1
+ 00AE                   .dbline 27
+ 00AE           ; //DMAVR-M128的读写SD卡数据实验，给指定地址写入指定数据，采取扇区读写的模式，一次512字节
+ 00AE           ; //要写入SD卡的数据通过串口写入，使用串口调试助手，波特率9600，8位数据，1位停止位，无校验方式
+ 00AE           ; //初始化SD卡成功后，将出现Please Input the Data Want to Write to SD字符样，此时通过串口调试助手发送任意字符即可
+ 00AE           ; //数据写入SD卡后，又读出来显示到串口调试助手，通过对比可以判断写入是否成功
+ 00AE           ; //由于存在长整型数据，因此，要设定ICCAVR环境支持long型数据，设置project->options->Target，选中long
+ 00AE           ; //编译环境 ICCAVR 7.16A
+ 00AE           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 00AE           ; //作者：阿迪 www.avrgcc.com
+ 00AE           ; //日期：2010.01.14
+ 00AE           ; //***********************************************************************
+ 00AE           ; //                    包含文件
+ 00AE           ; //***********************************************************************
+ 00AE           ; 
+ 00AE           ; #include <SDData_main.h>
+ 00AE           ; 
+ 00AE           ; 
+ 00AE           ; u32 sectorwr=200;     //向SD卡中写入数据的地址，为扇区数，对于一个扇区为512字节的SD卡实际地址为sectorwr*512字节
+ 00AE           ; u08 buffer1[1]={0x08};  //向SD卡中写入的数据，这里只定义了一个字节的长度，可以定义为512个字节长度     
+ 00AE           ; u08 buffer2[512];     //读取数据存放区
+ 00AE           ; u32 SD_Size;            //SD卡容量读取存储变量
+ 00AE           ; int i;
+ 00AE           ; //***********************************************************************
+ 00AE           ; //            关闭数码管函数，为了数码管不显示乱码，属于初始化函数
+ 00AE           ; //***********************************************************************
+ 00AE           ; 
+ 00AE           ; void LED_Off()
+ 00AE           ; {
+ 00AE                   .dbline 28
+ 00AE           ;     PORTD=0xFF;
+ 00AE 8FEF              ldi R24,255
+ 00B0 82BB              out 0x12,R24
+ 00B2                   .dbline 29
+ 00B2           ;       DDRD=0xFF;
+ 00B2 81BB              out 0x11,R24
+ 00B4                   .dbline 30
+ 00B4           ;       D_LE1;                             //关掉数码管，以免显示乱码                   
+ 00B4 949A              sbi 0x12,4
+ 00B6                   .dbline 31
+ 00B6           ;     W_LE1;                     
+ 00B6 959A              sbi 0x12,5
+ 00B8                   .dbline 32
+ 00B8           ;     Data_IO=0xFF;                      //关数码管            
+ 00B8 8BBB              out 0x1b,R24
+ 00BA                   .dbline 33
+ 00BA           ;     W_LE0; 
+ 00BA 9598              cbi 0x12,5
+ 00BC                   .dbline -2
+ 00BC           L19:
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbend
+ 00BE                   .dbfunc e main _main fV
+ 00BE           ;          retry -> R20,R21
+ 00BE           ;              a -> R10
+ 00BE           ;              i -> R20,R21
+                        .even
+ 00BE           _main::
+ 00BE 2297              sbiw R28,2
+ 00C0                   .dbline -1
+ 00C0                   .dbline 41
+ 00C0           ; }
+ 00C0           ; 
+ 00C0           ; //***********************************************************************
+ 00C0           ; //                    主函数，调用SD卡读写函数
+ 00C0           ; //***********************************************************************
+ 00C0           ; 
+ 00C0           ; void main(void)
+ 00C0           ; {
+ 00C0                   .dbline 45
+ 00C0           ; 
+ 00C0           ;  u16 i,retry;
+ 00C0           ;  u08 a;
+ 00C0           ;  McuInit();                                                                                             //IO楼初始化
+ 00C0 0E940000          xcall _McuInit
+ 00C4                   .dbline 48
+ 00C4           ;  //delay_nms(500);
+ 00C4           ;  //LED_Off(); 
+ 00C4           ;  UART_Init();                                                                           //串口初始化
+ 00C4 0E940000          xcall _UART_Init
+ 00C8                   .dbline 49
+ 00C8           ;  LED_Off();                                                                     //关数码管
+ 00C8 F2DF              xcall _LED_Off
+ 00CA                   .dbline 50
+ 00CA           ;  printf("DMAVR-128读写SD卡数据实验\r\n");
+ 00CA 00E0              ldi R16,<L21
+ 00CC 10E0              ldi R17,>L21
+ 00CE 0E940000          xcall _printf
+ 00D2                   .dbline 51
+ 00D2           ;  printf("DMAVR-M128 Initialize Success!\r\n");
+ 00D2 00E0              ldi R16,<L22
+ 00D4 10E0              ldi R17,>L22
+ 00D6 0E940000          xcall _printf
+ 00DA                   .dbline 52
+ 00DA           ;  printf("Waiting Initialize SD……\r\n");
+ 00DA 00E0              ldi R16,<L23
+ 00DC 10E0              ldi R17,>L23
+ 00DE 0E940000          xcall _printf
+ 00E2                   .dbline 53
+ 00E2           ;  delay_nms(500);
+ 00E2 04EF              ldi R16,500
+ 00E4 11E0              ldi R17,1
+ 00E6 C7DF              xcall _delay_nms
+ 00E8                   .dbline 54
+ 00E8           ;  mmcInit();
+ 00E8 0E940000          xcall _mmcInit
+ 00EC                   .dbline 55
+ 00EC           ;  mmcInit();
+ 00EC 0E940000          xcall _mmcInit
+ 00F0                   .dbline 56
+ 00F0           ;  delay_nms(50);
+ 00F0 02E3              ldi R16,50
+ 00F2 10E0              ldi R17,0
+ 00F4 C0DF              xcall _delay_nms
+ 00F6 10C0              xjmp L25
+ 00F8           L24:
+ 00F8                   .dbline 58
+ 00F8           ;  while(mmcReset())                                                                              //初始化SD卡                                  
+ 00F8           ;       {
+ 00F8                   .dbline 59
+ 00F8           ;               retry++;
+ 00F8 4F5F              subi R20,255  ; offset = 1
+ 00FA 5F4F              sbci R21,255
+ 00FC                   .dbline 60
+ 00FC           ;               if(retry>20)
+ 00FC 84E1              ldi R24,20
+ 00FE 90E0              ldi R25,0
+ 0100 8417              cp R24,R20
+ 0102 9507              cpc R25,R21
+ 0104 48F4              brsh L27
+ 0106           X3:
+ 0106                   .dbline 61
+ 0106           ;               {
+ 0106                   .dbline 62
+ 0106           ;                       printf("DMAVR-M128 Initialize SD Failure!\r\n");//初始化失败显示
+ 0106 00E0              ldi R16,<L29
+ 0108 10E0              ldi R17,>L29
+ 010A 0E940000          xcall _printf
+ 010E                   .dbline 63
+ 010E           ;                       printf("Please Checking the SD or Reset the System!\r\n");
+ 010E 00E0              ldi R16,<L30
+ 0110 10E0              ldi R17,>L30
+ 0112 0E940000          xcall _printf
+ 0116           L31:
+ 0116                   .dbline 66
+ 0116           ; 
+ 0116           ;                       while(1)                
+ 0116           ;                       {
+ 0116                   .dbline 68
+ 0116           ;                               
+ 0116           ;                       }
+ 0116           L32:
+ 0116                   .dbline 65
+ 0116 FFCF              xjmp L31
+ 0118           L27:
+ 0118                   .dbline 70
+ 0118           ;               }
+ 0118           ;       } 
+ 0118           L25:
+ 0118                   .dbline 57
+ 0118 0E940000          xcall _mmcReset
+ 011C 0023              tst R16
+ 011E 61F7              brne L24
+ 0120           X4:
+ 0120                   .dbline 71
+ 0120           ;  printf("DMAVR-M128 Initialize SD Success!\r\n");         //初始化成功显示提示信息
+ 0120 00E0              ldi R16,<L34
+ 0122 10E0              ldi R17,>L34
+ 0124 0E940000          xcall _printf
+ 0128                   .dbline 72
+ 0128           ;  SD_Size=mmcCapacity();
+ 0128 0E940000          xcall _mmcCapacity
+ 012C 10930300          sts _SD_Size+1,R17
+ 0130 00930200          sts _SD_Size,R16
+ 0134 30930500          sts _SD_Size+2+1,R19
+ 0138 20930400          sts _SD_Size+2,R18
+ 013C                   .dbline 73
+ 013C           ;  printf ("Size=%ld\r\n",SD_Size);                                                     //输出SD卡容量，单位字节
+ 013C 2883              std y+0,R18
+ 013E 3983              std y+1,R19
+ 0140 9801              movw R18,R16
+ 0142 00E0              ldi R16,<L35
+ 0144 10E0              ldi R17,>L35
+ 0146 0E940000          xcall _printf
+ 014A 59C0              xjmp L37
+ 014C           L36:
+ 014C                   .dbline 75
+ 014C           ; while(1)
+ 014C           ;  {
+ 014C                   .dbline 76
+ 014C           ;  printf("Please Input the Data Want to Write to SD!\r\n");
+ 014C 00E0              ldi R16,<L39
+ 014E 10E0              ldi R17,>L39
+ 0150 0E940000          xcall _printf
+ 0154                   .dbline 79
+ 0154           ;  //printf("The Data is:");
+ 0154           ;  //scanf("%c",&a);                                        //将从串口输入的数据写入SD卡，数据为单个字符，如a
+ 0154           ;  a=getchar();
+ 0154 0E940000          xcall _getchar$device_specific$
+ 0158 A02E              mov R10,R16
+ 015A                   .dbline 81
+ 015A           ;  //printf("\n");
+ 015A           ;  printf("The Data Write to SD is %c\r\n",a) ;
+ 015A 2A2D              mov R18,R10
+ 015C 3327              clr R19
+ 015E 00E0              ldi R16,<L40
+ 0160 10E0              ldi R17,>L40
+ 0162 0E940000          xcall _printf
+ 0166                   .dbline 82
+ 0166           ;  buffer1[0]=a;                                          //将串口输入的数据赋予buffer1，准备写入SD卡
+ 0166 A0920400          sts _buffer1,R10
+ 016A                   .dbline 83
+ 016A           ;  printf("DMAVR-M128 Starting Read and Write SD!\r\n");
+ 016A 00E0              ldi R16,<L41
+ 016C 10E0              ldi R17,>L41
+ 016E 0E940000          xcall _printf
+ 0172                   .dbline 85
+ 0172           ; 
+ 0172           ;  mmcWrite(sectorwr,buffer1);                                          //向指定地址(sectorwr*512)写入数据
+ 0172 80E0              ldi R24,<_buffer1
+ 0174 90E0              ldi R25,>_buffer1
+ 0176 9983              std y+1,R25
+ 0178 8883              std y+0,R24
+ 017A 20910200          lds R18,_sectorwr+2
+ 017E 30910300          lds R19,_sectorwr+2+1
+ 0182 00910000          lds R16,_sectorwr
+ 0186 10910100          lds R17,_sectorwr+1
+ 018A 0E940000          xcall _mmcWrite
+ 018E                   .dbline 86
+ 018E           ;  delay_nms(1000);
+ 018E 08EE              ldi R16,1000
+ 0190 13E0              ldi R17,3
+ 0192 71DF              xcall _delay_nms
+ 0194                   .dbline 87
+ 0194           ;  mmcRead(sectorwr,buffer2);                                                           //读取刚才写入空间的数据，判断是否写入成功
+ 0194 80E0              ldi R24,<_buffer2
+ 0196 90E0              ldi R25,>_buffer2
+ 0198 9983              std y+1,R25
+ 019A 8883              std y+0,R24
+ 019C 20910200          lds R18,_sectorwr+2
+ 01A0 30910300          lds R19,_sectorwr+2+1
+ 01A4 00910000          lds R16,_sectorwr
+ 01A8 10910100          lds R17,_sectorwr+1
+ 01AC 0E940000          xcall _mmcRead
+ 01B0                   .dbline 88
+ 01B0           ;  for(i=0;i<512;i++)
+ 01B0 4427              clr R20
+ 01B2 5527              clr R21
+ 01B4 0DC0              xjmp L45
+ 01B6           L42:
+ 01B6                   .dbline 89
+ 01B6           ;    {
+ 01B6                   .dbline 90
+ 01B6           ;               printf ("Data=%c \r",buffer2[i]);                               //输出读出的数据
+ 01B6 80E0              ldi R24,<_buffer2
+ 01B8 90E0              ldi R25,>_buffer2
+ 01BA FA01              movw R30,R20
+ 01BC E80F              add R30,R24
+ 01BE F91F              adc R31,R25
+ 01C0 2081              ldd R18,z+0
+ 01C2 3327              clr R19
+ 01C4 00E0              ldi R16,<L46
+ 01C6 10E0              ldi R17,>L46
+ 01C8 0E940000          xcall _printf
+ 01CC                   .dbline 91
+ 01CC           ;    }
+ 01CC           L43:
+ 01CC                   .dbline 88
+ 01CC 4F5F              subi R20,255  ; offset = 1
+ 01CE 5F4F              sbci R21,255
+ 01D0           L45:
+ 01D0                   .dbline 88
+ 01D0 4030              cpi R20,0
+ 01D2 E2E0              ldi R30,2
+ 01D4 5E07              cpc R21,R30
+ 01D6 78F3              brlo L42
+ 01D8           X5:
+ 01D8                   .dbline 92
+ 01D8           ;  printf ("\r\n");
+ 01D8 00E0              ldi R16,<L47
+ 01DA 10E0              ldi R17,>L47
+ 01DC 0E940000          xcall _printf
+ 01E0                   .dbline 93
+ 01E0           ;  if(buffer1[1]=buffer2[1])
+ 01E0 A0900700          lds R10,_buffer2+1
+ 01E4 A0920500          sts _buffer1+1,R10
+ 01E8 AA20              tst R10
+ 01EA 29F0              breq L48
+ 01EC           X6:
+ 01EC                   .dbline 94
+ 01EC           ;  {
+ 01EC                   .dbline 95
+ 01EC           ;       printf("Write Data Success!\r\n");
+ 01EC 00E0              ldi R16,<L52
+ 01EE 10E0              ldi R17,>L52
+ 01F0 0E940000          xcall _printf
+ 01F4                   .dbline 97
+ 01F4           ; //    printf("Please Take Out the SD!\n");
+ 01F4           ;  }
+ 01F4 04C0              xjmp L49
+ 01F6           L48:
+ 01F6                   .dbline 99
+ 01F6           ;  else
+ 01F6           ;  {
+ 01F6                   .dbline 100
+ 01F6           ;       printf("Write Data Failure!\n");
+ 01F6 00E0              ldi R16,<L53
+ 01F8 10E0              ldi R17,>L53
+ 01FA 0E940000          xcall _printf
+ 01FE                   .dbline 102
+ 01FE           ; 
+ 01FE           ;  }
+ 01FE           L49:
+ 01FE                   .dbline 104
+ 01FE           ;  
+ 01FE           ;  }
+ 01FE           L37:
+ 01FE                   .dbline 74
+ 01FE A6CF              xjmp L36
+ 0200           X7:
+ 0200                   .dbline -2
+ 0200           L20:
+ 0200                   .dbline 0 ; func end
+ 0200 2296              adiw R28,2
+ 0202 0895              ret
+ 0204                   .dbsym r retry 20 s
+ 0204                   .dbsym r a 10 c
+ 0204                   .dbsym r i 20 s
+ 0204                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0000           _i::
+ 0000                   .blkb 2
+ 0002                   .dbsym e i _i I
+ 0002           _SD_Size::
+ 0002                   .blkb 4
+ 0006                   .dbsym e SD_Size _SD_Size l
+ 0006           _buffer2::
+ 0006                   .blkb 512
+ 0206                   .dbsym e buffer2 _buffer2 A[512:512]c
+                        .area data(ram, con, rel)
+ 0005                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0005           L53:
+ 0005                   .blkb 21
+                        .area idata
+ 0005 57726974652044617461204661696C75  .byte 'W,'r,'i,'t,'e,32,'D,'a,'t,'a,32,'F,'a,'i,'l,'u
+ 0015 7265210A00        .byte 'r,'e,33,10,0
+                        .area data(ram, con, rel)
+ 001A                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 001A           L52:
+ 001A                   .blkb 22
+                        .area idata
+ 001A 57726974652044617461205375636365  .byte 'W,'r,'i,'t,'e,32,'D,'a,'t,'a,32,'S,'u,'c,'c,'e
+ 002A 7373210D0A00      .byte 's,'s,33,13,10,0
+                        .area data(ram, con, rel)
+ 0030                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0030           L47:
+ 0030                   .blkb 3
+                        .area idata
+ 0030 0D0A00            .byte 13,10,0
+                        .area data(ram, con, rel)
+ 0033                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0033           L46:
+ 0033                   .blkb 10
+                        .area idata
+ 0033 446174613D2563200D00      .byte 'D,'a,'t,'a,61,37,'c,32,13,0
+                        .area data(ram, con, rel)
+ 003D                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 003D           L41:
+ 003D                   .blkb 41
+                        .area idata
+ 003D 444D4156522D4D313238205374617274  .byte 'D,'M,'A,'V,'R,45,'M,49,50,56,32,'S,'t,'a,'r,'t
+ 004D 696E67205265616420616E6420577269  .byte 'i,'n,'g,32,'R,'e,'a,'d,32,'a,'n,'d,32,'W,'r,'i
+ 005D 7465205344210D0A00        .byte 't,'e,32,'S,'D,33,13,10,0
+                        .area data(ram, con, rel)
+ 0066                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0066           L40:
+ 0066                   .blkb 29
+                        .area idata
+ 0066 54686520446174612057726974652074  .byte 'T,'h,'e,32,'D,'a,'t,'a,32,'W,'r,'i,'t,'e,32,'t
+ 0076 6F2053442069732025630D0A00        .byte 'o,32,'S,'D,32,'i,'s,32,37,'c,13,10,0
+                        .area data(ram, con, rel)
+ 0083                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0083           L39:
+ 0083                   .blkb 45
+                        .area idata
+ 0083 506C6561736520496E70757420746865  .byte 'P,'l,'e,'a,'s,'e,32,'I,'n,'p,'u,'t,32,'t,'h,'e
+ 0093 20446174612057616E7420746F205772  .byte 32,'D,'a,'t,'a,32,'W,'a,'n,'t,32,'t,'o,32,'W,'r
+ 00A3 69746520746F205344210D0A00        .byte 'i,'t,'e,32,'t,'o,32,'S,'D,33,13,10,0
+                        .area data(ram, con, rel)
+ 00B0                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 00B0           L35:
+ 00B0                   .blkb 11
+                        .area idata
+ 00B0 53697A653D256C640D0A00    .byte 'S,'i,'z,'e,61,37,'l,'d,13,10,0
+                        .area data(ram, con, rel)
+ 00BB                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 00BB           L34:
+ 00BB                   .blkb 36
+                        .area idata
+ 00BB 444D4156522D4D31323820496E697469  .byte 'D,'M,'A,'V,'R,45,'M,49,50,56,32,'I,'n,'i,'t,'i
+ 00CB 616C697A652053442053756363657373  .byte 'a,'l,'i,'z,'e,32,'S,'D,32,'S,'u,'c,'c,'e,'s,'s
+ 00DB 210D0A00          .byte 33,13,10,0
+                        .area data(ram, con, rel)
+ 00DF                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 00DF           L30:
+ 00DF                   .blkb 46
+                        .area idata
+ 00DF 506C6561736520436865636B696E6720  .byte 'P,'l,'e,'a,'s,'e,32,'C,'h,'e,'c,'k,'i,'n,'g,32
+ 00EF 746865205344206F7220526573657420  .byte 't,'h,'e,32,'S,'D,32,'o,'r,32,'R,'e,'s,'e,'t,32
+ 00FF 7468652053797374656D210D0A00      .byte 't,'h,'e,32,'S,'y,'s,'t,'e,'m,33,13,10,0
+                        .area data(ram, con, rel)
+ 010D                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 010D           L29:
+ 010D                   .blkb 36
+                        .area idata
+ 010D 444D4156522D4D31323820496E697469  .byte 'D,'M,'A,'V,'R,45,'M,49,50,56,32,'I,'n,'i,'t,'i
+ 011D 616C697A65205344204661696C757265  .byte 'a,'l,'i,'z,'e,32,'S,'D,32,'F,'a,'i,'l,'u,'r,'e
+ 012D 210D0A00          .byte 33,13,10,0
+                        .area data(ram, con, rel)
+ 0131                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 0131           L23:
+ 0131                   .blkb 28
+                        .area idata
+ 0131 57616974696E6720496E697469616C69  .byte 'W,'a,'i,'t,'i,'n,'g,32,'I,'n,'i,'t,'i,'a,'l,'i
+ 0141 7A65205344A1ADA1AD0D0A00  .byte 'z,'e,32,'S,'D,161,173,161,173,13,10,0
+                        .area data(ram, con, rel)
+ 014D                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 014D           L22:
+ 014D                   .blkb 33
+                        .area idata
+ 014D 444D4156522D4D31323820496E697469  .byte 'D,'M,'A,'V,'R,45,'M,49,50,56,32,'I,'n,'i,'t,'i
+ 015D 616C697A652053756363657373210D0A  .byte 'a,'l,'i,'z,'e,32,'S,'u,'c,'c,'e,'s,'s,33,13,10
+ 016D 00                .byte 0
+                        .area data(ram, con, rel)
+ 016E                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 016E           L21:
+ 016E                   .blkb 28
+                        .area idata
+ 016E 444D4156522D313238B6C1D0B45344BF  .byte 'D,'M,'A,'V,'R,45,49,50,56,182,193,208,180,'S,'D,191
+ 017E A8CAFDBEDDCAB5D1E90D0A00  .byte 168,202,253,190,221,202,181,209,233,13,10,0
+                        .area data(ram, con, rel)
+ 018A                   .dbfile E:\DMAVR-~3\WRSD\main.c
+ 018A           ; 
+ 018A           ; }
+ 018A           ; 

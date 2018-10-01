@@ -1,0 +1,511 @@
+__start:
+__text_start:
+    004E EFCF      LDI	R28,0xFF
+    004F E1D0      LDI	R29,0x10
+    0050 BFCD      OUT	0x3D,R28
+    0051 BFDE      OUT	0x3E,R29
+    0052 51CE      SUBI	R28,0x1E
+    0053 40D0      SBCI	R29,0
+    0054 EA0A      LDI	R16,0xAA
+    0055 8308      STD	Y+0,R16
+    0056 2400      CLR	R0
+    0057 E1E0      LDI	R30,0x10
+    0058 E0F1      LDI	R31,1
+    0059 E011      LDI	R17,1
+    005A 31E1      CPI	R30,0x11
+    005B 07F1      CPC	R31,R17
+    005C F011      BEQ	0x005F
+    005D 9201      ST	R0,Z+
+    005E CFFB      RJMP	0x005A
+    005F 8300      STD	Z+0,R16
+    0060 E8EC      LDI	R30,0x8C
+    0061 E0F0      LDI	R31,0
+    0062 E0A0      LDI	R26,0
+    0063 E0B1      LDI	R27,1
+    0064 E010      LDI	R17,0
+    0065 39EC      CPI	R30,0x9C
+    0066 07F1      CPC	R31,R17
+    0067 F021      BEQ	0x006C
+    0068 95C8      LPM
+    0069 9631      ADIW	R30,1
+    006A 920D      ST	R0,X+
+    006B CFF9      RJMP	0x0065
+    006C 940E012C  CALL	_main
+_exit:
+    006E CFFF      RJMP	_exit
+FILE: C:\icc\include\delay.h
+(0001) //********************************************************************
+(0002) /*º¯ Êý Ãû£ºdelay_us
+(0003) ½¨Á¢ÈÕÆÚ£º2010Äê1ÔÂ28ÈÕ
+(0004) ±àÒë»·¾³£ºICCAVR7.16A
+(0005) º¯Êý×÷ÓÃ£ºÎ¢Ãë¼¶µÄÑÓÊ±³ÌÐò
+(0006) Ëµ    Ã÷£º7.3728M¾§ÕñÏÂ
+(0007) ********************************************************************/
+(0008) void delay_1us(void);
+(0009) void delay_3us(void);
+(0010) void delay_10us(void);
+(0011) void delay_50us(void);
+(0012) void delay_100us(void);
+(0013) void delay_n100us(unsigned char n100us);
+(0014) void delay_1ms(void);
+(0015) void delay_nms(unsigned int nms);
+(0016) void delay_ns(unsigned char ns);
+(0017) 
+(0018) 
+(0019) void delay_1us(void)                 //1usÑÓÊ±º¯Êý£¬²»ÄÜÁ¬Ðøµ÷ÓÃ£¬ 
+(0020) { 
+(0021)    asm("nop");                       //1Ê±ÖÓÖÜÆÚ
+_delay_1us:
+    006F 0000      NOP
+(0022)    asm("nop");
+    0070 0000      NOP
+(0023)    asm("nop");
+    0071 0000      NOP
+(0024)    asm("nop");
+    0072 0000      NOP
+(0025)    asm("nop");                       //1T
+    0073 0000      NOP
+(0026)    asm("nop");
+    0074 0000      NOP
+    0075 9508      RET
+(0027) 
+(0028) }
+(0029) void delay_3us(void)                 //3usÑÓÊ±º¯Êý,,¿ÉÖØ¸´µ÷ÓÃ²»Ó°Ïì¾«¶È
+(0030) { 
+(0031)    
+(0032)    asm("nop");
+_delay_3us:
+    0076 0000      NOP
+(0033)    asm("nop");
+    0077 0000      NOP
+(0034)    asm("nop");                       
+    0078 0000      NOP
+(0035)    asm("nop");
+    0079 0000      NOP
+(0036)    asm("nop");
+    007A 0000      NOP
+(0037)    asm("nop");
+    007B 0000      NOP
+(0038)    asm("nop");                       
+    007C 0000      NOP
+(0039)    asm("nop");
+    007D 0000      NOP
+(0040)    asm("nop");
+    007E 0000      NOP
+(0041)    asm("nop");
+    007F 0000      NOP
+(0042)    asm("nop");                       
+    0080 0000      NOP
+(0043)    asm("nop");
+    0081 0000      NOP
+(0044)    asm("nop");
+    0082 0000      NOP
+(0045)    asm("nop");
+    0083 0000      NOP
+(0046)    asm("nop");                       
+    0084 0000      NOP
+(0047)    asm("nop");
+    0085 0000      NOP
+(0048)    asm("nop");
+    0086 0000      NOP
+(0049)    asm("nop");
+    0087 0000      NOP
+(0050)    asm("nop");
+    0088 0000      NOP
+(0051)    asm("nop");
+    0089 0000      NOP
+(0052)    asm("nop");                       
+    008A 0000      NOP
+    008B 9508      RET
+(0053) } 
+(0054) 
+(0055) void delay_10us(void)                 //10usÑÓÊ±º¯Êý,,¿ÉÖØ¸´µ÷ÓÃ²»Ó°Ïì¾«¶È
+(0056) {
+(0057)    delay_3us();
+_delay_10us:
+    008C DFE9      RCALL	_delay_3us
+(0058)    delay_3us(); 
+    008D DFE8      RCALL	_delay_3us
+(0059)    delay_3us();  
+    008E DFE7      RCALL	_delay_3us
+    008F 9508      RET
+(0060) }
+(0061)   
+(0062) void delay_50us(void)                 //48usÑÓÊ±º¯Êý,,¿ÉÖØ¸´µ÷ÓÃ²»Ó°Ïì¾«¶È
+(0063) { 
+(0064)    delay_10us();
+_delay_50us:
+    0090 DFFB      RCALL	_delay_10us
+(0065)    delay_10us(); 
+    0091 DFFA      RCALL	_delay_10us
+(0066)    delay_10us();
+    0092 DFF9      RCALL	_delay_10us
+(0067)    delay_10us();
+    0093 DFF8      RCALL	_delay_10us
+    0094 9508      RET
+(0068) }
+(0069) void delay_100us(void)     //exactly 98usÑÓÊ±º¯Êý,,¿ÉÖØ¸´µ÷ÓÃ²»Ó°Ïì¾«¶È
+(0070) {
+(0071)  delay_50us();
+_delay_100us:
+    0095 DFFA      RCALL	_delay_50us
+(0072)  delay_50us();
+    0096 DFF9      RCALL	_delay_50us
+    0097 9508      RET
+_delay_n100us:
+  n100us               --> R20
+    0098 940E0140  CALL	push_gset1
+    009A 2F40      MOV	R20,R16
+(0073) }
+(0074) void delay_n100us(unsigned char n100us)
+(0075) {
+    009B C001      RJMP	0x009D
+(0076)  while(n100us--)                          
+(0077)  delay_100us();
+    009C DFF8      RCALL	_delay_100us
+    009D 2E24      MOV	R2,R20
+    009E 2433      CLR	R3
+    009F 5041      SUBI	R20,1
+    00A0 2022      TST	R2
+    00A1 F7D1      BNE	0x009C
+    00A2 940E0143  CALL	pop_gset1
+    00A4 9508      RET
+(0078) }
+(0079) /*delay_n100us(2)        250us
+(0080) delay_n100us(3)          360us
+(0081) delay_n100us(4)          470us
+(0082) delay_n100us(5)          580us
+(0083) delay_n100us(6)          690us
+(0084) delay_n100us(7)       800us
+(0085) delay_n100us(8)          900us              Ö÷ÒªÊÇÓÉÓÚº¯ÊýÉùÃ÷¼°while,,,´ó¸Å6us
+(0086) 
+(0087) */
+(0088) void delay_1ms()
+(0089) {
+(0090)  delay_100us();
+_delay_1ms:
+    00A5 DFEF      RCALL	_delay_100us
+(0091)  delay_100us();
+    00A6 DFEE      RCALL	_delay_100us
+(0092)  delay_100us();
+    00A7 DFED      RCALL	_delay_100us
+(0093)  delay_100us();
+    00A8 DFEC      RCALL	_delay_100us
+(0094)  delay_100us();
+    00A9 DFEB      RCALL	_delay_100us
+(0095)  delay_100us();
+    00AA DFEA      RCALL	_delay_100us
+(0096)  delay_100us();
+    00AB DFE9      RCALL	_delay_100us
+(0097)  delay_100us();
+    00AC DFE8      RCALL	_delay_100us
+(0098)  delay_100us();
+    00AD DFE7      RCALL	_delay_100us
+(0099)  delay_100us();
+    00AE DFE6      RCALL	_delay_100us
+    00AF 9508      RET
+_delay_nms:
+  nms                  --> R20
+    00B0 940E0140  CALL	push_gset1
+    00B2 01A8      MOVW	R20,R16
+(0100) }
+(0101) /********************************************************************
+(0102) º¯ Êý Ãû£ºDelay_ms
+(0103) ½¨Á¢ÈÕÆÚ£º2010Äê1ÔÂ28ÈÕ
+(0104) ÐÞ¸ÄÈÕÆÚ£º
+(0105) º¯Êý×÷ÓÃ£ººÁÃë¼¶µÄ¾«È·ÑÓÊ±³ÌÐò
+(0106) Ëµ    Ã÷£º
+(0107) ********************************************************************/
+(0108) void delay_nms(unsigned int nms)
+(0109) {
+    00B3 C001      RJMP	0x00B5
+(0110)  while(nms--) 
+(0111)  delay_1ms();
+    00B4 DFF0      RCALL	_delay_1ms
+    00B5 011A      MOVW	R2,R20
+    00B6 5041      SUBI	R20,1
+    00B7 4050      SBCI	R21,0
+    00B8 2022      TST	R2
+    00B9 F7D1      BNE	0x00B4
+    00BA 2033      TST	R3
+    00BB F7C1      BNE	0x00B4
+    00BC 940E0143  CALL	pop_gset1
+    00BE 9508      RET
+_delay_ns:
+  ns                   --> R20
+    00BF 940E0140  CALL	push_gset1
+    00C1 2F40      MOV	R20,R16
+(0112) }
+(0113) void delay_ns(unsigned char ns)
+(0114) {
+    00C2 C003      RJMP	0x00C6
+(0115)  while(ns--) 
+(0116)  delay_nms(1000);
+    00C3 EE08      LDI	R16,0xE8
+    00C4 E013      LDI	R17,3
+    00C5 DFEA      RCALL	_delay_nms
+    00C6 2E24      MOV	R2,R20
+    00C7 2433      CLR	R3
+    00C8 5041      SUBI	R20,1
+    00C9 2022      TST	R2
+    00CA F7C1      BNE	0x00C3
+    00CB 940E0143  CALL	pop_gset1
+    00CD 9508      RET
+FILE: E:\ATMEGA128¿ª·¢°å\ÎÒµÄATMEGA128×îÐ¡ÏµÍ³°å\M128_ZZX_1ÅäÌ××ÊÁÏ\5.Á½Î»ÖÐ¶Ï¼üÅÌÊµÑé\INTKEY\INTKEY.C
+(0001) //ATMEGA128ÖÐ¶ÏÊ½¶ÀÁ¢¼üÅÌÊ¾Àý³ÌÐò£¬¼üÖµ±ä»¯¿ÉÄÜ²»ÎÈ£¬ÒòÎª¼üÅÌÓ²¼þµÄ¶¶¶¯Ô­Òò
+(0002) //Á½¸öÖÐ¶Ï¼üÅÌ½øÐÐ¼Ó1»òÕß¼õ1¼ÆÊý
+(0003) //×¢ÒâICCAVRÖÐ¶Ïº¯Êý´¦Àí·½·¨£¬ÖÐ¶ÏÏòÁ¿ºÅ¿ÉÒÔÔÚÍ·ÎÄ¼þiom128v.hÖÐ²éÕÒ
+(0004) //±àÒë»·¾³ ICCAVR 
+(0005) //ÏµÍ³Ê±ÖÓ7.3728MHZ£¬ÉèÖÃÈÛË¿Î»ÎªÍâ²¿¸ßÆµÊ¯Ó¢¾§ÌåÕñµ
+(0006) //×÷Õß£ºÖÒÐËµç×ÓÔª¼þµê
+(0007) //ÈÕÆÚ£º2010.05.24
+(0008) 
+(0009) //***********************************************************************
+(0010) //			°üº¬ÎÄ¼þ
+(0011) //***********************************************************************
+(0012) 
+(0013) #include <string.h>
+(0014) #include <stdio.h>
+(0015) #include <delay.h>
+(0016) #include <iom128v.h>
+(0017) 
+(0018) #define Data_IO	        PORTA                //Êý¾Ý¿Ú
+(0019) #define Data_DDR        DDRA                 //Êý¾Ý¿Ú·½Ïò¼Ä´æÆ÷
+(0020) #define D_LE0	        PORTD &= ~(1 << PD4) //ÊýÂë¹Ü¶Î¿ØÖÆÎ»Îª0
+(0021) #define D_LE1           PORTD |= (1 << PD4)  //ÊýÂë¹Ü¶Î¿ØÖÆÎ»Îª1
+(0022) #define W_LE0	        PORTD &= ~(1 << PD5) //ÊýÂë¹ÜÎ»¿ØÖÆÎ»Îª0
+(0023) #define W_LE1           PORTD |= (1 << PD5)  //ÊýÂë¹ÜÎ»¿ØÖÆÎ»Îª1
+(0024) 
+(0025) #define uchar           unsigned char
+(0026) #define uint            unsigned int
+(0027) 
+(0028) uchar count;                                  //¶¨Òå¼üÅÌ¼ÆÊý±äÁ¿
+(0029) 
+(0030) //***********************************************************************
+(0031) //			¹²ÒõÊýÂë¹ÜÏÔÊ¾µÄ¶ÏÂë±í
+(0032) //***********************************************************************
+(0033) 
+(0034) uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,
+(0035) 	           0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+(0036) 
+(0037) //***********************************************************************
+(0038) //			IO¶Ë¿Ú³õÊ¼»¯
+(0039) //***********************************************************************
+(0040) 
+(0041) void System_Init()
+(0042) {
+(0043)     Data_IO=0xFF;             //Êý¾Ý¿ÚÎªÊä³ö
+_System_Init:
+    00CE EF8F      LDI	R24,0xFF
+    00CF BB8B      OUT	0x1B,R24
+(0044)     Data_DDR=0xFF;
+    00D0 BB8A      OUT	0x1A,R24
+(0045) 
+(0046) 	PORTD=0x7F;               //PD0 PD1ÉèÖÃÎªÊäÈë
+    00D1 E78F      LDI	R24,0x7F
+    00D2 BB82      OUT	0x12,R24
+(0047) 	DDRD=0x70;                //PD0 PD1ÉÏÀ­µç×èÊ¹ÄÜÓÐÐ§
+    00D3 E780      LDI	R24,0x70
+    00D4 BB81      OUT	0x11,R24
+(0048) 	
+(0049) 	PORTB=0xFF;				  //¹Ø±Õ·¢¹â¶þ¼«¹Ü
+    00D5 EF8F      LDI	R24,0xFF
+    00D6 BB88      OUT	0x18,R24
+(0050) 	DDRB=0xFF;
+    00D7 BB87      OUT	0x17,R24
+    00D8 9508      RET
+_Display_Key:
+  j                    --> R20
+  i                    --> R22
+  num                  --> R10
+    00D9 940E013C  CALL	push_gset3
+    00DB 2EA0      MOV	R10,R16
+(0051) }
+(0052) 
+(0053) //*************************************************************************
+(0054) //			74HC573¿ØÖÆÊýÂë¹Ü¶¯Ì¬É¨ÃèÏÔÊ¾º¯Êý
+(0055) //*************************************************************************
+(0056) 
+(0057) void Display_Key(uchar num)
+(0058) {
+(0059) 	 uchar i,j;
+(0060) 	 System_Init();
+    00DC DFF1      RCALL	_System_Init
+(0061)      j=0x01;                   //´ËÊý¾ÝÓÃÀ´¿ØÖÆÎ»Ñ¡
+    00DD E041      LDI	R20,1
+(0062)   for(i=0;i<8;i++)
+    00DE 2766      CLR	R22
+    00DF C013      RJMP	0x00F3
+(0063)   {
+(0064)     D_LE1;                    //¿ØÖÆÊýÂë¹Ü¶ÎÊý¾ÝµÄ74HC573µÄLE¹Ü½ÅÖÃ¸ß
+    00E0 9A94      SBI	0x12,4
+(0065)     W_LE1;                    //¿ØÖÆÊýÂë¹ÜÎ»µÄ74HC573µÄLE¹Ü½ÅÖÃ¸ß
+    00E1 9A95      SBI	0x12,5
+(0066)     Data_IO=0x00;             //ÉèÖÃÏÔÊ¾µÄÎ»£¬Ò²¾ÍÊÇÄÄ¸öÊýÂë¹ÜÁÁ£¬ÕâÀïÊÇ°Ë¸öÒ»ÆðÏÔÊ¾
+    00E2 2422      CLR	R2
+    00E3 BA2B      OUT	0x1B,R2
+(0067)     W_LE0;                    //Ëø´æÎ»Êý¾Ý£¬ÏÂÃæËÍÉÏ¶ÎÊý¾ÝÒÔºó£¬¾ÍÏÔÊ¾³öÀ´ÁË
+    00E4 9895      CBI	0x12,5
+(0068) 	j=(j<<1);
+    00E5 0F44      LSL	R20
+(0069)     Data_IO=table[num];       //ËÍÒªÏÔÊ¾µÄÊý¾Ý£¬¾ÍÊÇ¶ÎÊý¾Ý£¬ÈçÏÔÊ¾0ËÍµÄÊÇ0x3f
+    00E6 E080      LDI	R24,0
+    00E7 E091      LDI	R25,1
+    00E8 2DEA      MOV	R30,R10
+    00E9 27FF      CLR	R31
+    00EA 0FE8      ADD	R30,R24
+    00EB 1FF9      ADC	R31,R25
+    00EC 8020      LDD	R2,Z+0
+    00ED BA2B      OUT	0x1B,R2
+(0070)     D_LE0;                    //Ëø´æ¶ÎÊý¾Ý£¬ÊýÂë¹ÜÁÁÒ»¸öÊ±¼äÆ¬¿Ì
+    00EE 9894      CBI	0x12,4
+(0071)     delay_nms(1);             //ÏÔÊ¾Ò»¸öÊ±¼äÆ¬¿Ì£¬»áÓ°ÏìÁÁ¶ÈºÍÉÁË¸ÐÔ
+    00EF E001      LDI	R16,1
+    00F0 E010      LDI	R17,0
+    00F1 DFBE      RCALL	_delay_nms
+    00F2 9563      INC	R22
+    00F3 3068      CPI	R22,0x8
+    00F4 F358      BCS	0x00E0
+    00F5 940E0135  CALL	pop_gset3
+    00F7 9508      RET
+(0072) 
+(0073)   }
+(0074) 
+(0075) }
+(0076) 
+(0077) void Interrupt_Init()
+(0078) {
+(0079)   EIMSK|=0x03;                                     //Ê¹ÄÜÍâ²¿ÖÐ¶Ï0ºÍÍâ²¿ÖÐ¶Ï1
+_Interrupt_Init:
+    00F8 B789      IN	R24,0x39
+    00F9 6083      ORI	R24,3
+    00FA BF89      OUT	0x39,R24
+(0080)   EICRA=0x0A;                                     //ÏÂ½µÑØ´¥·¢·½Ê½
+    00FB E08A      LDI	R24,0xA
+    00FC 9380006A  STS	0x6A,R24
+(0081)   MCUCSR=0x00;                                    //¿ØÖÆºÍ×´Ì¬¼Ä´æÆ÷³õÊ¼»¯
+    00FE 2422      CLR	R2
+    00FF BE24      OUT	0x34,R2
+    0100 9508      RET
+_INT0_ISR:
+    0101 922A      ST	R2,-Y
+    0102 938A      ST	R24,-Y
+    0103 939A      ST	R25,-Y
+    0104 B62F      IN	R2,0x3F
+    0105 922A      ST	R2,-Y
+(0082) }
+(0083) 
+(0084) //*************************************************************************
+(0085) //	   ÖÐ¶Ï·þÎñ×Ó³ÌÐò
+(0086) //*************************************************************************
+(0087) 
+(0088) #pragma interrupt_handler  INT0_ISR:iv_INT0 //int0_ISR£ºÖÐ¶Ïº¯ÊýÃû£¬½Ó×ÅÊÇÖÐ¶ÏÏòÁ¿ºÅ
+(0089) void INT0_ISR() 	 				  		//ÖÐ¶Ï0·þÎñ³ÌÐò
+(0090)    { 
+(0091)    	 if(++count>=16) 
+    0106 91800110  LDS	R24,count
+    0108 5F8F      SUBI	R24,0xFF
+    0109 2E28      MOV	R2,R24
+    010A 92200110  STS	count,R2
+    010C 3180      CPI	R24,0x10
+    010D F018      BCS	0x0111
+(0092)    	 count=0;
+    010E 2422      CLR	R2
+    010F 92200110  STS	count,R2
+    0111 9029      LD	R2,Y+
+    0112 BE2F      OUT	0x3F,R2
+    0113 9199      LD	R25,Y+
+    0114 9189      LD	R24,Y+
+    0115 9029      LD	R2,Y+
+    0116 9518      RETI
+_INT1_ISR:
+    0117 922A      ST	R2,-Y
+    0118 938A      ST	R24,-Y
+    0119 B62F      IN	R2,0x3F
+    011A 922A      ST	R2,-Y
+(0093)    } 
+(0094) 
+(0095) #pragma interrupt_handler  INT1_ISR:iv_INT1
+(0096) void INT1_ISR() 	 				 	   //ÖÐ¶Ï1·þÎñ³ÌÐò
+(0097)    { 
+(0098)    	 if(count) --count;
+    011B 90200110  LDS	R2,count
+    011D 2022      TST	R2
+    011E F029      BEQ	0x0124
+    011F 2D82      MOV	R24,R2
+    0120 5081      SUBI	R24,1
+    0121 93800110  STS	count,R24
+    0123 C003      RJMP	0x0127
+(0099)    	 else count=15;
+    0124 E08F      LDI	R24,0xF
+    0125 93800110  STS	count,R24
+    0127 9029      LD	R2,Y+
+    0128 BE2F      OUT	0x3F,R2
+    0129 9189      LD	R24,Y+
+    012A 9029      LD	R2,Y+
+    012B 9518      RETI
+(0100)   }
+(0101) 
+(0102) 
+(0103) //*************************************************************************
+(0104) //			Ö÷³ÌÐò
+(0105) //*************************************************************************
+(0106) int main(void)
+(0107) {
+(0108)   System_Init();                             //ÏµÍ³³õÊ¼»¯
+_main:
+    012C DFA1      RCALL	_System_Init
+(0109)   Interrupt_Init();                          //ÖÐ¶ÏÅäÖÃ³õÊ¼»¯
+    012D DFCA      RCALL	_Interrupt_Init
+(0110)   SREG|=0x80;                                //¿ªÆôÈ«¾ÖÖÐ¶Ï
+    012E 9478      BSET	7
+    012F C003      RJMP	0x0133
+(0111)   while(1)
+(0112)   {
+(0113)     Display_Key(count);                     //ÏÔÊ¾¼üÖµ
+FILE: <library>
+    0130 91000110  LDS	R16,count
+    0132 DFA6      RCALL	_Display_Key
+    0133 CFFC      RJMP	0x0130
+    0134 9508      RET
+pop_gset3:
+    0135 E0E4      LDI	R30,4
+    0136 940C0144  JMP	pop
+push_gset5:
+    0138 92FA      ST	R15,-Y
+    0139 92EA      ST	R14,-Y
+push_gset4:
+    013A 92DA      ST	R13,-Y
+    013B 92CA      ST	R12,-Y
+push_gset3:
+    013C 92BA      ST	R11,-Y
+    013D 92AA      ST	R10,-Y
+push_gset2:
+    013E 937A      ST	R23,-Y
+    013F 936A      ST	R22,-Y
+push_gset1:
+    0140 935A      ST	R21,-Y
+    0141 934A      ST	R20,-Y
+    0142 9508      RET
+pop_gset1:
+    0143 E0E1      LDI	R30,1
+pop:
+    0144 9149      LD	R20,Y+
+    0145 9159      LD	R21,Y+
+    0146 FDE0      SBRC	R30,0
+    0147 9508      RET
+    0148 9169      LD	R22,Y+
+    0149 9179      LD	R23,Y+
+    014A FDE1      SBRC	R30,1
+    014B 9508      RET
+    014C 90A9      LD	R10,Y+
+    014D 90B9      LD	R11,Y+
+    014E FDE2      SBRC	R30,2
+    014F 9508      RET
+    0150 90C9      LD	R12,Y+
+    0151 90D9      LD	R13,Y+
+    0152 FDE3      SBRC	R30,3
+    0153 9508      RET
+    0154 90E9      LD	R14,Y+
+    0155 90F9      LD	R15,Y+
+    0156 9508      RET

@@ -1,0 +1,10 @@
+[Files]
+main.c
+FAT.c
+mmc.c
+spi.c
+TFT.c
+EEPROM.C
+uart.c
+[Headers]
+[Documents]

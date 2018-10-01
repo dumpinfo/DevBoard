@@ -1,0 +1,125 @@
+C51 COMPILER V7.06   MAIN                                                                  12/13/2012 09:58:57 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          //公司：北方蓝芯科技开发有限公司
+   2          //网址：www.hrbnbc.com
+   3          /*===================================================================================================  
+   4          工程名称：  Ex2_TP
+   5          功能描述：      采集触摸点坐标，显示在TFT上
+   6          硬件连接：  查看和修改接口定义在NBCTFT.C与TP.C中,请仔细检查接口连线后上电测试。
+   7                ----------------------------------------
+   8               |     --------TFT控制接线----------      |
+   9               |          D10~D17   接   P0             |
+  10               |          RS        接   P2^5;          |
+  11               |                  RW        接   P2^4;          |
+  12               |                  RD        接   P2^3;          |
+  13               |              CS        接   P2^2;              |
+  14               |                  RES       接   P2^1;          |
+  15               |                                        |
+  16               |                  LE        接   P2^0;          |
+  17               |                                        |
+  18               |     --------电源供电接线---------      |
+  19               |          GND       接   电源负极       |
+  20               |          VIN       接   电源正极(5V)   |
+  21               |----------------------------------------|
+  22               | 如果在NBC开发板上使用，以上线不需用飞  |
+  23               | 线连接，直接插接在开发板上的12864接口  |
+  24               | 后只需连接以下接线                     |
+  25               |----------------------------------------|
+  26               |     --------触摸控制接线---------      |
+  27               |          PEN       接   P3^2;          |
+  28               |                  TPDO      接   P3^3;          |
+  29               |                  BUSY      接   P3^4;          |
+  30               |              TPDI      接   P3^5;              |
+  31               |                  TPCS      接   P3^6;          |
+  32                   |                      CLK       接   P3^7;          |
+  33                    ----------------------------------------
+  34          维护记录：  2012-3-14
+  35          ====================================================================================================*/
+  36          
+  37          //******************包含头文件***************************
+  38          #include <reg51.h>
+  39          #include <intrins.h>
+  40          #include <TP.H>
+  41          #include <NBCTFT.H>
+  42          
+  43          
+  44          //******************全局变量***************************
+  45          unsigned int Device_code;
+  46          
+  47          /* LCD color */
+  48          #define White          0xFFFF
+  49          #define Black          0x0000
+  50          #define Blue           0x001F
+  51          #define Blue2          0x051F
+  52          #define Red            0xF800
+  53          #define Magenta        0xF81F
+  54          #define Green          0x07E0
+  55          #define Cyan           0x7FFF
+C51 COMPILER V7.06   MAIN                                                                  12/13/2012 09:58:57 PAGE 2   
+
+  56          #define Yellow         0xFFE0
+  57          
+  58          
+  59          
+  60          
+  61          //================================================================================================
+  62          //      函数名称：      画点函数
+  63          //      实现功能：      在触摸点位置画点
+  64          //================================================================================================
+  65           
+  66          void drawpoint(unsigned int x,unsigned int y,unsigned int color)
+  67          {
+  68   1          LCD_SetPos(x,x+1,y,y+1);
+  69   1              Write_Data_U16(color);
+  70   1              Write_Data_U16(color);
+  71   1              Write_Data_U16(color);
+  72   1              Write_Data_U16(color);
+  73   1      } 
+  74          
+  75          //================================================================================================
+  76          //      函数名称：      主函数
+  77          //      实现功能：      采集触摸点坐标，显示在TFT上
+  78          //      参数：          无
+  79          //      返回值：        无
+  80          //================================================================================================
+  81          main()
+  82          {
+  83   1          Device_code=0x9328;
+  84   1              TFT_Initial();   //tft初始化
+  85   1          start_7843();
+  86   1      
+  87   1          CLR_Screen(Blue); //清屏                            
+  88   1              
+  89   1              LCD_PutString(16,5,"Please write on the board!",Magenta,Blue);
+  90   1              while(1)
+  91   1              {       
+  92   2      
+  93   2           if(Getpix()==1)
+  94   2                 drawpoint(lx,ly,Red); //写（x，y）点为红色
+  95   2      
+  96   2          }
+  97   1      }
+  98          
+  99          
+ 100          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    132    ----
+   CONSTANT SIZE    =     27    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

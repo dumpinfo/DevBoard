@@ -1,0 +1,335 @@
+
+INT_KEY.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000010  00800100  000001ac  00000240  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000001ac  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000001  00800110  00800110  00000250  2**0
+                  ALLOC
+  3 .debug_aranges 00000020  00000000  00000000  00000250  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 00000080  00000000  00000000  00000270  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000202  00000000  00000000  000002f0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000014b  00000000  00000000  000004f2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000026a  00000000  00000000  0000063d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000070  00000000  00000000  000008a8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000111  00000000  00000000  00000918  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000023  00000000  00000000  00000a29  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000048  00000000  00000000  00000a4c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 93 00 	jmp	0x126	; 0x126 <__vector_1>
+   8:	0c 94 a9 00 	jmp	0x152	; 0x152 <__vector_2>
+   c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  10:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  14:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  18:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  1c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  20:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  24:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  28:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  2c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  30:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  34:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  38:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  3c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  40:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  44:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  48:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  4c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  50:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  54:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  58:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  5c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  60:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  64:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  68:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  6c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  70:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  74:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  78:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  7c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  80:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  84:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  88:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	ec ea       	ldi	r30, 0xAC	; 172
+  a0:	f1 e0       	ldi	r31, 0x01	; 1
+  a2:	00 e0       	ldi	r16, 0x00	; 0
+  a4:	0b bf       	out	0x3b, r16	; 59
+  a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+  a8:	07 90       	elpm	r0, Z+
+  aa:	0d 92       	st	X+, r0
+  ac:	a0 31       	cpi	r26, 0x10	; 16
+  ae:	b1 07       	cpc	r27, r17
+  b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+
+000000b2 <__do_clear_bss>:
+  b2:	11 e0       	ldi	r17, 0x01	; 1
+  b4:	a0 e1       	ldi	r26, 0x10	; 16
+  b6:	b1 e0       	ldi	r27, 0x01	; 1
+  b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
+
+000000ba <.do_clear_bss_loop>:
+  ba:	1d 92       	st	X+, r1
+
+000000bc <.do_clear_bss_start>:
+  bc:	a1 31       	cpi	r26, 0x11	; 17
+  be:	b1 07       	cpc	r27, r17
+  c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
+  c2:	0e 94 be 00 	call	0x17c	; 0x17c <main>
+  c6:	0c 94 d4 00 	jmp	0x1a8	; 0x1a8 <_exit>
+
+000000ca <__bad_interrupt>:
+  ca:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ce <system_init>:
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             //数据口为输出
+  ce:	8f ef       	ldi	r24, 0xFF	; 255
+  d0:	8b bb       	out	0x1b, r24	; 27
+    Data_DDR=0xFF;
+  d2:	8a bb       	out	0x1a, r24	; 26
+
+	PORTD=0x7F;               //PD0 PD1设置为输入
+  d4:	8f e7       	ldi	r24, 0x7F	; 127
+  d6:	82 bb       	out	0x12, r24	; 18
+	DDRD=0x70;                //PD0 PD1上拉电阻使能有效
+  d8:	80 e7       	ldi	r24, 0x70	; 112
+  da:	81 bb       	out	0x11, r24	; 17
+}
+  dc:	08 95       	ret
+
+000000de <Display_Key>:
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             //数据口为输出
+  de:	9f ef       	ldi	r25, 0xFF	; 255
+  e0:	9b bb       	out	0x1b, r25	; 27
+    Data_DDR=0xFF;
+  e2:	9a bb       	out	0x1a, r25	; 26
+
+	PORTD=0x7F;               //PD0 PD1设置为输入
+  e4:	9f e7       	ldi	r25, 0x7F	; 127
+  e6:	92 bb       	out	0x12, r25	; 18
+	DDRD=0x70;                //PD0 PD1上拉电阻使能有效
+  e8:	90 e7       	ldi	r25, 0x70	; 112
+  ea:	91 bb       	out	0x11, r25	; 17
+    D_LE1;                    //控制数码管段数据的74HC573的LE管脚置高
+    W_LE1;                    //控制数码管位的74HC573的LE管脚置高
+    Data_IO=0x00;               //设置要显示的位，也就是哪一个数码管亮，这里是八个一起显示
+    W_LE0;                    //锁存位数据，下面送上段数据以后，就显示出来了
+	j=(j<<1);
+    Data_IO=table[num];         //送要显示的数据，就是段数据，如显示0送的是0x3f
+  ec:	e8 2f       	mov	r30, r24
+  ee:	f0 e0       	ldi	r31, 0x00	; 0
+  f0:	e0 50       	subi	r30, 0x00	; 0
+  f2:	ff 4f       	sbci	r31, 0xFF	; 255
+  f4:	e0 81       	ld	r30, Z
+  f6:	20 e0       	ldi	r18, 0x00	; 0
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  f8:	43 e3       	ldi	r20, 0x33	; 51
+  fa:	57 e0       	ldi	r21, 0x07	; 7
+	 uchar i,j;
+	 system_init();
+     j=0x01;                    //此数据用来控制位选
+  for(i=0;i<8;i++)
+  {
+    D_LE1;                    //控制数码管段数据的74HC573的LE管脚置高
+  fc:	94 9a       	sbi	0x12, 4	; 18
+    W_LE1;                    //控制数码管位的74HC573的LE管脚置高
+  fe:	95 9a       	sbi	0x12, 5	; 18
+    Data_IO=0x00;               //设置要显示的位，也就是哪一个数码管亮，这里是八个一起显示
+ 100:	1b ba       	out	0x1b, r1	; 27
+    W_LE0;                    //锁存位数据，下面送上段数据以后，就显示出来了
+ 102:	95 98       	cbi	0x12, 5	; 18
+	j=(j<<1);
+    Data_IO=table[num];         //送要显示的数据，就是段数据，如显示0送的是0x3f
+ 104:	eb bb       	out	0x1b, r30	; 27
+    D_LE0;                    //锁存段数据，数码管亮一个时间片刻
+ 106:	94 98       	cbi	0x12, 4	; 18
+ 108:	ca 01       	movw	r24, r20
+ 10a:	01 97       	sbiw	r24, 0x01	; 1
+ 10c:	f1 f7       	brne	.-4      	; 0x10a <Display_Key+0x2c>
+void Display_Key(uchar num)
+{
+	 uchar i,j;
+	 system_init();
+     j=0x01;                    //此数据用来控制位选
+  for(i=0;i<8;i++)
+ 10e:	2f 5f       	subi	r18, 0xFF	; 255
+ 110:	28 30       	cpi	r18, 0x08	; 8
+ 112:	a1 f7       	brne	.-24     	; 0xfc <Display_Key+0x1e>
+    D_LE0;                    //锁存段数据，数码管亮一个时间片刻
+    delay_ms(1);              //显示一个时间片刻，会影响亮度和闪烁性
+
+  }
+
+}
+ 114:	08 95       	ret
+
+00000116 <interrupt_init>:
+
+void interrupt_init()
+{
+  EIMSK|=0x03;                                     //使能外部中断0和外部中断1
+ 116:	89 b7       	in	r24, 0x39	; 57
+ 118:	83 60       	ori	r24, 0x03	; 3
+ 11a:	89 bf       	out	0x39, r24	; 57
+  EICRA=0x0A;                                     //下降沿触发方式
+ 11c:	8a e0       	ldi	r24, 0x0A	; 10
+ 11e:	80 93 6a 00 	sts	0x006A, r24
+  MCUCSR=0x00;                                    //控制和状态寄存器初始化
+ 122:	14 be       	out	0x34, r1	; 52
+}
+ 124:	08 95       	ret
+
+00000126 <__vector_1>:
+//*************************************************************************
+//	   中断服务子程序
+//*************************************************************************
+
+ISR(INT0_vect,ISR_NOBLOCK)                   //中断0服务程序
+{
+ 126:	78 94       	sei
+ 128:	1f 92       	push	r1
+ 12a:	0f 92       	push	r0
+ 12c:	0f b6       	in	r0, 0x3f	; 63
+ 12e:	0f 92       	push	r0
+ 130:	11 24       	eor	r1, r1
+ 132:	8f 93       	push	r24
+ if(++count>=16) 
+ 134:	80 91 10 01 	lds	r24, 0x0110
+ 138:	8f 5f       	subi	r24, 0xFF	; 255
+ 13a:	80 93 10 01 	sts	0x0110, r24
+ 13e:	80 31       	cpi	r24, 0x10	; 16
+ 140:	10 f0       	brcs	.+4      	; 0x146 <__vector_1+0x20>
+   count=0;
+ 142:	10 92 10 01 	sts	0x0110, r1
+}
+ 146:	8f 91       	pop	r24
+ 148:	0f 90       	pop	r0
+ 14a:	0f be       	out	0x3f, r0	; 63
+ 14c:	0f 90       	pop	r0
+ 14e:	1f 90       	pop	r1
+ 150:	18 95       	reti
+
+00000152 <__vector_2>:
+
+
+ISR(INT1_vect)                   //中断1服务程序
+{
+ 152:	1f 92       	push	r1
+ 154:	0f 92       	push	r0
+ 156:	0f b6       	in	r0, 0x3f	; 63
+ 158:	0f 92       	push	r0
+ 15a:	11 24       	eor	r1, r1
+ 15c:	8f 93       	push	r24
+ if(count) --count;
+ 15e:	80 91 10 01 	lds	r24, 0x0110
+ 162:	88 23       	and	r24, r24
+ 164:	11 f0       	breq	.+4      	; 0x16a <__vector_2+0x18>
+ 166:	81 50       	subi	r24, 0x01	; 1
+ 168:	01 c0       	rjmp	.+2      	; 0x16c <__vector_2+0x1a>
+ else count=15;
+ 16a:	8f e0       	ldi	r24, 0x0F	; 15
+ 16c:	80 93 10 01 	sts	0x0110, r24
+}
+ 170:	8f 91       	pop	r24
+ 172:	0f 90       	pop	r0
+ 174:	0f be       	out	0x3f, r0	; 63
+ 176:	0f 90       	pop	r0
+ 178:	1f 90       	pop	r1
+ 17a:	18 95       	reti
+
+0000017c <main>:
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             //数据口为输出
+ 17c:	8f ef       	ldi	r24, 0xFF	; 255
+ 17e:	8b bb       	out	0x1b, r24	; 27
+    Data_DDR=0xFF;
+ 180:	8a bb       	out	0x1a, r24	; 26
+
+	PORTD=0x7F;               //PD0 PD1设置为输入
+ 182:	8f e7       	ldi	r24, 0x7F	; 127
+ 184:	82 bb       	out	0x12, r24	; 18
+	DDRD=0x70;                //PD0 PD1上拉电阻使能有效
+ 186:	80 e7       	ldi	r24, 0x70	; 112
+ 188:	81 bb       	out	0x11, r24	; 17
+
+}
+
+void interrupt_init()
+{
+  EIMSK|=0x03;                                     //使能外部中断0和外部中断1
+ 18a:	89 b7       	in	r24, 0x39	; 57
+ 18c:	83 60       	ori	r24, 0x03	; 3
+ 18e:	89 bf       	out	0x39, r24	; 57
+  EICRA=0x0A;                                     //下降沿触发方式
+ 190:	8a e0       	ldi	r24, 0x0A	; 10
+ 192:	80 93 6a 00 	sts	0x006A, r24
+  MCUCSR=0x00;                                    //控制和状态寄存器初始化
+ 196:	14 be       	out	0x34, r1	; 52
+//*************************************************************************
+int main(void)
+{
+  system_init();                             //系统初始化
+  interrupt_init();                          //中断配置初始化
+  SREG|=0x80;                                //开启全局中断
+ 198:	8f b7       	in	r24, 0x3f	; 63
+ 19a:	80 68       	ori	r24, 0x80	; 128
+ 19c:	8f bf       	out	0x3f, r24	; 63
+  while(1)
+  {
+    Display_Key(count);                          //显示键值
+ 19e:	80 91 10 01 	lds	r24, 0x0110
+ 1a2:	0e 94 6f 00 	call	0xde	; 0xde <Display_Key>
+ 1a6:	fb cf       	rjmp	.-10     	; 0x19e <main+0x22>
+
+000001a8 <_exit>:
+ 1a8:	f8 94       	cli
+
+000001aa <__stop_program>:
+ 1aa:	ff cf       	rjmp	.-2      	; 0x1aa <__stop_program>

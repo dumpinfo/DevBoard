@@ -1,0 +1,560 @@
+
+EEPROM.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000010  00800100  000002b4  00000348  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000002b4  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000006  00800110  00800110  00000358  2**0
+                  ALLOC
+  3 .debug_aranges 00000020  00000000  00000000  00000358  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 00000088  00000000  00000000  00000378  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000003de  00000000  00000000  00000400  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000001d8  00000000  00000000  000007de  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000040d  00000000  00000000  000009b6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000070  00000000  00000000  00000dc4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000012b  00000000  00000000  00000e34  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000014e  00000000  00000000  00000f5f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000048  00000000  00000000  000010ad  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   8:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  10:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  14:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  18:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  1c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  20:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  24:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  28:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  2c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  30:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  34:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  38:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  3c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  40:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  44:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  48:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  4c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  50:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  54:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  58:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  5c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  60:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  64:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  68:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  6c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  70:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  74:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  78:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  7c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  80:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  84:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  88:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	e4 eb       	ldi	r30, 0xB4	; 180
+  a0:	f2 e0       	ldi	r31, 0x02	; 2
+  a2:	00 e0       	ldi	r16, 0x00	; 0
+  a4:	0b bf       	out	0x3b, r16	; 59
+  a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+  a8:	07 90       	elpm	r0, Z+
+  aa:	0d 92       	st	X+, r0
+  ac:	a0 31       	cpi	r26, 0x10	; 16
+  ae:	b1 07       	cpc	r27, r17
+  b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+
+000000b2 <__do_clear_bss>:
+  b2:	11 e0       	ldi	r17, 0x01	; 1
+  b4:	a0 e1       	ldi	r26, 0x10	; 16
+  b6:	b1 e0       	ldi	r27, 0x01	; 1
+  b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
+
+000000ba <.do_clear_bss_loop>:
+  ba:	1d 92       	st	X+, r1
+
+000000bc <.do_clear_bss_start>:
+  bc:	a6 31       	cpi	r26, 0x16	; 22
+  be:	b1 07       	cpc	r27, r17
+  c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
+  c2:	0e 94 0b 01 	call	0x216	; 0x216 <main>
+  c6:	0c 94 58 01 	jmp	0x2b0	; 0x2b0 <_exit>
+
+000000ca <__bad_interrupt>:
+  ca:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ce <system_init>:
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             						//数据口为输出
+  ce:	8f ef       	ldi	r24, 0xFF	; 255
+  d0:	8b bb       	out	0x1b, r24	; 27
+    Data_DDR=0xFF;
+  d2:	8a bb       	out	0x1a, r24	; 26
+
+    PORTD=0xFF;               						//74HC573的控制口，设置为输出
+  d4:	82 bb       	out	0x12, r24	; 18
+    DDRD=0xFF;
+  d6:	81 bb       	out	0x11, r24	; 17
+	PORTB=0XFF;
+  d8:	88 bb       	out	0x18, r24	; 24
+	DDRB=0XFF;
+  da:	87 bb       	out	0x17, r24	; 23
+}
+  dc:	08 95       	ret
+
+000000de <Display_EEPROM>:
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             						//数据口为输出
+  de:	8f ef       	ldi	r24, 0xFF	; 255
+  e0:	8b bb       	out	0x1b, r24	; 27
+    Data_DDR=0xFF;
+  e2:	8a bb       	out	0x1a, r24	; 26
+
+    PORTD=0xFF;               						//74HC573的控制口，设置为输出
+  e4:	82 bb       	out	0x12, r24	; 18
+    DDRD=0xFF;
+  e6:	81 bb       	out	0x11, r24	; 17
+	PORTB=0XFF;
+  e8:	88 bb       	out	0x18, r24	; 24
+	DDRB=0XFF;
+  ea:	87 bb       	out	0x17, r24	; 23
+  ec:	20 e0       	ldi	r18, 0x00	; 0
+  ee:	91 e0       	ldi	r25, 0x01	; 1
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  f0:	63 e3       	ldi	r22, 0x33	; 51
+  f2:	77 e0       	ldi	r23, 0x07	; 7
+	 uchar i,j;
+	 system_init();
+     j=0x01;                    			//此数据用来控制位选
+ for(i=0;i<5;i++)               			//用后3位数码管来显示
+  {
+     D_LE1;                     
+  f4:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                     
+  f6:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;                
+  f8:	89 2f       	mov	r24, r25
+  fa:	80 95       	com	r24
+  fc:	8b bb       	out	0x1b, r24	; 27
+     W_LE0;                      
+  fe:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+ 100:	99 0f       	add	r25, r25
+     Data_IO=0x00;           
+ 102:	1b ba       	out	0x1b, r1	; 27
+     D_LE0;                      
+ 104:	94 98       	cbi	0x12, 4	; 18
+ 106:	43 e3       	ldi	r20, 0x33	; 51
+ 108:	57 e0       	ldi	r21, 0x07	; 7
+ 10a:	fb 01       	movw	r30, r22
+ 10c:	31 97       	sbiw	r30, 0x01	; 1
+ 10e:	f1 f7       	brne	.-4      	; 0x10c <Display_EEPROM+0x2e>
+void Display_EEPROM(void)
+{
+	 uchar i,j;
+	 system_init();
+     j=0x01;                    			//此数据用来控制位选
+ for(i=0;i<5;i++)               			//用后3位数码管来显示
+ 110:	2f 5f       	subi	r18, 0xFF	; 255
+ 112:	25 30       	cpi	r18, 0x05	; 5
+ 114:	79 f7       	brne	.-34     	; 0xf4 <Display_EEPROM+0x16>
+	 j=(j<<1);
+     Data_IO=0x00;           
+     D_LE0;                      
+     delay_ms(1);                
+  }
+     D_LE1;                    
+ 116:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                    
+ 118:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;               
+ 11a:	89 2f       	mov	r24, r25
+ 11c:	80 95       	com	r24
+ 11e:	8b bb       	out	0x1b, r24	; 27
+     W_LE0;                    
+ 120:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+ 122:	99 0f       	add	r25, r25
+     Data_IO=table[A1];         
+ 124:	e0 91 14 01 	lds	r30, 0x0114
+ 128:	f0 91 15 01 	lds	r31, 0x0115
+ 12c:	e0 50       	subi	r30, 0x00	; 0
+ 12e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 130:	80 81       	ld	r24, Z
+ 132:	8b bb       	out	0x1b, r24	; 27
+     D_LE0;                    
+ 134:	94 98       	cbi	0x12, 4	; 18
+ 136:	fa 01       	movw	r30, r20
+ 138:	31 97       	sbiw	r30, 0x01	; 1
+ 13a:	f1 f7       	brne	.-4      	; 0x138 <Display_EEPROM+0x5a>
+     delay_ms(1);              
+
+     D_LE1;                     
+ 13c:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                     
+ 13e:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;                
+ 140:	89 2f       	mov	r24, r25
+ 142:	80 95       	com	r24
+ 144:	8b bb       	out	0x1b, r24	; 27
+     W_LE0;                      
+ 146:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+     Data_IO=table[A2];             
+ 148:	e0 91 12 01 	lds	r30, 0x0112
+ 14c:	f0 91 13 01 	lds	r31, 0x0113
+ 150:	e0 50       	subi	r30, 0x00	; 0
+ 152:	ff 4f       	sbci	r31, 0xFF	; 255
+ 154:	80 81       	ld	r24, Z
+ 156:	8b bb       	out	0x1b, r24	; 27
+     D_LE0;                      
+ 158:	94 98       	cbi	0x12, 4	; 18
+ 15a:	fa 01       	movw	r30, r20
+ 15c:	31 97       	sbiw	r30, 0x01	; 1
+ 15e:	f1 f7       	brne	.-4      	; 0x15c <Display_EEPROM+0x7e>
+     delay_ms(1);                
+
+	 D_LE1;                     
+ 160:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                     
+ 162:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;                
+ 164:	99 0f       	add	r25, r25
+ 166:	90 95       	com	r25
+ 168:	9b bb       	out	0x1b, r25	; 27
+     W_LE0;                      
+ 16a:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+     Data_IO=table[A3];           
+ 16c:	e0 91 10 01 	lds	r30, 0x0110
+ 170:	f0 91 11 01 	lds	r31, 0x0111
+ 174:	e0 50       	subi	r30, 0x00	; 0
+ 176:	ff 4f       	sbci	r31, 0xFF	; 255
+ 178:	80 81       	ld	r24, Z
+ 17a:	8b bb       	out	0x1b, r24	; 27
+     D_LE0;                      
+ 17c:	94 98       	cbi	0x12, 4	; 18
+ 17e:	ca 01       	movw	r24, r20
+ 180:	01 97       	sbiw	r24, 0x01	; 1
+ 182:	f1 f7       	brne	.-4      	; 0x180 <Display_EEPROM+0xa2>
+     delay_ms(1);                
+
+	 D_LE1;                     
+ 184:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                     
+ 186:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=0xff;                
+ 188:	8f ef       	ldi	r24, 0xFF	; 255
+ 18a:	8b bb       	out	0x1b, r24	; 27
+     W_LE0;                      
+ 18c:	95 98       	cbi	0x12, 5	; 18
+
+}
+ 18e:	08 95       	ret
+
+00000190 <data_do>:
+
+//*************************************************************************
+//		数据处理函数
+//*************************************************************************
+ void data_do(uchar temp_d)
+ {
+ 190:	28 2f       	mov	r18, r24
+     uint A2t;
+     A1=temp_d/100;                       //分出百，十，和个位
+ 192:	64 e6       	ldi	r22, 0x64	; 100
+ 194:	0e 94 38 01 	call	0x270	; 0x270 <__udivmodqi4>
+ 198:	80 93 14 01 	sts	0x0114, r24
+ 19c:	10 92 15 01 	sts	0x0115, r1
+     A2t=temp_d%100;
+ 1a0:	82 2f       	mov	r24, r18
+ 1a2:	0e 94 38 01 	call	0x270	; 0x270 <__udivmodqi4>
+ 1a6:	29 2f       	mov	r18, r25
+     A2=A2t/10;
+ 1a8:	89 2f       	mov	r24, r25
+ 1aa:	90 e0       	ldi	r25, 0x00	; 0
+ 1ac:	6a e0       	ldi	r22, 0x0A	; 10
+ 1ae:	70 e0       	ldi	r23, 0x00	; 0
+ 1b0:	0e 94 44 01 	call	0x288	; 0x288 <__udivmodhi4>
+ 1b4:	70 93 13 01 	sts	0x0113, r23
+ 1b8:	60 93 12 01 	sts	0x0112, r22
+     A3=A2t%10;
+ 1bc:	82 2f       	mov	r24, r18
+ 1be:	90 e0       	ldi	r25, 0x00	; 0
+ 1c0:	6a e0       	ldi	r22, 0x0A	; 10
+ 1c2:	70 e0       	ldi	r23, 0x00	; 0
+ 1c4:	0e 94 44 01 	call	0x288	; 0x288 <__udivmodhi4>
+ 1c8:	90 93 11 01 	sts	0x0111, r25
+ 1cc:	80 93 10 01 	sts	0x0110, r24
+}
+ 1d0:	08 95       	ret
+
+000001d2 <eprom_read>:
+
+//***********************************************************************
+//                EEPROM读取函数*/
+//            addr：地址；number：长度；p_buff：读出数据存放指针
+//***********************************************************************
+void eprom_read(unsigned int addr, unsigned char number, unsigned char *p_buff) {
+ 1d2:	9c 01       	movw	r18, r24
+ 1d4:	fa 01       	movw	r30, r20
+
+	while(EECR & (1 << EEWE));               //等待前面的写完成
+ 1d6:	e1 99       	sbic	0x1c, 1	; 28
+ 1d8:	fe cf       	rjmp	.-4      	; 0x1d6 <eprom_read+0x4>
+
+	EEARH = 0x00;                           //写高字节地址
+ 1da:	1f ba       	out	0x1f, r1	; 31
+ 1dc:	07 c0       	rjmp	.+14     	; 0x1ec <eprom_read+0x1a>
+	
+	while(number --) {
+		EEARL = addr ++;                 //写地址低字节
+ 1de:	2e bb       	out	0x1e, r18	; 30
+ 1e0:	2f 5f       	subi	r18, 0xFF	; 255
+ 1e2:	3f 4f       	sbci	r19, 0xFF	; 255
+		EECR |= (1 << EERE);            //读允许位置1
+ 1e4:	e0 9a       	sbi	0x1c, 0	; 28
+		*p_buff++ = EEDR;               //读出EEDR中的数据
+ 1e6:	8d b3       	in	r24, 0x1d	; 29
+ 1e8:	81 93       	st	Z+, r24
+ 1ea:	61 50       	subi	r22, 0x01	; 1
+
+	while(EECR & (1 << EEWE));               //等待前面的写完成
+
+	EEARH = 0x00;                           //写高字节地址
+	
+	while(number --) {
+ 1ec:	66 23       	and	r22, r22
+ 1ee:	b9 f7       	brne	.-18     	; 0x1de <eprom_read+0xc>
+		EEARL = addr ++;                 //写地址低字节
+		EECR |= (1 << EERE);            //读允许位置1
+		*p_buff++ = EEDR;               //读出EEDR中的数据
+		}
+}
+ 1f0:	08 95       	ret
+
+000001f2 <eprom_write>:
+//***********************************************************************
+//              EEPROM写入函数
+//          addr：地址；number：长度；p_buff：写入数据存放指针
+//***********************************************************************
+void eprom_write(unsigned int addr, unsigned char number, unsigned char *p_buff) {
+ 1f2:	9c 01       	movw	r18, r24
+ 1f4:	fa 01       	movw	r30, r20
+
+	EEARH = 0x00;
+ 1f6:	1f ba       	out	0x1f, r1	; 31
+ 1f8:	0b c0       	rjmp	.+22     	; 0x210 <eprom_write+0x1e>
+	
+	while(number --) {
+		while(EECR & (1 << EEWE));       //等待前面的写完成
+ 1fa:	e1 99       	sbic	0x1c, 1	; 28
+ 1fc:	fe cf       	rjmp	.-4      	; 0x1fa <eprom_write+0x8>
+		EEARL = addr ++;                 //写地址
+ 1fe:	2e bb       	out	0x1e, r18	; 30
+ 200:	2f 5f       	subi	r18, 0xFF	; 255
+ 202:	3f 4f       	sbci	r19, 0xFF	; 255
+		EEDR = *p_buff ++;               //写数据到EEDR
+ 204:	81 91       	ld	r24, Z+
+ 206:	8d bb       	out	0x1d, r24	; 29
+		EECR |= (1 << EEMWE);            //主机写入允许位
+ 208:	e2 9a       	sbi	0x1c, 2	; 28
+		EECR&=~(1<<EEWE);
+ 20a:	e1 98       	cbi	0x1c, 1	; 28
+		EECR |= (1 << EEWE);             //EEWE为1，执行写操作
+ 20c:	e1 9a       	sbi	0x1c, 1	; 28
+ 20e:	61 50       	subi	r22, 0x01	; 1
+//***********************************************************************
+void eprom_write(unsigned int addr, unsigned char number, unsigned char *p_buff) {
+
+	EEARH = 0x00;
+	
+	while(number --) {
+ 210:	66 23       	and	r22, r22
+ 212:	99 f7       	brne	.-26     	; 0x1fa <eprom_write+0x8>
+		EEDR = *p_buff ++;               //写数据到EEDR
+		EECR |= (1 << EEMWE);            //主机写入允许位
+		EECR&=~(1<<EEWE);
+		EECR |= (1 << EEWE);             //EEWE为1，执行写操作
+		}
+}
+ 214:	08 95       	ret
+
+00000216 <main>:
+
+//***********************************************************************
+//                       主函数
+//***********************************************************************
+int main(void) 
+{
+ 216:	0f 93       	push	r16
+ 218:	1f 93       	push	r17
+ 21a:	df 93       	push	r29
+ 21c:	cf 93       	push	r28
+ 21e:	0f 92       	push	r0
+ 220:	cd b7       	in	r28, 0x3d	; 61
+ 222:	de b7       	in	r29, 0x3e	; 62
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             						//数据口为输出
+ 224:	8f ef       	ldi	r24, 0xFF	; 255
+ 226:	8b bb       	out	0x1b, r24	; 27
+    Data_DDR=0xFF;
+ 228:	8a bb       	out	0x1a, r24	; 26
+
+    PORTD=0xFF;               						//74HC573的控制口，设置为输出
+ 22a:	82 bb       	out	0x12, r24	; 18
+    DDRD=0xFF;
+ 22c:	81 bb       	out	0x11, r24	; 17
+	PORTB=0XFF;
+ 22e:	88 bb       	out	0x18, r24	; 24
+	DDRB=0XFF;
+ 230:	87 bb       	out	0x17, r24	; 23
+//                EEPROM读取函数*/
+//            addr：地址；number：长度；p_buff：读出数据存放指针
+//***********************************************************************
+void eprom_read(unsigned int addr, unsigned char number, unsigned char *p_buff) {
+
+	while(EECR & (1 << EEWE));               //等待前面的写完成
+ 232:	e1 99       	sbic	0x1c, 1	; 28
+ 234:	fe cf       	rjmp	.-4      	; 0x232 <main+0x1c>
+
+	EEARH = 0x00;                           //写高字节地址
+ 236:	1f ba       	out	0x1f, r1	; 31
+	
+	while(number --) {
+		EEARL = addr ++;                 //写地址低字节
+ 238:	80 e1       	ldi	r24, 0x10	; 16
+ 23a:	8e bb       	out	0x1e, r24	; 30
+		EECR |= (1 << EERE);            //读允许位置1
+ 23c:	e0 9a       	sbi	0x1c, 0	; 28
+		*p_buff++ = EEDR;               //读出EEDR中的数据
+ 23e:	8d b3       	in	r24, 0x1d	; 29
+ 240:	00 e0       	ldi	r16, 0x00	; 0
+ 242:	18 e4       	ldi	r17, 0x48	; 72
+ 244:	f8 01       	movw	r30, r16
+ 246:	31 97       	sbiw	r30, 0x01	; 1
+ 248:	f1 f7       	brne	.-4      	; 0x246 <main+0x30>
+ //   display_init();		
+
+    eprom_read(0x10, 0x01, &temp);		//读出记录
+                     //显示读的结果
+    delay_ms(10);
+	temp ++;                            //计数值加1
+ 24a:	8f 5f       	subi	r24, 0xFF	; 255
+ 24c:	89 83       	std	Y+1, r24	; 0x01
+
+    eprom_write(0x10, 0x01, &temp);		//写入记录	
+ 24e:	80 e1       	ldi	r24, 0x10	; 16
+ 250:	90 e0       	ldi	r25, 0x00	; 0
+ 252:	61 e0       	ldi	r22, 0x01	; 1
+ 254:	ae 01       	movw	r20, r28
+ 256:	4f 5f       	subi	r20, 0xFF	; 255
+ 258:	5f 4f       	sbci	r21, 0xFF	; 255
+ 25a:	0e 94 f9 00 	call	0x1f2	; 0x1f2 <eprom_write>
+ 25e:	c8 01       	movw	r24, r16
+ 260:	01 97       	sbiw	r24, 0x01	; 1
+ 262:	f1 f7       	brne	.-4      	; 0x260 <main+0x4a>
+ //   display2(temp);                     //显示写的结果
+    delay_ms(10);              
+				             	
+	while (1)
+	 {
+			data_do(temp);
+ 264:	89 81       	ldd	r24, Y+1	; 0x01
+ 266:	0e 94 c8 00 	call	0x190	; 0x190 <data_do>
+	Display_EEPROM();
+ 26a:	0e 94 6f 00 	call	0xde	; 0xde <Display_EEPROM>
+ 26e:	fa cf       	rjmp	.-12     	; 0x264 <main+0x4e>
+
+00000270 <__udivmodqi4>:
+ 270:	99 1b       	sub	r25, r25
+ 272:	79 e0       	ldi	r23, 0x09	; 9
+ 274:	04 c0       	rjmp	.+8      	; 0x27e <__udivmodqi4_ep>
+
+00000276 <__udivmodqi4_loop>:
+ 276:	99 1f       	adc	r25, r25
+ 278:	96 17       	cp	r25, r22
+ 27a:	08 f0       	brcs	.+2      	; 0x27e <__udivmodqi4_ep>
+ 27c:	96 1b       	sub	r25, r22
+
+0000027e <__udivmodqi4_ep>:
+ 27e:	88 1f       	adc	r24, r24
+ 280:	7a 95       	dec	r23
+ 282:	c9 f7       	brne	.-14     	; 0x276 <__udivmodqi4_loop>
+ 284:	80 95       	com	r24
+ 286:	08 95       	ret
+
+00000288 <__udivmodhi4>:
+ 288:	aa 1b       	sub	r26, r26
+ 28a:	bb 1b       	sub	r27, r27
+ 28c:	51 e1       	ldi	r21, 0x11	; 17
+ 28e:	07 c0       	rjmp	.+14     	; 0x29e <__udivmodhi4_ep>
+
+00000290 <__udivmodhi4_loop>:
+ 290:	aa 1f       	adc	r26, r26
+ 292:	bb 1f       	adc	r27, r27
+ 294:	a6 17       	cp	r26, r22
+ 296:	b7 07       	cpc	r27, r23
+ 298:	10 f0       	brcs	.+4      	; 0x29e <__udivmodhi4_ep>
+ 29a:	a6 1b       	sub	r26, r22
+ 29c:	b7 0b       	sbc	r27, r23
+
+0000029e <__udivmodhi4_ep>:
+ 29e:	88 1f       	adc	r24, r24
+ 2a0:	99 1f       	adc	r25, r25
+ 2a2:	5a 95       	dec	r21
+ 2a4:	a9 f7       	brne	.-22     	; 0x290 <__udivmodhi4_loop>
+ 2a6:	80 95       	com	r24
+ 2a8:	90 95       	com	r25
+ 2aa:	bc 01       	movw	r22, r24
+ 2ac:	cd 01       	movw	r24, r26
+ 2ae:	08 95       	ret
+
+000002b0 <_exit>:
+ 2b0:	f8 94       	cli
+
+000002b2 <__stop_program>:
+ 2b2:	ff cf       	rjmp	.-2      	; 0x2b2 <__stop_program>

@@ -1,0 +1,51 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=E:\Pic Code For TFT2.6\EX1\main.obj
+Folder=Intermediary
+[File001]
+Location=E:\Pic Code For TFT2.6\EX1\main.sdb
+Folder=Intermediary
+[File002]
+Location=E:\Pic Code For TFT2.6\EX1\main.rlf
+Folder=Intermediary
+[File003]
+Location=E:\Pic Code For TFT2.6\EX1\main.lst
+Folder=Intermediary
+[File004]
+Location=E:\Pic Code For TFT2.6\EX1\NBCTFT.obj
+Folder=Intermediary
+[File005]
+Location=E:\Pic Code For TFT2.6\EX1\NBCTFT.sdb
+Folder=Intermediary
+[File006]
+Location=E:\Pic Code For TFT2.6\EX1\NBCTFT.rlf
+Folder=Intermediary
+[File007]
+Location=E:\Pic Code For TFT2.6\EX1\NBCTFT.lst
+Folder=Intermediary
+[File008]
+Location=E:\Pic Code For TFT2.6\EX1\EX1.cof
+Folder=Output
+[File009]
+Location=E:\Pic Code For TFT2.6\EX1\EX1.hex
+Folder=Output
+[File010]
+Location=E:\Pic Code For TFT2.6\EX1\EX1.sym
+Folder=Output
+[File011]
+Location=E:\Pic Code For TFT2.6\EX1\EX1.map
+Folder=Output
+[File012]
+Location=E:\Pic Code For TFT2.6\EX1\EX1.hxl
+Folder=Output
+[File013]
+Location=E:\Pic Code For TFT2.6\EX1\startup.lst
+Folder=Output
+[File014]
+Location=E:\Pic Code For TFT2.6\EX1\startup.rlf
+Folder=Output
+[File015]
+Location=E:\Pic Code For TFT2.6\EX1\startup.as
+Folder=Output

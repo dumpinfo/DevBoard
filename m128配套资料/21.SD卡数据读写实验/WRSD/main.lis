@@ -1,0 +1,712 @@
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //DMAVR-128的读写SD卡数据实验，给指定地址写入指定数据，采取扇区读写的模式，一次512字节
+ 0000           ; //要写入SD卡的数据通过串口写入，使用串口调试助手，波特率9600，8位数据，1位停止位，无校验方式
+ 0000           ; //初始化SD卡成功后，将出现Please Input the Data Want to Write to SD字符样，此时通过串口调试助手发送任意字符即可
+ 0000           ; //数据写入SD卡后，又读出来显示到串口调试助手，通过对比可以判断写入是否成功
+ 0000           ; //由于存在长整型数据，因此，要设定ICCAVR环境支持long型数据，设置project->options->Target，选中long
+ 0000           ; //编译环境 ICCAVR 7.16A
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //作者：阿迪 www.avrgcc.com
+ 0000           ; //日期：2010.01.14
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <SDData_main.h>
+ 0000           ; 
+ 0000           ; 
+ 0000           ; u32 sectorwr=200;     //向SD卡中写入数据的地址，为扇区数，对于一个扇区为512字节的SD卡实际地址为sectorwr*512字节
+ 0000           ; u08 buffer1[1]={0x08};  //向SD卡中写入的数据，这里只定义了一个字节的长度，可以定义为512个字节长度     
+ 0000           ; u08 buffer2[512];     //读取数据存放区
+ 0000           ; u32 SD_Size;            //SD卡容量读取存储变量
+ 0000                   .dbline 21
+ 0000           ; int i;
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; //***********************************************************************
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; //            关闭数码管函数，为了数码管不显示乱码，属于初始化函数
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; //***********************************************************************
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; 
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; void LED_Off()
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; {
+ 000E           ;     PORTD=0xFF;
+ 000E           ;       DDRD=0xFF;
+ 000E           ;       D_LE1;                             //关掉数码管，以免显示乱码                   
+ 000E                   .dbline 32
+ 000E           ;     W_LE1;                     
+ 000E           ;     Data_IO=0xFF;                      //关数码管            
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ;     W_LE0; 
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; }
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ; 
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; //***********************************************************************
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; //                    主函数，调用SD卡读写函数
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ; //***********************************************************************
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ; 
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ; void main(void)
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ; {
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; 
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;  u16 i,retry;
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ;  u08 a;
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ;  McuInit();                                                                                             //IO楼初始化
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ;  UART_Init();                                                                           //串口初始化
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ;  LED_Off();                                                                     //关数码管
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ;  printf("MAGA128读写SD卡数据实验\r\n");
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ;  printf("ATMEGA28 Initialize Success!\r\n");
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ;  printf("Waiting Initialize SD……\r\n");
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ;  delay_nms(500);
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ;  mmcInit();
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ;  mmcInit();
+ 003A           ;  delay_nms(50);
+ 003A           ;  while(mmcReset())                                                                              //初始化SD卡                                  
+ 003A           ;       {
+ 003A                   .dbline 57
+ 003A           ;               retry++;
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;               if(retry>20)
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;               {
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ;                       printf("ATMEAG128 Initialize SD Failure!\r\n");//初始化失败显示
+ 0042           ;                       printf("Please Checking the SD or Reset the System!\r\n");
+ 0042           ; 
+ 0042           ;                       while(1)                
+ 0042                   .dbline 64
+ 0042           ;                       {
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ;                               
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ;                       }
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ;               }
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;       } 
+ 004C           ;  printf("DMAVR-M128 Initialize SD Success!\r\n");         //初始化成功显示提示信息
+ 004C           ;  SD_Size=mmcCapacity();
+ 004C                   .dbline 71
+ 004C           ;  printf ("Size=%ld\r\n",SD_Size);                                                     //输出SD卡容量，单位字节
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ; while(1)
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ;  {
+ 0058           ;  printf("Please Input the Data Want to Write to SD!\r\n");
+ 0058           ;                                        //将从串口输入的数据写入SD卡，数据为单个字符，如a
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ;  a=getchar();
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ;  printf("The Data Write to SD is %c\r\n",a) ;
+ 006C           ;  buffer1[0]=a;                                          //将串口输入的数据赋予buffer1，准备写入SD卡
+ 006C           ;  printf("ATMEGA128 Starting Read and Write SD!\r\n");
+ 006C           ;  mmcWrite(sectorwr,buffer1);                                          //向指定地址(sectorwr*512)写入数据
+ 006C           ;  delay_nms(1000);
+ 006C           ;  mmcRead(sectorwr,buffer2);                                                           //读取刚才写入空间的数据，判断是否写入成功
+ 006C           ;  for(i=0;i<512;i++)
+ 006C           ;    {
+ 006C           ;               printf ("Data=%c \r",buffer2[i]);                               //输出读出的数据
+ 006C           ;    }
+ 006C           ;  printf ("\r\n");
+ 006C           ;  if(buffer1[1]=buffer2[1])
+ 006C           ;  {
+ 006C                   .dbline 90
+ 006C           ;       printf("Write Data Success!\r\n");
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ;  }
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ;  else
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ;  {
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ;       printf("Write Data Failure!\n");
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ; 
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ;  }
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ;  
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ;  }
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ; 
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ; }
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; 
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; 
+ 00A6           ; 
+ 00A6           ; 
+ 00A6           ; 
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; 
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000           _sectorwr::
+ 0000                   .blkb 4
+                        .area idata
+ 0000 C8000000          .word 200,0
+                        .area data(ram, con, rel)
+ 0004                   .dbfile C:/icc/include/delay.h
+ 0004                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 0004                   .dbsym e sectorwr _sectorwr l
+ 0004           _buffer1::
+ 0004                   .blkb 1
+                        .area idata
+ 0004 08                .byte 8
+                        .area data(ram, con, rel)
+ 0005                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 0005                   .dbsym e buffer1 _buffer1 A[1:1]c
+                        .area text(rom, con, rel)
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 00BE                   .dbfunc e LED_Off _LED_Off fV
+                        .even
+ 00BE           _LED_Off::
+ 00BE                   .dbline -1
+ 00BE                   .dbline 27
+ 00BE                   .dbline 28
+ 00BE 8FEF              ldi R24,255
+ 00C0 82BB              out 0x12,R24
+ 00C2                   .dbline 29
+ 00C2 81BB              out 0x11,R24
+ 00C4                   .dbline 30
+ 00C4 949A              sbi 0x12,4
+ 00C6                   .dbline 31
+ 00C6 959A              sbi 0x12,5
+ 00C8                   .dbline 32
+ 00C8 8BBB              out 0x1b,R24
+ 00CA                   .dbline 33
+ 00CA 9598              cbi 0x12,5
+ 00CC                   .dbline -2
+ 00CC           L19:
+ 00CC                   .dbline 0 ; func end
+ 00CC 0895              ret
+ 00CE                   .dbend
+ 00CE                   .dbfunc e main _main fV
+ 00CE           ;          retry -> R20,R21
+ 00CE           ;              a -> R20
+ 00CE           ;              i -> R22,R23
+                        .even
+ 00CE           _main::
+ 00CE 2297              sbiw R28,2
+ 00D0                   .dbline -1
+ 00D0                   .dbline 41
+ 00D0                   .dbline 45
+ 00D0 0E940000          xcall _McuInit
+ 00D4                   .dbline 46
+ 00D4 0E940000          xcall _UART_Init
+ 00D8                   .dbline 47
+ 00D8 F2DF              xcall _LED_Off
+ 00DA                   .dbline 48
+ 00DA 00E0              ldi R16,<L21
+ 00DC 10E0              ldi R17,>L21
+ 00DE 0E940000          xcall _printf
+ 00E2                   .dbline 49
+ 00E2 00E0              ldi R16,<L22
+ 00E4 10E0              ldi R17,>L22
+ 00E6 0E940000          xcall _printf
+ 00EA                   .dbline 50
+ 00EA 00E0              ldi R16,<L23
+ 00EC 10E0              ldi R17,>L23
+ 00EE 0E940000          xcall _printf
+ 00F2                   .dbline 51
+ 00F2 04EF              ldi R16,500
+ 00F4 11E0              ldi R17,1
+ 00F6 C5DF              xcall _delay_nms
+ 00F8                   .dbline 52
+ 00F8 0E940000          xcall _mmcInit
+ 00FC                   .dbline 53
+ 00FC 0E940000          xcall _mmcInit
+ 0100                   .dbline 54
+ 0100 02E3              ldi R16,50
+ 0102 10E0              ldi R17,0
+ 0104 BEDF              xcall _delay_nms
+ 0106 10C0              xjmp L25
+ 0108           L24:
+ 0108                   .dbline 56
+ 0108                   .dbline 57
+ 0108 4F5F              subi R20,255  ; offset = 1
+ 010A 5F4F              sbci R21,255
+ 010C                   .dbline 58
+ 010C 84E1              ldi R24,20
+ 010E 90E0              ldi R25,0
+ 0110 8417              cp R24,R20
+ 0112 9507              cpc R25,R21
+ 0114 48F4              brsh L27
+ 0116                   .dbline 59
+ 0116                   .dbline 60
+ 0116 00E0              ldi R16,<L29
+ 0118 10E0              ldi R17,>L29
+ 011A 0E940000          xcall _printf
+ 011E                   .dbline 61
+ 011E 00E0              ldi R16,<L30
+ 0120 10E0              ldi R17,>L30
+ 0122 0E940000          xcall _printf
+ 0126           L31:
+ 0126                   .dbline 64
+ 0126                   .dbline 66
+ 0126           L32:
+ 0126                   .dbline 63
+ 0126 FFCF              xjmp L31
+ 0128           X1:
+ 0128                   .dbline 67
+ 0128           L27:
+ 0128                   .dbline 68
+ 0128           L25:
+ 0128                   .dbline 55
+ 0128 0E940000          xcall _mmcReset
+ 012C 0023              tst R16
+ 012E 61F7              brne L24
+ 0130                   .dbline 69
+ 0130 00E0              ldi R16,<L34
+ 0132 10E0              ldi R17,>L34
+ 0134 0E940000          xcall _printf
+ 0138                   .dbline 70
+ 0138 0E940000          xcall _mmcCapacity
+ 013C 10930300          sts _SD_Size+1,R17
+ 0140 00930200          sts _SD_Size,R16
+ 0144 30930500          sts _SD_Size+2+1,R19
+ 0148 20930400          sts _SD_Size+2,R18
+ 014C                   .dbline 71
+ 014C 2883              std y+0,R18
+ 014E 3983              std y+1,R19
+ 0150 9801              movw R18,R16
+ 0152 00E0              ldi R16,<L35
+ 0154 10E0              ldi R17,>L35
+ 0156 0E940000          xcall _printf
+ 015A 59C0              xjmp L37
+ 015C           L36:
+ 015C                   .dbline 73
+ 015C                   .dbline 74
+ 015C 00E0              ldi R16,<L39
+ 015E 10E0              ldi R17,>L39
+ 0160 0E940000          xcall _printf
+ 0164                   .dbline 76
+ 0164 0E940000          xcall _getchar
+ 0168 402F              mov R20,R16
+ 016A                   .dbline 77
+ 016A 242F              mov R18,R20
+ 016C 3327              clr R19
+ 016E 00E0              ldi R16,<L40
+ 0170 10E0              ldi R17,>L40
+ 0172 0E940000          xcall _printf
+ 0176                   .dbline 78
+ 0176 40930400          sts _buffer1,R20
+ 017A                   .dbline 79
+ 017A 00E0              ldi R16,<L41
+ 017C 10E0              ldi R17,>L41
+ 017E 0E940000          xcall _printf
+ 0182                   .dbline 80
+ 0182 80E0              ldi R24,<_buffer1
+ 0184 90E0              ldi R25,>_buffer1
+ 0186 9983              std y+1,R25
+ 0188 8883              std y+0,R24
+ 018A 20910200          lds R18,_sectorwr+2
+ 018E 30910300          lds R19,_sectorwr+2+1
+ 0192 00910000          lds R16,_sectorwr
+ 0196 10910100          lds R17,_sectorwr+1
+ 019A 0E940000          xcall _mmcWrite
+ 019E                   .dbline 81
+ 019E 08EE              ldi R16,1000
+ 01A0 13E0              ldi R17,3
+ 01A2 6FDF              xcall _delay_nms
+ 01A4                   .dbline 82
+ 01A4 80E0              ldi R24,<_buffer2
+ 01A6 90E0              ldi R25,>_buffer2
+ 01A8 9983              std y+1,R25
+ 01AA 8883              std y+0,R24
+ 01AC 20910200          lds R18,_sectorwr+2
+ 01B0 30910300          lds R19,_sectorwr+2+1
+ 01B4 00910000          lds R16,_sectorwr
+ 01B8 10910100          lds R17,_sectorwr+1
+ 01BC 0E940000          xcall _mmcRead
+ 01C0                   .dbline 83
+ 01C0 6627              clr R22
+ 01C2 7727              clr R23
+ 01C4 0DC0              xjmp L45
+ 01C6           L42:
+ 01C6                   .dbline 84
+ 01C6                   .dbline 85
+ 01C6 80E0              ldi R24,<_buffer2
+ 01C8 90E0              ldi R25,>_buffer2
+ 01CA FB01              movw R30,R22
+ 01CC E80F              add R30,R24
+ 01CE F91F              adc R31,R25
+ 01D0 2081              ldd R18,z+0
+ 01D2 3327              clr R19
+ 01D4 00E0              ldi R16,<L46
+ 01D6 10E0              ldi R17,>L46
+ 01D8 0E940000          xcall _printf
+ 01DC                   .dbline 86
+ 01DC           L43:
+ 01DC                   .dbline 83
+ 01DC 6F5F              subi R22,255  ; offset = 1
+ 01DE 7F4F              sbci R23,255
+ 01E0           L45:
+ 01E0                   .dbline 83
+ 01E0 6030              cpi R22,0
+ 01E2 E2E0              ldi R30,2
+ 01E4 7E07              cpc R23,R30
+ 01E6 78F3              brlo L42
+ 01E8                   .dbline 87
+ 01E8 00E0              ldi R16,<L47
+ 01EA 10E0              ldi R17,>L47
+ 01EC 0E940000          xcall _printf
+ 01F0                   .dbline 88
+ 01F0 20900700          lds R2,_buffer2+1
+ 01F4 20920500          sts _buffer1+1,R2
+ 01F8 2220              tst R2
+ 01FA 29F0              breq L48
+ 01FC                   .dbline 89
+ 01FC                   .dbline 90
+ 01FC 00E0              ldi R16,<L52
+ 01FE 10E0              ldi R17,>L52
+ 0200 0E940000          xcall _printf
+ 0204                   .dbline 91
+ 0204 04C0              xjmp L49
+ 0206           L48:
+ 0206                   .dbline 93
+ 0206                   .dbline 94
+ 0206 00E0              ldi R16,<L53
+ 0208 10E0              ldi R17,>L53
+ 020A 0E940000          xcall _printf
+ 020E                   .dbline 96
+ 020E           L49:
+ 020E                   .dbline 98
+ 020E           L37:
+ 020E                   .dbline 72
+ 020E A6CF              xjmp L36
+ 0210           X2:
+ 0210                   .dbline -2
+ 0210           L20:
+ 0210 2296              adiw R28,2
+ 0212                   .dbline 0 ; func end
+ 0212 0895              ret
+ 0214                   .dbsym r retry 20 s
+ 0214                   .dbsym r a 20 c
+ 0214                   .dbsym r i 22 s
+ 0214                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 0000           _i::
+ 0000                   .blkb 2
+ 0002                   .dbsym e i _i I
+ 0002           _SD_Size::
+ 0002                   .blkb 4
+ 0006                   .dbsym e SD_Size _SD_Size l
+ 0006           _buffer2::
+ 0006                   .blkb 512
+ 0206                   .dbsym e buffer2 _buffer2 A[512:512]c
+                        .area data(ram, con, rel)
+ 0005                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 0005           L53:
+ 0005                   .blkb 21
+                        .area idata
+ 0005 57726974652044617461204661696C75  .byte 'W,'r,'i,'t,'e,32,'D,'a,'t,'a,32,'F,'a,'i,'l,'u
+ 0015 7265210A00        .byte 'r,'e,33,10,0
+                        .area data(ram, con, rel)
+ 001A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 001A           L52:
+ 001A                   .blkb 22
+                        .area idata
+ 001A 57726974652044617461205375636365  .byte 'W,'r,'i,'t,'e,32,'D,'a,'t,'a,32,'S,'u,'c,'c,'e
+ 002A 7373210D0A00      .byte 's,'s,33,13,10,0
+                        .area data(ram, con, rel)
+ 0030                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 0030           L47:
+ 0030                   .blkb 3
+                        .area idata
+ 0030 0D0A00            .byte 13,10,0
+                        .area data(ram, con, rel)
+ 0033                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 0033           L46:
+ 0033                   .blkb 10
+                        .area idata
+ 0033 446174613D2563200D00      .byte 'D,'a,'t,'a,61,37,'c,32,13,0
+                        .area data(ram, con, rel)
+ 003D                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 003D           L41:
+ 003D                   .blkb 40
+                        .area idata
+ 003D 41544D45474131323820537461727469  .byte 'A,'T,'M,'E,'G,'A,49,50,56,32,'S,'t,'a,'r,'t,'i
+ 004D 6E67205265616420616E642057726974  .byte 'n,'g,32,'R,'e,'a,'d,32,'a,'n,'d,32,'W,'r,'i,'t
+ 005D 65205344210D0A00  .byte 'e,32,'S,'D,33,13,10,0
+                        .area data(ram, con, rel)
+ 0065                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 0065           L40:
+ 0065                   .blkb 29
+                        .area idata
+ 0065 54686520446174612057726974652074  .byte 'T,'h,'e,32,'D,'a,'t,'a,32,'W,'r,'i,'t,'e,32,'t
+ 0075 6F2053442069732025630D0A00        .byte 'o,32,'S,'D,32,'i,'s,32,37,'c,13,10,0
+                        .area data(ram, con, rel)
+ 0082                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 0082           L39:
+ 0082                   .blkb 45
+                        .area idata
+ 0082 506C6561736520496E70757420746865  .byte 'P,'l,'e,'a,'s,'e,32,'I,'n,'p,'u,'t,32,'t,'h,'e
+ 0092 20446174612057616E7420746F205772  .byte 32,'D,'a,'t,'a,32,'W,'a,'n,'t,32,'t,'o,32,'W,'r
+ 00A2 69746520746F205344210D0A00        .byte 'i,'t,'e,32,'t,'o,32,'S,'D,33,13,10,0
+                        .area data(ram, con, rel)
+ 00AF                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 00AF           L35:
+ 00AF                   .blkb 11
+                        .area idata
+ 00AF 53697A653D256C640D0A00    .byte 'S,'i,'z,'e,61,37,'l,'d,13,10,0
+                        .area data(ram, con, rel)
+ 00BA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 00BA           L34:
+ 00BA                   .blkb 36
+                        .area idata
+ 00BA 444D4156522D4D31323820496E697469  .byte 'D,'M,'A,'V,'R,45,'M,49,50,56,32,'I,'n,'i,'t,'i
+ 00CA 616C697A652053442053756363657373  .byte 'a,'l,'i,'z,'e,32,'S,'D,32,'S,'u,'c,'c,'e,'s,'s
+ 00DA 210D0A00          .byte 33,13,10,0
+                        .area data(ram, con, rel)
+ 00DE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 00DE           L30:
+ 00DE                   .blkb 46
+                        .area idata
+ 00DE 506C6561736520436865636B696E6720  .byte 'P,'l,'e,'a,'s,'e,32,'C,'h,'e,'c,'k,'i,'n,'g,32
+ 00EE 746865205344206F7220526573657420  .byte 't,'h,'e,32,'S,'D,32,'o,'r,32,'R,'e,'s,'e,'t,32
+ 00FE 7468652053797374656D210D0A00      .byte 't,'h,'e,32,'S,'y,'s,'t,'e,'m,33,13,10,0
+                        .area data(ram, con, rel)
+ 010C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 010C           L29:
+ 010C                   .blkb 35
+                        .area idata
+ 010C 41544D45414731323820496E69746961  .byte 'A,'T,'M,'E,'A,'G,49,50,56,32,'I,'n,'i,'t,'i,'a
+ 011C 6C697A65205344204661696C75726521  .byte 'l,'i,'z,'e,32,'S,'D,32,'F,'a,'i,'l,'u,'r,'e,33
+ 012C 0D0A00            .byte 13,10,0
+                        .area data(ram, con, rel)
+ 012F                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 012F           L23:
+ 012F                   .blkb 28
+                        .area idata
+ 012F 57616974696E6720496E697469616C69  .byte 'W,'a,'i,'t,'i,'n,'g,32,'I,'n,'i,'t,'i,'a,'l,'i
+ 013F 7A65205344A1ADA1AD0D0A00  .byte 'z,'e,32,'S,'D,161,173,161,173,13,10,0
+                        .area data(ram, con, rel)
+ 014B                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 014B           L22:
+ 014B                   .blkb 31
+                        .area idata
+ 014B 41544D454741323820496E697469616C  .byte 'A,'T,'M,'E,'G,'A,50,56,32,'I,'n,'i,'t,'i,'a,'l
+ 015B 697A652053756363657373210D0A00    .byte 'i,'z,'e,32,'S,'u,'c,'c,'e,'s,'s,33,13,10,0
+                        .area data(ram, con, rel)
+ 016A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c
+ 016A           L21:
+ 016A                   .blkb 26
+                        .area idata
+ 016A 4D414741313238B6C1D0B45344BFA8CA  .byte 'M,'A,'G,'A,49,50,56,182,193,208,180,'S,'D,191,168,202
+ 017A FDBEDDCAB5D1E90D0A00      .byte 253,190,221,202,181,209,233,13,10,0
+                        .area data(ram, con, rel)
+ 0184                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\main.c

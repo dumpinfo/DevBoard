@@ -1,0 +1,836 @@
+
+
+HI-TECH Software PICC Macro Assembler V9.60
+                                                      Thu Dec 13 10:04:37 2012
+
+
+     1                           	processor	16F877A
+     2                           	opt	pw 79
+     3                           	psect	text0,local,class=CODE,delta=2
+     4                           	psect	text1,local,class=CODE,delta=2
+     5                           	psect	text7,local,class=CODE,delta=2
+     6                           	psect	rbss_0,global,class=BANK0,space=1,delta=
+      +                          1
+     7                           	psect	temp,global,ovrld,class=BANK0,space=1,de
+      +                          lta=1
+     8  0000                     
+     9  0000                     
+    10  0000                     
+    11  0000                     
+    12  0000                     
+    13  0000                     
+    14  0000                     
+    15  0000                     
+    16  0000                     
+    17  0000                     
+    18  0000                     _delay$i	set	?_delay
+    19                           
+    20                           	psect	text0
+    21  1675                     _delay
+    22                           ;TP.C: 38: void delay(unsigned int i)
+    23  1675                     l3
+    24  1675  0183               	clrf	3	;select bank 0
+    25  1676  083C               	movf	?_delay,w
+    26  1677  1903               	btfsc	3,2
+    27  1678  03BD               	decf	?_delay+1
+    28  1679  03BC               	decf	?_delay
+    29  167A  0A3C               	incf	?_delay,w
+    30  167B  1903               	btfsc	3,2
+    31  167C  0A3D               	incf	?_delay+1,w
+    32  167D  1903               	btfsc	3,2
+    33  167E  0008               	return
+    34  167F  2E75               	goto	l3
+    35  1680                     _Write_7843
+    36                           ;	_temp assigned to ?a_Write_7843+0
+    37  0000                     _Write_7843$temp	set	?a_Write_7843
+    38                           ;	_i assigned to ?a_Write_7843+1
+    39  0000                     _Write_7843$i	set	?a_Write_7843+1
+    40                           ;_temp stored from w
+    41  1680  0183               	clrf	3	;select bank 0
+    42  1681  00B9               	movwf	?a_Write_7843
+    43                           ;TP.C: 58: void Write_7843(unsigned char temp)
+    44  1682  01BA               	clrf	?a_Write_7843+1
+    45                           ;TP.C: 62: for(i=0;i<8;i++)
+    46  1683  01BA               	clrf	?a_Write_7843+1
+    47  1684                     l8
+    48                           ;TP.C: 63: {
+    49  1684  1FB9               	btfss	?a_Write_7843,7
+    50  1685  2E88               	goto	l11
+    51  1686  1687               	bsf	7,5
+    52  1687  2E89               	goto	l12
+    53  1688                     l11
+    54  1688  1287               	bcf	7,5
+    55  1689                     l12
+    56                           ;TP.C: 65: RC7=0; delay(1);
+    57  1689  1387               	bcf	7,7
+    58  168A  01BC               	clrf	?_delay
+    59  168B  0ABC               	incf	?_delay
+    60  168C  01BD               	clrf	?_delay+1
+    61  168D  2675               	fcall	_delay
+    62                           ;TP.C: 66: RC7=1; delay(1);
+    63  168E  1787               	bsf	7,7
+    64  168F  01BC               	clrf	?_delay
+    65  1690  0ABC               	incf	?_delay
+    66  1691  01BD               	clrf	?_delay+1
+    67  1692  2675               	fcall	_delay
+    68                           ;TP.C: 67: temp<<=1;
+    69  1693  1003               	bcf	3,0
+    70  1694  0DB9               	rlf	?a_Write_7843
+    71  1695  0ABA               	incf	?a_Write_7843+1
+    72  1696  3008               	movlw	8
+    73  1697  023A               	subwf	?a_Write_7843+1,w
+    74  1698  1803               	btfsc	3,0
+    75  1699  0008               	return
+    76  169A  2E84               	goto	l8
+    77  169B                     _Read_7843
+    78                           ;	_i assigned to ?a_Read_7843+0
+    79  0000                     _Read_7843$i	set	?a_Read_7843
+    80                           ;	_temp assigned to ?a_Read_7843+1
+    81  0000                     _Read_7843$temp	set	?a_Read_7843+1
+    82                           ;TP.C: 75: unsigned int Read_7843()
+    83  169B  0183               	clrf	3	;select bank 0
+    84  169C  01B9               	clrf	?a_Read_7843
+    85                           ;TP.C: 78: unsigned int temp=0;
+    86  169D  01BA               	clrf	?a_Read_7843+1
+    87  169E  01BB               	clrf	?a_Read_7843+2
+    88                           ;TP.C: 79: TRISC3=1;
+    89  169F  1683               	bsf	3,5
+    90  16A0  1587               	bsf	7,3
+    91                           ;TP.C: 80: for(i=0;i<12;i++)
+    92  16A1  1283               	bcf	3,5
+    93  16A2  01B9               	clrf	?a_Read_7843
+    94                           ;TP.C: 81: {
+    95  16A3  1003               	bcf	3,0
+    96  16A4                     L1
+    97  16A4  0DBA               	rlf	?a_Read_7843+1
+    98  16A5  0DBB               	rlf	?a_Read_7843+2
+    99                           ;TP.C: 83: RC7=1; delay(1);
+   100  16A6  1787               	bsf	7,7
+   101  16A7  01BC               	clrf	?_delay
+   102  16A8  0ABC               	incf	?_delay
+   103  16A9  01BD               	clrf	?_delay+1
+   104  16AA  2675               	fcall	_delay
+   105                           ;TP.C: 84: RC7=0; delay(1);
+   106  16AB  1387               	bcf	7,7
+   107  16AC  01BC               	clrf	?_delay
+   108  16AD  0ABC               	incf	?_delay
+   109  16AE  01BD               	clrf	?_delay+1
+   110  16AF  2675               	fcall	_delay
+   111                           ;TP.C: 85: if(RC3==1) temp++;
+   112  16B0  1D87               	btfss	7,3
+   113  16B1  2EB5               	goto	l17
+   114  16B2  0ABA               	incf	?a_Read_7843+1
+   115  16B3  1903               	btfsc	3,2
+   116  16B4  0ABB               	incf	?a_Read_7843+2
+   117  16B5                     l17
+   118  16B5  0AB9               	incf	?a_Read_7843
+   119  16B6  300C               	movlw	12
+   120  16B7  0239               	subwf	?a_Read_7843,w
+   121  16B8  1C03               	btfss	3,0
+   122  16B9  2EA4               	goto	L1
+   123                           ;TP.C: 86: }
+   124  16BA  1683               	bsf	3,5
+   125  16BB  1187               	bcf	7,3
+   126                           ;TP.C: 88: return(temp);
+   127  16BC  1283               	bcf	3,5
+   128  16BD  083B               	movf	?a_Read_7843+2,w
+   129  16BE  00F5               	movwf	btemp+1
+   130  16BF  083A               	movf	?a_Read_7843+1,w
+   131  16C0  00F4               	movwf	btemp
+   132                           ;TP.C: 89: }
+   133  16C1  0008               	return	;W free
+   134  16C2                     _AD7843
+   135                           ;	_pix assigned to ?a_AD7843+0
+   136  0000                     _AD7843$pix	set	?a_AD7843
+   137                           ;TP.C: 95: struct struct1 AD7843()
+   138  16C2  0183               	clrf	3	;select bank 0
+   139  16C3  1307               	bcf	7,6
+   140                           ;TP.C: 100: Write_7843(0x90);
+   141  16C4  3090               	movlw	-112
+   142  16C5  2680               	fcall	_Write_7843
+   143                           ;TP.C: 101: RC7=1; delay(1);
+   144  16C6  1787               	bsf	7,7
+   145  16C7  01BC               	clrf	?_delay
+   146  16C8  0ABC               	incf	?_delay
+   147  16C9  01BD               	clrf	?_delay+1
+   148  16CA  2675               	fcall	_delay
+   149                           ;TP.C: 102: RC7=0; delay(1);
+   150  16CB  1387               	bcf	7,7
+   151  16CC  01BC               	clrf	?_delay
+   152  16CD  0ABC               	incf	?_delay
+   153  16CE  01BD               	clrf	?_delay+1
+   154  16CF  2675               	fcall	_delay
+   155                           ;TP.C: 103: pix.y=Read_7843();
+   156  16D0  269B               	fcall	_Read_7843
+   157  16D1  0874               	movf	btemp,w
+   158  16D2  00B7               	movwf	?a_AD7843+2
+   159  16D3  0875               	movf	btemp+1,w
+   160  16D4  00B8               	movwf	?a_AD7843+3
+   161                           ;TP.C: 105: Write_7843(0xD0);
+   162  16D5  30D0               	movlw	-48
+   163  16D6  2680               	fcall	_Write_7843
+   164                           ;TP.C: 106: RC7=1; delay(1);
+   165  16D7  1787               	bsf	7,7
+   166  16D8  01BC               	clrf	?_delay
+   167  16D9  0ABC               	incf	?_delay
+   168  16DA  01BD               	clrf	?_delay+1
+   169  16DB  2675               	fcall	_delay
+   170                           ;TP.C: 107: RC7=0; delay(1);
+   171  16DC  1387               	bcf	7,7
+   172  16DD  01BC               	clrf	?_delay
+   173  16DE  0ABC               	incf	?_delay
+   174  16DF  01BD               	clrf	?_delay+1
+   175  16E0  2675               	fcall	_delay
+   176                           ;TP.C: 108: pix.x=Read_7843();
+   177  16E1  269B               	fcall	_Read_7843
+   178  16E2  0874               	movf	btemp,w
+   179  16E3  00B5               	movwf	?a_AD7843
+   180  16E4  0875               	movf	btemp+1,w
+   181  16E5  00B6               	movwf	?a_AD7843+1
+   182                           ;TP.C: 110: RC6=1;
+   183  16E6  1707               	bsf	7,6
+   184                           ;TP.C: 111: return pix;
+   185  16E7  0835               	movf	?a_AD7843,w
+   186  16E8  00F4               	movwf	btemp
+   187  16E9  0836               	movf	?a_AD7843+1,w
+   188  16EA  00F5               	movwf	btemp+1
+   189  16EB  0837               	movf	?a_AD7843+2,w
+   190  16EC  00F6               	movwf	btemp+2
+   191  16ED  0838               	movf	?a_AD7843+3,w
+   192  16EE  00F7               	movwf	btemp+3
+   193                           ;TP.C: 112: }
+   194  16EF  0008               	return	;W free
+   195                           ;       param _pix1 assigned to ?_pix_filter+0
+   196  0000                     _pix_filter$pix1	set	?_pix_filter
+   197                           ;       param _pix2 assigned to ?_pix_filter+4
+   198  0000                     _pix_filter$pix2	set	?_pix_filter+4
+   199  16F0                     _pix_filter
+   200                           ;	_flag assigned to ?a_pix_filter+0
+   201  0000                     _pix_filter$flag	set	?a_pix_filter
+   202                           ;	_x assigned to ?a_pix_filter+1
+   203  0000                     _pix_filter$x	set	?a_pix_filter+1
+   204                           ;	_y assigned to ?a_pix_filter+3
+   205  0000                     _pix_filter$y	set	?a_pix_filter+3
+   206                           ;TP.C: 118: unsigned char pix_filter(struct str
+      +                          uct1 pix1,struct struct1 pix2)
+   207  16F0  0183               	clrf	3	;select bank 0
+   208  16F1  01BD               	clrf	?a_pix_filter
+   209                           ;TP.C: 121: int x=pix1.x>pix2.x?pix1.x-pix2.x:p
+      +                          ix2.x-pix1.x;
+   210  16F2  0836               	movf	?_pix_filter+1,w
+   211  16F3  023A               	subwf	?_pix_filter+5,w
+   212  16F4  1D03               	btfss	3,2
+   213  16F5  2EF8               	goto	u65
+   214  16F6  0835               	movf	?_pix_filter,w
+   215  16F7  0239               	subwf	?_pix_filter+4,w
+   216  16F8                     u65
+   217  16F8  1C03               	btfss	3,0
+   218  16F9  2F04               	goto	u76
+   219  16FA  083A               	movf	?_pix_filter+5,w
+   220  16FB  00F5               	movwf	btemp+1
+   221  16FC  0839               	movf	?_pix_filter+4,w
+   222  16FD  00F4               	movwf	btemp
+   223  16FE  0835               	movf	?_pix_filter,w
+   224  16FF  02F4               	subwf	btemp
+   225  1700  1C03               	btfss	3,0
+   226  1701  03F5               	decf	btemp+1
+   227  1702  0836               	movf	?_pix_filter+1,w
+   228  1703  2F0E               	goto	L2
+   229  1704                     u76
+   230  1704  1303               	bcf	3,6	;carry unused
+   231  1705  0836               	movf	?_pix_filter+1,w
+   232  1706  00F5               	movwf	btemp+1
+   233  1707  0835               	movf	?_pix_filter,w
+   234  1708  00F4               	movwf	btemp
+   235  1709  0839               	movf	?_pix_filter+4,w
+   236  170A  02F4               	subwf	btemp
+   237  170B  1C03               	btfss	3,0
+   238  170C  03F5               	decf	btemp+1
+   239  170D  083A               	movf	?_pix_filter+5,w
+   240  170E                     L2
+   241  170E  02F5               	subwf	btemp+1
+   242  170F  0874               	movf	btemp,w
+   243  1710  00BE               	movwf	?a_pix_filter+1
+   244  1711  0875               	movf	btemp+1,w
+   245  1712  00BF               	movwf	?a_pix_filter+2
+   246                           ;TP.C: 122: int y=pix1.y>pix2.y?pix1.y-pix2.y:p
+      +                          ix2.y-pix1.y;
+   247  1713  0838               	movf	?_pix_filter+3,w
+   248  1714  023C               	subwf	?_pix_filter+7,w
+   249  1715  1D03               	btfss	3,2
+   250  1716  2F19               	goto	u85
+   251  1717  0837               	movf	?_pix_filter+2,w
+   252  1718  023B               	subwf	?_pix_filter+6,w
+   253  1719                     u85
+   254  1719  1C03               	btfss	3,0
+   255  171A  2F25               	goto	u96
+   256  171B  083C               	movf	?_pix_filter+7,w
+   257  171C  00F5               	movwf	btemp+1
+   258  171D  083B               	movf	?_pix_filter+6,w
+   259  171E  00F4               	movwf	btemp
+   260  171F  0837               	movf	?_pix_filter+2,w
+   261  1720  02F4               	subwf	btemp
+   262  1721  1C03               	btfss	3,0
+   263  1722  03F5               	decf	btemp+1
+   264  1723  0838               	movf	?_pix_filter+3,w
+   265  1724  2F2F               	goto	L3
+   266  1725                     u96
+   267  1725  1303               	bcf	3,6	;carry unused
+   268  1726  0838               	movf	?_pix_filter+3,w
+   269  1727  00F5               	movwf	btemp+1
+   270  1728  0837               	movf	?_pix_filter+2,w
+   271  1729  00F4               	movwf	btemp
+   272  172A  083B               	movf	?_pix_filter+6,w
+   273  172B  02F4               	subwf	btemp
+   274  172C  1C03               	btfss	3,0
+   275  172D  03F5               	decf	btemp+1
+   276  172E  083C               	movf	?_pix_filter+7,w
+   277  172F                     L3
+   278  172F  02F5               	subwf	btemp+1
+   279  1730  0874               	movf	btemp,w
+   280  1731  00C0               	movwf	?a_pix_filter+3
+   281  1732  0875               	movf	btemp+1,w
+   282  1733  00C1               	movwf	?a_pix_filter+4
+   283                           ;TP.C: 123: if(x<30&&y<30)
+   284  1734  083F               	movf	?a_pix_filter+2,w
+   285  1735  3A80               	xorlw	128
+   286  1736  00F4               	movwf	btemp
+   287  1737  3080               	movlw	128
+   288  1738  0274               	subwf	btemp,w
+   289  1739  301E               	movlw	30
+   290                           ;set	bank bits (((?a_pix_filter+1)))
+   291  173A  1903               	btfsc	3,2
+   292  173B  023E               	subwf	?a_pix_filter+1,w
+   293  173C  1803               	btfsc	3,0
+   294  173D  2F6C               	goto	l20
+   295  173E  0841               	movf	?a_pix_filter+4,w
+   296  173F  3A80               	xorlw	128
+   297  1740  00F4               	movwf	btemp
+   298  1741  3080               	movlw	128
+   299  1742  0274               	subwf	btemp,w
+   300  1743  301E               	movlw	30
+   301                           ;set	bank bits (((?a_pix_filter+3)))
+   302  1744  1903               	btfsc	3,2
+   303  1745  0240               	subwf	?a_pix_filter+3,w
+   304  1746  1803               	btfsc	3,0
+   305  1747  2F6C               	goto	l20
+   306                           ;TP.C: 124: {
+   307  1748  01BD               	clrf	?a_pix_filter
+   308  1749  0ABD               	incf	?a_pix_filter
+   309                           ;TP.C: 126: coordinate.x=(pix1.x+pix2.x)/2;
+   310  174A  0836               	movf	?_pix_filter+1,w
+   311  174B  00F5               	movwf	btemp+1
+   312  174C  0835               	movf	?_pix_filter,w
+   313  174D  00F4               	movwf	btemp
+   314  174E  0839               	movf	?_pix_filter+4,w
+   315  174F  07F4               	addwf	btemp
+   316  1750  1803               	btfsc	3,0
+   317  1751  0AF5               	incf	btemp+1
+   318  1752  083A               	movf	?_pix_filter+5,w
+   319  1753  07F5               	addwf	btemp+1
+   320  1754  1003               	bcf	3,0
+   321  1755  0CF5               	rrf	btemp+1
+   322  1756  0CF4               	rrf	btemp
+   323  1757  0874               	movf	btemp,w
+   324  1758  00A6               	movwf	_coordinate
+   325  1759  0875               	movf	btemp+1,w
+   326  175A  00A7               	movwf	_coordinate+1
+   327                           ;TP.C: 127: coordinate.y=(pix1.y+pix2.y)/2;
+   328  175B  0838               	movf	?_pix_filter+3,w
+   329  175C  00F5               	movwf	btemp+1
+   330  175D  0837               	movf	?_pix_filter+2,w
+   331  175E  00F4               	movwf	btemp
+   332  175F  083B               	movf	?_pix_filter+6,w
+   333  1760  07F4               	addwf	btemp
+   334  1761  1803               	btfsc	3,0
+   335  1762  0AF5               	incf	btemp+1
+   336  1763  083C               	movf	?_pix_filter+7,w
+   337  1764  07F5               	addwf	btemp+1
+   338  1765  1003               	bcf	3,0
+   339  1766  0CF5               	rrf	btemp+1
+   340  1767  0CF4               	rrf	btemp
+   341  1768  0874               	movf	btemp,w
+   342  1769  00A8               	movwf	_coordinate+2
+   343  176A  0875               	movf	btemp+1,w
+   344  176B  00A9               	movwf	_coordinate+3
+   345  176C                     l20
+   346                           ;TP.C: 128: }
+   347  176C  083D               	movf	?a_pix_filter,w
+   348                           ;TP.C: 130: }
+   349  176D  0008               	return	;uses W
+   350  176E                     _Getpix
+   351                           ;	_flag assigned to ?a_Getpix+0
+   352  0000                     _Getpix$flag	set	?a_Getpix
+   353                           ;	_pix1 assigned to ?a_Getpix+1
+   354  0000                     _Getpix$pix1	set	?a_Getpix+1
+   355                           ;	_pix2 assigned to ?a_Getpix+5
+   356  0000                     _Getpix$pix2	set	?a_Getpix+5
+   357                           ;TP.C: 135: unsigned char Getpix()
+   358  176E  0183               	clrf	3	;select bank 0
+   359  176F  01AA               	clrf	?a_Getpix
+   360                           ;TP.C: 138: struct struct1 pix1;
+   361  1770  1683               	bsf	3,5
+   362  1771  1507               	bsf	7,2
+   363                           ;TP.C: 141: if (RC2==0)
+   364  1772  1283               	bcf	3,5
+   365  1773  1907               	btfsc	7,2
+   366  1774  2FFE               	goto	l22
+   367                           ;TP.C: 142: {
+   368  1775  26C2  160A  118A   	fcall	_AD7843
+   369  1778  0874               	movf	btemp,w
+   370  1779  00AB               	movwf	?a_Getpix+1
+   371  177A  0875               	movf	btemp+1,w
+   372  177B  00AC               	movwf	?a_Getpix+2
+   373  177C  0876               	movf	btemp+2,w
+   374  177D  00AD               	movwf	?a_Getpix+3
+   375  177E  0877               	movf	btemp+3,w
+   376  177F  00AE               	movwf	?a_Getpix+4
+   377                           ;TP.C: 144: pix2=AD7843();
+   378  1780  26C2  160A  118A   	fcall	_AD7843
+   379  1783  0874               	movf	btemp,w
+   380  1784  00AF               	movwf	?a_Getpix+5
+   381  1785  0875               	movf	btemp+1,w
+   382  1786  00B0               	movwf	?a_Getpix+6
+   383  1787  0876               	movf	btemp+2,w
+   384  1788  00B1               	movwf	?a_Getpix+7
+   385  1789  0877               	movf	btemp+3,w
+   386  178A  00B2               	movwf	?a_Getpix+8
+   387                           ;TP.C: 146: if(pix_filter(pix1,pix2)==1)
+   388  178B  082B               	movf	?a_Getpix+1,w
+   389  178C  00B5               	movwf	?_pix_filter
+   390  178D  082C               	movf	?a_Getpix+2,w
+   391  178E  00B6               	movwf	?_pix_filter+1
+   392  178F  082D               	movf	?a_Getpix+3,w
+   393  1790  00B7               	movwf	?_pix_filter+2
+   394  1791  082E               	movf	?a_Getpix+4,w
+   395  1792  00B8               	movwf	?_pix_filter+3
+   396  1793  082F               	movf	?a_Getpix+5,w
+   397  1794  00B9               	movwf	?_pix_filter+4
+   398  1795  0830               	movf	?a_Getpix+6,w
+   399  1796  00BA               	movwf	?_pix_filter+5
+   400  1797  0831               	movf	?a_Getpix+7,w
+   401  1798  00BB               	movwf	?_pix_filter+6
+   402  1799  0832               	movf	?a_Getpix+8,w
+   403  179A  00BC               	movwf	?_pix_filter+7
+   404  179B  26F0               	fcall	_pix_filter
+   405  179C  00B3               	movwf	?a_Getpix+9
+   406  179D  01B4               	clrf	?a_Getpix+10
+   407  179E  0333               	decf	?a_Getpix+9,w
+   408  179F  0434               	iorwf	?a_Getpix+10,w
+   409  17A0  1D03               	btfss	3,2
+   410  17A1  2FFE               	goto	l22
+   411                           ;TP.C: 147: {
+   412  17A2  3001               	movlw	1
+   413  17A3  0227               	subwf	_coordinate+1,w
+   414  17A4  3034               	movlw	52
+   415  17A5  1903               	btfsc	3,2
+   416  17A6  0226               	subwf	_coordinate,w
+   417  17A7  1C03               	btfss	3,0
+   418  17A8  2FFE               	goto	l22
+   419  17A9  3000               	movlw	0
+   420  17AA  0229               	subwf	_coordinate+3,w
+   421  17AB  30D1               	movlw	209
+   422  17AC  1903               	btfsc	3,2
+   423  17AD  0228               	subwf	_coordinate+2,w
+   424  17AE  1C03               	btfss	3,0
+   425  17AF  2FFE               	goto	l22
+   426                           ;TP.C: 149: {
+   427  17B0  0827               	movf	_coordinate+1,w
+   428  17B1  00F5               	movwf	btemp+1
+   429  17B2  0826               	movf	_coordinate,w
+   430  17B3  00F4               	movwf	btemp
+   431  17B4  30CD               	movlw	205
+   432  17B5  07F4               	addwf	btemp
+   433  17B6  1803               	btfsc	3,0
+   434  17B7  0AF5               	incf	btemp+1
+   435  17B8  30FE               	movlw	254
+   436  17B9  07F5               	addwf	btemp+1
+   437  17BA  120A  158A  27D4   	fcall	lwtoft
+   438  17BD  01F7               	clrf	btemp+3
+   439  17BE  3070               	movlw	112
+   440  17BF  00F8               	movwf	btemp+4
+   441  17C0  3043               	movlw	67
+   442  17C1  00F9               	movwf	btemp+5
+   443  17C2  120A  158A  2757   	fcall	ftmul
+   444  17C5  3070               	movlw	112
+   445  17C6  00F7               	movwf	btemp+3
+   446  17C7  305A               	movlw	90
+   447  17C8  00F8               	movwf	btemp+4
+   448  17C9  3045               	movlw	69
+   449  17CA  00F9               	movwf	btemp+5
+   450  17CB  120A  158A  271F   	fcall	ftdiv
+   451  17CE  120A  158A  2798   	fcall	fttol
+   452  17D1  0874               	movf	btemp,w
+   453  17D2  00A2               	movwf	_lx
+   454  17D3  0875               	movf	btemp+1,w
+   455  17D4  00A3               	movwf	_lx+1
+   456                           ;TP.C: 151: ly=320.0*(coordinate.y-0x00D0)/(0x0
+      +                          E2F-0x00D0);
+   457  17D5  0829               	movf	_coordinate+3,w
+   458  17D6  00F5               	movwf	btemp+1
+   459  17D7  0828               	movf	_coordinate+2,w
+   460  17D8  00F4               	movwf	btemp
+   461  17D9  3030               	movlw	48
+   462  17DA  07F4               	addwf	btemp
+   463  17DB  1803               	btfsc	3,0
+   464  17DC  0AF5               	incf	btemp+1
+   465  17DD  30FF               	movlw	255
+   466  17DE  07F5               	addwf	btemp+1
+   467  17DF  120A  158A  27D4   	fcall	lwtoft
+   468  17E2  01F7               	clrf	btemp+3
+   469  17E3  30A0               	movlw	160
+   470  17E4  00F8               	movwf	btemp+4
+   471  17E5  3043               	movlw	67
+   472  17E6  00F9               	movwf	btemp+5
+   473  17E7  120A  158A  2757   	fcall	ftmul
+   474  17EA  30F0               	movlw	240
+   475  17EB  00F7               	movwf	btemp+3
+   476  17EC  3055               	movlw	85
+   477  17ED  00F8               	movwf	btemp+4
+   478  17EE  3045               	movlw	69
+   479  17EF  00F9               	movwf	btemp+5
+   480  17F0  120A  158A  271F   	fcall	ftdiv
+   481  17F3  120A  158A  2798   	fcall	fttol
+      +       160A  118A         
+   482  17F8  0874               	movf	btemp,w
+   483  17F9  00A4               	movwf	_ly
+   484  17FA  0875               	movf	btemp+1,w
+   485  17FB  00A5               	movwf	_ly+1
+   486                           ;TP.C: 152: flag=1;
+   487  17FC  01AA               	clrf	?a_Getpix
+   488  17FD  0AAA               	incf	?a_Getpix
+   489  17FE                     l22
+   490                           ;TP.C: 153: }
+   491  17FE  082A               	movf	?a_Getpix,w
+   492                           ;TP.C: 159: }
+   493  17FF  0008               	return	;uses W
+   494                           
+   495                           	psect	text1
+   496  0867                     _start_7843
+   497                           ;TP.C: 45: void start_7843()
+   498  0867  0183               	clrf	3	;select bank 0
+   499  0868  1387               	bcf	7,7
+   500                           ;TP.C: 48: RC6=1;
+   501  0869  1707               	bsf	7,6
+   502                           ;TP.C: 49: RC5=1;
+   503  086A  1687               	bsf	7,5
+   504                           ;TP.C: 50: RC7=1;
+   505  086B  1787               	bsf	7,7
+   506                           ;TP.C: 51: RC6=0;
+   507  086C  1307               	bcf	7,6
+   508                           ;TP.C: 52: }
+   509  086D  0008               	return	;W free
+   510                           
+   511                           	psect	text7
+   512  0000                     
+   513  0000                     
+   514  0000                     
+   515  0000                     
+   516  0000                     
+   517  0000                     
+   518  0000                     
+   519  0000                     
+   520  0000                     
+   521  0000                     
+   522  0000                     
+   523  0000                     
+   524  0000                     
+   525  0000                     
+   526  0000                     
+   527  0000                     
+   528  0000                     
+   529  0000                     
+   530  0000                     
+   531  0000                     
+   532  0000                     
+   533  0000                     
+   534  0000                     
+   535  0000                     
+   536  0000                     
+   537  0000                     
+   538  0000                     
+   539  0000                     
+   540  0000                     
+   541  0000                     
+   542  0000                     
+   543  0000                     
+   544  0000                     
+   545  0000                     
+   546  0000                     
+   547  0000                     
+   548  0000                     
+   549  0000                     
+   550  0000                     
+   551  0000                     
+   552  0000                     
+   553  0000                     
+   554  0000                     
+   555  0000                     
+   556  0000                     
+   557  0000                     
+   558  0000                     
+   559  0000                     
+   560  0000                     
+   561  0000                     
+   562  0000                     
+   563  0000                     
+   564  0000                     
+   565  0000                     
+   566  0000                     
+   567  0000                     
+   568  0000                     
+   569  0000                     
+   570  0000                     
+   571  0000                     
+   572  0000                     
+   573  0000                     
+   574  0000                     
+   575  0000                     
+   576  0000                     
+   577  0000                     
+   578  0000                     
+   579  0000                     
+   580  0000                     
+   581  0000                     
+   582  0000                     
+   583  0000                     
+   584  0000                     
+   585  0000                     
+   586  0000                     
+   587  0000                     
+   588  0000                     
+   589  0000                     
+   590  0000                     
+   591  0000                     
+   592  0000                     
+   593  0000                     
+   594  0000                     
+   595  0000                     
+   596  0000                     
+   597  0000                     
+   598  0000                     
+   599  0000                     
+   600  0000                     
+   601  0000                     
+   602  0000                     
+   603  0000                     
+   604  0000                     
+   605  0000                     
+   606  0000                     
+   607  0000                     
+   608  0000                     
+   609  0000                     
+   610  0000                     
+   611  0000                     
+   612  0000                     
+   613  0000                     
+   614  0000                     
+   615  0000                     
+   616  0000                     
+   617  0000                     
+   618  0000                     
+   619  0000                     
+   620  0000                     
+   621  0000                     
+   622  0000                     
+   623  0000                     
+   624  0000                     
+   625  0000                     
+   626  0000                     
+   627  0000                     
+   628  0000                     
+   629  0000                     
+   630  0000                     
+   631  0000                     
+   632  0000                     
+   633  0000                     
+   634  0000                     
+   635  0000                     
+   636  0000                     
+   637  0000                     
+   638  0000                     
+   639  0000                     
+   640  0000                     
+   641  0000                     
+   642  0000                     
+   643  0000                     
+   644  0000                     
+   645  0000                     
+   646  0000                     
+   647  0000                     
+   648  0000                     
+   649  0000                     
+   650  0000                     
+   651  0000                     
+   652  0000                     
+   653  0000                     
+   654  0000                     
+   655  0000                     
+   656  0000                     
+   657  0000                     
+   658  0000                     
+   659  0000                     
+   660  0000                     
+   661  0000                     
+   662  0000                     
+   663  0000                     
+   664  0000                     
+   665  0000                     
+   666  0000                     
+   667  0000                     
+   668  0000                     
+   669  0000                     
+   670  0000                     
+   671  0000                     
+   672  0000                     
+   673  0000                     
+   674  0000                     
+   675  0000                     
+   676  0000                     
+   677  0000                     
+   678  0000                     
+   679  0000                     
+   680  0000                     
+   681  0000                     
+   682  0000                     
+   683  0000                     
+   684  0000                     
+   685  0000                     
+   686  0000                     
+   687  0000                     
+   688  0000                     
+   689  0000                     
+   690  0000                     
+   691  0000                     
+   692  0000                     
+   693  0000                     
+   694  0000                     
+   695  0000                     
+   696  0000                     
+   697  0000                     
+   698  0000                     
+   699  0000                     
+   700  0000                     
+   701  0000                     
+   702  0000                     
+   703  0000                     
+   704  0000                     
+   705  0000                     
+   706  0000                     
+   707  0000                     
+   708  0000                     
+   709  0000                     
+   710  0000                     
+   711  0000                     
+   712  0000                     
+   713  0000                     
+   714  0000                     
+   715  0000                     
+   716  0000                     
+   717  0000                     
+   718  0000                     
+   719  0000                     
+   720  0000                     
+   721  0000                     
+   722  0000                     
+   723  0000                     
+   724  0000                     
+   725  0000                     
+   726  0000                     
+   727  0000                     
+   728  0000                     
+   729  0000                     
+   730  0000                     
+   731  0000                     
+   732  0000                     
+   733  0000                     
+   734  0000                     
+   735  0000                     
+   736  0000                     
+   737  0000                     
+   738  0000                     
+   739  0000                     
+   740  0000                     
+   741  0000                     
+   742  0000                     
+   743  0000                     
+   744  0000                     
+   745  0000                     
+   746  0000                     
+   747  0000                     
+   748  0000                     
+   749  0000                     
+   750  0000                     
+   751  0000                     
+   752  0000                     
+   753  0000                     
+   754  0000                     
+   755  0000                     
+   756  0000                     
+   757  0000                     
+   758  0000                     
+   759  0000                     
+   760  0000                     
+   761  0000                     
+   762  0000                     
+   763  0000                     
+   764  0000                     
+   765  0000                     
+   766  0000                     
+   767  0000                     
+   768  0000                     
+   769  0000                     
+   770  0000                     
+   771  0000                     
+   772  0000                     
+   773  0000                     
+   774  0000                     
+   775  0000                     
+   776  0000                     
+   777  0000                     
+   778  0000                     
+   779  0000                     
+   780  0000                     
+   781  0000                     
+   782  0000                     
+   783  0000                     
+   784  0000                     
+   785  0000                     
+   786  0000                     
+   787  0000                     
+   788  0000                     
+   789                           
+   790                           	psect	rbss_0
+   791  0022                     _lx
+                     _lx
+   792  0022                     	ds	2
+   793  0024                     _ly
+                     _ly
+   794  0024                     	ds	2
+   795  0026                     _coordinate
+                     _coordinate
+   796  0026                     	ds	4
+   797                           
+   798                           	psect	temp
+   799  0074                     btemp
+                     btemp
+   800  0074                     	ds	6
+
+
+HI-TECH Software PICC Macro Assembler V9.60
+Symbol Table                                          Thu Dec 13 10:04:37 2012
+
+         _AD7843 16C2         ?a_Getpix 002A           ?_delay 003C  
+              l3 1675                l8 1684               l11 1688  
+             l20 176C               l12 1689               l22 17FE  
+             l17 16B5               u65 16F8               u76 1704  
+             u85 1719               u96 1725               _lx 0022  
+             _ly 0024       _start_7843 0867           _Getpix 176E  
+           f2873 0033      ?a_Read_7843 0039             btemp 0074  
+           ftdiv 0F1F             ftmul 0F57             fttol 0F98  
+   ?a_Write_7843 0039       _coordinate 0026        _Read_7843 169B  
+   ?a_pix_filter 003D            _delay 1675            lwtoft 0FD4  
+          status 0003       _Write_7843 1680      ?_pix_filter 0035  
+       ?a_AD7843 0035       _pix_filter 16F0       used_btemp0 0001  
+     used_btemp1 0001       used_btemp2 0001       used_btemp3 0001  
+     used_btemp4 0001       used_btemp5 0001  

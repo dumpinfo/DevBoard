@@ -1,0 +1,199 @@
+XL
+H 3 areas A global symbols
+M DS1302.c
+S push_gset1 Ref0000
+S push_gset2 Ref0000
+S pop_gset1 Ref0000
+S pop_gset2 Ref0000
+A text size 12E flags 0
+dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\TFTclock\DS1302.c
+dbfunc e ds1302_write_byte 0 fV
+dbsym r i 14 c
+dbsym r d 12 c
+dbsym r addr 10 c
+dbline FFFFFFFF 4
+dbline 10 4
+dbline 13 4
+dbline 16 6
+dbline 17 8
+dbline 18 A
+dbline 18 E
+dbline 19 E
+dbline 19 12
+dbline 1A 12
+dbline 1B 14
+dbline 1C 16
+dbline 1D 16
+dbline 1E 18
+dbline 1F 18
+dbline 20 1A
+dbline 21 1C
+dbline 22 1E
+dbline 18 1E
+dbline 18 20
+dbline 25 24
+dbline 26 26
+dbline 26 2A
+dbline 27 2A
+dbline 27 2E
+dbline 28 2E
+dbline 29 30
+dbline 2A 32
+dbline 2B 32
+dbline 2C 34
+dbline 2D 34
+dbline 2E 36
+dbline 2F 38
+dbline 30 3A
+dbline 26 3A
+dbline 26 3C
+dbline 31 40
+dbline FFFFFFFE 42
+dbline 0 46
+dbfunc e ds1302_read_byte 48 fc
+dbsym r temp 14 c
+dbsym r i 16 c
+dbsym r addr 10 c
+dbline FFFFFFFF 4C
+dbline 37 4C
+dbline 3B 4C
+dbline 3E 4E
+dbline 3F 50
+dbline 40 52
+dbline 40 56
+dbline 41 56
+dbline 41 5A
+dbline 42 5A
+dbline 43 5C
+dbline 44 5E
+dbline 45 5E
+dbline 46 60
+dbline 47 60
+dbline 48 62
+dbline 49 64
+dbline 4A 66
+dbline 40 66
+dbline 40 68
+dbline 4D 6C
+dbline 4E 6E
+dbline 4E 72
+dbline 4F 72
+dbline 50 74
+dbline 50 78
+dbline 51 78
+dbline 52 7A
+dbline 53 7C
+dbline 54 7C
+dbline 55 7E
+dbline 56 7E
+dbline 57 80
+dbline 58 82
+dbline 4E 82
+dbline 4E 84
+dbline 5A 88
+dbline 5B 8A
+dbline FFFFFFFE 8C
+dbline 0 90
+dbfunc e ds1302_write_time 92 fV
+dbline FFFFFFFF 92
+dbline 63 92
+dbline 65 92
+dbline 66 98
+dbline 68 9E
+dbline 69 A6
+dbline 6A AE
+dbline 6B B6
+dbline 6C BE
+dbline 6D C6
+dbline 6E CE
+dbline 6F D6
+dbline 70 DE
+dbline FFFFFFFE E4
+dbline 0 E4
+dbfunc e ds1302_read_time E6 fV
+dbline FFFFFFFF E6
+dbline 78 E6
+dbline 7A E6
+dbline 7B EE
+dbline 7C F6
+dbline 7D FE
+dbline 7E 106
+dbline 7F 10E
+dbline 80 11A
+dbline FFFFFFFE 122
+dbline 0 122
+dbfunc e ds1302_init 124 fV
+dbline FFFFFFFF 124
+dbline 88 124
+dbline 8A 124
+dbline 8B 126
+dbline 8C 128
+dbline 8D 12A
+dbline FFFFFFFE 12C
+dbline 0 12C
+S _ds1302_read_time Def00E6
+S _ds1302_read_byte Def0048
+S _ds1302_init Def0124
+S _ds1302_write_time Def0092
+S _ds1302_write_byte Def0000
+A data size 8 flags 20
+dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\TFTclock\DS1302.c
+dbsym e time_buf 0 A[8:8]c
+S _time_buf Def0000
+A idata size 8 flags 0
+T 00 00 20 10
+R 00 00 02 00
+T 02 00 02 01
+R 00 00 02 00
+T 04 00 A3 22
+R 00 00 02 00
+T 06 00 00 01
+R 00 00 02 00
+T 00 00 0E 94 00 00 1F 9A 16 9A 0E 7F 44 27 09 C0
+R 00 00 00 00 12 04 00 00
+T 0E 00 00 FF 02 C0 1E 9A 01 C0 1E 98 1D 9A 1D 98
+R 00 00 00 00
+T 1C 00 06 95 43 95 48 30 A8 F3 16 9A 44 27 09 C0
+R 00 00 00 00
+T 2A 00 20 FF 02 C0 1E 9A 01 C0 1E 98 1D 9A 1D 98
+R 00 00 00 00
+T 38 00 26 95 43 95 48 30 A8 F3 1F 98 0E 94 00 00
+R 00 00 00 00 12 0E 02 00
+T 46 00 08 95
+R 00 00 00 00
+T 48 00 0E 94 00 00 1F 9A 16 9A 01 60 66 27 09 C0
+R 00 00 00 00 12 04 01 00
+T 56 00 00 FF 02 C0 1E 9A 01 C0 1E 98 1D 9A 1D 98
+R 00 00 00 00
+T 64 00 06 95 63 95 68 30 A8 F3 16 98 66 27 09 C0
+R 00 00 00 00
+T 72 00 46 95 0E 9B 02 C0 40 68 01 C0 4F 77 1D 9A
+R 00 00 00 00
+T 80 00 1D 98 63 95 68 30 A8 F3 1F 98 04 2F 0E 94
+R 00 00 00 00
+T 8E 00 00 00 08 95
+R 00 00 00 00 12 02 03 00
+T 92 00 22 27 0E E8 B4 DF 20 E8 00 E8 B1 DF 20 91
+R 00 00 00 00
+T A0 00 01 00 0C E8 AD DF 20 91 02 00 08 E8 A9 DF
+R 00 00 00 00 00 02 01 00 00 0A 01 00
+T AE 00 20 91 03 00 06 E8 A5 DF 20 91 07 00 0A E8
+R 00 00 00 00 00 04 01 00 00 0C 01 00
+T BC 00 A1 DF 20 91 04 00 04 E8 9D DF 20 91 05 00
+R 00 00 00 00 00 06 01 00 00 0E 01 00
+T CA 00 02 E8 99 DF 20 91 06 00 00 E8 95 DF 20 91
+R 00 00 00 00 00 08 01 00
+T D8 00 07 00 0A E8 91 DF 20 E8 0E E8 8E DF 08 95
+R 00 00 00 00 00 02 01 00
+T E6 00 0C E8 AF DF 00 93 01 00 08 E8 AB DF 00 93
+R 00 00 00 00 00 08 01 00
+T F4 00 02 00 06 E8 A7 DF 00 93 03 00 04 E8 A3 DF
+R 00 00 00 00 00 02 01 00 00 0A 01 00
+T 02 01 00 93 04 00 02 E8 9F DF 00 93 05 00 00 E8
+R 00 00 00 00 00 04 01 00 00 0C 01 00
+T 10 01 9B DF 80 2F 8F 77 80 93 06 00 0A E8 95 DF
+R 00 00 00 00 00 0A 01 00
+T 1E 01 00 93 07 00 08 95
+R 00 00 00 00 00 04 01 00
+T 24 01 1F 98 1D 98 17 9A 15 9A 08 95
+R 00 00 00 00

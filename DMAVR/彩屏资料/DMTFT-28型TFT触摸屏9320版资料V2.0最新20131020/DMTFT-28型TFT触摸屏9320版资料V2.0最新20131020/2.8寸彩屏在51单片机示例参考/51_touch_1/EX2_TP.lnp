@@ -1,0 +1,5 @@
+"main.obj",
+"NBCTFT.obj",
+"TP.obj" 
+TO "EX2_TP" 
+RAMSIZE(256) 

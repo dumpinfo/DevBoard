@@ -1,0 +1,909 @@
+
+
+HI-TECH Software PICC Macro Assembler V9.60
+                                                      Thu Dec 13 10:03:28 2012
+
+
+     1                           	processor	16F877A
+     2                           	opt	pw 79
+     3                           	psect	rdata_0,global,class=BANK0,space=1,delta
+      +                          =1
+     4                           	psect	idata_0,global,class=CODE,delta=2
+     5                           	psect	rdata_1,global,class=BANK1,space=1,delta
+      +                          =1
+     6                           	psect	idata_1,global,class=CODE,delta=2
+     7                           	psect	text0,local,class=CODE,delta=2
+     8                           	psect	config,global,class=CONFIG,delta=2
+     9                           	psect	text2,local,class=CODE,delta=2
+    10                           	psect	rbss_0,global,class=BANK0,space=1,delta=
+      +                          1
+    11  0000                     
+    12  0000                     
+    13  0000                     
+    14  0000                     
+    15  0000                     
+    16  0000                     
+    17  0000                     
+    18  0000                     
+    19  0000                     
+    20  0000                     
+    21                           
+    22                           	psect	rdata_0
+    23  0055                     _tab
+                     _tab
+    24  0055                     	ds	1
+                     	ds	1
+    25  0056                     	ds	1
+                     	ds	1
+    26  0057                     	ds	1
+                     	ds	1
+    27  0058                     	ds	1
+                     	ds	1
+    28  0059                     	ds	1
+                     	ds	1
+    29  005A                     	ds	1
+                     	ds	1
+    30  005B                     	ds	1
+                     	ds	1
+    31  005C                     	ds	1
+                     	ds	1
+    32  005D                     	ds	1
+                     	ds	1
+    33  005E                     	ds	1
+                     	ds	1
+    34  005F                     	ds	1
+                     	ds	1
+    35  0060                     	ds	1
+                     	ds	1
+    36  0061                     	ds	1
+                     	ds	1
+    37  0062                     	ds	1
+                     	ds	1
+    38  0063                     	ds	1
+                     	ds	1
+    39  0064                     	ds	1
+                     	ds	1
+    40  0065                     	ds	1
+                     	ds	1
+    41  0066                     	ds	1
+                     	ds	1
+    42  0067                     	ds	1
+                     	ds	1
+    43  0068                     	ds	1
+                     	ds	1
+    44  0069                     	ds	1
+                     	ds	1
+    45  006A                     	ds	1
+                     	ds	1
+    46  006B                     	ds	1
+                     	ds	1
+    47  006C                     	ds	1
+                     	ds	1
+    48  006D                     	ds	1
+    49                           
+    50                           	psect	idata_0
+    51  0FE7  34B1               	retlw	-79
+    52  0FE8  34B1               	retlw	-79
+    53  0FE9  34B7               	retlw	-73
+    54  0FEA  34BD               	retlw	-67
+    55  0FEB  34C0               	retlw	-64
+    56  0FEC  34B6               	retlw	-74
+    57  0FED  34D0               	retlw	-48
+    58  0FEE  34BE               	retlw	-66
+    59  0FEF  34BF               	retlw	-65
+    60  0FF0  34C6               	retlw	-58
+    61  0FF1  34BC               	retlw	-68
+    62  0FF2  34BC               	retlw	-68
+    63  0FF3  34BF               	retlw	-65
+    64  0FF4  34AA               	retlw	-86
+    65  0FF5  34B7               	retlw	-73
+    66  0FF6  34A2               	retlw	-94
+    67  0FF7  34D3               	retlw	-45
+    68  0FF8  34D0               	retlw	-48
+    69  0FF9  34CF               	retlw	-49
+    70  0FFA  34DE               	retlw	-34
+    71  0FFB  34B9               	retlw	-71
+    72  0FFC  34AB               	retlw	-85
+    73  0FFD  34CB               	retlw	-53
+    74  0FFE  34BE               	retlw	-66
+    75  0FFF  3400               	retlw	0
+    76                           
+    77                           	psect	rdata_1
+    78  00A0                     _tab1
+                     _tab1
+    79  00A0                     	ds	1
+                     	ds	1
+    80  00A1                     	ds	1
+                     	ds	1
+    81  00A2                     	ds	1
+                     	ds	1
+    82  00A3                     	ds	1
+                     	ds	1
+    83  00A4                     	ds	1
+                     	ds	1
+    84  00A5                     	ds	1
+                     	ds	1
+    85  00A6                     	ds	1
+                     	ds	1
+    86  00A7                     	ds	1
+                     	ds	1
+    87  00A8                     	ds	1
+                     	ds	1
+    88  00A9                     	ds	1
+                     	ds	1
+    89  00AA                     	ds	1
+                     	ds	1
+    90  00AB                     	ds	1
+                     	ds	1
+    91  00AC                     	ds	1
+                     	ds	1
+    92  00AD                     	ds	1
+                     	ds	1
+    93  00AE                     	ds	1
+                     	ds	1
+    94  00AF                     	ds	1
+                     	ds	1
+    95  00B0                     	ds	1
+                     	ds	1
+    96  00B1                     	ds	1
+                     	ds	1
+    97  00B2                     	ds	1
+                     	ds	1
+    98  00B3                     	ds	1
+                     	ds	1
+    99  00B4                     	ds	1
+                     	ds	1
+   100  00B5                     	ds	1
+   101  00B6                     _tab2
+                     _tab2
+   102  00B6                     	ds	1
+                     	ds	1
+   103  00B7                     	ds	1
+                     	ds	1
+   104  00B8                     	ds	1
+                     	ds	1
+   105  00B9                     	ds	1
+                     	ds	1
+   106  00BA                     	ds	1
+                     	ds	1
+   107  00BB                     	ds	1
+                     	ds	1
+   108  00BC                     	ds	1
+                     	ds	1
+   109  00BD                     	ds	1
+                     	ds	1
+   110  00BE                     	ds	1
+                     	ds	1
+   111  00BF                     	ds	1
+                     	ds	1
+   112  00C0                     	ds	1
+   113  00C1                     _tab3
+                     _tab3
+   114  00C1                     	ds	1
+                     	ds	1
+   115  00C2                     	ds	1
+                     	ds	1
+   116  00C3                     	ds	1
+                     	ds	1
+   117  00C4                     	ds	1
+                     	ds	1
+   118  00C5                     	ds	1
+                     	ds	1
+   119  00C6                     	ds	1
+                     	ds	1
+   120  00C7                     	ds	1
+                     	ds	1
+   121  00C8                     	ds	1
+                     	ds	1
+   122  00C9                     	ds	1
+                     	ds	1
+   123  00CA                     	ds	1
+                     	ds	1
+   124  00CB                     	ds	1
+                     	ds	1
+   125  00CC                     	ds	1
+                     	ds	1
+   126  00CD                     	ds	1
+                     	ds	1
+   127  00CE                     	ds	1
+                     	ds	1
+   128  00CF                     	ds	1
+                     	ds	1
+   129  00D0                     	ds	1
+                     	ds	1
+   130  00D1                     	ds	1
+                     	ds	1
+   131  00D2                     	ds	1
+                     	ds	1
+   132  00D3                     	ds	1
+                     	ds	1
+   133  00D4                     	ds	1
+                     	ds	1
+   134  00D5                     	ds	1
+                     	ds	1
+   135  00D6                     	ds	1
+                     	ds	1
+   136  00D7                     	ds	1
+                     	ds	1
+   137  00D8                     	ds	1
+                     	ds	1
+   138  00D9                     	ds	1
+                     	ds	1
+   139  00DA                     	ds	1
+   140                           
+   141                           	psect	idata_1
+   142  0FAC  3420               	retlw	32
+   143  0FAD  3420               	retlw	32
+   144  0FAE  3420               	retlw	32
+   145  0FAF  34C0               	retlw	-64
+   146  0FB0  34B6               	retlw	-74
+   147  0FB1  34D0               	retlw	-48
+   148  0FB2  34BE               	retlw	-66
+   149  0FB3  34BF               	retlw	-65
+   150  0FB4  34C6               	retlw	-58
+   151  0FB5  34BC               	retlw	-68
+   152  0FB6  34BC               	retlw	-68
+   153  0FB7  3420               	retlw	32
+   154  0FB8  3420               	retlw	32
+   155  0FB9  34D3               	retlw	-45
+   156  0FBA  34EB               	retlw	-21
+   157  0FBB  34C4               	retlw	-60
+   158  0FBC  34FA               	retlw	-6
+   159  0FBD  34CD               	retlw	-51
+   160  0FBE  34AC               	retlw	-84
+   161  0FBF  34D0               	retlw	-48
+   162  0FC0  34D0               	retlw	-48
+   163  0FC1  3400               	retlw	0
+   164  0FC2  3430               	retlw	48
+   165  0FC3  3431               	retlw	49
+   166  0FC4  3432               	retlw	50
+   167  0FC5  3433               	retlw	51
+   168  0FC6  3434               	retlw	52
+   169  0FC7  3435               	retlw	53
+   170  0FC8  3436               	retlw	54
+   171  0FC9  3437               	retlw	55
+   172  0FCA  3438               	retlw	56
+   173  0FCB  3439               	retlw	57
+   174  0FCC  3400               	retlw	0
+   175  0FCD  3429               	retlw	41
+   176  0FCE  3428               	retlw	40
+   177  0FCF  3460               	retlw	96
+   178  0FD0  342C               	retlw	44
+   179  0FD1  342E               	retlw	46
+   180  0FD2  342F               	retlw	47
+   181  0FD3  343C               	retlw	60
+   182  0FD4  343E               	retlw	62
+   183  0FD5  3427               	retlw	39
+   184  0FD6  343B               	retlw	59
+   185  0FD7  343A               	retlw	58
+   186  0FD8  345B               	retlw	91
+   187  0FD9  345D               	retlw	93
+   188  0FDA  347B               	retlw	123
+   189  0FDB  347D               	retlw	125
+   190  0FDC  347C               	retlw	124
+   191  0FDD  343F               	retlw	63
+   192  0FDE  342D               	retlw	45
+   193  0FDF  343D               	retlw	61
+   194  0FE0  342B               	retlw	43
+   195  0FE1  342A               	retlw	42
+   196  0FE2  3426               	retlw	38
+   197  0FE3  345E               	retlw	94
+   198  0FE4  3425               	retlw	37
+   199  0FE5  3424               	retlw	36
+   200  0FE6  3400               	retlw	0
+   201                           
+   202                           	psect	text0
+   203  16CB                     _IO_init
+   204                           ;main.c: 61: void IO_init(void)
+   205  16CB  1683               	bsf	3,5
+   206  16CC  1303               	bcf	3,6	;carry unused
+   207  16CD  0188               	clrf	8	;volatile
+   208                           ;main.c: 64: PORTD=0xff;
+   209  16CE  30FF               	movlw	-1
+   210  16CF  1283               	bcf	3,5
+   211  16D0  0088               	movwf	8	;volatile
+   212                           ;main.c: 66: TRISB=0x00;
+   213  16D1  1683               	bsf	3,5
+   214  16D2  0186               	clrf	6	;volatile
+   215                           ;main.c: 67: PORTB=0xff;
+   216  16D3  1283               	bcf	3,5
+   217  16D4  0086               	movwf	6	;volatile
+   218                           ;main.c: 68: }
+   219  16D5  0008               	return	;W free
+   220  16D6                     _main
+   221                           ;	_i assigned to ?a_main+0
+   222  0000                     _main$i	set	?a_main	;#
+   223                           ;main.c: 81: IO_init();
+   224  16D6  26CB               	fcall	_IO_init
+   225                           ;main.c: 82: Device_code=0x9328;
+   226  16D7  3028               	movlw	40
+   227  16D8  00A0               	movwf	_Device_code
+   228  16D9  3093               	movlw	147
+   229  16DA  00A1               	movwf	_Device_code+1
+   230                           ;main.c: 83: TFT_Initial();
+   231  16DB  120A  158A  21DC   	fcall	_TFT_Initial
+   232  16DE                     l4
+   233                           ;main.c: 85: while(1)
+   234                           ;main.c: 86: {
+   235  16DE  01A4               	clrf	?_Show_RGB
+   236  16DF  01A5               	clrf	?_Show_RGB+1
+   237  16E0  30F0               	movlw	240
+   238  16E1  00A6               	movwf	?_Show_RGB+2
+   239  16E2  01A7               	clrf	?_Show_RGB+3
+   240  16E3  01A8               	clrf	?_Show_RGB+4
+   241  16E4  01A9               	clrf	?_Show_RGB+5
+   242  16E5  3040               	movlw	64
+   243  16E6  00AA               	movwf	?_Show_RGB+6
+   244  16E7  01AB               	clrf	?_Show_RGB+7
+   245  16E8  301F               	movlw	31
+   246  16E9  00AC               	movwf	?_Show_RGB+8
+   247  16EA  01AD               	clrf	?_Show_RGB+9
+   248  16EB  120A  158A  2115   	fcall	_Show_RGB
+   249                           ;main.c: 89: Show_RGB(0,240,64,128,0x07E0);
+   250  16EE  01A4               	clrf	?_Show_RGB
+   251  16EF  01A5               	clrf	?_Show_RGB+1
+   252  16F0  30F0               	movlw	240
+   253  16F1  00A6               	movwf	?_Show_RGB+2
+   254  16F2  01A7               	clrf	?_Show_RGB+3
+   255  16F3  3040               	movlw	64
+   256  16F4  00A8               	movwf	?_Show_RGB+4
+   257  16F5  01A9               	clrf	?_Show_RGB+5
+   258  16F6  3080               	movlw	128
+   259  16F7  00AA               	movwf	?_Show_RGB+6
+   260  16F8  01AB               	clrf	?_Show_RGB+7
+   261  16F9  30E0               	movlw	224
+   262  16FA  00AC               	movwf	?_Show_RGB+8
+   263  16FB  3007               	movlw	7
+   264  16FC  00AD               	movwf	?_Show_RGB+9
+   265  16FD  120A  158A  2115   	fcall	_Show_RGB
+   266                           ;main.c: 90: Show_RGB(0,240,128,192,0xF81F);
+   267  1700  01A4               	clrf	?_Show_RGB
+   268  1701  01A5               	clrf	?_Show_RGB+1
+   269  1702  30F0               	movlw	240
+   270  1703  00A6               	movwf	?_Show_RGB+2
+   271  1704  01A7               	clrf	?_Show_RGB+3
+   272  1705  3080               	movlw	128
+   273  1706  00A8               	movwf	?_Show_RGB+4
+   274  1707  01A9               	clrf	?_Show_RGB+5
+   275  1708  30C0               	movlw	192
+   276  1709  00AA               	movwf	?_Show_RGB+6
+   277  170A  01AB               	clrf	?_Show_RGB+7
+   278  170B  301F               	movlw	31
+   279  170C  00AC               	movwf	?_Show_RGB+8
+   280  170D  30F8               	movlw	248
+   281  170E  00AD               	movwf	?_Show_RGB+9
+   282  170F  120A  158A  2115   	fcall	_Show_RGB
+   283                           ;main.c: 91: Show_RGB(0,240,192,256,0xF800);
+   284  1712  01A4               	clrf	?_Show_RGB
+   285  1713  01A5               	clrf	?_Show_RGB+1
+   286  1714  30F0               	movlw	240
+   287  1715  00A6               	movwf	?_Show_RGB+2
+   288  1716  01A7               	clrf	?_Show_RGB+3
+   289  1717  30C0               	movlw	192
+   290  1718  00A8               	movwf	?_Show_RGB+4
+   291  1719  01A9               	clrf	?_Show_RGB+5
+   292  171A  01AA               	clrf	?_Show_RGB+6
+   293  171B  3001               	movlw	1
+   294  171C  00AB               	movwf	?_Show_RGB+7
+   295  171D  01AC               	clrf	?_Show_RGB+8
+   296  171E  30F8               	movlw	248
+   297  171F  00AD               	movwf	?_Show_RGB+9
+   298  1720  120A  158A  2115   	fcall	_Show_RGB
+   299                           ;main.c: 92: Show_RGB(0,240,256,320,0xFFE0);
+   300  1723  01A4               	clrf	?_Show_RGB
+   301  1724  01A5               	clrf	?_Show_RGB+1
+   302  1725  30F0               	movlw	240
+   303  1726  00A6               	movwf	?_Show_RGB+2
+   304  1727  01A7               	clrf	?_Show_RGB+3
+   305  1728  01A8               	clrf	?_Show_RGB+4
+   306  1729  3001               	movlw	1
+   307  172A  00A9               	movwf	?_Show_RGB+5
+   308  172B  3040               	movlw	64
+   309  172C  00AA               	movwf	?_Show_RGB+6
+   310  172D  3001               	movlw	1
+   311  172E  00AB               	movwf	?_Show_RGB+7
+   312  172F  30E0               	movlw	224
+   313  1730  00AC               	movwf	?_Show_RGB+8
+   314  1731  30FF               	movlw	255
+   315  1732  00AD               	movwf	?_Show_RGB+9
+   316  1733  120A  158A  2115   	fcall	_Show_RGB
+   317                           ;main.c: 95: LCD_PutString(24,16,tab,0xFFFF,0x0
+      +                          01F);
+   318  1736  3018               	movlw	24
+   319  1737  00A4               	movwf	?_LCD_PutString
+   320  1738  01A5               	clrf	?_LCD_PutString+1
+   321  1739  3010               	movlw	16
+   322  173A  00A6               	movwf	?_LCD_PutString+2
+   323  173B  01A7               	clrf	?_LCD_PutString+3
+   324  173C  3055               	movlw	_tab
+   325  173D  00A8               	movwf	?_LCD_PutString+4
+   326  173E  30FF               	movlw	255
+   327  173F  00A9               	movwf	?_LCD_PutString+5
+   328  1740  00AA               	movwf	?_LCD_PutString+6
+   329  1741  301F               	movlw	31
+   330  1742  00AB               	movwf	?_LCD_PutString+7
+   331  1743  01AC               	clrf	?_LCD_PutString+8
+   332  1744  120A  158A  273B   	fcall	_LCD_PutString
+   333                           ;main.c: 96: LCD_PutString(24,40,tab1,0xFFFF,0x
+      +                          001F);
+   334  1747  3018               	movlw	24
+   335  1748  00A4               	movwf	?_LCD_PutString
+   336  1749  01A5               	clrf	?_LCD_PutString+1
+   337  174A  3028               	movlw	40
+   338  174B  00A6               	movwf	?_LCD_PutString+2
+   339  174C  01A7               	clrf	?_LCD_PutString+3
+   340  174D  30A0               	movlw	_tab1
+   341  174E  00A8               	movwf	?_LCD_PutString+4
+   342  174F  30FF               	movlw	255
+   343  1750  00A9               	movwf	?_LCD_PutString+5
+   344  1751  00AA               	movwf	?_LCD_PutString+6
+   345  1752  301F               	movlw	31
+   346  1753  00AB               	movwf	?_LCD_PutString+7
+   347  1754  01AC               	clrf	?_LCD_PutString+8
+   348  1755  120A  158A  273B   	fcall	_LCD_PutString
+   349                           ;main.c: 99: LCD_PutString(80,72,tab2,0x0000,0x
+      +                          07E0);
+   350  1758  3050               	movlw	80
+   351  1759  00A4               	movwf	?_LCD_PutString
+   352  175A  01A5               	clrf	?_LCD_PutString+1
+   353  175B  3048               	movlw	72
+   354  175C  00A6               	movwf	?_LCD_PutString+2
+   355  175D  01A7               	clrf	?_LCD_PutString+3
+   356  175E  30B6               	movlw	_tab2
+   357  175F  00A8               	movwf	?_LCD_PutString+4
+   358  1760  01A9               	clrf	?_LCD_PutString+5
+   359  1761  01AA               	clrf	?_LCD_PutString+6
+   360  1762  30E0               	movlw	224
+   361  1763  00AB               	movwf	?_LCD_PutString+7
+   362  1764  3007               	movlw	7
+   363  1765  00AC               	movwf	?_LCD_PutString+8
+   364  1766  120A  158A  273B   	fcall	_LCD_PutString
+   365                           ;main.c: 100: LCD_PutString(16,96,tab3,0x0000,0
+      +                          x07E0);
+   366  1769  3010               	movlw	16
+   367  176A  00A4               	movwf	?_LCD_PutString
+   368  176B  01A5               	clrf	?_LCD_PutString+1
+   369  176C  3060               	movlw	96
+   370  176D  00A6               	movwf	?_LCD_PutString+2
+   371  176E  01A7               	clrf	?_LCD_PutString+3
+   372  176F  30C1               	movlw	_tab3
+   373  1770  00A8               	movwf	?_LCD_PutString+4
+   374  1771  01A9               	clrf	?_LCD_PutString+5
+   375  1772  01AA               	clrf	?_LCD_PutString+6
+   376  1773  30E0               	movlw	224
+   377  1774  00AB               	movwf	?_LCD_PutString+7
+   378  1775  3007               	movlw	7
+   379  1776  00AC               	movwf	?_LCD_PutString+8
+   380  1777  120A  158A  273B   	fcall	_LCD_PutString
+   381                           ;main.c: 103: for(i=312;i>264;i--){ Put_pixel(6
+      +                          8,i,0x001F);}
+   382  177A  3038               	movlw	56
+   383  177B  00A2               	movwf	?a_main
+   384  177C  3001               	movlw	1
+   385  177D  00A3               	movwf	?a_main+1
+   386  177E  3044               	movlw	68
+   387  177F                     L1
+   388  177F  00A4               	movwf	?_Put_pixel
+   389  1780  01A5               	clrf	?_Put_pixel+1
+   390  1781  0822               	movf	?a_main,w
+   391  1782  00A6               	movwf	?_Put_pixel+2
+   392  1783  0823               	movf	?a_main+1,w
+   393  1784  00A7               	movwf	?_Put_pixel+3
+   394  1785  301F               	movlw	31
+   395  1786  00A8               	movwf	?_Put_pixel+4
+   396  1787  01A9               	clrf	?_Put_pixel+5
+   397  1788  120A  158A  20C7   	fcall	_Put_pixel
+      +       160A  118A         
+   398  178D  08A2               	movf	?a_main
+   399  178E  1903               	btfsc	3,2
+   400  178F  03A3               	decf	?a_main+1
+   401  1790  03A2               	decf	?a_main
+   402  1791  3001               	movlw	1
+   403  1792  0223               	subwf	?a_main+1,w
+   404  1793  3009               	movlw	9
+   405  1794  1903               	btfsc	3,2
+   406  1795  0222               	subwf	?a_main,w
+   407                           ;main.c: 104: for(i=68;i<172;i++) { Put_pixel(i
+      +                          ,264,0x001F);}
+   408  1796  3044               	movlw	68
+   409  1797  1803               	btfsc	3,0
+   410  1798  2F7F               	goto	L1
+   411  1799  00A2               	movwf	?a_main
+   412  179A  01A3               	clrf	?a_main+1
+   413  179B                     l9
+   414  179B  0822               	movf	?a_main,w
+   415  179C  00A4               	movwf	?_Put_pixel
+   416  179D  0823               	movf	?a_main+1,w
+   417  179E  00A5               	movwf	?_Put_pixel+1
+   418  179F  3008               	movlw	8
+   419  17A0  00A6               	movwf	?_Put_pixel+2
+   420  17A1  3001               	movlw	1
+   421  17A2  00A7               	movwf	?_Put_pixel+3
+   422  17A3  301F               	movlw	31
+   423  17A4  00A8               	movwf	?_Put_pixel+4
+   424  17A5  01A9               	clrf	?_Put_pixel+5
+   425  17A6  120A  158A  20C7   	fcall	_Put_pixel
+      +       160A  118A         
+   426  17AB  0AA2               	incf	?a_main
+   427  17AC  1903               	btfsc	3,2
+   428  17AD  0AA3               	incf	?a_main+1
+   429  17AE  3000               	movlw	0
+   430  17AF  0223               	subwf	?a_main+1,w
+   431  17B0  30AC               	movlw	172
+   432  17B1  1903               	btfsc	3,2
+   433  17B2  0222               	subwf	?a_main,w
+   434  17B3  1C03               	btfss	3,0
+   435  17B4  2F9B               	goto	l9
+   436                           ;main.c: 105: for(i=264;i<312;i++){ Put_pixel(1
+      +                          72,i,0x001F);}
+   437  17B5  3008               	movlw	8
+   438  17B6  00A2               	movwf	?a_main
+   439  17B7  3001               	movlw	1
+   440  17B8  00A3               	movwf	?a_main+1
+   441  17B9  30AC               	movlw	172
+   442  17BA                     L2
+   443  17BA  00A4               	movwf	?_Put_pixel
+   444  17BB  01A5               	clrf	?_Put_pixel+1
+   445  17BC  0822               	movf	?a_main,w
+   446  17BD  00A6               	movwf	?_Put_pixel+2
+   447  17BE  0823               	movf	?a_main+1,w
+   448  17BF  00A7               	movwf	?_Put_pixel+3
+   449  17C0  301F               	movlw	31
+   450  17C1  00A8               	movwf	?_Put_pixel+4
+   451  17C2  01A9               	clrf	?_Put_pixel+5
+   452  17C3  120A  158A  20C7   	fcall	_Put_pixel
+      +       160A  118A         
+   453  17C8  0AA2               	incf	?a_main
+   454  17C9  1903               	btfsc	3,2
+   455  17CA  0AA3               	incf	?a_main+1
+   456  17CB  3001               	movlw	1
+   457  17CC  0223               	subwf	?a_main+1,w
+   458  17CD  3038               	movlw	56
+   459  17CE  1903               	btfsc	3,2
+   460  17CF  0222               	subwf	?a_main,w
+   461                           ;main.c: 106: for(i=172;i>68;i--) { Put_pixel(i
+      +                          ,312,0x001F);}
+   462  17D0  30AC               	movlw	172
+   463  17D1  1C03               	btfss	3,0
+   464  17D2  2FBA               	goto	L2
+   465  17D3  00A2               	movwf	?a_main
+   466  17D4  01A3               	clrf	?a_main+1
+   467  17D5                     l15
+   468  17D5  0822               	movf	?a_main,w
+   469  17D6  00A4               	movwf	?_Put_pixel
+   470  17D7  0823               	movf	?a_main+1,w
+   471  17D8  00A5               	movwf	?_Put_pixel+1
+   472  17D9  3038               	movlw	56
+   473  17DA  00A6               	movwf	?_Put_pixel+2
+   474  17DB  3001               	movlw	1
+   475  17DC  00A7               	movwf	?_Put_pixel+3
+   476  17DD  301F               	movlw	31
+   477  17DE  00A8               	movwf	?_Put_pixel+4
+   478  17DF  01A9               	clrf	?_Put_pixel+5
+   479  17E0  120A  158A  20C7   	fcall	_Put_pixel
+      +       160A  118A         
+   480  17E5  08A2               	movf	?a_main
+   481  17E6  1903               	btfsc	3,2
+   482  17E7  03A3               	decf	?a_main+1
+   483  17E8  03A2               	decf	?a_main
+   484  17E9  3000               	movlw	0
+   485  17EA  0223               	subwf	?a_main+1,w
+   486  17EB  3045               	movlw	69
+   487  17EC  1903               	btfsc	3,2
+   488  17ED  0222               	subwf	?a_main,w
+   489  17EE  1803               	btfsc	3,0
+   490  17EF  2FD5               	goto	l15
+   491                           ;main.c: 108: delayms(10000);
+   492  17F0  3010               	movlw	16
+   493  17F1  00A4               	movwf	?_delayms
+   494  17F2  3027               	movlw	39
+   495  17F3  00A5               	movwf	?_delayms+1
+   496  17F4  120A  158A  21BD   	fcall	_delayms
+   497                           ;main.c: 109: CLR_Screen(0xF800);
+   498  17F7  01A4               	clrf	?_CLR_Screen
+   499  17F8  30F8               	movlw	248
+   500  17F9  00A5               	movwf	?_CLR_Screen+1
+   501  17FA  120A  158A  20E4   	fcall	_CLR_Screen
+      +       160A  118A         
+   502  17FF  2EDE               	goto	l4
+   503                           
+   504                           	psect	config
+   505                           ;main.c: 76: main()
+   506  2007  3F79               	dw	16249	;#
+   507                           
+   508                           	psect	text2
+   509  0000                     
+   510  0000                     
+   511  0000                     
+   512  0000                     
+   513  0000                     
+   514  0000                     
+   515  0000                     
+   516  0000                     
+   517  0000                     
+   518  0000                     
+   519  0000                     
+   520  0000                     
+   521  0000                     
+   522  0000                     
+   523  0000                     
+   524  0000                     
+   525  0000                     
+   526  0000                     
+   527  0000                     
+   528  0000                     
+   529  0000                     
+   530  0000                     
+   531  0000                     
+   532  0000                     
+   533  0000                     
+   534  0000                     
+   535  0000                     
+   536  0000                     
+   537  0000                     
+   538  0000                     
+   539  0000                     
+   540  0000                     
+   541  0000                     
+   542  0000                     
+   543  0000                     
+   544  0000                     
+   545  0000                     
+   546  0000                     
+   547  0000                     
+   548  0000                     
+   549  0000                     
+   550  0000                     
+   551  0000                     
+   552  0000                     
+   553  0000                     
+   554  0000                     
+   555  0000                     
+   556  0000                     
+   557  0000                     
+   558  0000                     
+   559  0000                     
+   560  0000                     
+   561  0000                     
+   562  0000                     
+   563  0000                     
+   564  0000                     
+   565  0000                     
+   566  0000                     
+   567  0000                     
+   568  0000                     
+   569  0000                     
+   570  0000                     
+   571  0000                     
+   572  0000                     
+   573  0000                     
+   574  0000                     
+   575  0000                     
+   576  0000                     
+   577  0000                     
+   578  0000                     
+   579  0000                     
+   580  0000                     
+   581  0000                     
+   582  0000                     
+   583  0000                     
+   584  0000                     
+   585  0000                     
+   586  0000                     
+   587  0000                     
+   588  0000                     
+   589  0000                     
+   590  0000                     
+   591  0000                     
+   592  0000                     
+   593  0000                     
+   594  0000                     
+   595  0000                     
+   596  0000                     
+   597  0000                     
+   598  0000                     
+   599  0000                     
+   600  0000                     
+   601  0000                     
+   602  0000                     
+   603  0000                     
+   604  0000                     
+   605  0000                     
+   606  0000                     
+   607  0000                     
+   608  0000                     
+   609  0000                     
+   610  0000                     
+   611  0000                     
+   612  0000                     
+   613  0000                     
+   614  0000                     
+   615  0000                     
+   616  0000                     
+   617  0000                     
+   618  0000                     
+   619  0000                     
+   620  0000                     
+   621  0000                     
+   622  0000                     
+   623  0000                     
+   624  0000                     
+   625  0000                     
+   626  0000                     
+   627  0000                     
+   628  0000                     
+   629  0000                     
+   630  0000                     
+   631  0000                     
+   632  0000                     
+   633  0000                     
+   634  0000                     
+   635  0000                     
+   636  0000                     
+   637  0000                     
+   638  0000                     
+   639  0000                     
+   640  0000                     
+   641  0000                     
+   642  0000                     
+   643  0000                     
+   644  0000                     
+   645  0000                     
+   646  0000                     
+   647  0000                     
+   648  0000                     
+   649  0000                     
+   650  0000                     
+   651  0000                     
+   652  0000                     
+   653  0000                     
+   654  0000                     
+   655  0000                     
+   656  0000                     
+   657  0000                     
+   658  0000                     
+   659  0000                     
+   660  0000                     
+   661  0000                     
+   662  0000                     
+   663  0000                     
+   664  0000                     
+   665  0000                     
+   666  0000                     
+   667  0000                     
+   668  0000                     
+   669  0000                     
+   670  0000                     
+   671  0000                     
+   672  0000                     
+   673  0000                     
+   674  0000                     
+   675  0000                     
+   676  0000                     
+   677  0000                     
+   678  0000                     
+   679  0000                     
+   680  0000                     
+   681  0000                     
+   682  0000                     
+   683  0000                     
+   684  0000                     
+   685  0000                     
+   686  0000                     
+   687  0000                     
+   688  0000                     
+   689  0000                     
+   690  0000                     
+   691  0000                     
+   692  0000                     
+   693  0000                     
+   694  0000                     
+   695  0000                     
+   696  0000                     
+   697  0000                     
+   698  0000                     
+   699  0000                     
+   700  0000                     
+   701  0000                     
+   702  0000                     
+   703  0000                     
+   704  0000                     
+   705  0000                     
+   706  0000                     
+   707  0000                     
+   708  0000                     
+   709  0000                     
+   710  0000                     
+   711  0000                     
+   712  0000                     
+   713  0000                     
+   714  0000                     
+   715  0000                     
+   716  0000                     
+   717  0000                     
+   718  0000                     
+   719  0000                     
+   720  0000                     
+   721  0000                     
+   722  0000                     
+   723  0000                     
+   724  0000                     
+   725  0000                     
+   726  0000                     
+   727  0000                     
+   728  0000                     
+   729  0000                     
+   730  0000                     
+   731  0000                     
+   732  0000                     
+   733  0000                     
+   734  0000                     
+   735  0000                     
+   736  0000                     
+   737  0000                     
+   738  0000                     
+   739  0000                     
+   740  0000                     
+   741  0000                     
+   742  0000                     
+   743  0000                     
+   744  0000                     
+   745  0000                     
+   746  0000                     
+   747  0000                     
+   748  0000                     
+   749  0000                     
+   750  0000                     
+   751  0000                     
+   752  0000                     
+   753  0000                     
+   754  0000                     
+   755  0000                     
+   756  0000                     
+   757  0000                     
+   758  0000                     
+   759  0000                     
+   760  0000                     
+   761  0000                     
+   762  0000                     
+   763  0000                     
+   764  0000                     
+   765  0000                     
+   766  0000                     
+   767  0000                     
+   768  0000                     
+   769  0000                     
+   770  0000                     
+   771  0000                     
+   772  0000                     
+   773  0000                     
+   774  0000                     
+   775  0000                     
+   776  0000                     
+   777  0000                     
+   778  0000                     
+   779  0000                     
+   780  0000                     
+   781  0000                     
+   782  0000                     
+   783  0000                     
+   784  0000                     
+   785  0000                     
+   786                           
+   787                           	psect	rbss_0
+   788  0020                     _Device_code
+                     _Device_code
+   789  0020                     	ds	2
+
+
+HI-TECH Software PICC Macro Assembler V9.60
+Symbol Table                                          Thu Dec 13 10:03:28 2012
+
+        ?a_main 0022               l4 16DE               l9 179B  
+     ?_Show_RGB 0024              l15 17D5        ?_delayms 0024  
+   _TFT_Initial 09DC             _tab 0055     _Device_code 0020  
+   ?_CLR_Screen 0024      ?_Put_pixel 0024         _IO_init 16CB  
+          _tab1 00A0            _tab2 00B6            _tab3 00C1  
+ _LCD_PutString 0F3B            _main 16D6      _CLR_Screen 08E4  
+          start 0000  ?_LCD_PutString 0024         _delayms 09BD  
+         status 0003       _Put_pixel 08C7        _Show_RGB 0915  

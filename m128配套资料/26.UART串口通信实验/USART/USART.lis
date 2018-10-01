@@ -1,0 +1,520 @@
+                        .module USART.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128的串口通信实验，通过getchar与printf输入和输出字符
+ 0000           ; //编译环境 ICCAVR
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //忠兴电子元件店编辑                                                                                                                                  
+ 0000           ; //日期：2010.01.14
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <string.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; #include <delay.h>
+ 0000           ; 
+ 0000           ; #define uchar           unsigned char
+ 0000           ; #define uint            unsigned int
+ 0000           ; #define ulong           unsigned long
+ 0000           ; 
+ 0000           ; /*数码管连接情况*/
+ 0000           ; #define Data_IO               PORTA                                   //数码管数据口
+ 0000           ; #define Data_DDR        DDRA                                  //数据口方向寄存器
+ 0000                   .dbline 21
+ 0000           ; #define D_LE0         PORTD &= ~(1 << PD4)                    //数码管段控制位为0，锁存端口数据
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; #define D_LE1           PORTD |= (1 << PD4)                   //数码管段控制位为1，锁存器输出与端口一致
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; #define W_LE0         PORTD &= ~(1 << PD5)                    //数码管位控制位为0
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; #define W_LE1           PORTD |= (1 << PD5)                   //数码管位控制位为1
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; 
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; #define       F_CPU              7372800                                                                  // 单片机主频为7.3728MHz
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; #define baud           9600                                     //设置波特率的大小
+ 000E           ; #define baud_setting   (uint)((ulong)F_CPU/(16*(ulong)baud)-1)  //波特率计算公式
+ 000E           ; #define baud_h         (uchar)(baud_setting>>8)                 //提取高位
+ 000E           ; #define baud_l         (uchar)(baud_setting)                    //低位
+ 000E                   .dbline 32
+ 000E           ; 
+ 000E           ; 
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; extern int _textmode;
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; //***********************************************************************
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ; // 用于输出的标准格式函数，用printf输出到UART1
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; //***********************************************************************
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; int putchar(char c)
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ;     {
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ;     if (_textmode && c == '\n')
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ;         putchar('\r');
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ;     while ( !(UCSR1A & (1<<UDRE1)) )   // UDRE, data register empty
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ;         ;
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;     UDR1 = c;
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ;     return c;
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ;     }
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ; //***********************************************************************
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ; // 用于输入的标准格式函数，用getchar通过UART1输入到单片机，代替C中的scanf
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ; //***********************************************************************
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ; 
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ; int getchar(void)
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ;     {
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ;     while ((UCSR1A & 0x80) == 0)
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ;         ;
+ 003A           ;     return UDR1;
+ 003A           ;     } 
+ 003A           ; //***********************************************************************
+ 003A                   .dbline 57
+ 003A           ; // 串口1初始化接口函数
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ; // 初始化uart,查询方式读写
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ; //***********************************************************************
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ; void UART_Init(void)
+ 0042           ; {
+ 0042           ;  
+ 0042           ;   UCSR1B =(1<<RXEN1)|(1<<TXEN1);                      //发送接收使能
+ 0042                   .dbline 64
+ 0042           ;   UBRR1H=baud_h;                                      //写波特率的值
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ;   UBRR1L=baud_l; 
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ; }
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ; 
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ; //***********************************************************************
+ 004C           ; //            关闭数码管函数，为了数码管不显示乱码，属于初始化函数
+ 004C           ; //***********************************************************************
+ 004C                   .dbline 71
+ 004C           ; 
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ; void LED_Off()
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ; {
+ 0058           ;     PORTD=0xFF;
+ 0058           ;       DDRD=0xFF;
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ;       D_LE1;                             //关掉数码管，以免显示乱码                   
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ;     W_LE1;                     
+ 006C           ;     Data_IO=0xFF;                      //关数码管            
+ 006C           ;     W_LE0; 
+ 006C           ; }
+ 006C           ; 
+ 006C           ; //***********************************************************************
+ 006C           ; //                    主函数，调用SD卡读写函数
+ 006C           ; //***********************************************************************
+ 006C           ; 
+ 006C           ; void main(void)
+ 006C           ; {
+ 006C           ;  unsigned char a;
+ 006C           ;  
+ 006C                   .dbline 90
+ 006C           ;  UART_Init();                                                                           //串口初始化
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ;  LED_Off();                                                                         //关数码管
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ;  while(1)
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ;  {
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ;   printf("M128_ZZX2串口通信实验\r\n");
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ;   printf("请通过串口调试助手发送字符\r\n");
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ;   a=getchar();
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ;   printf("接收到的字符是：%c\r\n",a);
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ;  }
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ; }
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ; 
+ 0088           ;  
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; 
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; 
+ 00A6           ; 
+ 00A6           ; 
+ 00A6           ; 
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; 
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\26.UART串口通信实验\USART\USART.c
+ 00BE                   .dbfunc e putchar _putchar fI
+ 00BE           ;              c -> R20
+                        .even
+ 00BE           _putchar::
+ 00BE 0E940000          xcall push_gset1
+ 00C2 402F              mov R20,R16
+ 00C4                   .dbline -1
+ 00C4                   .dbline 38
+ 00C4                   .dbline 39
+ 00C4 20900000          lds R2,__textmode
+ 00C8 30900100          lds R3,__textmode+1
+ 00CC 2220              tst R2
+ 00CE 11F4              brne X1
+ 00D0 3320              tst R3
+ 00D2 21F0              breq L23
+ 00D4           X1:
+ 00D4 4A30              cpi R20,10
+ 00D6 11F4              brne L23
+ 00D8                   .dbline 40
+ 00D8 0DE0              ldi R16,13
+ 00DA F1DF              xcall _putchar
+ 00DC           L22:
+ 00DC                   .dbline 42
+ 00DC           L23:
+ 00DC                   .dbline 41
+ 00DC 20909B00          lds R2,155
+ 00E0 25FE              sbrs R2,5
+ 00E2 FCCF              rjmp L22
+ 00E4                   .dbline 43
+ 00E4 40939C00          sts 156,R20
+ 00E8                   .dbline 44
+ 00E8 042F              mov R16,R20
+ 00EA 1127              clr R17
+ 00EC                   .dbline -2
+ 00EC           L19:
+ 00EC 0E940000          xcall pop_gset1
+ 00F0                   .dbline 0 ; func end
+ 00F0 0895              ret
+ 00F2                   .dbsym r c 20 c
+ 00F2                   .dbend
+ 00F2                   .dbfunc e getchar _getchar fI
+                        .even
+ 00F2           _getchar::
+ 00F2                   .dbline -1
+ 00F2                   .dbline 51
+ 00F2           L26:
+ 00F2                   .dbline 53
+ 00F2           L27:
+ 00F2                   .dbline 52
+ 00F2 20909B00          lds R2,155
+ 00F6 27FE              sbrs R2,7
+ 00F8 FCCF              rjmp L26
+ 00FA                   .dbline 54
+ 00FA 00919C00          lds R16,156
+ 00FE 1127              clr R17
+ 0100                   .dbline -2
+ 0100           L25:
+ 0100                   .dbline 0 ; func end
+ 0100 0895              ret
+ 0102                   .dbend
+ 0102                   .dbfunc e UART_Init _UART_Init fV
+                        .even
+ 0102           _UART_Init::
+ 0102                   .dbline -1
+ 0102                   .dbline 61
+ 0102                   .dbline 63
+ 0102 88E1              ldi R24,24
+ 0104 80939A00          sts 154,R24
+ 0108                   .dbline 64
+ 0108 2224              clr R2
+ 010A 20929800          sts 152,R2
+ 010E                   .dbline 65
+ 010E 8FE2              ldi R24,47
+ 0110 80939900          sts 153,R24
+ 0114                   .dbline -2
+ 0114           L29:
+ 0114                   .dbline 0 ; func end
+ 0114 0895              ret
+ 0116                   .dbend
+ 0116                   .dbfunc e LED_Off _LED_Off fV
+                        .even
+ 0116           _LED_Off::
+ 0116                   .dbline -1
+ 0116                   .dbline 73
+ 0116                   .dbline 74
+ 0116 8FEF              ldi R24,255
+ 0118 82BB              out 0x12,R24
+ 011A                   .dbline 75
+ 011A 81BB              out 0x11,R24
+ 011C                   .dbline 76
+ 011C 949A              sbi 0x12,4
+ 011E                   .dbline 77
+ 011E 959A              sbi 0x12,5
+ 0120                   .dbline 78
+ 0120 8BBB              out 0x1b,R24
+ 0122                   .dbline 79
+ 0122 9598              cbi 0x12,5
+ 0124                   .dbline -2
+ 0124           L30:
+ 0124                   .dbline 0 ; func end
+ 0124 0895              ret
+ 0126                   .dbend
+ 0126                   .dbfunc e main _main fV
+ 0126           ;              a -> R20
+                        .even
+ 0126           _main::
+ 0126                   .dbline -1
+ 0126                   .dbline 87
+ 0126                   .dbline 90
+ 0126 EDDF              xcall _UART_Init
+ 0128                   .dbline 91
+ 0128 F6DF              xcall _LED_Off
+ 012A 10C0              xjmp L33
+ 012C           L32:
+ 012C                   .dbline 93
+ 012C                   .dbline 94
+ 012C 00E0              ldi R16,<L35
+ 012E 10E0              ldi R17,>L35
+ 0130 0E940000          xcall _printf
+ 0134                   .dbline 95
+ 0134 00E0              ldi R16,<L36
+ 0136 10E0              ldi R17,>L36
+ 0138 0E940000          xcall _printf
+ 013C                   .dbline 96
+ 013C DADF              xcall _getchar
+ 013E 402F              mov R20,R16
+ 0140                   .dbline 97
+ 0140 242F              mov R18,R20
+ 0142 3327              clr R19
+ 0144 00E0              ldi R16,<L37
+ 0146 10E0              ldi R17,>L37
+ 0148 0E940000          xcall _printf
+ 014C                   .dbline 98
+ 014C           L33:
+ 014C                   .dbline 92
+ 014C EFCF              xjmp L32
+ 014E           X2:
+ 014E                   .dbline -2
+ 014E           L31:
+ 014E                   .dbline 0 ; func end
+ 014E 0895              ret
+ 0150                   .dbsym r a 20 c
+ 0150                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\26.UART串口通信实验\USART\USART.c
+ 0000           L37:
+ 0000                   .blkb 21
+                        .area idata
+ 0000 BDD3CAD5B5BDB5C4D7D6B7FBCAC7A3BA  .byte 189,211,202,213,181,189,181,196,215,214,183,251,202,199,163,186
+ 0010 25630D0A00        .byte 37,'c,13,10,0
+                        .area data(ram, con, rel)
+ 0015                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\26.UART串口通信实验\USART\USART.c
+ 0015           L36:
+ 0015                   .blkb 29
+                        .area idata
+ 0015 C7EBCDA8B9FDB4AEBFDAB5F7CAD4D6FA  .byte 199,235,205,168,185,253,180,174,191,218,181,247,202,212,214,250
+ 0025 CAD6B7A2CBCDD7D6B7FB0D0A00        .byte 202,214,183,162,203,205,215,214,183,251,13,10,0
+                        .area data(ram, con, rel)
+ 0032                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\26.UART串口通信实验\USART\USART.c
+ 0032           L35:
+ 0032                   .blkb 24
+                        .area idata
+ 0032 4D3132385F5A5A5832B4AEBFDACDA8D0  .byte 'M,49,50,56,95,'Z,'Z,'X,50,180,174,191,218,205,168,208
+ 0042 C5CAB5D1E90D0A00  .byte 197,202,181,209,233,13,10,0
+                        .area data(ram, con, rel)
+ 004A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\26.UART串口通信实验\USART\USART.c

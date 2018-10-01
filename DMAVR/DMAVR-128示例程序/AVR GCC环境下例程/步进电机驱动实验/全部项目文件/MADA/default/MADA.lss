@@ -1,0 +1,210 @@
+
+MADA.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000010  00800100  0000012e  000001a2  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         0000012e  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .debug_aranges 00000020  00000000  00000000  000001b2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_pubnames 00000039  00000000  00000000  000001d2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000018c  00000000  00000000  0000020b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 0000010c  00000000  00000000  00000397  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   00000189  00000000  00000000  000004a3  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000020  00000000  00000000  0000062c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    000000de  00000000  00000000  0000064c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    00000030  00000000  00000000  0000072a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000048  00000000  00000000  0000075a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+   8:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+   c:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  10:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  14:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  18:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  1c:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  20:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  24:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  28:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  2c:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  30:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  34:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  38:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  3c:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  40:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  44:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  48:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  4c:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  50:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  54:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  58:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  5c:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  60:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  64:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  68:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  6c:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  70:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  74:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  78:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  7c:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  80:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  84:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+  88:	0c 94 5d 00 	jmp	0xba	; 0xba <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	ee e2       	ldi	r30, 0x2E	; 46
+  a0:	f1 e0       	ldi	r31, 0x01	; 1
+  a2:	00 e0       	ldi	r16, 0x00	; 0
+  a4:	0b bf       	out	0x3b, r16	; 59
+  a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+  a8:	07 90       	elpm	r0, Z+
+  aa:	0d 92       	st	X+, r0
+  ac:	a0 31       	cpi	r26, 0x10	; 16
+  ae:	b1 07       	cpc	r27, r17
+  b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+  b2:	0e 94 5f 00 	call	0xbe	; 0xbe <main>
+  b6:	0c 94 95 00 	jmp	0x12a	; 0x12a <_exit>
+
+000000ba <__bad_interrupt>:
+  ba:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000be <main>:
+//			主程序
+//***********************************************************************
+int main(void)
+{
+ uint i,j;
+ 	DDRB=0xFF;
+  be:	8f ef       	ldi	r24, 0xFF	; 255
+  c0:	87 bb       	out	0x17, r24	; 23
+    PORTD=0xFF;
+  c2:	82 bb       	out	0x12, r24	; 18
+	DDRD=0xFF;
+  c4:	81 bb       	out	0x11, r24	; 17
+	D_LE1;                             //关掉数码管，以免显示乱码                   
+  c6:	94 9a       	sbi	0x12, 4	; 18
+    W_LE1;                     
+  c8:	95 9a       	sbi	0x12, 5	; 18
+    Data_IO=0xFF;                      //关数码管            
+  ca:	8b bb       	out	0x1b, r24	; 27
+    W_LE0; 
+  cc:	95 98       	cbi	0x12, 5	; 18
+  ce:	20 e0       	ldi	r18, 0x00	; 0
+  d0:	30 e0       	ldi	r19, 0x00	; 0
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  d2:	40 e0       	ldi	r20, 0x00	; 0
+  d4:	58 e4       	ldi	r21, 0x48	; 72
+  d6:	0b c0       	rjmp	.+22     	; 0xee <main+0x30>
+   {
+   for(j=0;j<64*8;j++)   			   //步距角5.625/64 减速比1/64，8拍，这个循环为反转一圈
+   {
+    for(i=0;i<8;i++)
+	{
+    PORTB=B_Rotation[i];
+  d8:	81 91       	ld	r24, Z+
+  da:	88 bb       	out	0x18, r24	; 24
+  dc:	ca 01       	movw	r24, r20
+  de:	01 97       	sbiw	r24, 0x01	; 1
+  e0:	f1 f7       	brne	.-4      	; 0xde <main+0x20>
+    W_LE0; 
+  while(1)
+   {
+   for(j=0;j<64*8;j++)   			   //步距角5.625/64 减速比1/64，8拍，这个循环为反转一圈
+   {
+    for(i=0;i<8;i++)
+  e2:	81 e0       	ldi	r24, 0x01	; 1
+  e4:	e0 31       	cpi	r30, 0x10	; 16
+  e6:	f8 07       	cpc	r31, r24
+  e8:	b9 f7       	brne	.-18     	; 0xd8 <main+0x1a>
+    W_LE1;                     
+    Data_IO=0xFF;                      //关数码管            
+    W_LE0; 
+  while(1)
+   {
+   for(j=0;j<64*8;j++)   			   //步距角5.625/64 减速比1/64，8拍，这个循环为反转一圈
+  ea:	2f 5f       	subi	r18, 0xFF	; 255
+  ec:	3f 4f       	sbci	r19, 0xFF	; 255
+  ee:	82 e0       	ldi	r24, 0x02	; 2
+  f0:	20 30       	cpi	r18, 0x00	; 0
+  f2:	38 07       	cpc	r19, r24
+  f4:	a8 f4       	brcc	.+42     	; 0x120 <main+0x62>
+  f6:	e8 e0       	ldi	r30, 0x08	; 8
+  f8:	f1 e0       	ldi	r31, 0x01	; 1
+  fa:	ee cf       	rjmp	.-36     	; 0xd8 <main+0x1a>
+   }
+   for(j=0;j<64*8;j++)				   //步距角5.625/64 减速比1/64，8拍，这个循环为正转一圈
+   {
+    for(i=0;i<8;i++)
+	{
+    PORTB=F_Rotation[i];
+  fc:	81 91       	ld	r24, Z+
+  fe:	88 bb       	out	0x18, r24	; 24
+ 100:	ca 01       	movw	r24, r20
+ 102:	01 97       	sbiw	r24, 0x01	; 1
+ 104:	f1 f7       	brne	.-4      	; 0x102 <main+0x44>
+	delay_ms(10);
+    }
+   }
+   for(j=0;j<64*8;j++)				   //步距角5.625/64 减速比1/64，8拍，这个循环为正转一圈
+   {
+    for(i=0;i<8;i++)
+ 106:	81 e0       	ldi	r24, 0x01	; 1
+ 108:	e8 30       	cpi	r30, 0x08	; 8
+ 10a:	f8 07       	cpc	r31, r24
+ 10c:	b9 f7       	brne	.-18     	; 0xfc <main+0x3e>
+	{
+    PORTB=B_Rotation[i];
+	delay_ms(10);
+    }
+   }
+   for(j=0;j<64*8;j++)				   //步距角5.625/64 减速比1/64，8拍，这个循环为正转一圈
+ 10e:	2f 5f       	subi	r18, 0xFF	; 255
+ 110:	3f 4f       	sbci	r19, 0xFF	; 255
+ 112:	82 e0       	ldi	r24, 0x02	; 2
+ 114:	20 30       	cpi	r18, 0x00	; 0
+ 116:	38 07       	cpc	r19, r24
+ 118:	29 f4       	brne	.+10     	; 0x124 <main+0x66>
+ 11a:	20 e0       	ldi	r18, 0x00	; 0
+ 11c:	30 e0       	ldi	r19, 0x00	; 0
+ 11e:	e7 cf       	rjmp	.-50     	; 0xee <main+0x30>
+ 120:	20 e0       	ldi	r18, 0x00	; 0
+ 122:	30 e0       	ldi	r19, 0x00	; 0
+ 124:	e0 e0       	ldi	r30, 0x00	; 0
+ 126:	f1 e0       	ldi	r31, 0x01	; 1
+ 128:	e9 cf       	rjmp	.-46     	; 0xfc <main+0x3e>
+
+0000012a <_exit>:
+ 12a:	f8 94       	cli
+
+0000012c <__stop_program>:
+ 12c:	ff cf       	rjmp	.-2      	; 0x12c <__stop_program>

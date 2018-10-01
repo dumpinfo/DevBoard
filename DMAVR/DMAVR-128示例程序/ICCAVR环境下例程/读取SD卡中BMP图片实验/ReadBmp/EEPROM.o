@@ -1,0 +1,44 @@
+XL
+H 1 areas 2 global symbols
+M EEPROM.C
+A text size 2C flags 0
+dbfile E:\DMAVR-~3\ReadBmp\EEPROM.C
+dbfunc e eeprom_read_byte 0 fI
+dbsym r readtemp A c
+dbsym r addr 10 i
+dbline FFFFFFFF 2
+dbline 20 2
+dbline 22 2
+dbline 22 2
+dbline 24 6
+dbline 26 A
+dbline 27 C
+dbline 28 E
+dbline 29 10
+dbline FFFFFFFE 14
+dbline 0 14
+dbfunc e eeprom_write_byte 18 fV
+dbsym r p_buff 12 c
+dbsym r addr 10 i
+dbline FFFFFFFF 18
+dbline 31 18
+dbline 33 18
+dbline 36 1C
+dbline 36 1C
+dbline 37 20
+dbline 38 22
+dbline 39 24
+dbline 3A 26
+dbline 3B 28
+dbline FFFFFFFE 2A
+dbline 0 2A
+S _eeprom_write_byte Def0018
+S _eeprom_read_byte Def0000
+T 00 00 AA 92 E1 99 FE CF 22 24 2F BA 0E BB E0 9A
+R 00 00 00 00
+T 0E 00 AD B2 0A 2D 11 27 A9 90 08 95
+R 00 00 00 00
+T 18 00 22 24 2F BA E1 99 FE CF 0E BB 2D BB E2 9A
+R 00 00 00 00
+T 26 00 E1 98 E1 9A 08 95
+R 00 00 00 00

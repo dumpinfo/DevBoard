@@ -1,0 +1,141 @@
+Map File Summary V3.2.3 for IccV7 AVR
+run at 2010-02-06 16:43:31
+on project "E:\DMAVR-M128 ICCAVR\ReadBmp\READBMP"
+
+Memory summary:
+
+flash size is 131072 bytes (128KB)
+flash used for
+- int vectors     = 140 (0x8C) bytes from 0x0000 to 0x008B = 70 (0x46) instruction words from 0x0000 to 0x0045
+- func pointers   = 6 (0x06) bytes from 0x008C to 0x0091
+- constants       = 3663 (0xE4F) bytes from 0x0092 to 0x0EE0
+- code            = 15802 (0x3DBA) bytes from 0x0EE2 to 0x4C9B = 7901 (0x1EDD) instruction words) from 0x0771 to 0x264D
++- user code      : 10916 (0x2AA4) bytes from 0x0EE2 to 0x3985 = 5458 (0x1552) instruction words) from 0x0771 to 0x1CC2
++- <library>      : 4886 (0x1316) bytes from 0x3986 to 0x4C9B = 2443 (0x98B) instruction words) from 0x1CC3 to 0x264D
+flash usage is 19612 bytes or 15.0%, leaving 111460 bytes (108KB) free
+
+sram size is 4096 bytes (4KB)
+sram used for
+- variables       = 1328 (0x530) bytes from 0x0100 to 0x062F
+- heap, s/w stack = 2738 (0xAB2) bytes from 0x0630 to 0x10E1
+- h/w stack       = 30 (0x1E) bytes from 0x10E2 to 0x10FF
+
+eeprom size is 4096 bytes (4KB)
+no eeprom area found
+
+
+Areas:
+(items sorted by name)
+
+FLASH area "func_lit" used for function pointers
+FLASH area "func_lit" = 6 (0x06) bytes from 0x008C to 0x0091 = 3 function pointers
+  no user objects in this area
+
+FLASH area "lit" used for constants
+FLASH area "lit" = 2421 (0x975) bytes from 0x0092 to 0x0A06
+  __ctype                   =  257 (0x0101) bytes
+  _ascii                    = 2164 (0x0874) bytes
+
+FLASH area "idata" with init values for data area objects
+FLASH area "idata" = 1242 (0x4DA) bytes from 0x0A07 to 0x0EE0
+  no user objects in this area
+
+FLASH area "text" used for code
+FLASH area "text" = 15802 (0x3DBA) bytes from 0x0EE2 to 0x4C9B = 7901 (0x1EDD) instruction words from 0x0771 to 0x264D
+  _CopyDirentruyItem        =  166 (0x00A6) words
+  _DisplayChar              =  116 (0x0074) words
+  _DisplayGB2312            =  105 (0x0069) words
+  _DisplayString            =   37 (0x0025) words
+  _FAT_Init                 =  385 (0x0181) words
+  _FAT_LoadPartCluster      =   77 (0x004D) words
+  _FAT_NextCluster          =  210 (0x00D2) words
+  _GUI_sprintf_chartobit    =   52 (0x0034) words
+  _GUI_sprintf_chartohex    =   40 (0x0028) words
+  _GUI_sprintf_nu           =   20 (0x0014) words
+  _GUIback                  =   44 (0x002C) words
+  _GUIcircle                =   73 (0x0049) words
+  _GUIfull                  =   35 (0x0023) words
+  _GUIline                  =  153 (0x0099) words
+  _GUIpoint                 =   50 (0x0032) words
+  _GetFolderCluster         =  151 (0x0097) words
+  _LCD_Init                 =  144 (0x0090) words
+  _LCD_RD_REG16             =  115 (0x0073) words
+  _LCD_WR_CMD               =  109 (0x006D) words
+  _LCD_WR_Data              =   26 (0x001A) words
+  _LCD_WR_DataP             =   12 (0x000C) words
+  _LCD_WR_REG               =   44 (0x002C) words
+  _LCD_clear                =   78 (0x004E) words
+  _LED_Off                  =    8 (0x0008) words
+  _McuInit                  =   27 (0x001B) words
+  _SD_SizeDisplay           =  273 (0x0111) words
+  _Search                   =  472 (0x01D8) words
+  _SearchFolder             =  435 (0x01B3) words
+  _SearchInit               =  149 (0x0095) words
+  _UART_Init                =   10 (0x000A) words
+  _WriteFolderCluster       =   83 (0x0053) words
+  __start                   =   34 (0x0022) words
+  _delay_100us              =    2 (0x0002) words
+  _delay_10us               =    3 (0x0003) words
+  _delay_1ms                =   10 (0x000A) words
+  _delay_1us                =    7 (0x0007) words
+  _delay_3us                =   22 (0x0016) words
+  _delay_50us               =    4 (0x0004) words
+  _delay_n100us             =   11 (0x000B) words
+  _delay_nms                =   15 (0x000F) words
+  _delay_ns                 =   13 (0x000D) words
+  _disp_image               =  654 (0x028E) words
+  _eeprom_read_byte         =   12 (0x000C) words
+  _eeprom_write_byte        =   10 (0x000A) words
+  _exit                     =    1 (0x0001) word
+  _getchar$device_specific$ =    8 (0x0008) words
+  _main                     =  243 (0x00F3) words
+  _mmcCapacity              =  203 (0x00CB) words
+  _mmcCommand               =   67 (0x0043) words
+  _mmcInit                  =   13 (0x000D) words
+  _mmcRead                  =   80 (0x0050) words
+  _mmcReset                 =   74 (0x004A) words
+  _mmcSendCommand           =   29 (0x001D) words
+  _mmcWrite                 =   80 (0x0050) words
+  _plotC                    =   93 (0x005D) words
+  _putchar$device_specific$ =   24 (0x0018) words
+  _spiInit                  =   16 (0x0010) words
+  _spiSendByte              =    4 (0x0004) words
+  _spiTransferByte          =    5 (0x0005) words
+  _spiTransferWord          =   22 (0x0016) words
+  <library>                 = 2443 (0x098B) words
+
+SRAM area "data" with global and static variables initialised explicitly
+SRAM area "data" = 1242 (0x4DA) bytes from 0x0100 to 0x05D9
+  _FAT_ReadSector           =    2 (0x0002) bytes
+  _FAT_WriteSector          =  336 (0x0150) bytes
+  _GB2312                   =  736 (0x02E0) bytes
+  _color                    =   16 (0x0010) bytes
+  _image_all                =  150 (0x0096) bytes
+  _image_count              =    2 (0x0002) bytes
+
+SRAM area "bss" with global and static variables initialised implicitly to 0
+SRAM area "bss" = 86 (0x56) bytes from 0x05DA to 0x062F
+  FAT.c:SizeB               =    2 (0x0002) bytes
+  FAT.c:SizeG               =    2 (0x0002) bytes
+  FAT.c:SizeQ               =    2 (0x0002) bytes
+  FAT.c:SizeS               =    2 (0x0002) bytes
+  _BytesPerSector           =    2 (0x0002) bytes
+  _FAT32_Enable             =    1 (0x0001) byte
+  _FATsectors               =    2 (0x0002) bytes
+  _FileInfo                 =   15 (0x000F) bytes
+  _FirstDataSector          =    4 (0x0004) bytes
+  _FirstDirClust            =    4 (0x0004) bytes
+  _FirstDirSector           =    4 (0x0004) bytes
+  _FirstFATSector           =    4 (0x0004) bytes
+  _RootDirCount             =    4 (0x0004) bytes
+  _RootDirSectors           =    4 (0x0004) bytes
+  _SectorsPerClust          =    2 (0x0002) bytes
+  ___FreeList               =    2 (0x0002) bytes
+  __textmode                =    2 (0x0002) bytes
+  _i                        =    2 (0x0002) bytes
+  _spiTransferComplete      =   26 (0x001A) bytes
+
+FLASH area "vector" used for interrupt vectors
+FLASH area "vector" = 4 (0x04) bytes from 0x0000 to 0x0003 = 2 (0x02) instruction words from 0x0000 to 0x0001
+
+<eof>

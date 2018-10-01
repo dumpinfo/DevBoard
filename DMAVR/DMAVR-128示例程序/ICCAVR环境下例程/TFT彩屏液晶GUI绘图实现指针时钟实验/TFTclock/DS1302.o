@@ -1,0 +1,195 @@
+XL
+H 3 areas 6 global symbols
+M DS1302.c
+A text size 13A flags 0
+dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+dbfunc e ds1302_write_byte 0 fV
+dbsym r i 14 c
+dbsym r d 12 c
+dbsym r addr 10 c
+dbline FFFFFFFF 2
+dbline 10 2
+dbline 13 2
+dbline 16 4
+dbline 17 6
+dbline 18 8
+dbline 18 C
+dbline 19 C
+dbline 19 10
+dbline 1A 10
+dbline 1B 12
+dbline 1C 14
+dbline 1D 14
+dbline 1E 16
+dbline 1F 16
+dbline 20 18
+dbline 21 1A
+dbline 22 1C
+dbline 18 1C
+dbline 18 1E
+dbline 25 22
+dbline 26 24
+dbline 26 28
+dbline 27 28
+dbline 27 2C
+dbline 28 2C
+dbline 29 2E
+dbline 2A 30
+dbline 2B 30
+dbline 2C 32
+dbline 2D 32
+dbline 2E 34
+dbline 2F 36
+dbline 30 38
+dbline 26 38
+dbline 26 3A
+dbline 31 3E
+dbline FFFFFFFE 40
+dbline 0 40
+dbfunc e ds1302_read_byte 44 fc
+dbsym r temp 14 c
+dbsym r i 16 c
+dbsym r addr 10 c
+dbline FFFFFFFF 48
+dbline 37 48
+dbline 3B 48
+dbline 3E 4A
+dbline 3F 4C
+dbline 40 4E
+dbline 40 52
+dbline 41 52
+dbline 41 56
+dbline 42 56
+dbline 43 58
+dbline 44 5A
+dbline 45 5A
+dbline 46 5C
+dbline 47 5C
+dbline 48 5E
+dbline 49 60
+dbline 4A 62
+dbline 40 62
+dbline 40 64
+dbline 4D 68
+dbline 4E 6A
+dbline 4E 6E
+dbline 4F 6E
+dbline 50 70
+dbline 50 74
+dbline 51 74
+dbline 52 76
+dbline 53 78
+dbline 54 78
+dbline 55 7A
+dbline 56 7A
+dbline 57 7C
+dbline 58 7E
+dbline 4E 7E
+dbline 4E 80
+dbline 5A 84
+dbline 5B 86
+dbline FFFFFFFE 88
+dbline 0 88
+dbfunc e ds1302_write_time 8E fV
+dbline FFFFFFFF 8E
+dbline 63 8E
+dbline 65 8E
+dbline 66 94
+dbline 68 9A
+dbline 69 A2
+dbline 6A AA
+dbline 6B B2
+dbline 6C BA
+dbline 6D C2
+dbline 6E CA
+dbline 6F D2
+dbline 70 DA
+dbline FFFFFFFE DE
+dbline 0 DE
+dbfunc e ds1302_read_time E0 fV
+dbline FFFFFFFF E4
+dbline 78 E4
+dbline 7A E4
+dbline 7B EC
+dbline 7C F4
+dbline 7D FE
+dbline 7E 108
+dbline 7F 112
+dbline 80 120
+dbline FFFFFFFE 12A
+dbline 0 12A
+dbfunc e ds1302_init 130 fV
+dbline FFFFFFFF 130
+dbline 88 130
+dbline 8A 130
+dbline 8B 132
+dbline 8C 134
+dbline 8D 136
+dbline FFFFFFFE 138
+dbline 0 138
+S _ds1302_read_time Def00E0
+S _ds1302_read_byte Def0044
+S _ds1302_init Def0130
+S _ds1302_write_time Def008E
+S _ds1302_write_byte Def0000
+A data size 8 flags 20
+dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+dbsym e time_buf 0 A[8:8]c
+S _time_buf Def0000
+A idata size 8 flags 0
+T 00 00 20 10
+R 00 00 02 00
+T 02 00 02 01
+R 00 00 02 00
+T 04 00 A3 22
+R 00 00 02 00
+T 06 00 00 01
+R 00 00 02 00
+T 00 00 4A 93 1F 9A 16 9A 0E 7F 44 27 09 C0 00 FF
+R 00 00 00 00
+T 0E 00 02 C0 1E 9A 01 C0 1E 98 1D 9A 1D 98 06 95
+R 00 00 00 00
+T 1C 00 43 95 48 30 A8 F3 16 9A 44 27 09 C0 20 FF
+R 00 00 00 00
+T 2A 00 02 C0 1E 9A 01 C0 1E 98 1D 9A 1D 98 26 95
+R 00 00 00 00
+T 38 00 43 95 48 30 A8 F3 1F 98 49 91 08 95
+R 00 00 00 00
+T 44 00 4A 93 6A 93 1F 9A 16 9A 01 60 66 27 09 C0
+R 00 00 00 00
+T 52 00 00 FF 02 C0 1E 9A 01 C0 1E 98 1D 9A 1D 98
+R 00 00 00 00
+T 60 00 06 95 63 95 68 30 A8 F3 16 98 66 27 09 C0
+R 00 00 00 00
+T 6E 00 46 95 0E 9B 02 C0 40 68 01 C0 4F 77 1D 9A
+R 00 00 00 00
+T 7C 00 1D 98 63 95 68 30 A8 F3 1F 98 04 2F 69 91
+R 00 00 00 00
+T 8A 00 49 91 08 95
+R 00 00 00 00
+T 8E 00 22 27 0E E8 B6 DF 20 E8 00 E8 B3 DF 20 91
+R 00 00 00 00
+T 9C 00 01 00 0C E8 AF DF 20 91 02 00 08 E8 AB DF
+R 00 00 00 00 00 02 01 00 00 0A 01 00
+T AA 00 20 91 03 00 06 E8 A7 DF 20 91 07 00 0A E8
+R 00 00 00 00 00 04 01 00 00 0C 01 00
+T B8 00 A3 DF 20 91 04 00 04 E8 9F DF 20 91 05 00
+R 00 00 00 00 00 06 01 00 00 0E 01 00
+T C6 00 02 E8 9B DF 20 91 06 00 00 E8 97 DF 20 91
+R 00 00 00 00 00 08 01 00
+T D4 00 07 00 0A E8 93 DF 20 E8 0E E8 90 CF
+R 00 00 00 00 00 02 01 00
+T E0 00 AA 92 4A 93 0C E8 AE DF 00 93 01 00 08 E8
+R 00 00 00 00 00 0C 01 00
+T EE 00 AA DF 00 93 02 00 06 E8 A6 DF A0 2E A0 92
+R 00 00 00 00 00 06 01 00
+T FC 00 03 00 04 E8 A1 DF A0 2E A0 92 04 00 02 E8
+R 00 00 00 00 00 02 01 00 00 0C 01 00
+T 0A 01 9C DF A0 2E A0 92 05 00 00 E8 97 DF 40 2F
+R 00 00 00 00 00 08 01 00
+T 18 01 84 2F 8F 77 80 93 06 00 0A E8 90 DF A0 2E
+R 00 00 00 00 00 08 01 00
+T 26 01 A0 92 07 00 49 91 A9 90 08 95
+R 00 00 00 00 00 04 01 00
+T 30 01 1F 98 1D 98 17 9A 15 9A 08 95
+R 00 00 00 00

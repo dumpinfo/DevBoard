@@ -1,0 +1,55 @@
+XL
+H 1 areas 6 global symbols
+M uart.c
+S push_gset1 Ref0000
+S __textmode Ref0000
+S pop_gset1 Ref0000
+A text size 58 flags 0
+dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\uart.c
+dbfunc e putchar 0 fI
+dbsym r c 14 c
+dbline FFFFFFFF 6
+dbline 1F 6
+dbline 20 6
+dbline 21 1A
+dbline 23 1E
+dbline 22 1E
+dbline 24 26
+dbline 25 2A
+dbline FFFFFFFE 2E
+dbline 0 32
+dbfunc e getchar 34 fI
+dbline FFFFFFFF 34
+dbline 2C 34
+dbline 2E 34
+dbline 2D 34
+dbline 2F 3C
+dbline FFFFFFFE 42
+dbline 0 42
+dbfunc e UART_Init 44 fV
+dbline FFFFFFFF 44
+dbline 36 44
+dbline 38 44
+dbline 39 4A
+dbline 3A 50
+dbline FFFFFFFE 56
+dbline 0 56
+S _getchar Def0034
+S _putchar Def0000
+S _UART_Init Def0044
+T 00 00 0E 94 00 00 40 2F 20 90 00 00 30 90 01 00
+R 00 00 00 00 12 04 00 00 02 0A 01 00 02 0E 01 00
+T 0E 00 22 20 11 F4 33 20 21 F0 4A 30 11 F4 0D E0
+R 00 00 00 00
+T 1C 00 F1 DF 20 90 9B 00 25 FE FC CF 40 93 9C 00
+R 00 00 00 00
+T 2A 00 04 2F 11 27 0E 94 00 00 08 95
+R 00 00 00 00 12 08 02 00
+T 34 00 20 90 9B 00 27 FE FC CF 00 91 9C 00 11 27
+R 00 00 00 00
+T 42 00 08 95
+R 00 00 00 00
+T 44 00 88 E1 80 93 9A 00 22 24 20 92 98 00 8F E2
+R 00 00 00 00
+T 52 00 80 93 99 00 08 95
+R 00 00 00 00

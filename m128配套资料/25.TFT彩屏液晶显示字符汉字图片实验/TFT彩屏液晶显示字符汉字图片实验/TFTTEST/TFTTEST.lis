@@ -1,0 +1,609 @@
+                        .module TFTTEST.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128的基于TFT彩屏液晶测试程序，用来显示字符汉字和图片
+ 0000           ; //相关外部头文件：main.h tft.h GB2312.h ascii8x16.h 使用前请将相关头文件加入编译器安装路径下的avr文件夹
+ 0000           ; //图片数据文件picture-xin.c mmp.c ，存储在Flash中
+ 0000           ; //编译环境 ICCAVR
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //忠兴电子元件店编辑
+ 0000           ; //日期：2010.01.14
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; #include <TFT_main.h>
+ 0000           ; 
+ 0000           ;      
+ 0000           ; //***********************************************************************
+ 0000           ; //         调用显示字符和汉字示例
+ 0000           ; //***********************************************************************
+ 0000                   .dbline 21
+ 0000           ; void DisplayData()
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ;  {
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ;     DisplayChar(2+'0',0,4,0x0eee);
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ;       DisplayChar(0+'0',1,4,0x0eee);
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ;       DisplayChar(1+'0',2,4,0x0eee);
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ;       DisplayChar(0+'0',3,4,0x0eee);
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ;     
+ 000E           ;       DisplayChar('/',4,4,0x0eee);                                    // "/"符号
+ 000E           ; 
+ 000E           ;       DisplayChar(0+'0',5,4,0x0eee);
+ 000E                   .dbline 32
+ 000E           ;       DisplayChar(1+'0',6,4,0x0eee);
+ 000E           ;       DisplayChar('/',7,4,0x0eee);                                    // "/"符号
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; 
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; 
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ;       DisplayChar(2+'0',8,4,0x0eee);
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ;       DisplayChar(9+'0',9,4,0x0eee);
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ;     
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ;       DisplayGB2312(6,5,4,0xa000);                                    //星
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ;       DisplayGB2312(7,6,4,0xa000);                                    //期
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ;       DisplayGB2312(5+7,7,4,0xa000);                                  //星期几
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ;  }
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; 
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ; 
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ; 
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ; //***********************************************************************
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ; //         主函数
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ; //***********************************************************************
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ; 
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ; void main(void)
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ; {
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ;   uchar i;
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ;   //delay_ms(100);
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ;   McuInit();                                         //单片机初始化
+ 003A           ;   LCD_RD1; 
+ 003A           ;   LCD_Init();
+ 003A           ;   LCD_clear(0);
+ 003A                   .dbline 57
+ 003A           ;       
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;   while(1)
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;     {
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ;               DisplayString("ATMEGA128 Board",0,1,0xeee);  //字符串显示调用
+ 0042           ;               DisplayString("TFT Testing",2,2,0xeee);          //字符串显示调用
+ 0042           ;               DisplayData();                                                           //字符汉字调用
+ 0042           ;               delay_nms(1000);                                                                 //延时
+ 0042                   .dbline 64
+ 0042           ;               delay_nms(1000);
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ;               delay_nms(1000);
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ;               delay_nms(1000);
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ; 
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;           LCD_MM();                                                                    //小屏显示图片96X64
+ 004C           ;               delay_nms(1000);
+ 004C           ;               delay_nms(1000);
+ 004C                   .dbline 71
+ 004C           ;               LCD_test();                                                                      //显示彩条和纯色
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ;               LCD_clear(0);                                                            //清屏
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ; 
+ 0058           ;               
+ 0058           ;     }
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ; }
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C           ; 
+ 006C                   .dbline 90
+ 006C           ; 
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ; 
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ; 
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ; 
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ; 
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ; 
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ; 
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ; 
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ; 
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ; 
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088           ; 
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; 
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; 
+ 00A6           ; 
+ 00A6           ; 
+ 00A6           ; 
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; 
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\TFTTEST\TFTTEST.C
+ 00BE                   .dbfunc e DisplayData _DisplayData fV
+                        .even
+ 00BE           _DisplayData::
+ 00BE 2497              sbiw R28,4
+ 00C0                   .dbline -1
+ 00C0                   .dbline 22
+ 00C0                   .dbline 23
+ 00C0 8EEE              ldi R24,3822
+ 00C2 9EE0              ldi R25,14
+ 00C4 9B83              std y+3,R25
+ 00C6 8A83              std y+2,R24
+ 00C8 84E0              ldi R24,4
+ 00CA 8883              std y+0,R24
+ 00CC 2227              clr R18
+ 00CE 02E3              ldi R16,50
+ 00D0 0E940000          xcall _DisplayChar
+ 00D4                   .dbline 24
+ 00D4 8EEE              ldi R24,3822
+ 00D6 9EE0              ldi R25,14
+ 00D8 9B83              std y+3,R25
+ 00DA 8A83              std y+2,R24
+ 00DC 84E0              ldi R24,4
+ 00DE 8883              std y+0,R24
+ 00E0 21E0              ldi R18,1
+ 00E2 00E3              ldi R16,48
+ 00E4 0E940000          xcall _DisplayChar
+ 00E8                   .dbline 25
+ 00E8 8EEE              ldi R24,3822
+ 00EA 9EE0              ldi R25,14
+ 00EC 9B83              std y+3,R25
+ 00EE 8A83              std y+2,R24
+ 00F0 84E0              ldi R24,4
+ 00F2 8883              std y+0,R24
+ 00F4 22E0              ldi R18,2
+ 00F6 01E3              ldi R16,49
+ 00F8 0E940000          xcall _DisplayChar
+ 00FC                   .dbline 26
+ 00FC 8EEE              ldi R24,3822
+ 00FE 9EE0              ldi R25,14
+ 0100 9B83              std y+3,R25
+ 0102 8A83              std y+2,R24
+ 0104 84E0              ldi R24,4
+ 0106 8883              std y+0,R24
+ 0108 23E0              ldi R18,3
+ 010A 00E3              ldi R16,48
+ 010C 0E940000          xcall _DisplayChar
+ 0110                   .dbline 28
+ 0110 8EEE              ldi R24,3822
+ 0112 9EE0              ldi R25,14
+ 0114 9B83              std y+3,R25
+ 0116 8A83              std y+2,R24
+ 0118 84E0              ldi R24,4
+ 011A 8883              std y+0,R24
+ 011C 24E0              ldi R18,4
+ 011E 0FE2              ldi R16,47
+ 0120 0E940000          xcall _DisplayChar
+ 0124                   .dbline 30
+ 0124 8EEE              ldi R24,3822
+ 0126 9EE0              ldi R25,14
+ 0128 9B83              std y+3,R25
+ 012A 8A83              std y+2,R24
+ 012C 84E0              ldi R24,4
+ 012E 8883              std y+0,R24
+ 0130 25E0              ldi R18,5
+ 0132 00E3              ldi R16,48
+ 0134 0E940000          xcall _DisplayChar
+ 0138                   .dbline 31
+ 0138 8EEE              ldi R24,3822
+ 013A 9EE0              ldi R25,14
+ 013C 9B83              std y+3,R25
+ 013E 8A83              std y+2,R24
+ 0140 84E0              ldi R24,4
+ 0142 8883              std y+0,R24
+ 0144 26E0              ldi R18,6
+ 0146 01E3              ldi R16,49
+ 0148 0E940000          xcall _DisplayChar
+ 014C                   .dbline 32
+ 014C 8EEE              ldi R24,3822
+ 014E 9EE0              ldi R25,14
+ 0150 9B83              std y+3,R25
+ 0152 8A83              std y+2,R24
+ 0154 84E0              ldi R24,4
+ 0156 8883              std y+0,R24
+ 0158 27E0              ldi R18,7
+ 015A 0FE2              ldi R16,47
+ 015C 0E940000          xcall _DisplayChar
+ 0160                   .dbline 35
+ 0160 8EEE              ldi R24,3822
+ 0162 9EE0              ldi R25,14
+ 0164 9B83              std y+3,R25
+ 0166 8A83              std y+2,R24
+ 0168 84E0              ldi R24,4
+ 016A 8883              std y+0,R24
+ 016C 28E0              ldi R18,8
+ 016E 02E3              ldi R16,50
+ 0170 0E940000          xcall _DisplayChar
+ 0174                   .dbline 36
+ 0174 8EEE              ldi R24,3822
+ 0176 9EE0              ldi R25,14
+ 0178 9B83              std y+3,R25
+ 017A 8A83              std y+2,R24
+ 017C 84E0              ldi R24,4
+ 017E 8883              std y+0,R24
+ 0180 29E0              ldi R18,9
+ 0182 09E3              ldi R16,57
+ 0184 0E940000          xcall _DisplayChar
+ 0188                   .dbline 38
+ 0188 80E0              ldi R24,40960
+ 018A 90EA              ldi R25,160
+ 018C 9B83              std y+3,R25
+ 018E 8A83              std y+2,R24
+ 0190 84E0              ldi R24,4
+ 0192 8883              std y+0,R24
+ 0194 25E0              ldi R18,5
+ 0196 06E0              ldi R16,6
+ 0198 0E940000          xcall _DisplayGB2312
+ 019C                   .dbline 39
+ 019C 80E0              ldi R24,40960
+ 019E 90EA              ldi R25,160
+ 01A0 9B83              std y+3,R25
+ 01A2 8A83              std y+2,R24
+ 01A4 84E0              ldi R24,4
+ 01A6 8883              std y+0,R24
+ 01A8 26E0              ldi R18,6
+ 01AA 07E0              ldi R16,7
+ 01AC 0E940000          xcall _DisplayGB2312
+ 01B0                   .dbline 40
+ 01B0 80E0              ldi R24,40960
+ 01B2 90EA              ldi R25,160
+ 01B4 9B83              std y+3,R25
+ 01B6 8A83              std y+2,R24
+ 01B8 84E0              ldi R24,4
+ 01BA 8883              std y+0,R24
+ 01BC 27E0              ldi R18,7
+ 01BE 0CE0              ldi R16,12
+ 01C0 0E940000          xcall _DisplayGB2312
+ 01C4                   .dbline -2
+ 01C4           L19:
+ 01C4 2496              adiw R28,4
+ 01C6                   .dbline 0 ; func end
+ 01C6 0895              ret
+ 01C8                   .dbend
+ 01C8                   .dbfunc e main _main fV
+ 01C8           ;              i -> <dead>
+                        .even
+ 01C8           _main::
+ 01C8 2497              sbiw R28,4
+ 01CA                   .dbline -1
+ 01CA                   .dbline 50
+ 01CA                   .dbline 53
+ 01CA 0E940000          xcall _McuInit
+ 01CE                   .dbline 54
+ 01CE 80916500          lds R24,101
+ 01D2 8061              ori R24,16
+ 01D4 80936500          sts 101,R24
+ 01D8                   .dbline 55
+ 01D8 0E940000          xcall _LCD_Init
+ 01DC                   .dbline 56
+ 01DC 0027              clr R16
+ 01DE 1127              clr R17
+ 01E0 0E940000          xcall _LCD_clear
+ 01E4 31C0              xjmp L22
+ 01E6           L21:
+ 01E6                   .dbline 59
+ 01E6                   .dbline 60
+ 01E6 8EEE              ldi R24,3822
+ 01E8 9EE0              ldi R25,14
+ 01EA 9B83              std y+3,R25
+ 01EC 8A83              std y+2,R24
+ 01EE 81E0              ldi R24,1
+ 01F0 8883              std y+0,R24
+ 01F2 2227              clr R18
+ 01F4 00E0              ldi R16,<L24
+ 01F6 10E0              ldi R17,>L24
+ 01F8 0E940000          xcall _DisplayString
+ 01FC                   .dbline 61
+ 01FC 8EEE              ldi R24,3822
+ 01FE 9EE0              ldi R25,14
+ 0200 9B83              std y+3,R25
+ 0202 8A83              std y+2,R24
+ 0204 82E0              ldi R24,2
+ 0206 8883              std y+0,R24
+ 0208 22E0              ldi R18,2
+ 020A 00E0              ldi R16,<L25
+ 020C 10E0              ldi R17,>L25
+ 020E 0E940000          xcall _DisplayString
+ 0212                   .dbline 62
+ 0212 55DF              xcall _DisplayData
+ 0214                   .dbline 63
+ 0214 08EE              ldi R16,1000
+ 0216 13E0              ldi R17,3
+ 0218 34DF              xcall _delay_nms
+ 021A                   .dbline 64
+ 021A 08EE              ldi R16,1000
+ 021C 13E0              ldi R17,3
+ 021E 31DF              xcall _delay_nms
+ 0220                   .dbline 65
+ 0220 08EE              ldi R16,1000
+ 0222 13E0              ldi R17,3
+ 0224 2EDF              xcall _delay_nms
+ 0226                   .dbline 66
+ 0226 08EE              ldi R16,1000
+ 0228 13E0              ldi R17,3
+ 022A 2BDF              xcall _delay_nms
+ 022C                   .dbline 68
+ 022C 0E940000          xcall _LCD_MM
+ 0230                   .dbline 69
+ 0230 08EE              ldi R16,1000
+ 0232 13E0              ldi R17,3
+ 0234 26DF              xcall _delay_nms
+ 0236                   .dbline 70
+ 0236 08EE              ldi R16,1000
+ 0238 13E0              ldi R17,3
+ 023A 23DF              xcall _delay_nms
+ 023C                   .dbline 71
+ 023C 0E940000          xcall _LCD_test
+ 0240                   .dbline 72
+ 0240 0027              clr R16
+ 0242 1127              clr R17
+ 0244 0E940000          xcall _LCD_clear
+ 0248                   .dbline 75
+ 0248           L22:
+ 0248                   .dbline 58
+ 0248 CECF              xjmp L21
+ 024A           X1:
+ 024A                   .dbline -2
+ 024A           L20:
+ 024A 2496              adiw R28,4
+ 024C                   .dbline 0 ; func end
+ 024C 0895              ret
+ 024E                   .dbsym l i 5 c
+ 024E                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\TFTTEST\TFTTEST.C
+ 0000           _postion_y::
+ 0000                   .blkb 1
+ 0001                   .dbfile C:/icc/include/TFT_main.h
+ 0001                   .dbsym e postion_y _postion_y c
+ 0001           _postion_x::
+ 0001                   .blkb 1
+ 0002                   .dbsym e postion_x _postion_x c
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/TFT_main.h
+ 0000           L25:
+ 0000                   .blkb 12
+                        .area idata
+ 0000 5446542054657374696E6700  .byte 'T,'F,'T,32,'T,'e,'s,'t,'i,'n,'g,0
+                        .area data(ram, con, rel)
+ 000C                   .dbfile C:/icc/include/TFT_main.h
+ 000C           L24:
+ 000C                   .blkb 16
+                        .area idata
+ 000C 41544D45474131323820426F61726400  .byte 'A,'T,'M,'E,'G,'A,49,50,56,32,'B,'o,'a,'r,'d,0
+                        .area data(ram, con, rel)
+ 001C                   .dbfile C:/icc/include/TFT_main.h

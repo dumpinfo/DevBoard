@@ -1,0 +1,712 @@
+__start:
+__text_start:
+      4F EFCF      LDI	R28,0xFF
+      50 E1D0      LDI	R29,0x10
+      51 BFCD      OUT	0x3D,R28
+      52 BFDE      OUT	0x3E,R29
+      53 51CE      SUBI	R28,0x1E
+      54 40D0      SBCI	R29,0
+      55 EA0A      LDI	R16,0xAA
+      56 8308      STD	Y+0,R16
+      57 2400      CLR	R0
+      58 E1E1      LDI	R30,0x11
+      59 E0F1      LDI	R31,1
+      5A E011      LDI	R17,1
+      5B 31E9      CPI	R30,0x19
+      5C 07F1      CPC	R31,R17
+      5D F011      BEQ	0x0060
+      5E 9201      ST	R0,Z+
+      5F CFFB      RJMP	0x005B
+      60 8300      STD	Z+0,R16
+      61 E8EC      LDI	R30,0x8C
+      62 E0F0      LDI	R31,0
+      63 E0A0      LDI	R26,0
+      64 E0B1      LDI	R27,1
+      65 E010      LDI	R17,0
+      66 E000      LDI	R16,0
+      67 BF0B      OUT	0x3B,R16
+      68 39ED      CPI	R30,0x9D
+      69 07F1      CPC	R31,R17
+      6A F021      BEQ	0x006F
+      6B 95C8      LPM
+      6C 9631      ADIW	R30,1
+      6D 920D      ST	R0,X+
+      6E CFF9      RJMP	0x0068
+      6F 940E 01B1 CALL	_main
+_exit:
+      71 CFFF      RJMP	_exit
+FILE: F:\PROGRA~1\iccavr\include\delay.h
+(0001) //********************************************************************
+(0002) /*函 数 名：delay_us
+(0003) 建立日期：2010年1月28日
+(0004) 编译环境：ICCAVR7.16A
+(0005) 函数作用：微秒级的延时程序
+(0006) 说    明：7.3728M晶振下
+(0007) ********************************************************************/
+(0008) void delay_1us(void)                 //1us延时函数，不能连续调用， 
+(0009) { 
+(0010)    asm("nop");                       //1时钟周期
+_delay_1us:
+      72 0000      NOP
+(0011)    asm("nop");
+      73 0000      NOP
+(0012)    asm("nop");
+      74 0000      NOP
+(0013)    asm("nop");
+      75 0000      NOP
+(0014)    asm("nop");                       //1T
+      76 0000      NOP
+(0015)    asm("nop");
+      77 0000      NOP
+      78 9508      RET
+(0016) 
+(0017) }
+(0018) void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+(0019) { 
+(0020)    
+(0021)    asm("nop");
+_delay_3us:
+      79 0000      NOP
+(0022)    asm("nop");
+      7A 0000      NOP
+(0023)    asm("nop");                       
+      7B 0000      NOP
+(0024)    asm("nop");
+      7C 0000      NOP
+(0025)    asm("nop");
+      7D 0000      NOP
+(0026)    asm("nop");
+      7E 0000      NOP
+(0027)    asm("nop");                       
+      7F 0000      NOP
+(0028)    asm("nop");
+      80 0000      NOP
+(0029)    asm("nop");
+      81 0000      NOP
+(0030)    asm("nop");
+      82 0000      NOP
+(0031)    asm("nop");                       
+      83 0000      NOP
+(0032)    asm("nop");
+      84 0000      NOP
+(0033)    asm("nop");
+      85 0000      NOP
+(0034)    asm("nop");
+      86 0000      NOP
+(0035)    asm("nop");                       
+      87 0000      NOP
+(0036)    asm("nop");
+      88 0000      NOP
+(0037)    asm("nop");
+      89 0000      NOP
+(0038)    asm("nop");
+      8A 0000      NOP
+(0039)    asm("nop");
+      8B 0000      NOP
+(0040)    asm("nop");
+      8C 0000      NOP
+(0041)    asm("nop");                       
+      8D 0000      NOP
+      8E 9508      RET
+(0042) } 
+(0043) 
+(0044) void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+(0045) {
+(0046)    delay_3us();
+_delay_10us:
+      8F DFE9      RCALL	_delay_3us
+(0047)    delay_3us(); 
+      90 DFE8      RCALL	_delay_3us
+(0048)    delay_3us();  
+      91 CFE7      RJMP	_delay_3us
+(0049) }
+(0050)   
+(0051) void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+(0052) { 
+(0053)    delay_10us();
+_delay_50us:
+      92 DFFC      RCALL	_delay_10us
+(0054)    delay_10us(); 
+      93 DFFB      RCALL	_delay_10us
+(0055)    delay_10us();
+      94 DFFA      RCALL	_delay_10us
+(0056)    delay_10us();
+      95 CFF9      RJMP	_delay_10us
+(0057) }
+(0058) void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+(0059) {
+(0060)  delay_50us();
+_delay_100us:
+      96 DFFB      RCALL	_delay_50us
+(0061)  delay_50us();
+      97 CFFA      RJMP	_delay_50us
+_delay_n100us:
+  n100us               --> R20
+      98 934A      ST	R20,-Y
+      99 2F40      MOV	R20,R16
+(0062) }
+(0063) void delay_n100us(unsigned char n100us)
+(0064) {
+      9A C001      RJMP	0x009C
+(0065)  while(n100us--)                          
+(0066)  delay_100us();
+      9B DFFA      RCALL	_delay_100us
+      9C 2E24      MOV	R2,R20
+      9D 2433      CLR	R3
+      9E 5041      SUBI	R20,1
+      9F 2022      TST	R2
+      A0 F7D1      BNE	0x009B
+      A1 9149      LD	R20,Y+
+      A2 9508      RET
+(0067) }
+(0068) /*delay_n100us(2)        250us
+(0069) delay_n100us(3)          360us
+(0070) delay_n100us(4)          470us
+(0071) delay_n100us(5)          580us
+(0072) delay_n100us(6)          690us
+(0073) delay_n100us(7)       800us
+(0074) delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+(0075) 
+(0076) */
+(0077) void delay_1ms()
+(0078) {
+(0079)  delay_100us();
+_delay_1ms:
+      A3 DFF2      RCALL	_delay_100us
+(0080)  delay_100us();
+      A4 DFF1      RCALL	_delay_100us
+(0081)  delay_100us();
+      A5 DFF0      RCALL	_delay_100us
+(0082)  delay_100us();
+      A6 DFEF      RCALL	_delay_100us
+(0083)  delay_100us();
+      A7 DFEE      RCALL	_delay_100us
+(0084)  delay_100us();
+      A8 DFED      RCALL	_delay_100us
+(0085)  delay_100us();
+      A9 DFEC      RCALL	_delay_100us
+(0086)  delay_100us();
+      AA DFEB      RCALL	_delay_100us
+(0087)  delay_100us();
+      AB DFEA      RCALL	_delay_100us
+(0088)  delay_100us();
+      AC CFE9      RJMP	_delay_100us
+_delay_nms:
+  nms                  --> R20
+      AD 934A      ST	R20,-Y
+      AE 935A      ST	R21,-Y
+      AF 01A8      MOVW	R20,R16
+(0089) }
+(0090) /********************************************************************
+(0091) 函 数 名：Delay_ms
+(0092) 建立日期：2010年1月28日
+(0093) 修改日期：
+(0094) 函数作用：毫秒级的精确延时程序
+(0095) 说    明：
+(0096) ********************************************************************/
+(0097) void delay_nms(unsigned int nms)
+(0098) {
+      B0 C001      RJMP	0x00B2
+(0099)  while(nms--) 
+(0100)  delay_1ms();
+      B1 DFF1      RCALL	_delay_1ms
+      B2 011A      MOVW	R2,R20
+      B3 5041      SUBI	R20,1
+      B4 4050      SBCI	R21,0
+      B5 2022      TST	R2
+      B6 F7D1      BNE	0x00B1
+      B7 2033      TST	R3
+      B8 F7C1      BNE	0x00B1
+      B9 9159      LD	R21,Y+
+      BA 9149      LD	R20,Y+
+      BB 9508      RET
+_delay_ns:
+  ns                   --> R20
+      BC 934A      ST	R20,-Y
+      BD 2F40      MOV	R20,R16
+(0101) }
+(0102) void delay_ns(unsigned char ns)
+(0103) {
+      BE C003      RJMP	0x00C2
+(0104)  while(ns--) 
+(0105)  delay_nms(1000);
+      BF EE08      LDI	R16,0xE8
+      C0 E013      LDI	R17,3
+      C1 DFEB      RCALL	_delay_nms
+      C2 2E24      MOV	R2,R20
+      C3 2433      CLR	R3
+      C4 5041      SUBI	R20,1
+      C5 2022      TST	R2
+      C6 F7C1      BNE	0x00BF
+      C7 9149      LD	R20,Y+
+      C8 9508      RET
+FILE: E:\DMAVR-~3\TIMER0\TIMER0.C
+(0001) //DMAVR-128的利用定时器0实现999s加1计数功能，每1s加1
+(0002) //定时器用普通模式，溢出中断，加1计数
+(0003) //定时器初值计算，定时10ms，1024分频为例，(FF-X)*F_CPU/1024=0.1s
+(0004) //秒表在数码管上显示
+(0005) //编译环境 ICCAVR V7.16A
+(0006) //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+(0007) //作者：阿迪 www.avrgcc.com
+(0008) //日期：2010.01.26
+(0009) //***********************************************************************
+(0010) //			包含文件
+(0011) //***********************************************************************
+(0012) 
+(0013) #include <string.h>
+(0014) #include <stdio.h>
+(0015) #include <iom128v.h>						   //Atmega128头文件						 
+(0016) #include <delay.h> 							   //延时程序头文件，针对7.3728M时钟
+(0017) 
+(0018) //***********************************************************************
+(0019) //			定义变量区
+(0020) //***********************************************************************
+(0021) #define f_count         183              	//定时器初值，定时器加一计数
+(0022) #define timer_clk       0x07				//时钟1024分频
+(0023) 
+(0024) #define uchar           unsigned char
+(0025) #define uint            unsigned int
+(0026) 
+(0027) #define Data_IO	        PORTA                //数码管数据口
+(0028) #define Data_DDR        DDRA                 //数码管数据口方向寄存器
+(0029) #define D_LE0	        PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+(0030) #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+(0031) #define W_LE0	        PORTD &= ~(1 << PD5) //数码管位控制位为0
+(0032) #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+(0033) 
+(0034) //***********************************************************************
+(0035) //			共阴数码管显示的断码表0～F
+(0036) //***********************************************************************
+(0037) 
+(0038) uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+(0039) 
+(0040) 
+(0041) uchar time_1s_count=0;
+(0042) uint  second;
+(0043) uint  A1,A2,A3;
+(0044) 
+(0045) //***********************************************************************
+(0046) //			IO端口初始化
+(0047) //***********************************************************************
+(0048) 
+(0049) void system_init()
+(0050) {
+(0051)     Data_IO=0xFF;             				//数据口为输出
+_system_init:
+      C9 EF8F      LDI	R24,0xFF
+      CA BB8B      OUT	0x1B,R24
+(0052)     Data_DDR=0xFF;
+      CB BB8A      OUT	0x1A,R24
+(0053) 
+(0054)     PORTD=0xFF;               				//74HC573的控制口，设置为输出
+      CC BB82      OUT	0x12,R24
+(0055)     DDRD=0xFF;
+      CD BB81      OUT	0x11,R24
+(0056) 	
+(0057) 	PORTB=0XFF;								//关闭发光二极管
+      CE BB88      OUT	0x18,R24
+(0058) 	DDRB=0XFF;
+      CF BB87      OUT	0x17,R24
+      D0 9508      RET
+(0059) }
+(0060) 
+(0061) 
+(0062) //*************************************************************************
+(0063) //			定时器0初始化子程序
+(0064) //*************************************************************************
+(0065) 
+(0066) void timer0_init()                                 //定时器初始化
+(0067) {
+(0068)   TCCR0=0x07;                                      //普通模式，OC0不输出，1024分频
+_timer0_init:
+      D1 E087      LDI	R24,7
+      D2 BF83      OUT	0x33,R24
+(0069)   TCNT0=f_count;                                    //初值，定时为10ms
+      D3 EB87      LDI	R24,0xB7
+      D4 BF82      OUT	0x32,R24
+(0070)   TIFR=0x01;                                       //清中断标志位
+      D5 E081      LDI	R24,1
+      D6 BF86      OUT	0x36,R24
+(0071)   TIMSK=0x01;                                      //使能定时器0溢出中断
+      D7 BF87      OUT	0x37,R24
+      D8 9508      RET
+_data_do:
+  A2t                  --> R10
+  temp_d               --> R10
+      D9 92AA      ST	R10,-Y
+      DA 92BA      ST	R11,-Y
+      DB 0158      MOVW	R10,R16
+(0072) }
+(0073) 
+(0074) //*************************************************************************
+(0075) //		数据处理函数
+(0076) //*************************************************************************
+(0077)  void data_do(uint temp_d)
+(0078)  {
+(0079)      uchar A2t;
+(0080)      A1=temp_d/100;                       		  //分出百，十，和个位
+      DC E624      LDI	R18,0x64
+      DD E030      LDI	R19,0
+      DE 0185      MOVW	R16,R10
+      DF 940E 01DB CALL	div16u
+      E1 9310 0116 STS	A1+1,R17
+      E3 9300 0115 STS	A1,R16
+(0081)      A2t=temp_d%100;
+      E5 E624      LDI	R18,0x64
+      E6 E030      LDI	R19,0
+      E7 0185      MOVW	R16,R10
+      E8 940E 01D9 CALL	mod16u
+      EA 0158      MOVW	R10,R16
+(0082)      A2=A2t/10;
+      EB E02A      LDI	R18,0xA
+      EC E030      LDI	R19,0
+      ED 2711      CLR	R17
+      EE 940E 01BF CALL	div16s
+      F0 9310 0114 STS	A2+1,R17
+      F2 9300 0113 STS	A2,R16
+(0083)      A3=A2t%10;
+      F4 E02A      LDI	R18,0xA
+      F5 E030      LDI	R19,0
+      F6 2D0A      MOV	R16,R10
+      F7 2711      CLR	R17
+      F8 940E 01BB CALL	mod16s
+      FA 9310 0112 STS	A3+1,R17
+      FC 9300 0111 STS	A3,R16
+      FE 90B9      LD	R11,Y+
+      FF 90A9      LD	R10,Y+
+     100 9508      RET
+_Display_Timer0:
+  i                    --> R22
+  j                    --> R20
+     101 934A      ST	R20,-Y
+     102 936A      ST	R22,-Y
+(0084) }
+(0085) 
+(0086) //*************************************************************************
+(0087) //			74HC573控制数码管动态扫描显示函数，显示采集到的温度
+(0088) //*************************************************************************
+(0089) 
+(0090) void Display_Timer0(void)
+(0091) {
+(0092) 	 uchar i,j;
+(0093) 	 system_init();
+     103 DFC5      RCALL	_system_init
+(0094)      j=0x01;                    			//此数据用来控制位选
+     104 E041      LDI	R20,1
+(0095)  for(i=0;i<5;i++)               			//用后3位数码管来显示
+     105 2766      CLR	R22
+     106 C00E      RJMP	0x0115
+(0096)   {
+(0097)      D_LE1;                     
+     107 9A94      SBI	0x12,4
+(0098)      W_LE1;                     
+     108 9A95      SBI	0x12,5
+(0099)      Data_IO=~j;                
+     109 2E24      MOV	R2,R20
+     10A 9420      COM	R2
+     10B BA2B      OUT	0x1B,R2
+(0100)      W_LE0;                      
+     10C 9895      CBI	0x12,5
+(0101) 	 j=(j<<1);
+     10D 0F44      LSL	R20
+(0102)      Data_IO=0x00;           
+     10E 2422      CLR	R2
+     10F BA2B      OUT	0x1B,R2
+(0103)      D_LE0;                      
+     110 9894      CBI	0x12,4
+(0104)      delay_nms(1);                
+     111 E001      LDI	R16,1
+     112 E010      LDI	R17,0
+     113 DF99      RCALL	_delay_nms
+     114 9563      INC	R22
+     115 3065      CPI	R22,5
+     116 F380      BCS	0x0107
+(0105)   }
+(0106)      D_LE1;                    
+     117 9A94      SBI	0x12,4
+(0107)      W_LE1;                    
+     118 9A95      SBI	0x12,5
+(0108)      Data_IO=~j;               
+     119 2E24      MOV	R2,R20
+     11A 9420      COM	R2
+     11B BA2B      OUT	0x1B,R2
+(0109)      W_LE0;                    
+     11C 9895      CBI	0x12,5
+(0110) 	 j=(j<<1);
+     11D 0F44      LSL	R20
+(0111)      Data_IO=table[A1];         
+     11E E080      LDI	R24,0
+     11F E091      LDI	R25,1
+     120 91E0 0115 LDS	R30,A1
+     122 91F0 0116 LDS	R31,A1+1
+     124 0FE8      ADD	R30,R24
+     125 1FF9      ADC	R31,R25
+     126 8020      LDD	R2,Z+0
+     127 BA2B      OUT	0x1B,R2
+(0112)      D_LE0;                    
+     128 9894      CBI	0x12,4
+(0113)      delay_nms(1);              
+     129 E001      LDI	R16,1
+     12A E010      LDI	R17,0
+     12B DF81      RCALL	_delay_nms
+(0114) 
+(0115)      D_LE1;                     
+     12C 9A94      SBI	0x12,4
+(0116)      W_LE1;                     
+     12D 9A95      SBI	0x12,5
+(0117)      Data_IO=~j;                
+     12E 2E24      MOV	R2,R20
+     12F 9420      COM	R2
+     130 BA2B      OUT	0x1B,R2
+(0118)      W_LE0;                      
+     131 9895      CBI	0x12,5
+(0119) 	 j=(j<<1);
+     132 0F44      LSL	R20
+(0120)      Data_IO=table[A2];             
+     133 E080      LDI	R24,0
+     134 E091      LDI	R25,1
+     135 91E0 0113 LDS	R30,A2
+     137 91F0 0114 LDS	R31,A2+1
+     139 0FE8      ADD	R30,R24
+     13A 1FF9      ADC	R31,R25
+     13B 8020      LDD	R2,Z+0
+     13C BA2B      OUT	0x1B,R2
+(0121)      D_LE0;                      
+     13D 9894      CBI	0x12,4
+(0122)      delay_nms(1);                
+     13E E001      LDI	R16,1
+     13F E010      LDI	R17,0
+     140 DF6C      RCALL	_delay_nms
+(0123) 
+(0124) 	 D_LE1;                     
+     141 9A94      SBI	0x12,4
+(0125)      W_LE1;                     
+     142 9A95      SBI	0x12,5
+(0126)      Data_IO=~j;                
+     143 2E24      MOV	R2,R20
+     144 9420      COM	R2
+     145 BA2B      OUT	0x1B,R2
+(0127)      W_LE0;                      
+     146 9895      CBI	0x12,5
+(0128) 	 j=(j<<1);
+     147 0F44      LSL	R20
+(0129)      Data_IO=table[A3];           
+     148 E080      LDI	R24,0
+     149 E091      LDI	R25,1
+     14A 91E0 0111 LDS	R30,A3
+     14C 91F0 0112 LDS	R31,A3+1
+     14E 0FE8      ADD	R30,R24
+     14F 1FF9      ADC	R31,R25
+     150 8020      LDD	R2,Z+0
+     151 BA2B      OUT	0x1B,R2
+(0130)      D_LE0;                      
+     152 9894      CBI	0x12,4
+(0131)      delay_nms(1);                
+     153 E001      LDI	R16,1
+     154 E010      LDI	R17,0
+     155 DF57      RCALL	_delay_nms
+(0132) 
+(0133) 	 D_LE1;                     
+     156 9A94      SBI	0x12,4
+(0134)      W_LE1;                     
+     157 9A95      SBI	0x12,5
+(0135)      Data_IO=0xff;                
+     158 EF8F      LDI	R24,0xFF
+     159 BB8B      OUT	0x1B,R24
+(0136)      W_LE0;                      
+     15A 9895      CBI	0x12,5
+     15B 9169      LD	R22,Y+
+     15C 9149      LD	R20,Y+
+     15D 9508      RET
+_TIMER0_ISR:
+     15E 920A      ST	R0,-Y
+     15F 921A      ST	R1,-Y
+     160 922A      ST	R2,-Y
+     161 923A      ST	R3,-Y
+     162 924A      ST	R4,-Y
+     163 925A      ST	R5,-Y
+     164 926A      ST	R6,-Y
+     165 927A      ST	R7,-Y
+     166 928A      ST	R8,-Y
+     167 929A      ST	R9,-Y
+     168 930A      ST	R16,-Y
+     169 931A      ST	R17,-Y
+     16A 932A      ST	R18,-Y
+     16B 933A      ST	R19,-Y
+     16C 938A      ST	R24,-Y
+     16D 939A      ST	R25,-Y
+     16E 93AA      ST	R26,-Y
+     16F 93BA      ST	R27,-Y
+     170 93EA      ST	R30,-Y
+     171 93FA      ST	R31,-Y
+     172 B60F      IN	R0,0x3F
+     173 920A      ST	R0,-Y
+(0137) 
+(0138) }
+(0139) 
+(0140) 
+(0141) //*************************************************************************
+(0142) //		定时器0中断服务子程序
+(0143) //*************************************************************************
+(0144) #pragma interrupt_handler  TIMER0_ISR:iv_TIM0_OVF
+(0145) void TIMER0_ISR() 	 	
+(0146)    { 
+(0147)     
+(0148) 	TCNT0=f_count;                              //定时器赋初值，非自动重装模式
+     174 EB87      LDI	R24,0xB7
+     175 BF82      OUT	0x32,R24
+(0149)    if(time_1s_count!=100)
+     176 9180 0110 LDS	R24,time_1s_count
+     178 3684      CPI	R24,0x64
+     179 F021      BEQ	0x017E
+(0150)       {
+(0151) 	  time_1s_count++;                          //定时器定时10ms，计数100次为1s
+     17A 5F8F      SUBI	R24,0xFF
+     17B 9380 0110 STS	time_1s_count,R24
+(0152) //	  time_1s_flag=0;                           //未到1s，标志位为0
+(0153) 	  }
+     17D C01C      RJMP	0x019A
+(0154)    else
+(0155)       {
+(0156) 	  if(second!=999)                           //最大计时999s
+     17E 9180 0117 LDS	R24,second
+     180 9190 0118 LDS	R25,second+1
+     182 3E87      CPI	R24,0xE7
+     183 E0E3      LDI	R30,3
+     184 079E      CPC	R25,R30
+     185 F031      BEQ	0x018C
+(0157) 	     {
+(0158) 		 second++;
+     186 9601      ADIW	R24,1
+     187 9390 0118 STS	second+1,R25
+     189 9380 0117 STS	second,R24
+(0159) 		 }
+     18B C006      RJMP	0x0192
+(0160)       else
+(0161) 	     second=0;                              //到999s则清0
+     18C 2422      CLR	R2
+     18D 2433      CLR	R3
+     18E 9230 0118 STS	second+1,R3
+     190 9220 0117 STS	second,R2
+(0162) 	  time_1s_count=0;
+     192 2422      CLR	R2
+     193 9220 0110 STS	time_1s_count,R2
+(0163) //	  time_1s_flag=1;
+(0164) 	  data_do(second);                         //将秒转化为BCD码，供显示
+     195 9100 0117 LDS	R16,second
+     197 9110 0118 LDS	R17,second+1
+     199 DF3F      RCALL	_data_do
+(0165) 	  }
+     19A 9009      LD	R0,Y+
+     19B BE0F      OUT	0x3F,R0
+     19C 91F9      LD	R31,Y+
+     19D 91E9      LD	R30,Y+
+     19E 91B9      LD	R27,Y+
+     19F 91A9      LD	R26,Y+
+     1A0 9199      LD	R25,Y+
+     1A1 9189      LD	R24,Y+
+     1A2 9139      LD	R19,Y+
+     1A3 9129      LD	R18,Y+
+     1A4 9119      LD	R17,Y+
+     1A5 9109      LD	R16,Y+
+     1A6 9099      LD	R9,Y+
+     1A7 9089      LD	R8,Y+
+     1A8 9079      LD	R7,Y+
+     1A9 9069      LD	R6,Y+
+     1AA 9059      LD	R5,Y+
+     1AB 9049      LD	R4,Y+
+     1AC 9039      LD	R3,Y+
+     1AD 9029      LD	R2,Y+
+     1AE 9019      LD	R1,Y+
+     1AF 9009      LD	R0,Y+
+     1B0 9518      RETI
+(0166) }
+(0167) 
+(0168) 
+(0169) //*************************************************************************
+(0170) //		主程序
+(0171) //*************************************************************************
+(0172) 
+(0173) void main(void)
+(0174) {
+(0175)   system_init();                             //系统初始化
+_main:
+     1B1 DF17      RCALL	_system_init
+(0176)   timer0_init();                             //定时器0初始化，完成定时器相关配置 
+     1B2 DF1E      RCALL	_timer0_init
+(0177)   time_1s_count=0;                           //计数值清0
+     1B3 2422      CLR	R2
+     1B4 9220 0110 STS	time_1s_count,R2
+(0178)   SREG|=0x80;                                //开启全局中断
+     1B6 9478      BSET	7
+     1B7 C001      RJMP	0x01B9
+(0179)   while(1)
+(0180)   {
+(0181) 
+(0182) 	   Display_Timer0();             		//显示计数值
+FILE: <library>
+     1B8 DF48      RCALL	_Display_Timer0
+     1B9 CFFE      RJMP	0x01B8
+     1BA 9508      RET
+mod16s:
+     1BB 9468      BSET	6
+     1BC 92DA      ST	R13,-Y
+     1BD 2ED1      MOV	R13,R17
+     1BE C004      RJMP	0x01C3
+div16s:
+     1BF 94E8      BCLR	6
+     1C0 92DA      ST	R13,-Y
+     1C1 2ED1      MOV	R13,R17
+     1C2 26D3      EOR	R13,R19
+     1C3 FF17      SBRS	R17,7
+     1C4 C004      RJMP	0x01C9
+     1C5 9510      COM	R17
+     1C6 9500      COM	R16
+     1C7 5F0F      SUBI	R16,0xFF
+     1C8 4F1F      SBCI	R17,0xFF
+     1C9 FF37      SBRS	R19,7
+     1CA C004      RJMP	0x01CF
+     1CB 9530      COM	R19
+     1CC 9520      COM	R18
+     1CD 5F2F      SUBI	R18,0xFF
+     1CE 4F3F      SBCI	R19,0xFF
+     1CF 940E 01DC CALL	xdiv16u
+     1D1 FED7      SBRS	R13,7
+     1D2 C004      RJMP	0x01D7
+     1D3 9510      COM	R17
+     1D4 9500      COM	R16
+     1D5 5F0F      SUBI	R16,0xFF
+     1D6 4F1F      SBCI	R17,0xFF
+     1D7 90D9      LD	R13,Y+
+     1D8 9508      RET
+mod16u:
+     1D9 9468      BSET	6
+     1DA C001      RJMP	xdiv16u
+div16u:
+     1DB 94E8      BCLR	6
+xdiv16u:
+     1DC 92EA      ST	R14,-Y
+     1DD 92FA      ST	R15,-Y
+     1DE 938A      ST	R24,-Y
+     1DF 24EE      CLR	R14
+     1E0 24FF      CLR	R15
+     1E1 E180      LDI	R24,0x10
+     1E2 0F00      LSL	R16
+     1E3 1F11      ROL	R17
+     1E4 1CEE      ROL	R14
+     1E5 1CFF      ROL	R15
+     1E6 16E2      CP	R14,R18
+     1E7 06F3      CPC	R15,R19
+     1E8 F018      BCS	0x01EC
+     1E9 1AE2      SUB	R14,R18
+     1EA 0AF3      SBC	R15,R19
+     1EB 9503      INC	R16
+     1EC 958A      DEC	R24
+     1ED F7A1      BNE	0x01E2
+     1EE F416      BRTC	0x01F1
+     1EF 2D0E      MOV	R16,R14
+     1F0 2D1F      MOV	R17,R15
+     1F1 9189      LD	R24,Y+
+     1F2 90F9      LD	R15,Y+
+     1F3 90E9      LD	R14,Y+
+     1F4 9508      RET

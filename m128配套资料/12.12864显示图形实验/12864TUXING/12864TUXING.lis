@@ -1,0 +1,3592 @@
+                        .module _12864TUXING.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128的12864型LCD显示图形驱动程序,轮流显示2张图片
+ 0000           ; //编译环境 ICCAVR 7.16A
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //忠兴电子元件店编辑
+ 0000           ; //日期：2010.06.14
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //    定义变量区
+ 0000           ; //***********************************************************************
+ 0000           ; #define uchar unsigned char
+ 0000           ; #define uint  unsigned int
+ 0000           ; 
+ 0000                   .dbline 21
+ 0000           ; 
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; #define RS_CLR        PORTF &= ~(1 << PF1)                 //RS置低
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; #define RS_SET        PORTF |= (1 << PF1)                  //RS置高
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; 
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; #define RW_CLR        PORTF &= ~(1 << PF2)                 //RW置低
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; #define RW_SET        PORTF |= (1 << PF2)                  //RW置高
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; 
+ 000E           ; #define EN_CLR        PORTF &= ~(1 << PF3)                 //E置低
+ 000E           ; #define EN_SET        PORTF |= (1 << PF3)                  //E置高
+ 000E           ; 
+ 000E                   .dbline 32
+ 000E           ; #define PSB_CLR       PORTF &= ~(1 << PE2)                 //PSB置低，串口方式
+ 000E           ; #define PSB_SET       PORTF |= (1 << PE2)                  //PSB置高，并口方式
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; 
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; #define LOW               0
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ; #define HIGH          1
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; #define FIRST_ADDR  0                      //定义字符/汉字显示起始位置
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; 
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ; //12864相关初始化指令
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ; #define CLEAR_SCREEN  0x01            //清屏指令：清屏且AC值为00H
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ; #define AC_INIT                   0x02                //将AC设置为00H。且游标移到原点位置
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ; #define CURSE_ADD         0x06                //设定游标移到方向及图像整体移动方向（默认游标右移，图像整体不动）
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; #define FUN_MODE          0x30                //工作模式：8位基本指令集
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ; #define DISPLAY_ON        0x0c                //显示开,显示游标，且游标位置反白
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ; #define DISPLAY_OFF       0x08                //显示关
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ; #define CURSE_DIR         0x14                //游标向右移动:AC=AC+1
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ; #define SET_CG_AC         0x40                //设置AC，范围为：00H~3FH
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ; #define SET_DD_AC         0x80
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ; #define FUN_MODEK         0x36                //工作模式：8位扩展指令集
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ; 
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ; #define X1address       0x80        //12864上半屏X轴起始地址
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ; #define X2address       0x88        //12864下半屏X轴起始地址
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ; #define Yaddress        0x80        //Y轴起始地址
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ; 
+ 003A           ; #define Data_IO               PORTA                //液晶数据口
+ 003A           ; #define Data_DDR        DDRA                 //数据口方向寄存器
+ 003A           ; #define D_LE0         PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+ 003A                   .dbline 57
+ 003A           ; #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ; #define W_LE0         PORTD &= ~(1 << PD5) //数码管位控制位为0
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ; #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ; //图形数据<花>
+ 0042           ;  uchar photo3[]={
+ 0042           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 0042           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 0042                   .dbline 64
+ 0042           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 004C           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 004C           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 004C                   .dbline 71
+ 004C           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 0058           ; 0x00,0x00,0x00,0x00,0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 0058           ; 0x00,0x02,0x00,0x00,0x00,0x18,0x03,0xC0,0x00,0x00,0x03,0xC0,0x00,0x00,0x00,0x00,
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ; 0x00,0x02,0x00,0x00,0x00,0x30,0x0F,0xC0,0x00,0x00,0x06,0x60,0x00,0x06,0x00,0x00,
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ; 0x00,0x06,0x00,0x00,0x00,0x70,0x18,0x40,0x00,0x00,0x04,0x10,0x00,0x06,0x00,0x00,
+ 006C           ; 0x00,0x0E,0x00,0x00,0x01,0xE0,0x22,0x40,0x00,0x00,0x0C,0x18,0x00,0x05,0x00,0x00,
+ 006C           ; 0x00,0x1E,0x00,0x00,0x07,0xE0,0x42,0x00,0x00,0x07,0xF8,0x0C,0x00,0x0D,0x00,0x00,
+ 006C           ; 0x00,0x1E,0x00,0x7F,0xFF,0xC0,0x42,0x60,0x00,0x1F,0xDC,0x06,0x00,0xE8,0x80,0x00,
+ 006C           ; 0x00,0x3E,0x01,0xFF,0xFF,0x80,0xB3,0xE0,0x00,0x70,0x04,0x08,0x00,0xF8,0xBC,0x00,
+ 006C           ; 0x00,0x3E,0x03,0xFF,0xFF,0x00,0xEB,0x20,0x00,0xC0,0x04,0x18,0x00,0xB8,0xFE,0x00,
+ 006C           ; 0x00,0x3C,0x07,0xFF,0xFE,0x00,0xCA,0x20,0x01,0x00,0x06,0x30,0x00,0x98,0xC3,0x00,
+ 006C           ; 0x00,0x7C,0x0F,0x8F,0xF8,0x00,0x8C,0x20,0x02,0x7F,0x03,0xE0,0x00,0x08,0xC1,0x00,
+ 006C           ; 0x00,0x78,0x7F,0xC0,0x00,0x00,0x8C,0x20,0x05,0xFF,0xC1,0xC0,0x00,0x08,0xA0,0x80,
+ 006C           ; 0x00,0x79,0xFF,0xF0,0x00,0x00,0xCF,0xA0,0x0F,0x00,0xE0,0x00,0x00,0x88,0xE0,0x80,
+ 006C           ; 0x00,0x77,0x00,0x7C,0x00,0x00,0xD8,0xA2,0x1C,0x00,0x38,0x00,0x00,0x89,0xE0,0x40,
+ 006C           ; 0x00,0x7F,0x00,0x1E,0x00,0x00,0xD8,0x82,0x1B,0xC0,0x1C,0x00,0x00,0x9A,0x30,0x40,
+ 006C           ; 0x00,0xF3,0xC0,0x07,0x00,0x00,0xF8,0xC2,0x3F,0xF0,0x06,0xF0,0x00,0x9E,0x30,0x40,
+ 006C                   .dbline 90
+ 006C           ; 0x00,0xC0,0x70,0x03,0x80,0x00,0xF8,0xC2,0x3C,0x1C,0x03,0xF8,0x00,0xB4,0x28,0x20,
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ; 0x01,0x80,0x1C,0x01,0x80,0x00,0x7E,0x82,0x60,0x0E,0x00,0xFE,0x00,0xE6,0x2C,0x20,
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ; 0x03,0x00,0x06,0x00,0xC0,0x00,0x7F,0x06,0xC0,0x02,0x00,0xFF,0xC0,0xE2,0x26,0x20,
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ; 0x07,0xF0,0x03,0x00,0x70,0x00,0x3F,0x06,0x80,0x01,0x00,0xFF,0xC0,0x42,0x23,0x60,
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ; 
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ; };
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ;  uchar  photo4[]={
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ; 0x0E,0x1C,0x01,0x80,0x78,0x00,0x7C,0x0F,0x00,0x03,0x8C,0xFF,0x00,0x42,0x67,0xC0,
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ; 0x18,0x06,0x00,0x80,0x3E,0x00,0xC0,0x0F,0x00,0x02,0x14,0x7C,0x00,0x43,0xFF,0xF0,
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ; 0x30,0x03,0x00,0x40,0x1F,0xC3,0x80,0x1F,0x80,0x02,0x64,0x7C,0x00,0x43,0xB1,0xFC,
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ; 0x60,0x03,0x80,0x3C,0x09,0xFE,0x00,0x1F,0xC0,0x72,0x60,0x7E,0x00,0x42,0x10,0x86,
+ 0088           ; 0x40,0x03,0x80,0x3E,0x0C,0x00,0x00,0x1F,0xC0,0x7C,0x00,0x3A,0x00,0x44,0x10,0x86,
+ 0088           ; 0x80,0x03,0xC0,0x7F,0x06,0x00,0x00,0x1F,0xE0,0x46,0x47,0x9B,0x00,0x64,0x10,0x84,
+ 0088           ; 0x00,0x01,0xE0,0x7F,0x82,0x00,0x00,0x30,0x20,0x42,0x46,0xD9,0x00,0x24,0x11,0x04,
+ 0088           ; 0x00,0x01,0xE0,0xEF,0xC3,0x00,0x00,0x60,0x00,0x62,0xE4,0x28,0xBF,0xA4,0x1D,0x08,
+ 0088           ; 0x00,0x01,0xE0,0xE7,0xC1,0x80,0x00,0xC0,0x00,0x21,0xFC,0x20,0xFF,0xFC,0x1F,0x30,
+ 0088           ; 0x00,0x00,0xF0,0xE3,0xC0,0xC0,0x01,0x80,0x01,0xE7,0x32,0x40,0x7F,0xDC,0x23,0xF0,
+ 0088           ; 0x00,0x00,0xF0,0xC3,0x80,0x60,0x03,0x00,0x03,0xFE,0x12,0x40,0x7F,0x84,0x21,0xD8,
+ 0088           ; 0x00,0x00,0x71,0xC0,0x00,0x30,0x0E,0x00,0x02,0x32,0x13,0x80,0x3F,0x04,0x60,0x88,
+ 0088           ; 0x00,0x00,0x39,0xC2,0x40,0x1C,0x1C,0x00,0x04,0x12,0x13,0x80,0x3E,0x03,0xC0,0x8C,
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; 0x00,0x00,0x18,0x82,0x40,0x07,0xF8,0x00,0x04,0x13,0x13,0x80,0x18,0x03,0x81,0x04,
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; 0x00,0x00,0x08,0x82,0x40,0x01,0xC0,0x00,0x02,0x11,0x32,0x80,0x1C,0x05,0xC6,0x1C,
+ 00A6           ; 0x00,0x00,0x08,0x42,0x40,0x00,0x00,0x00,0x03,0x32,0xB4,0x40,0x0E,0x0C,0xFE,0x38,
+ 00A6           ; 0x00,0x00,0x00,0x42,0x40,0x00,0x00,0x00,0x01,0xFA,0x4C,0x40,0x07,0xF8,0x3F,0xE0,
+ 00A6           ; 0x00,0x00,0x00,0x42,0x40,0x00,0x00,0x00,0x00,0xCE,0x0C,0x40,0x07,0xFE,0x00,0x00,
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; 0x00,0x00,0x00,0x26,0x00,0x00,0x00,0x00,0x00,0x8E,0x0B,0xC0,0x07,0xBF,0x00,0x00,
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000           _photo3::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0002                   .dbfile C:/icc/include/delay.h
+ 0002                   .blkb 2
+                        .area idata
+ 0002 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0004                   .dbfile C:/icc/include/delay.h
+ 0004                   .blkb 2
+                        .area idata
+ 0004 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0006                   .dbfile C:/icc/include/delay.h
+ 0006                   .blkb 2
+                        .area idata
+ 0006 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0008                   .dbfile C:/icc/include/delay.h
+ 0008                   .blkb 2
+                        .area idata
+ 0008 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 000A                   .dbfile C:/icc/include/delay.h
+ 000A                   .blkb 2
+                        .area idata
+ 000A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 000C                   .dbfile C:/icc/include/delay.h
+ 000C                   .blkb 2
+                        .area idata
+ 000C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 000E                   .dbfile C:/icc/include/delay.h
+ 000E                   .blkb 2
+                        .area idata
+ 000E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0010                   .dbfile C:/icc/include/delay.h
+ 0010                   .blkb 2
+                        .area idata
+ 0010 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0012                   .dbfile C:/icc/include/delay.h
+ 0012                   .blkb 2
+                        .area idata
+ 0012 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0014                   .dbfile C:/icc/include/delay.h
+ 0014                   .blkb 2
+                        .area idata
+ 0014 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0016                   .dbfile C:/icc/include/delay.h
+ 0016                   .blkb 2
+                        .area idata
+ 0016 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0018                   .dbfile C:/icc/include/delay.h
+ 0018                   .blkb 2
+                        .area idata
+ 0018 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 001A                   .dbfile C:/icc/include/delay.h
+ 001A                   .blkb 2
+                        .area idata
+ 001A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 001C                   .dbfile C:/icc/include/delay.h
+ 001C                   .blkb 2
+                        .area idata
+ 001C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 001E                   .dbfile C:/icc/include/delay.h
+ 001E                   .blkb 2
+                        .area idata
+ 001E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0020                   .dbfile C:/icc/include/delay.h
+ 0020                   .blkb 2
+                        .area idata
+ 0020 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0022                   .dbfile C:/icc/include/delay.h
+ 0022                   .blkb 2
+                        .area idata
+ 0022 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0024                   .dbfile C:/icc/include/delay.h
+ 0024                   .blkb 2
+                        .area idata
+ 0024 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0026                   .dbfile C:/icc/include/delay.h
+ 0026                   .blkb 2
+                        .area idata
+ 0026 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0028                   .dbfile C:/icc/include/delay.h
+ 0028                   .blkb 2
+                        .area idata
+ 0028 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 002A                   .dbfile C:/icc/include/delay.h
+ 002A                   .blkb 2
+                        .area idata
+ 002A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 002C                   .dbfile C:/icc/include/delay.h
+ 002C                   .blkb 2
+                        .area idata
+ 002C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 002E                   .dbfile C:/icc/include/delay.h
+ 002E                   .blkb 2
+                        .area idata
+ 002E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0030                   .dbfile C:/icc/include/delay.h
+ 0030                   .blkb 2
+                        .area idata
+ 0030 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0032                   .dbfile C:/icc/include/delay.h
+ 0032                   .blkb 2
+                        .area idata
+ 0032 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0034                   .dbfile C:/icc/include/delay.h
+ 0034                   .blkb 2
+                        .area idata
+ 0034 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0036                   .dbfile C:/icc/include/delay.h
+ 0036                   .blkb 2
+                        .area idata
+ 0036 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0038                   .dbfile C:/icc/include/delay.h
+ 0038                   .blkb 2
+                        .area idata
+ 0038 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 003A                   .dbfile C:/icc/include/delay.h
+ 003A                   .blkb 2
+                        .area idata
+ 003A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 003C                   .dbfile C:/icc/include/delay.h
+ 003C                   .blkb 2
+                        .area idata
+ 003C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 003E                   .dbfile C:/icc/include/delay.h
+ 003E                   .blkb 2
+                        .area idata
+ 003E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0040                   .dbfile C:/icc/include/delay.h
+ 0040                   .blkb 2
+                        .area idata
+ 0040 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0042                   .dbfile C:/icc/include/delay.h
+ 0042                   .blkb 2
+                        .area idata
+ 0042 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0044                   .dbfile C:/icc/include/delay.h
+ 0044                   .blkb 2
+                        .area idata
+ 0044 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0046                   .dbfile C:/icc/include/delay.h
+ 0046                   .blkb 2
+                        .area idata
+ 0046 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0048                   .dbfile C:/icc/include/delay.h
+ 0048                   .blkb 2
+                        .area idata
+ 0048 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 004A                   .dbfile C:/icc/include/delay.h
+ 004A                   .blkb 2
+                        .area idata
+ 004A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 004C                   .dbfile C:/icc/include/delay.h
+ 004C                   .blkb 2
+                        .area idata
+ 004C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 004E                   .dbfile C:/icc/include/delay.h
+ 004E                   .blkb 2
+                        .area idata
+ 004E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0050                   .dbfile C:/icc/include/delay.h
+ 0050                   .blkb 2
+                        .area idata
+ 0050 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0052                   .dbfile C:/icc/include/delay.h
+ 0052                   .blkb 2
+                        .area idata
+ 0052 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0054                   .dbfile C:/icc/include/delay.h
+ 0054                   .blkb 2
+                        .area idata
+ 0054 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0056                   .dbfile C:/icc/include/delay.h
+ 0056                   .blkb 2
+                        .area idata
+ 0056 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0058                   .dbfile C:/icc/include/delay.h
+ 0058                   .blkb 2
+                        .area idata
+ 0058 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 005A                   .dbfile C:/icc/include/delay.h
+ 005A                   .blkb 2
+                        .area idata
+ 005A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 005C                   .dbfile C:/icc/include/delay.h
+ 005C                   .blkb 2
+                        .area idata
+ 005C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 005E                   .dbfile C:/icc/include/delay.h
+ 005E                   .blkb 2
+                        .area idata
+ 005E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0060                   .dbfile C:/icc/include/delay.h
+ 0060                   .blkb 2
+                        .area idata
+ 0060 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0062                   .dbfile C:/icc/include/delay.h
+ 0062                   .blkb 2
+                        .area idata
+ 0062 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0064                   .dbfile C:/icc/include/delay.h
+ 0064                   .blkb 2
+                        .area idata
+ 0064 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0066                   .dbfile C:/icc/include/delay.h
+ 0066                   .blkb 2
+                        .area idata
+ 0066 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0068                   .dbfile C:/icc/include/delay.h
+ 0068                   .blkb 2
+                        .area idata
+ 0068 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 006A                   .dbfile C:/icc/include/delay.h
+ 006A                   .blkb 2
+                        .area idata
+ 006A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 006C                   .dbfile C:/icc/include/delay.h
+ 006C                   .blkb 2
+                        .area idata
+ 006C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 006E                   .dbfile C:/icc/include/delay.h
+ 006E                   .blkb 2
+                        .area idata
+ 006E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0070                   .dbfile C:/icc/include/delay.h
+ 0070                   .blkb 2
+                        .area idata
+ 0070 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0072                   .dbfile C:/icc/include/delay.h
+ 0072                   .blkb 2
+                        .area idata
+ 0072 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0074                   .dbfile C:/icc/include/delay.h
+ 0074                   .blkb 2
+                        .area idata
+ 0074 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0076                   .dbfile C:/icc/include/delay.h
+ 0076                   .blkb 2
+                        .area idata
+ 0076 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0078                   .dbfile C:/icc/include/delay.h
+ 0078                   .blkb 2
+                        .area idata
+ 0078 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 007A                   .dbfile C:/icc/include/delay.h
+ 007A                   .blkb 2
+                        .area idata
+ 007A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 007C                   .dbfile C:/icc/include/delay.h
+ 007C                   .blkb 2
+                        .area idata
+ 007C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 007E                   .dbfile C:/icc/include/delay.h
+ 007E                   .blkb 2
+                        .area idata
+ 007E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0080                   .dbfile C:/icc/include/delay.h
+ 0080                   .blkb 2
+                        .area idata
+ 0080 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0082                   .dbfile C:/icc/include/delay.h
+ 0082                   .blkb 2
+                        .area idata
+ 0082 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0084                   .dbfile C:/icc/include/delay.h
+ 0084                   .blkb 2
+                        .area idata
+ 0084 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0086                   .dbfile C:/icc/include/delay.h
+ 0086                   .blkb 2
+                        .area idata
+ 0086 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0088                   .dbfile C:/icc/include/delay.h
+ 0088                   .blkb 2
+                        .area idata
+ 0088 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 008A                   .dbfile C:/icc/include/delay.h
+ 008A                   .blkb 2
+                        .area idata
+ 008A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 008C                   .dbfile C:/icc/include/delay.h
+ 008C                   .blkb 2
+                        .area idata
+ 008C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 008E                   .dbfile C:/icc/include/delay.h
+ 008E                   .blkb 2
+                        .area idata
+ 008E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0090                   .dbfile C:/icc/include/delay.h
+ 0090                   .blkb 2
+                        .area idata
+ 0090 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0092                   .dbfile C:/icc/include/delay.h
+ 0092                   .blkb 2
+                        .area idata
+ 0092 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0094                   .dbfile C:/icc/include/delay.h
+ 0094                   .blkb 2
+                        .area idata
+ 0094 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0096                   .dbfile C:/icc/include/delay.h
+ 0096                   .blkb 2
+                        .area idata
+ 0096 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0098                   .dbfile C:/icc/include/delay.h
+ 0098                   .blkb 2
+                        .area idata
+ 0098 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 009A                   .dbfile C:/icc/include/delay.h
+ 009A                   .blkb 2
+                        .area idata
+ 009A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 009C                   .dbfile C:/icc/include/delay.h
+ 009C                   .blkb 2
+                        .area idata
+ 009C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 009E                   .dbfile C:/icc/include/delay.h
+ 009E                   .blkb 2
+                        .area idata
+ 009E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00A0                   .dbfile C:/icc/include/delay.h
+ 00A0                   .blkb 2
+                        .area idata
+ 00A0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00A2                   .dbfile C:/icc/include/delay.h
+ 00A2                   .blkb 2
+                        .area idata
+ 00A2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00A4                   .dbfile C:/icc/include/delay.h
+ 00A4                   .blkb 2
+                        .area idata
+ 00A4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00A6                   .dbfile C:/icc/include/delay.h
+ 00A6                   .blkb 2
+                        .area idata
+ 00A6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00A8                   .dbfile C:/icc/include/delay.h
+ 00A8                   .blkb 2
+                        .area idata
+ 00A8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00AA                   .dbfile C:/icc/include/delay.h
+ 00AA                   .blkb 2
+                        .area idata
+ 00AA 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00AC                   .dbfile C:/icc/include/delay.h
+ 00AC                   .blkb 2
+                        .area idata
+ 00AC 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00AE                   .dbfile C:/icc/include/delay.h
+ 00AE                   .blkb 2
+                        .area idata
+ 00AE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00B0                   .dbfile C:/icc/include/delay.h
+ 00B0                   .blkb 2
+                        .area idata
+ 00B0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00B2                   .dbfile C:/icc/include/delay.h
+ 00B2                   .blkb 2
+                        .area idata
+ 00B2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00B4                   .dbfile C:/icc/include/delay.h
+ 00B4                   .blkb 2
+                        .area idata
+ 00B4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00B6                   .dbfile C:/icc/include/delay.h
+ 00B6                   .blkb 2
+                        .area idata
+ 00B6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00B8                   .dbfile C:/icc/include/delay.h
+ 00B8                   .blkb 2
+                        .area idata
+ 00B8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00BA                   .dbfile C:/icc/include/delay.h
+ 00BA                   .blkb 2
+                        .area idata
+ 00BA 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00BC                   .dbfile C:/icc/include/delay.h
+ 00BC                   .blkb 2
+                        .area idata
+ 00BC 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00BE                   .dbfile C:/icc/include/delay.h
+ 00BE                   .blkb 2
+                        .area idata
+ 00BE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00C0                   .dbfile C:/icc/include/delay.h
+ 00C0                   .blkb 2
+                        .area idata
+ 00C0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00C2                   .dbfile C:/icc/include/delay.h
+ 00C2                   .blkb 2
+                        .area idata
+ 00C2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00C4                   .dbfile C:/icc/include/delay.h
+ 00C4                   .blkb 2
+                        .area idata
+ 00C4 0008              .byte 0,8
+                        .area data(ram, con, rel)
+ 00C6                   .dbfile C:/icc/include/delay.h
+ 00C6                   .blkb 2
+                        .area idata
+ 00C6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00C8                   .dbfile C:/icc/include/delay.h
+ 00C8                   .blkb 2
+                        .area idata
+ 00C8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00CA                   .dbfile C:/icc/include/delay.h
+ 00CA                   .blkb 2
+                        .area idata
+ 00CA 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00CC                   .dbfile C:/icc/include/delay.h
+ 00CC                   .blkb 2
+                        .area idata
+ 00CC 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00CE                   .dbfile C:/icc/include/delay.h
+ 00CE                   .blkb 2
+                        .area idata
+ 00CE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00D0                   .dbfile C:/icc/include/delay.h
+ 00D0                   .blkb 2
+                        .area idata
+ 00D0 0002              .byte 0,2
+                        .area data(ram, con, rel)
+ 00D2                   .dbfile C:/icc/include/delay.h
+ 00D2                   .blkb 2
+                        .area idata
+ 00D2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00D4                   .dbfile C:/icc/include/delay.h
+ 00D4                   .blkb 2
+                        .area idata
+ 00D4 0018              .byte 0,24
+                        .area data(ram, con, rel)
+ 00D6                   .dbfile C:/icc/include/delay.h
+ 00D6                   .blkb 2
+                        .area idata
+ 00D6 03C0              .byte 3,192
+                        .area data(ram, con, rel)
+ 00D8                   .dbfile C:/icc/include/delay.h
+ 00D8                   .blkb 2
+                        .area idata
+ 00D8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00DA                   .dbfile C:/icc/include/delay.h
+ 00DA                   .blkb 2
+                        .area idata
+ 00DA 03C0              .byte 3,192
+                        .area data(ram, con, rel)
+ 00DC                   .dbfile C:/icc/include/delay.h
+ 00DC                   .blkb 2
+                        .area idata
+ 00DC 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00DE                   .dbfile C:/icc/include/delay.h
+ 00DE                   .blkb 2
+                        .area idata
+ 00DE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00E0                   .dbfile C:/icc/include/delay.h
+ 00E0                   .blkb 2
+                        .area idata
+ 00E0 0002              .byte 0,2
+                        .area data(ram, con, rel)
+ 00E2                   .dbfile C:/icc/include/delay.h
+ 00E2                   .blkb 2
+                        .area idata
+ 00E2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00E4                   .dbfile C:/icc/include/delay.h
+ 00E4                   .blkb 2
+                        .area idata
+ 00E4 0030              .byte 0,48
+                        .area data(ram, con, rel)
+ 00E6                   .dbfile C:/icc/include/delay.h
+ 00E6                   .blkb 2
+                        .area idata
+ 00E6 0FC0              .byte 15,192
+                        .area data(ram, con, rel)
+ 00E8                   .dbfile C:/icc/include/delay.h
+ 00E8                   .blkb 2
+                        .area idata
+ 00E8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00EA                   .dbfile C:/icc/include/delay.h
+ 00EA                   .blkb 2
+                        .area idata
+ 00EA 0660              .byte 6,96
+                        .area data(ram, con, rel)
+ 00EC                   .dbfile C:/icc/include/delay.h
+ 00EC                   .blkb 2
+                        .area idata
+ 00EC 0006              .byte 0,6
+                        .area data(ram, con, rel)
+ 00EE                   .dbfile C:/icc/include/delay.h
+ 00EE                   .blkb 2
+                        .area idata
+ 00EE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00F0                   .dbfile C:/icc/include/delay.h
+ 00F0                   .blkb 2
+                        .area idata
+ 00F0 0006              .byte 0,6
+                        .area data(ram, con, rel)
+ 00F2                   .dbfile C:/icc/include/delay.h
+ 00F2                   .blkb 2
+                        .area idata
+ 00F2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00F4                   .dbfile C:/icc/include/delay.h
+ 00F4                   .blkb 2
+                        .area idata
+ 00F4 0070              .byte 0,'p
+                        .area data(ram, con, rel)
+ 00F6                   .dbfile C:/icc/include/delay.h
+ 00F6                   .blkb 2
+                        .area idata
+ 00F6 1840              .byte 24,64
+                        .area data(ram, con, rel)
+ 00F8                   .dbfile C:/icc/include/delay.h
+ 00F8                   .blkb 2
+                        .area idata
+ 00F8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 00FA                   .dbfile C:/icc/include/delay.h
+ 00FA                   .blkb 2
+                        .area idata
+ 00FA 0410              .byte 4,16
+                        .area data(ram, con, rel)
+ 00FC                   .dbfile C:/icc/include/delay.h
+ 00FC                   .blkb 2
+                        .area idata
+ 00FC 0006              .byte 0,6
+                        .area data(ram, con, rel)
+ 00FE                   .dbfile C:/icc/include/delay.h
+ 00FE                   .blkb 2
+                        .area idata
+ 00FE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0100                   .dbfile C:/icc/include/delay.h
+ 0100                   .blkb 2
+                        .area idata
+ 0100 000E              .byte 0,14
+                        .area data(ram, con, rel)
+ 0102                   .dbfile C:/icc/include/delay.h
+ 0102                   .blkb 2
+                        .area idata
+ 0102 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0104                   .dbfile C:/icc/include/delay.h
+ 0104                   .blkb 2
+                        .area idata
+ 0104 01E0              .byte 1,224
+                        .area data(ram, con, rel)
+ 0106                   .dbfile C:/icc/include/delay.h
+ 0106                   .blkb 2
+                        .area idata
+ 0106 2240              .byte 34,64
+                        .area data(ram, con, rel)
+ 0108                   .dbfile C:/icc/include/delay.h
+ 0108                   .blkb 2
+                        .area idata
+ 0108 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 010A                   .dbfile C:/icc/include/delay.h
+ 010A                   .blkb 2
+                        .area idata
+ 010A 0C18              .byte 12,24
+                        .area data(ram, con, rel)
+ 010C                   .dbfile C:/icc/include/delay.h
+ 010C                   .blkb 2
+                        .area idata
+ 010C 0005              .byte 0,5
+                        .area data(ram, con, rel)
+ 010E                   .dbfile C:/icc/include/delay.h
+ 010E                   .blkb 2
+                        .area idata
+ 010E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0110                   .dbfile C:/icc/include/delay.h
+ 0110                   .blkb 2
+                        .area idata
+ 0110 001E              .byte 0,30
+                        .area data(ram, con, rel)
+ 0112                   .dbfile C:/icc/include/delay.h
+ 0112                   .blkb 2
+                        .area idata
+ 0112 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0114                   .dbfile C:/icc/include/delay.h
+ 0114                   .blkb 2
+                        .area idata
+ 0114 07E0              .byte 7,224
+                        .area data(ram, con, rel)
+ 0116                   .dbfile C:/icc/include/delay.h
+ 0116                   .blkb 2
+                        .area idata
+ 0116 4200              .byte 'B,0
+                        .area data(ram, con, rel)
+ 0118                   .dbfile C:/icc/include/delay.h
+ 0118                   .blkb 2
+                        .area idata
+ 0118 0007              .byte 0,7
+                        .area data(ram, con, rel)
+ 011A                   .dbfile C:/icc/include/delay.h
+ 011A                   .blkb 2
+                        .area idata
+ 011A F80C              .byte 248,12
+                        .area data(ram, con, rel)
+ 011C                   .dbfile C:/icc/include/delay.h
+ 011C                   .blkb 2
+                        .area idata
+ 011C 000D              .byte 0,13
+                        .area data(ram, con, rel)
+ 011E                   .dbfile C:/icc/include/delay.h
+ 011E                   .blkb 2
+                        .area idata
+ 011E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0120                   .dbfile C:/icc/include/delay.h
+ 0120                   .blkb 2
+                        .area idata
+ 0120 001E              .byte 0,30
+                        .area data(ram, con, rel)
+ 0122                   .dbfile C:/icc/include/delay.h
+ 0122                   .blkb 2
+                        .area idata
+ 0122 007F              .byte 0,127
+                        .area data(ram, con, rel)
+ 0124                   .dbfile C:/icc/include/delay.h
+ 0124                   .blkb 2
+                        .area idata
+ 0124 FFC0              .byte 255,192
+                        .area data(ram, con, rel)
+ 0126                   .dbfile C:/icc/include/delay.h
+ 0126                   .blkb 2
+                        .area idata
+ 0126 4260              .byte 'B,96
+                        .area data(ram, con, rel)
+ 0128                   .dbfile C:/icc/include/delay.h
+ 0128                   .blkb 2
+                        .area idata
+ 0128 001F              .byte 0,31
+                        .area data(ram, con, rel)
+ 012A                   .dbfile C:/icc/include/delay.h
+ 012A                   .blkb 2
+                        .area idata
+ 012A DC06              .byte 220,6
+                        .area data(ram, con, rel)
+ 012C                   .dbfile C:/icc/include/delay.h
+ 012C                   .blkb 2
+                        .area idata
+ 012C 00E8              .byte 0,232
+                        .area data(ram, con, rel)
+ 012E                   .dbfile C:/icc/include/delay.h
+ 012E                   .blkb 2
+                        .area idata
+ 012E 8000              .byte 128,0
+                        .area data(ram, con, rel)
+ 0130                   .dbfile C:/icc/include/delay.h
+ 0130                   .blkb 2
+                        .area idata
+ 0130 003E              .byte 0,62
+                        .area data(ram, con, rel)
+ 0132                   .dbfile C:/icc/include/delay.h
+ 0132                   .blkb 2
+                        .area idata
+ 0132 01FF              .byte 1,255
+                        .area data(ram, con, rel)
+ 0134                   .dbfile C:/icc/include/delay.h
+ 0134                   .blkb 2
+                        .area idata
+ 0134 FF80              .byte 255,128
+                        .area data(ram, con, rel)
+ 0136                   .dbfile C:/icc/include/delay.h
+ 0136                   .blkb 2
+                        .area idata
+ 0136 B3E0              .byte 179,224
+                        .area data(ram, con, rel)
+ 0138                   .dbfile C:/icc/include/delay.h
+ 0138                   .blkb 2
+                        .area idata
+ 0138 0070              .byte 0,'p
+                        .area data(ram, con, rel)
+ 013A                   .dbfile C:/icc/include/delay.h
+ 013A                   .blkb 2
+                        .area idata
+ 013A 0408              .byte 4,8
+                        .area data(ram, con, rel)
+ 013C                   .dbfile C:/icc/include/delay.h
+ 013C                   .blkb 2
+                        .area idata
+ 013C 00F8              .byte 0,248
+                        .area data(ram, con, rel)
+ 013E                   .dbfile C:/icc/include/delay.h
+ 013E                   .blkb 2
+                        .area idata
+ 013E BC00              .byte 188,0
+                        .area data(ram, con, rel)
+ 0140                   .dbfile C:/icc/include/delay.h
+ 0140                   .blkb 2
+                        .area idata
+ 0140 003E              .byte 0,62
+                        .area data(ram, con, rel)
+ 0142                   .dbfile C:/icc/include/delay.h
+ 0142                   .blkb 2
+                        .area idata
+ 0142 03FF              .byte 3,255
+                        .area data(ram, con, rel)
+ 0144                   .dbfile C:/icc/include/delay.h
+ 0144                   .blkb 2
+                        .area idata
+ 0144 FF00              .byte 255,0
+                        .area data(ram, con, rel)
+ 0146                   .dbfile C:/icc/include/delay.h
+ 0146                   .blkb 2
+                        .area idata
+ 0146 EB20              .byte 235,32
+                        .area data(ram, con, rel)
+ 0148                   .dbfile C:/icc/include/delay.h
+ 0148                   .blkb 2
+                        .area idata
+ 0148 00C0              .byte 0,192
+                        .area data(ram, con, rel)
+ 014A                   .dbfile C:/icc/include/delay.h
+ 014A                   .blkb 2
+                        .area idata
+ 014A 0418              .byte 4,24
+                        .area data(ram, con, rel)
+ 014C                   .dbfile C:/icc/include/delay.h
+ 014C                   .blkb 2
+                        .area idata
+ 014C 00B8              .byte 0,184
+                        .area data(ram, con, rel)
+ 014E                   .dbfile C:/icc/include/delay.h
+ 014E                   .blkb 2
+                        .area idata
+ 014E FE00              .byte 254,0
+                        .area data(ram, con, rel)
+ 0150                   .dbfile C:/icc/include/delay.h
+ 0150                   .blkb 2
+                        .area idata
+ 0150 003C              .byte 0,60
+                        .area data(ram, con, rel)
+ 0152                   .dbfile C:/icc/include/delay.h
+ 0152                   .blkb 2
+                        .area idata
+ 0152 07FF              .byte 7,255
+                        .area data(ram, con, rel)
+ 0154                   .dbfile C:/icc/include/delay.h
+ 0154                   .blkb 2
+                        .area idata
+ 0154 FE00              .byte 254,0
+                        .area data(ram, con, rel)
+ 0156                   .dbfile C:/icc/include/delay.h
+ 0156                   .blkb 2
+                        .area idata
+ 0156 CA20              .byte 202,32
+                        .area data(ram, con, rel)
+ 0158                   .dbfile C:/icc/include/delay.h
+ 0158                   .blkb 2
+                        .area idata
+ 0158 0100              .byte 1,0
+                        .area data(ram, con, rel)
+ 015A                   .dbfile C:/icc/include/delay.h
+ 015A                   .blkb 2
+                        .area idata
+ 015A 0630              .byte 6,48
+                        .area data(ram, con, rel)
+ 015C                   .dbfile C:/icc/include/delay.h
+ 015C                   .blkb 2
+                        .area idata
+ 015C 0098              .byte 0,152
+                        .area data(ram, con, rel)
+ 015E                   .dbfile C:/icc/include/delay.h
+ 015E                   .blkb 2
+                        .area idata
+ 015E C300              .byte 195,0
+                        .area data(ram, con, rel)
+ 0160                   .dbfile C:/icc/include/delay.h
+ 0160                   .blkb 2
+                        .area idata
+ 0160 007C              .byte 0,124
+                        .area data(ram, con, rel)
+ 0162                   .dbfile C:/icc/include/delay.h
+ 0162                   .blkb 2
+                        .area idata
+ 0162 0F8F              .byte 15,143
+                        .area data(ram, con, rel)
+ 0164                   .dbfile C:/icc/include/delay.h
+ 0164                   .blkb 2
+                        .area idata
+ 0164 F800              .byte 248,0
+                        .area data(ram, con, rel)
+ 0166                   .dbfile C:/icc/include/delay.h
+ 0166                   .blkb 2
+                        .area idata
+ 0166 8C20              .byte 140,32
+                        .area data(ram, con, rel)
+ 0168                   .dbfile C:/icc/include/delay.h
+ 0168                   .blkb 2
+                        .area idata
+ 0168 027F              .byte 2,127
+                        .area data(ram, con, rel)
+ 016A                   .dbfile C:/icc/include/delay.h
+ 016A                   .blkb 2
+                        .area idata
+ 016A 03E0              .byte 3,224
+                        .area data(ram, con, rel)
+ 016C                   .dbfile C:/icc/include/delay.h
+ 016C                   .blkb 2
+                        .area idata
+ 016C 0008              .byte 0,8
+                        .area data(ram, con, rel)
+ 016E                   .dbfile C:/icc/include/delay.h
+ 016E                   .blkb 2
+                        .area idata
+ 016E C100              .byte 193,0
+                        .area data(ram, con, rel)
+ 0170                   .dbfile C:/icc/include/delay.h
+ 0170                   .blkb 2
+                        .area idata
+ 0170 0078              .byte 0,'x
+                        .area data(ram, con, rel)
+ 0172                   .dbfile C:/icc/include/delay.h
+ 0172                   .blkb 2
+                        .area idata
+ 0172 7FC0              .byte 127,192
+                        .area data(ram, con, rel)
+ 0174                   .dbfile C:/icc/include/delay.h
+ 0174                   .blkb 2
+                        .area idata
+ 0174 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0176                   .dbfile C:/icc/include/delay.h
+ 0176                   .blkb 2
+                        .area idata
+ 0176 8C20              .byte 140,32
+                        .area data(ram, con, rel)
+ 0178                   .dbfile C:/icc/include/delay.h
+ 0178                   .blkb 2
+                        .area idata
+ 0178 05FF              .byte 5,255
+                        .area data(ram, con, rel)
+ 017A                   .dbfile C:/icc/include/delay.h
+ 017A                   .blkb 2
+                        .area idata
+ 017A C1C0              .byte 193,192
+                        .area data(ram, con, rel)
+ 017C                   .dbfile C:/icc/include/delay.h
+ 017C                   .blkb 2
+                        .area idata
+ 017C 0008              .byte 0,8
+                        .area data(ram, con, rel)
+ 017E                   .dbfile C:/icc/include/delay.h
+ 017E                   .blkb 2
+                        .area idata
+ 017E A080              .byte 160,128
+                        .area data(ram, con, rel)
+ 0180                   .dbfile C:/icc/include/delay.h
+ 0180                   .blkb 2
+                        .area idata
+ 0180 0079              .byte 0,'y
+                        .area data(ram, con, rel)
+ 0182                   .dbfile C:/icc/include/delay.h
+ 0182                   .blkb 2
+                        .area idata
+ 0182 FFF0              .byte 255,240
+                        .area data(ram, con, rel)
+ 0184                   .dbfile C:/icc/include/delay.h
+ 0184                   .blkb 2
+                        .area idata
+ 0184 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0186                   .dbfile C:/icc/include/delay.h
+ 0186                   .blkb 2
+                        .area idata
+ 0186 CFA0              .byte 207,160
+                        .area data(ram, con, rel)
+ 0188                   .dbfile C:/icc/include/delay.h
+ 0188                   .blkb 2
+                        .area idata
+ 0188 0F00              .byte 15,0
+                        .area data(ram, con, rel)
+ 018A                   .dbfile C:/icc/include/delay.h
+ 018A                   .blkb 2
+                        .area idata
+ 018A E000              .byte 224,0
+                        .area data(ram, con, rel)
+ 018C                   .dbfile C:/icc/include/delay.h
+ 018C                   .blkb 2
+                        .area idata
+ 018C 0088              .byte 0,136
+                        .area data(ram, con, rel)
+ 018E                   .dbfile C:/icc/include/delay.h
+ 018E                   .blkb 2
+                        .area idata
+ 018E E080              .byte 224,128
+                        .area data(ram, con, rel)
+ 0190                   .dbfile C:/icc/include/delay.h
+ 0190                   .blkb 2
+                        .area idata
+ 0190 0077              .byte 0,'w
+                        .area data(ram, con, rel)
+ 0192                   .dbfile C:/icc/include/delay.h
+ 0192                   .blkb 2
+                        .area idata
+ 0192 007C              .byte 0,124
+                        .area data(ram, con, rel)
+ 0194                   .dbfile C:/icc/include/delay.h
+ 0194                   .blkb 2
+                        .area idata
+ 0194 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0196                   .dbfile C:/icc/include/delay.h
+ 0196                   .blkb 2
+                        .area idata
+ 0196 D8A2              .byte 216,162
+                        .area data(ram, con, rel)
+ 0198                   .dbfile C:/icc/include/delay.h
+ 0198                   .blkb 2
+                        .area idata
+ 0198 1C00              .byte 28,0
+                        .area data(ram, con, rel)
+ 019A                   .dbfile C:/icc/include/delay.h
+ 019A                   .blkb 2
+                        .area idata
+ 019A 3800              .byte 56,0
+                        .area data(ram, con, rel)
+ 019C                   .dbfile C:/icc/include/delay.h
+ 019C                   .blkb 2
+                        .area idata
+ 019C 0089              .byte 0,137
+                        .area data(ram, con, rel)
+ 019E                   .dbfile C:/icc/include/delay.h
+ 019E                   .blkb 2
+                        .area idata
+ 019E E040              .byte 224,64
+                        .area data(ram, con, rel)
+ 01A0                   .dbfile C:/icc/include/delay.h
+ 01A0                   .blkb 2
+                        .area idata
+ 01A0 007F              .byte 0,127
+                        .area data(ram, con, rel)
+ 01A2                   .dbfile C:/icc/include/delay.h
+ 01A2                   .blkb 2
+                        .area idata
+ 01A2 001E              .byte 0,30
+                        .area data(ram, con, rel)
+ 01A4                   .dbfile C:/icc/include/delay.h
+ 01A4                   .blkb 2
+                        .area idata
+ 01A4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 01A6                   .dbfile C:/icc/include/delay.h
+ 01A6                   .blkb 2
+                        .area idata
+ 01A6 D882              .byte 216,130
+                        .area data(ram, con, rel)
+ 01A8                   .dbfile C:/icc/include/delay.h
+ 01A8                   .blkb 2
+                        .area idata
+ 01A8 1BC0              .byte 27,192
+                        .area data(ram, con, rel)
+ 01AA                   .dbfile C:/icc/include/delay.h
+ 01AA                   .blkb 2
+                        .area idata
+ 01AA 1C00              .byte 28,0
+                        .area data(ram, con, rel)
+ 01AC                   .dbfile C:/icc/include/delay.h
+ 01AC                   .blkb 2
+                        .area idata
+ 01AC 009A              .byte 0,154
+                        .area data(ram, con, rel)
+ 01AE                   .dbfile C:/icc/include/delay.h
+ 01AE                   .blkb 2
+                        .area idata
+ 01AE 3040              .byte 48,64
+                        .area data(ram, con, rel)
+ 01B0                   .dbfile C:/icc/include/delay.h
+ 01B0                   .blkb 2
+                        .area idata
+ 01B0 00F3              .byte 0,243
+                        .area data(ram, con, rel)
+ 01B2                   .dbfile C:/icc/include/delay.h
+ 01B2                   .blkb 2
+                        .area idata
+ 01B2 C007              .byte 192,7
+                        .area data(ram, con, rel)
+ 01B4                   .dbfile C:/icc/include/delay.h
+ 01B4                   .blkb 2
+                        .area idata
+ 01B4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 01B6                   .dbfile C:/icc/include/delay.h
+ 01B6                   .blkb 2
+                        .area idata
+ 01B6 F8C2              .byte 248,194
+                        .area data(ram, con, rel)
+ 01B8                   .dbfile C:/icc/include/delay.h
+ 01B8                   .blkb 2
+                        .area idata
+ 01B8 3FF0              .byte 63,240
+                        .area data(ram, con, rel)
+ 01BA                   .dbfile C:/icc/include/delay.h
+ 01BA                   .blkb 2
+                        .area idata
+ 01BA 06F0              .byte 6,240
+                        .area data(ram, con, rel)
+ 01BC                   .dbfile C:/icc/include/delay.h
+ 01BC                   .blkb 2
+                        .area idata
+ 01BC 009E              .byte 0,158
+                        .area data(ram, con, rel)
+ 01BE                   .dbfile C:/icc/include/delay.h
+ 01BE                   .blkb 2
+                        .area idata
+ 01BE 3040              .byte 48,64
+                        .area data(ram, con, rel)
+ 01C0                   .dbfile C:/icc/include/delay.h
+ 01C0                   .blkb 2
+                        .area idata
+ 01C0 00C0              .byte 0,192
+                        .area data(ram, con, rel)
+ 01C2                   .dbfile C:/icc/include/delay.h
+ 01C2                   .blkb 2
+                        .area idata
+ 01C2 7003              .byte 'p,3
+                        .area data(ram, con, rel)
+ 01C4                   .dbfile C:/icc/include/delay.h
+ 01C4                   .blkb 2
+                        .area idata
+ 01C4 8000              .byte 128,0
+                        .area data(ram, con, rel)
+ 01C6                   .dbfile C:/icc/include/delay.h
+ 01C6                   .blkb 2
+                        .area idata
+ 01C6 F8C2              .byte 248,194
+                        .area data(ram, con, rel)
+ 01C8                   .dbfile C:/icc/include/delay.h
+ 01C8                   .blkb 2
+                        .area idata
+ 01C8 3C1C              .byte 60,28
+                        .area data(ram, con, rel)
+ 01CA                   .dbfile C:/icc/include/delay.h
+ 01CA                   .blkb 2
+                        .area idata
+ 01CA 03F8              .byte 3,248
+                        .area data(ram, con, rel)
+ 01CC                   .dbfile C:/icc/include/delay.h
+ 01CC                   .blkb 2
+                        .area idata
+ 01CC 00B4              .byte 0,180
+                        .area data(ram, con, rel)
+ 01CE                   .dbfile C:/icc/include/delay.h
+ 01CE                   .blkb 2
+                        .area idata
+ 01CE 2820              .byte 40,32
+                        .area data(ram, con, rel)
+ 01D0                   .dbfile C:/icc/include/delay.h
+ 01D0                   .blkb 2
+                        .area idata
+ 01D0 0180              .byte 1,128
+                        .area data(ram, con, rel)
+ 01D2                   .dbfile C:/icc/include/delay.h
+ 01D2                   .blkb 2
+                        .area idata
+ 01D2 1C01              .byte 28,1
+                        .area data(ram, con, rel)
+ 01D4                   .dbfile C:/icc/include/delay.h
+ 01D4                   .blkb 2
+                        .area idata
+ 01D4 8000              .byte 128,0
+                        .area data(ram, con, rel)
+ 01D6                   .dbfile C:/icc/include/delay.h
+ 01D6                   .blkb 2
+                        .area idata
+ 01D6 7E82              .byte 126,130
+                        .area data(ram, con, rel)
+ 01D8                   .dbfile C:/icc/include/delay.h
+ 01D8                   .blkb 2
+                        .area idata
+ 01D8 600E              .byte 96,14
+                        .area data(ram, con, rel)
+ 01DA                   .dbfile C:/icc/include/delay.h
+ 01DA                   .blkb 2
+                        .area idata
+ 01DA 00FE              .byte 0,254
+                        .area data(ram, con, rel)
+ 01DC                   .dbfile C:/icc/include/delay.h
+ 01DC                   .blkb 2
+                        .area idata
+ 01DC 00E6              .byte 0,230
+                        .area data(ram, con, rel)
+ 01DE                   .dbfile C:/icc/include/delay.h
+ 01DE                   .blkb 2
+                        .area idata
+ 01DE 2C20              .byte 44,32
+                        .area data(ram, con, rel)
+ 01E0                   .dbfile C:/icc/include/delay.h
+ 01E0                   .blkb 2
+                        .area idata
+ 01E0 0300              .byte 3,0
+                        .area data(ram, con, rel)
+ 01E2                   .dbfile C:/icc/include/delay.h
+ 01E2                   .blkb 2
+                        .area idata
+ 01E2 0600              .byte 6,0
+                        .area data(ram, con, rel)
+ 01E4                   .dbfile C:/icc/include/delay.h
+ 01E4                   .blkb 2
+                        .area idata
+ 01E4 C000              .byte 192,0
+                        .area data(ram, con, rel)
+ 01E6                   .dbfile C:/icc/include/delay.h
+ 01E6                   .blkb 2
+                        .area idata
+ 01E6 7F06              .byte 127,6
+                        .area data(ram, con, rel)
+ 01E8                   .dbfile C:/icc/include/delay.h
+ 01E8                   .blkb 2
+                        .area idata
+ 01E8 C002              .byte 192,2
+                        .area data(ram, con, rel)
+ 01EA                   .dbfile C:/icc/include/delay.h
+ 01EA                   .blkb 2
+                        .area idata
+ 01EA 00FF              .byte 0,255
+                        .area data(ram, con, rel)
+ 01EC                   .dbfile C:/icc/include/delay.h
+ 01EC                   .blkb 2
+                        .area idata
+ 01EC C0E2              .byte 192,226
+                        .area data(ram, con, rel)
+ 01EE                   .dbfile C:/icc/include/delay.h
+ 01EE                   .blkb 2
+                        .area idata
+ 01EE 2620              .byte 38,32
+                        .area data(ram, con, rel)
+ 01F0                   .dbfile C:/icc/include/delay.h
+ 01F0                   .blkb 2
+                        .area idata
+ 01F0 07F0              .byte 7,240
+                        .area data(ram, con, rel)
+ 01F2                   .dbfile C:/icc/include/delay.h
+ 01F2                   .blkb 2
+                        .area idata
+ 01F2 0300              .byte 3,0
+                        .area data(ram, con, rel)
+ 01F4                   .dbfile C:/icc/include/delay.h
+ 01F4                   .blkb 2
+                        .area idata
+ 01F4 7000              .byte 'p,0
+                        .area data(ram, con, rel)
+ 01F6                   .dbfile C:/icc/include/delay.h
+ 01F6                   .blkb 2
+                        .area idata
+ 01F6 3F06              .byte 63,6
+                        .area data(ram, con, rel)
+ 01F8                   .dbfile C:/icc/include/delay.h
+ 01F8                   .blkb 2
+                        .area idata
+ 01F8 8001              .byte 128,1
+                        .area data(ram, con, rel)
+ 01FA                   .dbfile C:/icc/include/delay.h
+ 01FA                   .blkb 2
+                        .area idata
+ 01FA 00FF              .byte 0,255
+                        .area data(ram, con, rel)
+ 01FC                   .dbfile C:/icc/include/delay.h
+ 01FC                   .blkb 2
+                        .area idata
+ 01FC C042              .byte 192,'B
+                        .area data(ram, con, rel)
+ 01FE                   .dbfile C:/icc/include/delay.h
+ 01FE                   .blkb 2
+                        .area idata
+ 01FE 2360              .byte 35,96
+                        .area data(ram, con, rel)
+ 0200                   .dbfile C:/icc/include/delay.h
+ 0200                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0200                   .dbsym e photo3 _photo3 A[512:512]c
+ 0200           _photo4::
+ 0200                   .blkb 2
+                        .area idata
+ 0200 0E1C              .byte 14,28
+                        .area data(ram, con, rel)
+ 0202                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0202                   .blkb 2
+                        .area idata
+ 0202 0180              .byte 1,128
+                        .area data(ram, con, rel)
+ 0204                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0204                   .blkb 2
+                        .area idata
+ 0204 7800              .byte 'x,0
+                        .area data(ram, con, rel)
+ 0206                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0206                   .blkb 2
+                        .area idata
+ 0206 7C0F              .byte 124,15
+                        .area data(ram, con, rel)
+ 0208                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0208                   .blkb 2
+                        .area idata
+ 0208 0003              .byte 0,3
+                        .area data(ram, con, rel)
+ 020A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 020A                   .blkb 2
+                        .area idata
+ 020A 8CFF              .byte 140,255
+                        .area data(ram, con, rel)
+ 020C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 020C                   .blkb 2
+                        .area idata
+ 020C 0042              .byte 0,'B
+                        .area data(ram, con, rel)
+ 020E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 020E                   .blkb 2
+                        .area idata
+ 020E 67C0              .byte 'g,192
+                        .area data(ram, con, rel)
+ 0210                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0210                   .blkb 2
+                        .area idata
+ 0210 1806              .byte 24,6
+                        .area data(ram, con, rel)
+ 0212                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0212                   .blkb 2
+                        .area idata
+ 0212 0080              .byte 0,128
+                        .area data(ram, con, rel)
+ 0214                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0214                   .blkb 2
+                        .area idata
+ 0214 3E00              .byte 62,0
+                        .area data(ram, con, rel)
+ 0216                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0216                   .blkb 2
+                        .area idata
+ 0216 C00F              .byte 192,15
+                        .area data(ram, con, rel)
+ 0218                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0218                   .blkb 2
+                        .area idata
+ 0218 0002              .byte 0,2
+                        .area data(ram, con, rel)
+ 021A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 021A                   .blkb 2
+                        .area idata
+ 021A 147C              .byte 20,124
+                        .area data(ram, con, rel)
+ 021C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 021C                   .blkb 2
+                        .area idata
+ 021C 0043              .byte 0,'C
+                        .area data(ram, con, rel)
+ 021E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 021E                   .blkb 2
+                        .area idata
+ 021E FFF0              .byte 255,240
+                        .area data(ram, con, rel)
+ 0220                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0220                   .blkb 2
+                        .area idata
+ 0220 3003              .byte 48,3
+                        .area data(ram, con, rel)
+ 0222                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0222                   .blkb 2
+                        .area idata
+ 0222 0040              .byte 0,64
+                        .area data(ram, con, rel)
+ 0224                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0224                   .blkb 2
+                        .area idata
+ 0224 1FC3              .byte 31,195
+                        .area data(ram, con, rel)
+ 0226                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0226                   .blkb 2
+                        .area idata
+ 0226 801F              .byte 128,31
+                        .area data(ram, con, rel)
+ 0228                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0228                   .blkb 2
+                        .area idata
+ 0228 8002              .byte 128,2
+                        .area data(ram, con, rel)
+ 022A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 022A                   .blkb 2
+                        .area idata
+ 022A 647C              .byte 'd,124
+                        .area data(ram, con, rel)
+ 022C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 022C                   .blkb 2
+                        .area idata
+ 022C 0043              .byte 0,'C
+                        .area data(ram, con, rel)
+ 022E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 022E                   .blkb 2
+                        .area idata
+ 022E B1FC              .byte 177,252
+                        .area data(ram, con, rel)
+ 0230                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0230                   .blkb 2
+                        .area idata
+ 0230 6003              .byte 96,3
+                        .area data(ram, con, rel)
+ 0232                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0232                   .blkb 2
+                        .area idata
+ 0232 803C              .byte 128,60
+                        .area data(ram, con, rel)
+ 0234                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0234                   .blkb 2
+                        .area idata
+ 0234 09FE              .byte 9,254
+                        .area data(ram, con, rel)
+ 0236                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0236                   .blkb 2
+                        .area idata
+ 0236 001F              .byte 0,31
+                        .area data(ram, con, rel)
+ 0238                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0238                   .blkb 2
+                        .area idata
+ 0238 C072              .byte 192,'r
+                        .area data(ram, con, rel)
+ 023A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 023A                   .blkb 2
+                        .area idata
+ 023A 607E              .byte 96,126
+                        .area data(ram, con, rel)
+ 023C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 023C                   .blkb 2
+                        .area idata
+ 023C 0042              .byte 0,'B
+                        .area data(ram, con, rel)
+ 023E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 023E                   .blkb 2
+                        .area idata
+ 023E 1086              .byte 16,134
+                        .area data(ram, con, rel)
+ 0240                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0240                   .blkb 2
+                        .area idata
+ 0240 4003              .byte 64,3
+                        .area data(ram, con, rel)
+ 0242                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0242                   .blkb 2
+                        .area idata
+ 0242 803E              .byte 128,62
+                        .area data(ram, con, rel)
+ 0244                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0244                   .blkb 2
+                        .area idata
+ 0244 0C00              .byte 12,0
+                        .area data(ram, con, rel)
+ 0246                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0246                   .blkb 2
+                        .area idata
+ 0246 001F              .byte 0,31
+                        .area data(ram, con, rel)
+ 0248                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0248                   .blkb 2
+                        .area idata
+ 0248 C07C              .byte 192,124
+                        .area data(ram, con, rel)
+ 024A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 024A                   .blkb 2
+                        .area idata
+ 024A 003A              .byte 0,58
+                        .area data(ram, con, rel)
+ 024C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 024C                   .blkb 2
+                        .area idata
+ 024C 0044              .byte 0,'D
+                        .area data(ram, con, rel)
+ 024E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 024E                   .blkb 2
+                        .area idata
+ 024E 1086              .byte 16,134
+                        .area data(ram, con, rel)
+ 0250                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0250                   .blkb 2
+                        .area idata
+ 0250 8003              .byte 128,3
+                        .area data(ram, con, rel)
+ 0252                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0252                   .blkb 2
+                        .area idata
+ 0252 C07F              .byte 192,127
+                        .area data(ram, con, rel)
+ 0254                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0254                   .blkb 2
+                        .area idata
+ 0254 0600              .byte 6,0
+                        .area data(ram, con, rel)
+ 0256                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0256                   .blkb 2
+                        .area idata
+ 0256 001F              .byte 0,31
+                        .area data(ram, con, rel)
+ 0258                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0258                   .blkb 2
+                        .area idata
+ 0258 E046              .byte 224,'F
+                        .area data(ram, con, rel)
+ 025A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 025A                   .blkb 2
+                        .area idata
+ 025A 479B              .byte 'G,155
+                        .area data(ram, con, rel)
+ 025C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 025C                   .blkb 2
+                        .area idata
+ 025C 0064              .byte 0,'d
+                        .area data(ram, con, rel)
+ 025E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 025E                   .blkb 2
+                        .area idata
+ 025E 1084              .byte 16,132
+                        .area data(ram, con, rel)
+ 0260                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0260                   .blkb 2
+                        .area idata
+ 0260 0001              .byte 0,1
+                        .area data(ram, con, rel)
+ 0262                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0262                   .blkb 2
+                        .area idata
+ 0262 E07F              .byte 224,127
+                        .area data(ram, con, rel)
+ 0264                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0264                   .blkb 2
+                        .area idata
+ 0264 8200              .byte 130,0
+                        .area data(ram, con, rel)
+ 0266                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0266                   .blkb 2
+                        .area idata
+ 0266 0030              .byte 0,48
+                        .area data(ram, con, rel)
+ 0268                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0268                   .blkb 2
+                        .area idata
+ 0268 2042              .byte 32,'B
+                        .area data(ram, con, rel)
+ 026A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 026A                   .blkb 2
+                        .area idata
+ 026A 46D9              .byte 'F,217
+                        .area data(ram, con, rel)
+ 026C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 026C                   .blkb 2
+                        .area idata
+ 026C 0024              .byte 0,36
+                        .area data(ram, con, rel)
+ 026E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 026E                   .blkb 2
+                        .area idata
+ 026E 1104              .byte 17,4
+                        .area data(ram, con, rel)
+ 0270                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0270                   .blkb 2
+                        .area idata
+ 0270 0001              .byte 0,1
+                        .area data(ram, con, rel)
+ 0272                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0272                   .blkb 2
+                        .area idata
+ 0272 E0EF              .byte 224,239
+                        .area data(ram, con, rel)
+ 0274                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0274                   .blkb 2
+                        .area idata
+ 0274 C300              .byte 195,0
+                        .area data(ram, con, rel)
+ 0276                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0276                   .blkb 2
+                        .area idata
+ 0276 0060              .byte 0,96
+                        .area data(ram, con, rel)
+ 0278                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0278                   .blkb 2
+                        .area idata
+ 0278 0062              .byte 0,'b
+                        .area data(ram, con, rel)
+ 027A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 027A                   .blkb 2
+                        .area idata
+ 027A E428              .byte 228,40
+                        .area data(ram, con, rel)
+ 027C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 027C                   .blkb 2
+                        .area idata
+ 027C BFA4              .byte 191,164
+                        .area data(ram, con, rel)
+ 027E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 027E                   .blkb 2
+                        .area idata
+ 027E 1D08              .byte 29,8
+                        .area data(ram, con, rel)
+ 0280                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0280                   .blkb 2
+                        .area idata
+ 0280 0001              .byte 0,1
+                        .area data(ram, con, rel)
+ 0282                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0282                   .blkb 2
+                        .area idata
+ 0282 E0E7              .byte 224,231
+                        .area data(ram, con, rel)
+ 0284                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0284                   .blkb 2
+                        .area idata
+ 0284 C180              .byte 193,128
+                        .area data(ram, con, rel)
+ 0286                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0286                   .blkb 2
+                        .area idata
+ 0286 00C0              .byte 0,192
+                        .area data(ram, con, rel)
+ 0288                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0288                   .blkb 2
+                        .area idata
+ 0288 0021              .byte 0,33
+                        .area data(ram, con, rel)
+ 028A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 028A                   .blkb 2
+                        .area idata
+ 028A FC20              .byte 252,32
+                        .area data(ram, con, rel)
+ 028C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 028C                   .blkb 2
+                        .area idata
+ 028C FFFC              .byte 255,252
+                        .area data(ram, con, rel)
+ 028E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 028E                   .blkb 2
+                        .area idata
+ 028E 1F30              .byte 31,48
+                        .area data(ram, con, rel)
+ 0290                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0290                   .blkb 2
+                        .area idata
+ 0290 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0292                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0292                   .blkb 2
+                        .area idata
+ 0292 F0E3              .byte 240,227
+                        .area data(ram, con, rel)
+ 0294                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0294                   .blkb 2
+                        .area idata
+ 0294 C0C0              .byte 192,192
+                        .area data(ram, con, rel)
+ 0296                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0296                   .blkb 2
+                        .area idata
+ 0296 0180              .byte 1,128
+                        .area data(ram, con, rel)
+ 0298                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0298                   .blkb 2
+                        .area idata
+ 0298 01E7              .byte 1,231
+                        .area data(ram, con, rel)
+ 029A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 029A                   .blkb 2
+                        .area idata
+ 029A 3240              .byte 50,64
+                        .area data(ram, con, rel)
+ 029C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 029C                   .blkb 2
+                        .area idata
+ 029C 7FDC              .byte 127,220
+                        .area data(ram, con, rel)
+ 029E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 029E                   .blkb 2
+                        .area idata
+ 029E 23F0              .byte 35,240
+                        .area data(ram, con, rel)
+ 02A0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02A0                   .blkb 2
+                        .area idata
+ 02A0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 02A2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02A2                   .blkb 2
+                        .area idata
+ 02A2 F0C3              .byte 240,195
+                        .area data(ram, con, rel)
+ 02A4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02A4                   .blkb 2
+                        .area idata
+ 02A4 8060              .byte 128,96
+                        .area data(ram, con, rel)
+ 02A6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02A6                   .blkb 2
+                        .area idata
+ 02A6 0300              .byte 3,0
+                        .area data(ram, con, rel)
+ 02A8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02A8                   .blkb 2
+                        .area idata
+ 02A8 03FE              .byte 3,254
+                        .area data(ram, con, rel)
+ 02AA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02AA                   .blkb 2
+                        .area idata
+ 02AA 1240              .byte 18,64
+                        .area data(ram, con, rel)
+ 02AC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02AC                   .blkb 2
+                        .area idata
+ 02AC 7F84              .byte 127,132
+                        .area data(ram, con, rel)
+ 02AE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02AE                   .blkb 2
+                        .area idata
+ 02AE 21D8              .byte 33,216
+                        .area data(ram, con, rel)
+ 02B0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02B0                   .blkb 2
+                        .area idata
+ 02B0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 02B2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02B2                   .blkb 2
+                        .area idata
+ 02B2 71C0              .byte 'q,192
+                        .area data(ram, con, rel)
+ 02B4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02B4                   .blkb 2
+                        .area idata
+ 02B4 0030              .byte 0,48
+                        .area data(ram, con, rel)
+ 02B6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02B6                   .blkb 2
+                        .area idata
+ 02B6 0E00              .byte 14,0
+                        .area data(ram, con, rel)
+ 02B8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02B8                   .blkb 2
+                        .area idata
+ 02B8 0232              .byte 2,50
+                        .area data(ram, con, rel)
+ 02BA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02BA                   .blkb 2
+                        .area idata
+ 02BA 1380              .byte 19,128
+                        .area data(ram, con, rel)
+ 02BC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02BC                   .blkb 2
+                        .area idata
+ 02BC 3F04              .byte 63,4
+                        .area data(ram, con, rel)
+ 02BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02BE                   .blkb 2
+                        .area idata
+ 02BE 6088              .byte 96,136
+                        .area data(ram, con, rel)
+ 02C0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02C0                   .blkb 2
+                        .area idata
+ 02C0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 02C2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02C2                   .blkb 2
+                        .area idata
+ 02C2 39C2              .byte 57,194
+                        .area data(ram, con, rel)
+ 02C4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02C4                   .blkb 2
+                        .area idata
+ 02C4 401C              .byte 64,28
+                        .area data(ram, con, rel)
+ 02C6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02C6                   .blkb 2
+                        .area idata
+ 02C6 1C00              .byte 28,0
+                        .area data(ram, con, rel)
+ 02C8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02C8                   .blkb 2
+                        .area idata
+ 02C8 0412              .byte 4,18
+                        .area data(ram, con, rel)
+ 02CA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02CA                   .blkb 2
+                        .area idata
+ 02CA 1380              .byte 19,128
+                        .area data(ram, con, rel)
+ 02CC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02CC                   .blkb 2
+                        .area idata
+ 02CC 3E03              .byte 62,3
+                        .area data(ram, con, rel)
+ 02CE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02CE                   .blkb 2
+                        .area idata
+ 02CE C08C              .byte 192,140
+                        .area data(ram, con, rel)
+ 02D0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02D0                   .blkb 2
+                        .area idata
+ 02D0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 02D2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02D2                   .blkb 2
+                        .area idata
+ 02D2 1882              .byte 24,130
+                        .area data(ram, con, rel)
+ 02D4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02D4                   .blkb 2
+                        .area idata
+ 02D4 4007              .byte 64,7
+                        .area data(ram, con, rel)
+ 02D6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02D6                   .blkb 2
+                        .area idata
+ 02D6 F800              .byte 248,0
+                        .area data(ram, con, rel)
+ 02D8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02D8                   .blkb 2
+                        .area idata
+ 02D8 0413              .byte 4,19
+                        .area data(ram, con, rel)
+ 02DA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02DA                   .blkb 2
+                        .area idata
+ 02DA 1380              .byte 19,128
+                        .area data(ram, con, rel)
+ 02DC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02DC                   .blkb 2
+                        .area idata
+ 02DC 1803              .byte 24,3
+                        .area data(ram, con, rel)
+ 02DE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02DE                   .blkb 2
+                        .area idata
+ 02DE 8104              .byte 129,4
+                        .area data(ram, con, rel)
+ 02E0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02E0                   .blkb 2
+                        .area idata
+ 02E0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 02E2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02E2                   .blkb 2
+                        .area idata
+ 02E2 0882              .byte 8,130
+                        .area data(ram, con, rel)
+ 02E4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02E4                   .blkb 2
+                        .area idata
+ 02E4 4001              .byte 64,1
+                        .area data(ram, con, rel)
+ 02E6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02E6                   .blkb 2
+                        .area idata
+ 02E6 C000              .byte 192,0
+                        .area data(ram, con, rel)
+ 02E8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02E8                   .blkb 2
+                        .area idata
+ 02E8 0211              .byte 2,17
+                        .area data(ram, con, rel)
+ 02EA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02EA                   .blkb 2
+                        .area idata
+ 02EA 3280              .byte 50,128
+                        .area data(ram, con, rel)
+ 02EC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02EC                   .blkb 2
+                        .area idata
+ 02EC 1C05              .byte 28,5
+                        .area data(ram, con, rel)
+ 02EE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02EE                   .blkb 2
+                        .area idata
+ 02EE C61C              .byte 198,28
+                        .area data(ram, con, rel)
+ 02F0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02F0                   .blkb 2
+                        .area idata
+ 02F0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 02F2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02F2                   .blkb 2
+                        .area idata
+ 02F2 0842              .byte 8,'B
+                        .area data(ram, con, rel)
+ 02F4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02F4                   .blkb 2
+                        .area idata
+ 02F4 4000              .byte 64,0
+                        .area data(ram, con, rel)
+ 02F6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02F6                   .blkb 2
+                        .area idata
+ 02F6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 02F8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02F8                   .blkb 2
+                        .area idata
+ 02F8 0332              .byte 3,50
+                        .area data(ram, con, rel)
+ 02FA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02FA                   .blkb 2
+                        .area idata
+ 02FA B440              .byte 180,64
+                        .area data(ram, con, rel)
+ 02FC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02FC                   .blkb 2
+                        .area idata
+ 02FC 0E0C              .byte 14,12
+                        .area data(ram, con, rel)
+ 02FE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 02FE                   .blkb 2
+                        .area idata
+ 02FE FE38              .byte 254,56
+                        .area data(ram, con, rel)
+ 0300                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0300                   .blkb 2
+                        .area idata
+ 0300 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0302                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0302                   .blkb 2
+                        .area idata
+ 0302 0042              .byte 0,'B
+                        .area data(ram, con, rel)
+ 0304                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0304                   .blkb 2
+                        .area idata
+ 0304 4000              .byte 64,0
+                        .area data(ram, con, rel)
+ 0306                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0306                   .blkb 2
+                        .area idata
+ 0306 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0308                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0308                   .blkb 2
+                        .area idata
+ 0308 01FA              .byte 1,250
+                        .area data(ram, con, rel)
+ 030A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 030A                   .blkb 2
+                        .area idata
+ 030A 4C40              .byte 'L,64
+                        .area data(ram, con, rel)
+ 030C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 030C                   .blkb 2
+                        .area idata
+ 030C 07F8              .byte 7,248
+                        .area data(ram, con, rel)
+ 030E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 030E                   .blkb 2
+                        .area idata
+ 030E 3FE0              .byte 63,224
+                        .area data(ram, con, rel)
+ 0310                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0310                   .blkb 2
+                        .area idata
+ 0310 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0312                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0312                   .blkb 2
+                        .area idata
+ 0312 0042              .byte 0,'B
+                        .area data(ram, con, rel)
+ 0314                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0314                   .blkb 2
+                        .area idata
+ 0314 4000              .byte 64,0
+                        .area data(ram, con, rel)
+ 0316                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0316                   .blkb 2
+                        .area idata
+ 0316 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0318                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0318                   .blkb 2
+                        .area idata
+ 0318 00CE              .byte 0,206
+                        .area data(ram, con, rel)
+ 031A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 031A                   .blkb 2
+                        .area idata
+ 031A 0C40              .byte 12,64
+                        .area data(ram, con, rel)
+ 031C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 031C                   .blkb 2
+                        .area idata
+ 031C 07FE              .byte 7,254
+                        .area data(ram, con, rel)
+ 031E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 031E                   .blkb 2
+                        .area idata
+ 031E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0320                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0320                   .blkb 2
+                        .area idata
+ 0320 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0322                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0322                   .blkb 2
+                        .area idata
+ 0322 0026              .byte 0,38
+                        .area data(ram, con, rel)
+ 0324                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0324                   .blkb 2
+                        .area idata
+ 0324 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0326                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0326                   .blkb 2
+                        .area idata
+ 0326 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0328                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0328                   .blkb 2
+                        .area idata
+ 0328 008E              .byte 0,142
+                        .area data(ram, con, rel)
+ 032A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 032A                   .blkb 2
+                        .area idata
+ 032A 0BC0              .byte 11,192
+                        .area data(ram, con, rel)
+ 032C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 032C                   .blkb 2
+                        .area idata
+ 032C 07BF              .byte 7,191
+                        .area data(ram, con, rel)
+ 032E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 032E                   .blkb 2
+                        .area idata
+ 032E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0330                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0330                   .blkb 2
+                        .area idata
+ 0330 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0332                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0332                   .blkb 2
+                        .area idata
+ 0332 0016              .byte 0,22
+                        .area data(ram, con, rel)
+ 0334                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0334                   .blkb 2
+                        .area idata
+ 0334 8000              .byte 128,0
+                        .area data(ram, con, rel)
+ 0336                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0336                   .blkb 2
+                        .area idata
+ 0336 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0338                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0338                   .blkb 2
+                        .area idata
+ 0338 008B              .byte 0,139
+                        .area data(ram, con, rel)
+ 033A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 033A                   .blkb 2
+                        .area idata
+ 033A 1A00              .byte 26,0
+                        .area data(ram, con, rel)
+ 033C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 033C                   .blkb 2
+                        .area idata
+ 033C 079F              .byte 7,159
+                        .area data(ram, con, rel)
+ 033E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 033E                   .blkb 2
+                        .area idata
+ 033E 8000              .byte 128,0
+                        .area data(ram, con, rel)
+ 0340                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0340                   .blkb 2
+                        .area idata
+ 0340 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0342                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0342                   .blkb 2
+                        .area idata
+ 0342 0015              .byte 0,21
+                        .area data(ram, con, rel)
+ 0344                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0344                   .blkb 2
+                        .area idata
+ 0344 8000              .byte 128,0
+                        .area data(ram, con, rel)
+ 0346                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0346                   .blkb 2
+                        .area idata
+ 0346 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0348                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0348                   .blkb 2
+                        .area idata
+ 0348 0091              .byte 0,145
+                        .area data(ram, con, rel)
+ 034A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 034A                   .blkb 2
+                        .area idata
+ 034A F000              .byte 240,0
+                        .area data(ram, con, rel)
+ 034C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 034C                   .blkb 2
+                        .area idata
+ 034C 03CF              .byte 3,207
+                        .area data(ram, con, rel)
+ 034E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 034E                   .blkb 2
+                        .area idata
+ 034E C000              .byte 192,0
+                        .area data(ram, con, rel)
+ 0350                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0350                   .blkb 2
+                        .area idata
+ 0350 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0352                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0352                   .blkb 2
+                        .area idata
+ 0352 000C              .byte 0,12
+                        .area data(ram, con, rel)
+ 0354                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0354                   .blkb 2
+                        .area idata
+ 0354 8000              .byte 128,0
+                        .area data(ram, con, rel)
+ 0356                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0356                   .blkb 2
+                        .area idata
+ 0356 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0358                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0358                   .blkb 2
+                        .area idata
+ 0358 00F1              .byte 0,241
+                        .area data(ram, con, rel)
+ 035A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 035A                   .blkb 2
+                        .area idata
+ 035A F200              .byte 242,0
+                        .area data(ram, con, rel)
+ 035C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 035C                   .blkb 2
+                        .area idata
+ 035C 03CF              .byte 3,207
+                        .area data(ram, con, rel)
+ 035E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 035E                   .blkb 2
+                        .area idata
+ 035E C000              .byte 192,0
+                        .area data(ram, con, rel)
+ 0360                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0360                   .blkb 2
+                        .area idata
+ 0360 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0362                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0362                   .blkb 2
+                        .area idata
+ 0362 0007              .byte 0,7
+                        .area data(ram, con, rel)
+ 0364                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0364                   .blkb 2
+                        .area idata
+ 0364 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0366                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0366                   .blkb 2
+                        .area idata
+ 0366 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0368                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0368                   .blkb 2
+                        .area idata
+ 0368 0010              .byte 0,16
+                        .area data(ram, con, rel)
+ 036A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 036A                   .blkb 2
+                        .area idata
+ 036A 1200              .byte 18,0
+                        .area data(ram, con, rel)
+ 036C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 036C                   .blkb 2
+                        .area idata
+ 036C 01C7              .byte 1,199
+                        .area data(ram, con, rel)
+ 036E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 036E                   .blkb 2
+                        .area idata
+ 036E C000              .byte 192,0
+                        .area data(ram, con, rel)
+ 0370                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0370                   .blkb 2
+                        .area idata
+ 0370 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0372                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0372                   .blkb 2
+                        .area idata
+ 0372 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0374                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0374                   .blkb 2
+                        .area idata
+ 0374 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0376                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0376                   .blkb 2
+                        .area idata
+ 0376 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0378                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0378                   .blkb 2
+                        .area idata
+ 0378 0013              .byte 0,19
+                        .area data(ram, con, rel)
+ 037A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 037A                   .blkb 2
+                        .area idata
+ 037A 1E00              .byte 30,0
+                        .area data(ram, con, rel)
+ 037C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 037C                   .blkb 2
+                        .area idata
+ 037C 01E3              .byte 1,227
+                        .area data(ram, con, rel)
+ 037E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 037E                   .blkb 2
+                        .area idata
+ 037E E000              .byte 224,0
+                        .area data(ram, con, rel)
+ 0380                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0380                   .blkb 2
+                        .area idata
+ 0380 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0382                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0382                   .blkb 2
+                        .area idata
+ 0382 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0384                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0384                   .blkb 2
+                        .area idata
+ 0384 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0386                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0386                   .blkb 2
+                        .area idata
+ 0386 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0388                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0388                   .blkb 2
+                        .area idata
+ 0388 0017              .byte 0,23
+                        .area data(ram, con, rel)
+ 038A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 038A                   .blkb 2
+                        .area idata
+ 038A 2000              .byte 32,0
+                        .area data(ram, con, rel)
+ 038C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 038C                   .blkb 2
+                        .area idata
+ 038C 00E1              .byte 0,225
+                        .area data(ram, con, rel)
+ 038E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 038E                   .blkb 2
+                        .area idata
+ 038E E000              .byte 224,0
+                        .area data(ram, con, rel)
+ 0390                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0390                   .blkb 2
+                        .area idata
+ 0390 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0392                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0392                   .blkb 2
+                        .area idata
+ 0392 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0394                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0394                   .blkb 2
+                        .area idata
+ 0394 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0396                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0396                   .blkb 2
+                        .area idata
+ 0396 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0398                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0398                   .blkb 2
+                        .area idata
+ 0398 001C              .byte 0,28
+                        .area data(ram, con, rel)
+ 039A                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 039A                   .blkb 2
+                        .area idata
+ 039A E000              .byte 224,0
+                        .area data(ram, con, rel)
+ 039C                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 039C                   .blkb 2
+                        .area idata
+ 039C 00E0              .byte 0,224
+                        .area data(ram, con, rel)
+ 039E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 039E                   .blkb 2
+                        .area idata
+ 039E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03A0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03A0                   .blkb 2
+                        .area idata
+ 03A0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03A2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03A2                   .blkb 2
+                        .area idata
+ 03A2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03A4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03A4                   .blkb 2
+                        .area idata
+ 03A4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03A6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03A6                   .blkb 2
+                        .area idata
+ 03A6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03A8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03A8                   .blkb 2
+                        .area idata
+ 03A8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03AA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03AA                   .blkb 2
+                        .area idata
+ 03AA C000              .byte 192,0
+                        .area data(ram, con, rel)
+ 03AC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03AC                   .blkb 2
+                        .area idata
+ 03AC 0060              .byte 0,96
+                        .area data(ram, con, rel)
+ 03AE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03AE                   .blkb 2
+                        .area idata
+ 03AE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03B0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03B0                   .blkb 2
+                        .area idata
+ 03B0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03B2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03B2                   .blkb 2
+                        .area idata
+ 03B2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03B4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03B4                   .blkb 2
+                        .area idata
+ 03B4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03B6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03B6                   .blkb 2
+                        .area idata
+ 03B6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03B8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03B8                   .blkb 2
+                        .area idata
+ 03B8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03BA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03BA                   .blkb 2
+                        .area idata
+ 03BA 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03BC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03BC                   .blkb 2
+                        .area idata
+ 03BC 0030              .byte 0,48
+                        .area data(ram, con, rel)
+ 03BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03BE                   .blkb 2
+                        .area idata
+ 03BE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03C0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03C0                   .blkb 2
+                        .area idata
+ 03C0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03C2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03C2                   .blkb 2
+                        .area idata
+ 03C2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03C4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03C4                   .blkb 2
+                        .area idata
+ 03C4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03C6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03C6                   .blkb 2
+                        .area idata
+ 03C6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03C8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03C8                   .blkb 2
+                        .area idata
+ 03C8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03CA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03CA                   .blkb 2
+                        .area idata
+ 03CA 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03CC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03CC                   .blkb 2
+                        .area idata
+ 03CC 0010              .byte 0,16
+                        .area data(ram, con, rel)
+ 03CE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03CE                   .blkb 2
+                        .area idata
+ 03CE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03D0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03D0                   .blkb 2
+                        .area idata
+ 03D0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03D2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03D2                   .blkb 2
+                        .area idata
+ 03D2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03D4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03D4                   .blkb 2
+                        .area idata
+ 03D4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03D6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03D6                   .blkb 2
+                        .area idata
+ 03D6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03D8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03D8                   .blkb 2
+                        .area idata
+ 03D8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03DA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03DA                   .blkb 2
+                        .area idata
+ 03DA 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03DC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03DC                   .blkb 2
+                        .area idata
+ 03DC 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03DE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03DE                   .blkb 2
+                        .area idata
+ 03DE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03E0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03E0                   .blkb 2
+                        .area idata
+ 03E0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03E2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03E2                   .blkb 2
+                        .area idata
+ 03E2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03E4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03E4                   .blkb 2
+                        .area idata
+ 03E4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03E6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03E6                   .blkb 2
+                        .area idata
+ 03E6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03E8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03E8                   .blkb 2
+                        .area idata
+ 03E8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03EA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03EA                   .blkb 2
+                        .area idata
+ 03EA 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03EC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03EC                   .blkb 2
+                        .area idata
+ 03EC 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03EE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03EE                   .blkb 2
+                        .area idata
+ 03EE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03F0                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03F0                   .blkb 2
+                        .area idata
+ 03F0 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03F2                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03F2                   .blkb 2
+                        .area idata
+ 03F2 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03F4                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03F4                   .blkb 2
+                        .area idata
+ 03F4 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03F6                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03F6                   .blkb 2
+                        .area idata
+ 03F6 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03F8                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03F8                   .blkb 2
+                        .area idata
+ 03F8 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03FA                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03FA                   .blkb 2
+                        .area idata
+ 03FA 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03FC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03FC                   .blkb 2
+                        .area idata
+ 03FC 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 03FE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 03FE                   .blkb 2
+                        .area idata
+ 03FE 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0400                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 0400                   .dbsym e photo4 _photo4 A[512:512]c
+                        .area text(rom, con, rel)
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\12.12864显示图形实验\12864TUXING\12864TUXING.C
+ 00BE                   .dbfunc e system_init _system_init fV
+                        .even
+ 00BE           _system_init::
+ 00BE                   .dbline -1
+ 00BE                   .dbline 136
+ 00BE           ; 0x00,0x00,0x00,0x16,0x80,0x00,0x00,0x00,0x00,0x8B,0x1A,0x00,0x07,0x9F,0x80,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x15,0x80,0x00,0x00,0x00,0x00,0x91,0xF0,0x00,0x03,0xCF,0xC0,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x0C,0x80,0x00,0x00,0x00,0x00,0xF1,0xF2,0x00,0x03,0xCF,0xC0,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x10,0x12,0x00,0x01,0xC7,0xC0,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x13,0x1E,0x00,0x01,0xE3,0xE0,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x17,0x20,0x00,0x00,0xE1,0xE0,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x1C,0xE0,0x00,0x00,0xE0,0x00,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xC0,0x00,0x00,0x60,0x00,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x30,0x00,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x10,0x00,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 00BE           ; 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 00BE           ; };
+ 00BE           ; //#pragma data:data
+ 00BE           ; 
+ 00BE           ; //*************************************************************************
+ 00BE           ; //                    初始化子程序
+ 00BE           ; //*************************************************************************
+ 00BE           ; void system_init()
+ 00BE           ; {
+ 00BE                   .dbline 138
+ 00BE           ; 
+ 00BE           ;               Data_IO = 0xFF;                                 //电平设置
+ 00BE 8FEF              ldi R24,255
+ 00C0 8BBB              out 0x1b,R24
+ 00C2                   .dbline 139
+ 00C2           ;       Data_DDR = 0xFF;                                        //方向输出
+ 00C2 8ABB              out 0x1a,R24
+ 00C4                   .dbline 140
+ 00C4           ;       PORTF = 0xFF;                       //电平设置
+ 00C4 80936200          sts 98,R24
+ 00C8                   .dbline 141
+ 00C8           ;       DDRF = 0xFF;                        //方向输出
+ 00C8 80936100          sts 97,R24
+ 00CC                   .dbline 142
+ 00CC           ;     PORTD=0xFF;
+ 00CC 82BB              out 0x12,R24
+ 00CE                   .dbline 143
+ 00CE           ;       DDRD=0xFF;
+ 00CE 81BB              out 0x11,R24
+ 00D0                   .dbline 144
+ 00D0           ;       PORTE=0xFF;                        //PSB对应于PE2
+ 00D0 83B9              out 0x3,R24
+ 00D2                   .dbline 145
+ 00D2           ;       DDRE=0xFF;
+ 00D2 82B9              out 0x2,R24
+ 00D4                   .dbline 146
+ 00D4           ;       D_LE1;                             //关掉数码管，以免显示乱码                   
+ 00D4 949A              sbi 0x12,4
+ 00D6                   .dbline 147
+ 00D6           ;     W_LE1;                     
+ 00D6 959A              sbi 0x12,5
+ 00D8                   .dbline 148
+ 00D8           ;     Data_IO=0xFF;                      //关数码管            
+ 00D8 8BBB              out 0x1b,R24
+ 00DA                   .dbline 149
+ 00DA           ;     W_LE0; 
+ 00DA 9598              cbi 0x12,5
+ 00DC                   .dbline 151
+ 00DC           ; 
+ 00DC           ;       PSB_SET;                                                   //液晶并口方式
+ 00DC 80916200          lds R24,98
+ 00E0 8460              ori R24,4
+ 00E2 80936200          sts 98,R24
+ 00E6                   .dbline -2
+ 00E6           L19:
+ 00E6                   .dbline 0 ; func end
+ 00E6 0895              ret
+ 00E8                   .dbend
+ 00E8                   .dbfunc e LCD_write_com _LCD_write_com fV
+ 00E8           ;            com -> R20
+                        .even
+ 00E8           _LCD_write_com::
+ 00E8 0E940000          xcall push_gset1
+ 00EC 402F              mov R20,R16
+ 00EE                   .dbline -1
+ 00EE                   .dbline 160
+ 00EE           ; }
+ 00EE           ; 
+ 00EE           ; //***********************************************************************
+ 00EE           ; //    显示屏命令写入函数
+ 00EE           ; //***********************************************************************
+ 00EE           ; 
+ 00EE           ; 
+ 00EE           ; void LCD_write_com(unsigned char com) 
+ 00EE           ; {     
+ 00EE                   .dbline 161
+ 00EE           ;       RS_CLR;
+ 00EE 80916200          lds R24,98
+ 00F2 8D7F              andi R24,253
+ 00F4 80936200          sts 98,R24
+ 00F8                   .dbline 162
+ 00F8           ;       RW_CLR;
+ 00F8 80916200          lds R24,98
+ 00FC 8B7F              andi R24,251
+ 00FE 80936200          sts 98,R24
+ 0102                   .dbline 163
+ 0102           ;       EN_SET;
+ 0102 80916200          lds R24,98
+ 0106 8860              ori R24,8
+ 0108 80936200          sts 98,R24
+ 010C                   .dbline 164
+ 010C           ;       Data_IO = com;
+ 010C 4BBB              out 0x1b,R20
+ 010E                   .dbline 165
+ 010E           ;       delay_nms(5);
+ 010E 05E0              ldi R16,5
+ 0110 10E0              ldi R17,0
+ 0112 B7DF              xcall _delay_nms
+ 0114                   .dbline 166
+ 0114           ;       EN_CLR;
+ 0114 80916200          lds R24,98
+ 0118 877F              andi R24,247
+ 011A 80936200          sts 98,R24
+ 011E                   .dbline -2
+ 011E           L20:
+ 011E 0E940000          xcall pop_gset1
+ 0122                   .dbline 0 ; func end
+ 0122 0895              ret
+ 0124                   .dbsym r com 20 c
+ 0124                   .dbend
+ 0124                   .dbfunc e LCD_write_data _LCD_write_data fV
+ 0124           ;           data -> R20
+                        .even
+ 0124           _LCD_write_data::
+ 0124 0E940000          xcall push_gset1
+ 0128 402F              mov R20,R16
+ 012A                   .dbline -1
+ 012A                   .dbline 173
+ 012A           ; }
+ 012A           ; //***********************************************************************
+ 012A           ; //    显示屏数据写入函数
+ 012A           ; //***********************************************************************
+ 012A           ; 
+ 012A           ; void LCD_write_data(unsigned char data) 
+ 012A           ; {
+ 012A                   .dbline 174
+ 012A           ;       RS_SET;
+ 012A 80916200          lds R24,98
+ 012E 8260              ori R24,2
+ 0130 80936200          sts 98,R24
+ 0134                   .dbline 175
+ 0134           ;       RW_CLR;
+ 0134 80916200          lds R24,98
+ 0138 8B7F              andi R24,251
+ 013A 80936200          sts 98,R24
+ 013E                   .dbline 176
+ 013E           ;       EN_SET;
+ 013E 80916200          lds R24,98
+ 0142 8860              ori R24,8
+ 0144 80936200          sts 98,R24
+ 0148                   .dbline 177
+ 0148           ;       Data_IO = data;
+ 0148 4BBB              out 0x1b,R20
+ 014A                   .dbline 178
+ 014A           ;       delay_nms(5);
+ 014A 05E0              ldi R16,5
+ 014C 10E0              ldi R17,0
+ 014E 99DF              xcall _delay_nms
+ 0150                   .dbline 179
+ 0150           ;       EN_CLR;
+ 0150 80916200          lds R24,98
+ 0154 877F              andi R24,247
+ 0156 80936200          sts 98,R24
+ 015A                   .dbline -2
+ 015A           L21:
+ 015A 0E940000          xcall pop_gset1
+ 015E                   .dbline 0 ; func end
+ 015E 0895              ret
+ 0160                   .dbsym r data 20 c
+ 0160                   .dbend
+ 0160                   .dbfunc e LCD_clear _LCD_clear fV
+                        .even
+ 0160           _LCD_clear::
+ 0160                   .dbline -1
+ 0160                   .dbline 187
+ 0160           ; }
+ 0160           ; 
+ 0160           ; //***********************************************************************
+ 0160           ; //    显示屏清空显示
+ 0160           ; //***********************************************************************
+ 0160           ; 
+ 0160           ; void LCD_clear(void) 
+ 0160           ; {
+ 0160                   .dbline 188
+ 0160           ;       LCD_write_com(0x01);
+ 0160 01E0              ldi R16,1
+ 0162 C2DF              xcall _LCD_write_com
+ 0164                   .dbline 189
+ 0164           ;       delay_nms(5);
+ 0164 05E0              ldi R16,5
+ 0166 10E0              ldi R17,0
+ 0168 8CDF              xcall _delay_nms
+ 016A                   .dbline -2
+ 016A           L22:
+ 016A                   .dbline 0 ; func end
+ 016A 0895              ret
+ 016C                   .dbend
+ 016C                   .dbfunc e DisplayCgrom _DisplayCgrom fV
+ 016C           ;             hz -> R20,R21
+ 016C           ;           addr -> R22
+                        .even
+ 016C           _DisplayCgrom::
+ 016C 0E940000          xcall push_gset2
+ 0170 A901              movw R20,R18
+ 0172 602F              mov R22,R16
+ 0174                   .dbline -1
+ 0174                   .dbline 199
+ 0174           ; }
+ 0174           ; 
+ 0174           ; //***********************************************************************
+ 0174           ; //函数名称：DisplayCgrom(uchar hz)显示CGROM里的汉字
+ 0174           ; //入口参数：无
+ 0174           ; //返回参数：无
+ 0174           ; //***********************************************************************
+ 0174           ; 
+ 0174           ; void DisplayCgrom(uchar addr,uchar *hz)
+ 0174           ; {
+ 0174                   .dbline 201
+ 0174           ; 
+ 0174           ;       LCD_write_com(addr);
+ 0174 062F              mov R16,R22
+ 0176 B8DF              xcall _LCD_write_com
+ 0178                   .dbline 202
+ 0178           ;     delay_nms(5);
+ 0178 05E0              ldi R16,5
+ 017A 10E0              ldi R17,0
+ 017C 82DF              xcall _delay_nms
+ 017E 08C0              xjmp L25
+ 0180           L24:
+ 0180                   .dbline 204
+ 0180                   .dbline 205
+ 0180 FA01              movw R30,R20
+ 0182 0081              ldd R16,z+0
+ 0184 CFDF              xcall _LCD_write_data
+ 0186                   .dbline 206
+ 0186 4F5F              subi R20,255  ; offset = 1
+ 0188 5F4F              sbci R21,255
+ 018A                   .dbline 207
+ 018A 05E0              ldi R16,5
+ 018C 10E0              ldi R17,0
+ 018E 79DF              xcall _delay_nms
+ 0190                   .dbline 208
+ 0190           L25:
+ 0190                   .dbline 203
+ 0190           ;       while(*hz != '\0')
+ 0190 FA01              movw R30,R20
+ 0192 2080              ldd R2,z+0
+ 0194 2220              tst R2
+ 0196 A1F7              brne L24
+ 0198                   .dbline -2
+ 0198           L23:
+ 0198 0E940000          xcall pop_gset2
+ 019C                   .dbline 0 ; func end
+ 019C 0895              ret
+ 019E                   .dbsym r hz 20 pc
+ 019E                   .dbsym r addr 22 c
+ 019E                   .dbend
+ 019E                   .dbfunc e LCD_init _LCD_init fV
+                        .even
+ 019E           _LCD_init::
+ 019E                   .dbline -1
+ 019E                   .dbline 217
+ 019E           ;       {
+ 019E           ;               LCD_write_data(*hz);
+ 019E           ;               hz++;
+ 019E           ;         delay_nms(5);
+ 019E           ;       }
+ 019E           ; 
+ 019E           ; } 
+ 019E           ; 
+ 019E           ; //***********************************************************************
+ 019E           ; //    显示屏初始化函数
+ 019E           ; //***********************************************************************
+ 019E           ; 
+ 019E           ; void LCD_init(void) 
+ 019E           ; {
+ 019E                   .dbline 218
+ 019E           ;       LCD_write_com(FUN_MODE);                        //显示模式设置
+ 019E 00E3              ldi R16,48
+ 01A0 A3DF              xcall _LCD_write_com
+ 01A2                   .dbline 219
+ 01A2           ;       delay_nms(1);
+ 01A2 01E0              ldi R16,1
+ 01A4 10E0              ldi R17,0
+ 01A6 6DDF              xcall _delay_nms
+ 01A8                   .dbline 220
+ 01A8           ;       LCD_write_com(FUN_MODE);                        //显示模式设置
+ 01A8 00E3              ldi R16,48
+ 01AA 9EDF              xcall _LCD_write_com
+ 01AC                   .dbline 221
+ 01AC           ;       delay_nms(1);
+ 01AC 01E0              ldi R16,1
+ 01AE 10E0              ldi R17,0
+ 01B0 68DF              xcall _delay_nms
+ 01B2                   .dbline 222
+ 01B2           ;     LCD_write_com(DISPLAY_ON);                        //显示开
+ 01B2 0CE0              ldi R16,12
+ 01B4 99DF              xcall _LCD_write_com
+ 01B6                   .dbline 223
+ 01B6           ;       delay_nms(1);
+ 01B6 01E0              ldi R16,1
+ 01B8 10E0              ldi R17,0
+ 01BA 63DF              xcall _delay_nms
+ 01BC                   .dbline 224
+ 01BC           ;     LCD_write_com(CLEAR_SCREEN);        //清屏
+ 01BC 01E0              ldi R16,1
+ 01BE 94DF              xcall _LCD_write_com
+ 01C0                   .dbline 225
+ 01C0           ;       delay_nms(1);
+ 01C0 01E0              ldi R16,1
+ 01C2 10E0              ldi R17,0
+ 01C4 5EDF              xcall _delay_nms
+ 01C6                   .dbline -2
+ 01C6           L27:
+ 01C6                   .dbline 0 ; func end
+ 01C6 0895              ret
+ 01C8                   .dbend
+ 01C8                   .dbfunc e Display_photo1 _Display_photo1 fV
+ 01C8           ;              i -> R20,R21
+ 01C8           ;              j -> R10,R11
+ 01C8           ;           img1 -> R22,R23
+                        .even
+ 01C8           _Display_photo1::
+ 01C8 0E940000          xcall push_gset3
+ 01CC B801              movw R22,R16
+ 01CE                   .dbline -1
+ 01CE                   .dbline 233
+ 01CE           ; }
+ 01CE           ; 
+ 01CE           ; //****************************************************************
+ 01CE           ; //函数名称：Display_photo(uchar *hz)显示自定义图形，分上下半屏来写
+ 01CE           ; //****************************************************************
+ 01CE           ; 
+ 01CE           ; void Display_photo1( uchar *img1)                      //写上半屏图形数据函数
+ 01CE           ; {
+ 01CE                   .dbline 236
+ 01CE           ;    int i,j;     
+ 01CE           ; 
+ 01CE           ;    for(i=0;i<32;i++)                                 //上半屏32行
+ 01CE 4427              clr R20
+ 01D0 5527              clr R21
+ 01D2           L29:
+ 01D2                   .dbline 237
+ 01D2           ;     {  
+ 01D2                   .dbline 238
+ 01D2           ;               LCD_write_com(FUN_MODEK);                     //扩展指令，开绘图显示
+ 01D2 06E3              ldi R16,54
+ 01D4 89DF              xcall _LCD_write_com
+ 01D6                   .dbline 239
+ 01D6           ;         delay_nms(1);
+ 01D6 01E0              ldi R16,1
+ 01D8 10E0              ldi R17,0
+ 01DA 53DF              xcall _delay_nms
+ 01DC                   .dbline 241
+ 01DC           ;      
+ 01DC           ;               LCD_write_com(Yaddress+i);                   //先写垂直地址，即Y地址，不能自动加一
+ 01DC 042F              mov R16,R20
+ 01DE 0058              subi R16,128  ; offset = 128
+ 01E0 1F4F              sbci R17,255
+ 01E2 82DF              xcall _LCD_write_com
+ 01E4                   .dbline 242
+ 01E4           ;         delay_nms(1);
+ 01E4 01E0              ldi R16,1
+ 01E6 10E0              ldi R17,0
+ 01E8 4CDF              xcall _delay_nms
+ 01EA                   .dbline 244
+ 01EA           ; 
+ 01EA           ;         LCD_write_com(X1address);                    //再写水平地址，即X地址
+ 01EA 00E8              ldi R16,128
+ 01EC 7DDF              xcall _LCD_write_com
+ 01EE                   .dbline 245
+ 01EE           ;         delay_nms(1);
+ 01EE 01E0              ldi R16,1
+ 01F0 10E0              ldi R17,0
+ 01F2 47DF              xcall _delay_nms
+ 01F4                   .dbline 247
+ 01F4           ;       
+ 01F4           ;       for(j=0;j<8;j++)                       //连续写入2个字节的数据，一共8次，为一行，即16*8位数据
+ 01F4 AA24              clr R10
+ 01F6 BB24              clr R11
+ 01F8           L33:
+ 01F8                   .dbline 248
+ 01F8                   .dbline 249
+ 01F8 02E0              ldi R16,2
+ 01FA 10E0              ldi R17,0
+ 01FC 9501              movw R18,R10
+ 01FE 0E940000          xcall empy16s
+ 0202 1801              movw R2,R16
+ 0204 00E1              ldi R16,16
+ 0206 10E0              ldi R17,0
+ 0208 9A01              movw R18,R20
+ 020A 0E940000          xcall empy16s
+ 020E F801              movw R30,R16
+ 0210 E20D              add R30,R2
+ 0212 F31D              adc R31,R3
+ 0214 E60F              add R30,R22
+ 0216 F71F              adc R31,R23
+ 0218 0081              ldd R16,z+0
+ 021A 84DF              xcall _LCD_write_data
+ 021C                   .dbline 250
+ 021C 02E0              ldi R16,2
+ 021E 10E0              ldi R17,0
+ 0220 30DF              xcall _delay_nms
+ 0222                   .dbline 251
+ 0222 02E0              ldi R16,2
+ 0224 10E0              ldi R17,0
+ 0226 9501              movw R18,R10
+ 0228 0E940000          xcall empy16s
+ 022C 1801              movw R2,R16
+ 022E 00E1              ldi R16,16
+ 0230 10E0              ldi R17,0
+ 0232 9A01              movw R18,R20
+ 0234 0E940000          xcall empy16s
+ 0238 F801              movw R30,R16
+ 023A E20D              add R30,R2
+ 023C F31D              adc R31,R3
+ 023E E60F              add R30,R22
+ 0240 F71F              adc R31,R23
+ 0242 0181              ldd R16,z+1
+ 0244 6FDF              xcall _LCD_write_data
+ 0246                   .dbline 252
+ 0246 02E0              ldi R16,2
+ 0248 10E0              ldi R17,0
+ 024A 1BDF              xcall _delay_nms
+ 024C                   .dbline 253
+ 024C           L34:
+ 024C                   .dbline 247
+ 024C C501              movw R24,R10
+ 024E 0196              adiw R24,1
+ 0250 5C01              movw R10,R24
+ 0252                   .dbline 247
+ 0252 8830              cpi R24,8
+ 0254 E0E0              ldi R30,0
+ 0256 9E07              cpc R25,R30
+ 0258 0CF4              brge X1
+ 025A CECF              xjmp L33
+ 025C           X1:
+ 025C                   .dbline 255
+ 025C           L30:
+ 025C                   .dbline 236
+ 025C 4F5F              subi R20,255  ; offset = 1
+ 025E 5F4F              sbci R21,255
+ 0260                   .dbline 236
+ 0260 4032              cpi R20,32
+ 0262 E0E0              ldi R30,0
+ 0264 5E07              cpc R21,R30
+ 0266 0CF4              brge X2
+ 0268 B4CF              xjmp L29
+ 026A           X2:
+ 026A                   .dbline -2
+ 026A           L28:
+ 026A 0E940000          xcall pop_gset3
+ 026E                   .dbline 0 ; func end
+ 026E 0895              ret
+ 0270                   .dbsym r i 20 I
+ 0270                   .dbsym r j 10 I
+ 0270                   .dbsym r img1 22 pc
+ 0270                   .dbend
+ 0270                   .dbfunc e Display_photo2 _Display_photo2 fV
+ 0270           ;              i -> R20,R21
+ 0270           ;              j -> R10,R11
+ 0270           ;           img2 -> R22,R23
+                        .even
+ 0270           _Display_photo2::
+ 0270 0E940000          xcall push_gset3
+ 0274 B801              movw R22,R16
+ 0276                   .dbline -1
+ 0276                   .dbline 259
+ 0276           ;         {                                                          
+ 0276           ;               LCD_write_data(img1[i*16+j*2]);
+ 0276           ;               delay_nms(2);                       //这个延时是必须的，因为没有对液晶进行判忙操作，所以进行延时
+ 0276           ;               LCD_write_data(img1[i*16+j*2+1]); 
+ 0276           ;               delay_nms(2);          
+ 0276           ;         }
+ 0276           ; 
+ 0276           ;     }
+ 0276           ; }
+ 0276           ; 
+ 0276           ; void Display_photo2( uchar *img2)                   //写下半屏图形数据
+ 0276           ; {
+ 0276                   .dbline 262
+ 0276           ;       int i,j;
+ 0276           ; 
+ 0276           ;       for(i=0;i<32;i++)                         //下半屏32行
+ 0276 4427              clr R20
+ 0278 5527              clr R21
+ 027A           L38:
+ 027A                   .dbline 263
+ 027A           ;       {  
+ 027A                   .dbline 265
+ 027A           ; 
+ 027A           ;               LCD_write_com(Yaddress+i);                //先写垂直地址，即Y地址，不能自动加一
+ 027A 042F              mov R16,R20
+ 027C 0058              subi R16,128  ; offset = 128
+ 027E 1F4F              sbci R17,255
+ 0280 33DF              xcall _LCD_write_com
+ 0282                   .dbline 266
+ 0282           ;           delay_nms(1);
+ 0282 01E0              ldi R16,1
+ 0284 10E0              ldi R17,0
+ 0286 FDDE              xcall _delay_nms
+ 0288                   .dbline 267
+ 0288           ;               LCD_write_com(X2address);                 //再写水平地址，即X地址
+ 0288 08E8              ldi R16,136
+ 028A 2EDF              xcall _LCD_write_com
+ 028C                   .dbline 268
+ 028C           ;           delay_nms(1);
+ 028C 01E0              ldi R16,1
+ 028E 10E0              ldi R17,0
+ 0290 F8DE              xcall _delay_nms
+ 0292                   .dbline 269
+ 0292           ;                for(j=0;j<8;j++)                        //连续写入2个字节的数据，一共8次，为一行，即16*8位数据
+ 0292 AA24              clr R10
+ 0294 BB24              clr R11
+ 0296           L42:
+ 0296                   .dbline 270
+ 0296                   .dbline 272
+ 0296 02E0              ldi R16,2
+ 0298 10E0              ldi R17,0
+ 029A 9501              movw R18,R10
+ 029C 0E940000          xcall empy16s
+ 02A0 1801              movw R2,R16
+ 02A2 00E1              ldi R16,16
+ 02A4 10E0              ldi R17,0
+ 02A6 9A01              movw R18,R20
+ 02A8 0E940000          xcall empy16s
+ 02AC F801              movw R30,R16
+ 02AE E20D              add R30,R2
+ 02B0 F31D              adc R31,R3
+ 02B2 E60F              add R30,R22
+ 02B4 F71F              adc R31,R23
+ 02B6 0081              ldd R16,z+0
+ 02B8 35DF              xcall _LCD_write_data
+ 02BA                   .dbline 273
+ 02BA 02E0              ldi R16,2
+ 02BC 10E0              ldi R17,0
+ 02BE E1DE              xcall _delay_nms
+ 02C0                   .dbline 274
+ 02C0 02E0              ldi R16,2
+ 02C2 10E0              ldi R17,0
+ 02C4 9501              movw R18,R10
+ 02C6 0E940000          xcall empy16s
+ 02CA 1801              movw R2,R16
+ 02CC 00E1              ldi R16,16
+ 02CE 10E0              ldi R17,0
+ 02D0 9A01              movw R18,R20
+ 02D2 0E940000          xcall empy16s
+ 02D6 F801              movw R30,R16
+ 02D8 E20D              add R30,R2
+ 02DA F31D              adc R31,R3
+ 02DC E60F              add R30,R22
+ 02DE F71F              adc R31,R23
+ 02E0 0181              ldd R16,z+1
+ 02E2 20DF              xcall _LCD_write_data
+ 02E4                   .dbline 275
+ 02E4 02E0              ldi R16,2
+ 02E6 10E0              ldi R17,0
+ 02E8 CCDE              xcall _delay_nms
+ 02EA                   .dbline 277
+ 02EA           L43:
+ 02EA                   .dbline 269
+ 02EA C501              movw R24,R10
+ 02EC 0196              adiw R24,1
+ 02EE 5C01              movw R10,R24
+ 02F0                   .dbline 269
+ 02F0 8830              cpi R24,8
+ 02F2 E0E0              ldi R30,0
+ 02F4 9E07              cpc R25,R30
+ 02F6 0CF4              brge X3
+ 02F8 CECF              xjmp L42
+ 02FA           X3:
+ 02FA                   .dbline 279
+ 02FA           L39:
+ 02FA                   .dbline 262
+ 02FA 4F5F              subi R20,255  ; offset = 1
+ 02FC 5F4F              sbci R21,255
+ 02FE                   .dbline 262
+ 02FE 4032              cpi R20,32
+ 0300 E0E0              ldi R30,0
+ 0302 5E07              cpc R21,R30
+ 0304 0CF4              brge X4
+ 0306 B9CF              xjmp L38
+ 0308           X4:
+ 0308                   .dbline -2
+ 0308           L37:
+ 0308 0E940000          xcall pop_gset3
+ 030C                   .dbline 0 ; func end
+ 030C 0895              ret
+ 030E                   .dbsym r i 20 I
+ 030E                   .dbsym r j 10 I
+ 030E                   .dbsym r img2 22 pc
+ 030E                   .dbend
+ 030E                   .dbfunc e main _main fV
+ 030E           ;              m -> <dead>
+                        .even
+ 030E           _main::
+ 030E                   .dbline -1
+ 030E                   .dbline 288
+ 030E           ;           {
+ 030E           ;                       
+ 030E           ;                       LCD_write_data(img2[i*16+j*2]);
+ 030E           ;                       delay_nms(2);                    
+ 030E           ;                       LCD_write_data(img2[i*16+j*2+1]);  
+ 030E           ;                       delay_nms(2);  
+ 030E           ;       
+ 030E           ;               }
+ 030E           ; 
+ 030E           ;       }
+ 030E           ; 
+ 030E           ; }
+ 030E           ; 
+ 030E           ; //****************************************************************
+ 030E           ; //函数名称：主函数，调用相关子程序，显示图形
+ 030E           ; //****************************************************************
+ 030E           ; 
+ 030E           ; void main(void)
+ 030E           ; {
+ 030E                   .dbline 290
+ 030E           ;       int m;
+ 030E           ;     system_init();                      //系统初始化，设置IO口属性
+ 030E D7DE              xcall _system_init
+ 0310                   .dbline 291
+ 0310           ;       delay_nms(1);                        //延时1ms
+ 0310 01E0              ldi R16,1
+ 0312 10E0              ldi R17,0
+ 0314 B6DE              xcall _delay_nms
+ 0316                   .dbline 292
+ 0316           ;       LCD_init();                        //液晶参数初始化设置
+ 0316 43DF              xcall _LCD_init
+ 0318                   .dbline 293
+ 0318           ;     LCD_clear(); 
+ 0318 23DF              xcall _LCD_clear
+ 031A 07C0              xjmp L48
+ 031C           L47:
+ 031C                   .dbline 295
+ 031C           ;   while(1)
+ 031C           ;       {
+ 031C                   .dbline 296
+ 031C           ;               Display_photo1(photo3);     //显示上半屏数据
+ 031C 00E0              ldi R16,<_photo3
+ 031E 10E0              ldi R17,>_photo3
+ 0320 53DF              xcall _Display_photo1
+ 0322                   .dbline 297
+ 0322           ;               Display_photo2(photo4);     //显示下半屏数据
+ 0322 00E0              ldi R16,<_photo4
+ 0324 10E0              ldi R17,>_photo4
+ 0326 A4DF              xcall _Display_photo2
+ 0328                   .dbline 298
+ 0328           L50:
+ 0328                   .dbline 298
+ 0328                   .dbline 298
+ 0328                   .dbline 298
+ 0328 FFCF              xjmp L50
+ 032A           L48:
+ 032A                   .dbline 294
+ 032A F8CF              xjmp L47
+ 032C           X5:
+ 032C                   .dbline -2
+ 032C           L46:
+ 032C                   .dbline 0 ; func end
+ 032C 0895              ret
+ 032E                   .dbsym l m 1 I
+ 032E                   .dbend

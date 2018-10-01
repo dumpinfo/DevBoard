@@ -1,0 +1,1102 @@
+__start:
+__text_start:
+    004A EFCF      LDI	R28,0xFF
+    004B E1D0      LDI	R29,0x10
+    004C BFCD      OUT	0x3D,R28
+    004D BFDE      OUT	0x3E,R29
+    004E 51CE      SUBI	R28,0x1E
+    004F 40D0      SBCI	R29,0
+    0050 EA0A      LDI	R16,0xAA
+    0051 8308      STD	Y+0,R16
+    0052 2400      CLR	R0
+    0053 E0E8      LDI	R30,0x8
+    0054 E0F1      LDI	R31,1
+    0055 E011      LDI	R17,1
+    0056 30E8      CPI	R30,0x8
+    0057 07F1      CPC	R31,R17
+    0058 F011      BEQ	0x005B
+    0059 9201      ST	R0,Z+
+    005A CFFB      RJMP	0x0056
+    005B 8300      STD	Z+0,R16
+    005C E8EC      LDI	R30,0x8C
+    005D E0F0      LDI	R31,0
+    005E E0A0      LDI	R26,0
+    005F E0B1      LDI	R27,1
+    0060 E010      LDI	R17,0
+    0061 39E4      CPI	R30,0x94
+    0062 07F1      CPC	R31,R17
+    0063 F021      BEQ	0x0068
+    0064 95C8      LPM
+    0065 9631      ADIW	R30,1
+    0066 920D      ST	R0,X+
+    0067 CFF9      RJMP	0x0061
+    0068 940E01FA  CALL	_main
+_exit:
+    006A CFFF      RJMP	_exit
+FILE: C:\icc\include\delay.h
+(0001) //********************************************************************
+(0002) /*函 数 名：delay_us
+(0003) 建立日期：2010年1月28日
+(0004) 编译环境：ICCAVR7.16A
+(0005) 函数作用：微秒级的延时程序
+(0006) 说    明：7.3728M晶振下
+(0007) ********************************************************************/
+(0008) void delay_1us(void);
+(0009) void delay_3us(void);
+(0010) void delay_10us(void);
+(0011) void delay_50us(void);
+(0012) void delay_100us(void);
+(0013) void delay_n100us(unsigned char n100us);
+(0014) void delay_1ms(void);
+(0015) void delay_nms(unsigned int nms);
+(0016) void delay_ns(unsigned char ns);
+(0017) 
+(0018) 
+(0019) void delay_1us(void)                 //1us延时函数，不能连续调用， 
+(0020) { 
+(0021)    asm("nop");                       //1时钟周期
+_delay_1us:
+    006B 0000      NOP
+(0022)    asm("nop");
+    006C 0000      NOP
+(0023)    asm("nop");
+    006D 0000      NOP
+(0024)    asm("nop");
+    006E 0000      NOP
+(0025)    asm("nop");                       //1T
+    006F 0000      NOP
+(0026)    asm("nop");
+    0070 0000      NOP
+    0071 9508      RET
+(0027) 
+(0028) }
+(0029) void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+(0030) { 
+(0031)    
+(0032)    asm("nop");
+_delay_3us:
+    0072 0000      NOP
+(0033)    asm("nop");
+    0073 0000      NOP
+(0034)    asm("nop");                       
+    0074 0000      NOP
+(0035)    asm("nop");
+    0075 0000      NOP
+(0036)    asm("nop");
+    0076 0000      NOP
+(0037)    asm("nop");
+    0077 0000      NOP
+(0038)    asm("nop");                       
+    0078 0000      NOP
+(0039)    asm("nop");
+    0079 0000      NOP
+(0040)    asm("nop");
+    007A 0000      NOP
+(0041)    asm("nop");
+    007B 0000      NOP
+(0042)    asm("nop");                       
+    007C 0000      NOP
+(0043)    asm("nop");
+    007D 0000      NOP
+(0044)    asm("nop");
+    007E 0000      NOP
+(0045)    asm("nop");
+    007F 0000      NOP
+(0046)    asm("nop");                       
+    0080 0000      NOP
+(0047)    asm("nop");
+    0081 0000      NOP
+(0048)    asm("nop");
+    0082 0000      NOP
+(0049)    asm("nop");
+    0083 0000      NOP
+(0050)    asm("nop");
+    0084 0000      NOP
+(0051)    asm("nop");
+    0085 0000      NOP
+(0052)    asm("nop");                       
+    0086 0000      NOP
+    0087 9508      RET
+(0053) } 
+(0054) 
+(0055) void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+(0056) {
+(0057)    delay_3us();
+_delay_10us:
+    0088 DFE9      RCALL	_delay_3us
+(0058)    delay_3us(); 
+    0089 DFE8      RCALL	_delay_3us
+(0059)    delay_3us();  
+    008A DFE7      RCALL	_delay_3us
+    008B 9508      RET
+(0060) }
+(0061)   
+(0062) void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+(0063) { 
+(0064)    delay_10us();
+_delay_50us:
+    008C DFFB      RCALL	_delay_10us
+(0065)    delay_10us(); 
+    008D DFFA      RCALL	_delay_10us
+(0066)    delay_10us();
+    008E DFF9      RCALL	_delay_10us
+(0067)    delay_10us();
+    008F DFF8      RCALL	_delay_10us
+    0090 9508      RET
+(0068) }
+(0069) void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+(0070) {
+(0071)  delay_50us();
+_delay_100us:
+    0091 DFFA      RCALL	_delay_50us
+(0072)  delay_50us();
+    0092 DFF9      RCALL	_delay_50us
+    0093 9508      RET
+_delay_n100us:
+  n100us               --> R20
+    0094 940E02A5  CALL	push_gset1
+    0096 2F40      MOV	R20,R16
+(0073) }
+(0074) void delay_n100us(unsigned char n100us)
+(0075) {
+    0097 C001      RJMP	0x0099
+(0076)  while(n100us--)                          
+(0077)  delay_100us();
+    0098 DFF8      RCALL	_delay_100us
+    0099 2E24      MOV	R2,R20
+    009A 2433      CLR	R3
+    009B 5041      SUBI	R20,1
+    009C 2022      TST	R2
+    009D F7D1      BNE	0x0098
+    009E 940E02A8  CALL	pop_gset1
+    00A0 9508      RET
+(0078) }
+(0079) /*delay_n100us(2)        250us
+(0080) delay_n100us(3)          360us
+(0081) delay_n100us(4)          470us
+(0082) delay_n100us(5)          580us
+(0083) delay_n100us(6)          690us
+(0084) delay_n100us(7)       800us
+(0085) delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+(0086) 
+(0087) */
+(0088) void delay_1ms()
+(0089) {
+(0090)  delay_100us();
+_delay_1ms:
+    00A1 DFEF      RCALL	_delay_100us
+(0091)  delay_100us();
+    00A2 DFEE      RCALL	_delay_100us
+(0092)  delay_100us();
+    00A3 DFED      RCALL	_delay_100us
+(0093)  delay_100us();
+    00A4 DFEC      RCALL	_delay_100us
+(0094)  delay_100us();
+    00A5 DFEB      RCALL	_delay_100us
+(0095)  delay_100us();
+    00A6 DFEA      RCALL	_delay_100us
+(0096)  delay_100us();
+    00A7 DFE9      RCALL	_delay_100us
+(0097)  delay_100us();
+    00A8 DFE8      RCALL	_delay_100us
+(0098)  delay_100us();
+    00A9 DFE7      RCALL	_delay_100us
+(0099)  delay_100us();
+    00AA DFE6      RCALL	_delay_100us
+    00AB 9508      RET
+_delay_nms:
+  nms                  --> R20
+    00AC 940E02A5  CALL	push_gset1
+    00AE 01A8      MOVW	R20,R16
+(0100) }
+(0101) /********************************************************************
+(0102) 函 数 名：Delay_ms
+(0103) 建立日期：2010年1月28日
+(0104) 修改日期：
+(0105) 函数作用：毫秒级的精确延时程序
+(0106) 说    明：
+(0107) ********************************************************************/
+(0108) void delay_nms(unsigned int nms)
+(0109) {
+    00AF C001      RJMP	0x00B1
+(0110)  while(nms--) 
+(0111)  delay_1ms();
+    00B0 DFF0      RCALL	_delay_1ms
+    00B1 011A      MOVW	R2,R20
+    00B2 5041      SUBI	R20,1
+    00B3 4050      SBCI	R21,0
+    00B4 2022      TST	R2
+    00B5 F7D1      BNE	0x00B0
+    00B6 2033      TST	R3
+    00B7 F7C1      BNE	0x00B0
+    00B8 940E02A8  CALL	pop_gset1
+    00BA 9508      RET
+_delay_ns:
+  ns                   --> R20
+    00BB 940E02A5  CALL	push_gset1
+    00BD 2F40      MOV	R20,R16
+(0112) }
+(0113) void delay_ns(unsigned char ns)
+(0114) {
+    00BE C003      RJMP	0x00C2
+(0115)  while(ns--) 
+(0116)  delay_nms(1000);
+    00BF EE08      LDI	R16,0xE8
+    00C0 E013      LDI	R17,3
+    00C1 DFEA      RCALL	_delay_nms
+    00C2 2E24      MOV	R2,R20
+    00C3 2433      CLR	R3
+    00C4 5041      SUBI	R20,1
+    00C5 2022      TST	R2
+    00C6 F7C1      BNE	0x00BF
+    00C7 940E02A8  CALL	pop_gset1
+    00C9 9508      RET
+FILE: E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\10.DS1302实时时钟实验\DS1302\DS1302.C
+(0001) //ATMEGA128的DS1302实时时钟芯片驱动程序，若使用备用电池，
+(0002) //则在第一次写入初始数据后就不再写初始数据
+(0003) //编译环境 ICCAVR 7.16A
+(0004) //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡
+(0005) //忠兴电子元件店编辑
+(0006) //日期：2010.01.14
+(0007) 
+(0008) //***********************************************************************
+(0009) //			包含文件
+(0010) //***********************************************************************
+(0011) 
+(0012) #include <string.h>
+(0013) #include <stdio.h>
+(0014) #include <delay.h>
+(0015) #include <iom128v.h>
+(0016) 
+(0017) //***********************************************************************
+(0018) //	定义变量区
+(0019) //***********************************************************************
+(0020) #define uchar unsigned char
+(0021) #define uint  unsigned int
+(0022) 
+(0023) /*复位脚*/
+(0024) #define RST_CLR	PORTE &= ~(1 << PE7)              //电平置低
+(0025) #define RST_SET	PORTE |= (1 << PE7)               //电平置高
+(0026) #define RST_IN	DDRE &= ~(1 << PE7)               //方向输入
+(0027) #define RST_OUT	DDRE |= (1 << PE7)                //方向输出
+(0028) 
+(0029) /*双向数据*/
+(0030) #define IO_CLR	PORTE &= ~(1 << PE6)              //电平置低
+(0031) #define IO_SET	PORTE |= (1 << PE6)               //电平置高
+(0032) #define IO_R	PINE & (1 << PE6)                 //电平读取
+(0033) #define IO_IN	DDRE &= ~(1 << PE6)               //方向输入
+(0034) #define IO_OUT	DDRE |= (1 << PE6)                //方向输出
+(0035) 
+(0036) /*时钟信号*/
+(0037) #define SCK_CLR	PORTE &= ~(1 << PE5)              //时钟信号
+(0038) #define SCK_SET	PORTE |= (1 << PE5)               //电平置高
+(0039) #define SCK_IN	DDRE &= ~(1 << PE5)               //方向输入
+(0040) #define SCK_OUT	DDRE |= (1 << PE5)                //方向输出
+(0041) 
+(0042) /*ds1302命令与相关地址*/
+(0043) #define ds1302_sec_add			0x80		//秒数据地址
+(0044) #define ds1302_min_add			0x82		//分数据地址
+(0045) #define ds1302_hr_add			0x84		//时数据地址
+(0046) #define ds1302_date_add			0x86		//日数据地址
+(0047) #define ds1302_month_add		0x88		//月数据地址
+(0048) #define ds1302_day_add			0x8a		//星期数据地址
+(0049) #define ds1302_year_add			0x8c		//年数据地址
+(0050) #define ds1302_control_add		0x8e		//控制数据地址
+(0051) #define ds1302_charger_add		0x90 					 
+(0052) #define ds1302_clkburst_add		0xbe
+(0053) 
+(0054) #define RS_CLR	PORTF &= ~(1 << PF1)       //RS置低
+(0055) #define RS_SET	PORTF |= (1 << PF1)        //RS置高
+(0056) 
+(0057) #define RW_CLR	PORTF &= ~(1 << PF2)       //RW置低
+(0058) #define RW_SET	PORTF |= (1 << PF2)        //RW置高
+(0059) 
+(0060) #define EN_CLR	PORTF &= ~(1 << PF3)       //E置低
+(0061) #define EN_SET	PORTF |= (1 << PF3)        //E置高
+(0062) 
+(0063) #define Data_IO	        PORTA                //液晶数据口
+(0064) #define Data_DDR        DDRA                 //数据口方向寄存器
+(0065) #define D_LE0	        PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+(0066) #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+(0067) #define W_LE0	        PORTD &= ~(1 << PD5) //数码管位控制位为0
+(0068) #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+(0069) 
+(0070) uchar time_buf[8] = {0x20,0x10,0x01,0x14,0x09,0x55,0x00,0x02};//DS1302初始值
+(0071) 
+(0072) //*************************************************************************
+(0073) //			初始化子程序
+(0074) //*************************************************************************
+(0075) void system_init()
+(0076) {
+(0077) 
+(0078) 	Data_IO = 0xFF;				        //电平设置
+_system_init:
+    00CA EF8F      LDI	R24,0xFF
+    00CB BB8B      OUT	0x1B,R24
+(0079) 	Data_DDR = 0xFF;				        //方向输出
+    00CC BB8A      OUT	0x1A,R24
+(0080) 	PORTF = 0xFF;                       //电平设置
+    00CD 93800062  STS	0x62,R24
+(0081) 	DDRF = 0xFF;                        //方向输出
+    00CF 93800061  STS	0x61,R24
+(0082)     PORTD=0xFF;
+    00D1 BB82      OUT	0x12,R24
+(0083) 	DDRD=0xFF;
+    00D2 BB81      OUT	0x11,R24
+(0084) 	D_LE1;                             //关掉数码管，以免显示乱码                   
+    00D3 9A94      SBI	0x12,4
+(0085)     W_LE1;                     
+    00D4 9A95      SBI	0x12,5
+(0086)     Data_IO=0xFF;                      //关数码管            
+    00D5 BB8B      OUT	0x1B,R24
+(0087)     W_LE0; 
+    00D6 9895      CBI	0x12,5
+    00D7 9508      RET
+_ds1302_write_byte:
+  i                    --> R20
+  d                    --> R18
+  addr                 --> R16
+    00D8 940E02A5  CALL	push_gset1
+(0088) }
+(0089) 
+(0090) //***********************************************************************
+(0091) //向DS1302写入一字节数据
+(0092) //***********************************************************************
+(0093) void ds1302_write_byte(unsigned char addr, unsigned char d) 
+(0094) {
+(0095) 
+(0096) 	unsigned char i;
+(0097) 	RST_SET;					//启动DS1302总线
+    00DA 9A1F      SBI	0x03,7
+(0098) 	
+(0099) 	                                                //写入目标地址：addr
+(0100) 	IO_OUT;
+    00DB 9A16      SBI	0x02,6
+(0101) 	addr = addr & 0xFE;                            //最低位置零
+    00DC 7F0E      ANDI	R16,0xFE
+(0102) 	for (i = 0; i < 8; i ++) {
+    00DD 2744      CLR	R20
+    00DE C009      RJMP	0x00E8
+(0103) 		if (addr & 0x01) {
+    00DF FF00      SBRS	R16,0
+    00E0 C002      RJMP	0x00E3
+(0104) 			IO_SET;
+    00E1 9A1E      SBI	0x03,6
+(0105) 			}
+    00E2 C001      RJMP	0x00E4
+(0106) 		else {
+(0107) 			IO_CLR;
+    00E3 981E      CBI	0x03,6
+(0108) 			}
+(0109) 		SCK_SET;
+    00E4 9A1D      SBI	0x03,5
+(0110) 		SCK_CLR;
+    00E5 981D      CBI	0x03,5
+(0111) 		addr = addr >> 1;
+    00E6 9506      LSR	R16
+    00E7 9543      INC	R20
+    00E8 3048      CPI	R20,0x8
+    00E9 F3A8      BCS	0x00DF
+(0112) 		}
+(0113) 	
+(0114) 	                                              //写入数据：d
+(0115) 	IO_OUT;
+    00EA 9A16      SBI	0x02,6
+(0116) 	for (i = 0; i < 8; i ++) {
+    00EB 2744      CLR	R20
+    00EC C009      RJMP	0x00F6
+(0117) 		if (d & 0x01) {
+    00ED FF20      SBRS	R18,0
+    00EE C002      RJMP	0x00F1
+(0118) 			IO_SET;
+    00EF 9A1E      SBI	0x03,6
+(0119) 			}
+    00F0 C001      RJMP	0x00F2
+(0120) 		else {
+(0121) 			IO_CLR;
+    00F1 981E      CBI	0x03,6
+(0122) 			}
+(0123) 		SCK_SET;
+    00F2 9A1D      SBI	0x03,5
+(0124) 		SCK_CLR;
+    00F3 981D      CBI	0x03,5
+(0125) 		d = d >> 1;
+    00F4 9526      LSR	R18
+    00F5 9543      INC	R20
+    00F6 3048      CPI	R20,0x8
+    00F7 F3A8      BCS	0x00ED
+(0126) 		}
+(0127) 	RST_CLR;					//停止DS1302总线
+    00F8 981F      CBI	0x03,7
+    00F9 940E02A8  CALL	pop_gset1
+    00FB 9508      RET
+_ds1302_read_byte:
+  temp                 --> R20
+  i                    --> R22
+  addr                 --> R16
+    00FC 940E02A3  CALL	push_gset2
+(0128) }
+(0129) //***********************************************************************
+(0130) //                   从DS1302读出一字节数据
+(0131) //***********************************************************************
+(0132) unsigned char ds1302_read_byte(unsigned char addr)
+(0133)  {
+(0134) 
+(0135) 	unsigned char i;
+(0136) 	unsigned char temp;
+(0137) 	RST_SET;					//启动DS1302总线
+    00FE 9A1F      SBI	0x03,7
+(0138) 
+(0139) 	                                                //写入目标地址：addr
+(0140) 	IO_OUT;
+    00FF 9A16      SBI	0x02,6
+(0141) 	addr = addr | 0x01;                             //最低位置高
+    0100 6001      ORI	R16,1
+(0142) 	for (i = 0; i < 8; i ++) {
+    0101 2766      CLR	R22
+    0102 C009      RJMP	0x010C
+(0143) 		if (addr & 0x01) {
+    0103 FF00      SBRS	R16,0
+    0104 C002      RJMP	0x0107
+(0144) 			IO_SET;
+    0105 9A1E      SBI	0x03,6
+(0145) 			}
+    0106 C001      RJMP	0x0108
+(0146) 		else {
+(0147) 			IO_CLR;
+    0107 981E      CBI	0x03,6
+(0148) 			}
+(0149) 		SCK_SET;
+    0108 9A1D      SBI	0x03,5
+(0150) 		SCK_CLR;
+    0109 981D      CBI	0x03,5
+(0151) 		addr = addr >> 1;
+    010A 9506      LSR	R16
+    010B 9563      INC	R22
+    010C 3068      CPI	R22,0x8
+    010D F3A8      BCS	0x0103
+(0152) 		}
+(0153) 	
+(0154) 	/*输出数据：temp*/
+(0155) 	IO_IN;
+    010E 9816      CBI	0x02,6
+(0156) 	for (i = 0; i < 8; i ++) {
+    010F 2766      CLR	R22
+    0110 C009      RJMP	0x011A
+(0157) 		temp = temp >> 1;
+    0111 9546      LSR	R20
+(0158) 		if (IO_R) {
+    0112 9B0E      SBIS	0x01,6
+    0113 C002      RJMP	0x0116
+(0159) 			temp |= 0x80;
+    0114 6840      ORI	R20,0x80
+(0160) 			}
+    0115 C001      RJMP	0x0117
+(0161) 		else {
+(0162) 			temp &= 0x7F;
+    0116 774F      ANDI	R20,0x7F
+(0163) 			}
+(0164) 		SCK_SET;
+    0117 9A1D      SBI	0x03,5
+(0165) 		SCK_CLR;
+    0118 981D      CBI	0x03,5
+    0119 9563      INC	R22
+    011A 3068      CPI	R22,0x8
+    011B F3A8      BCS	0x0111
+(0166) 		}
+(0167) 	
+(0168) 	RST_CLR;					//停止DS1302总线
+    011C 981F      CBI	0x03,7
+(0169) 	return temp;
+    011D 2F04      MOV	R16,R20
+    011E 940E0297  CALL	pop_gset2
+    0120 9508      RET
+(0170) }
+(0171) 
+(0172) //***********************************************************************
+(0173) //                   向DS302写入时钟数据
+(0174) //***********************************************************************
+(0175) 
+(0176) void ds1302_write_time(void)
+(0177)  {
+(0178) 
+(0179) 	ds1302_write_byte(ds1302_control_add,0x00);		//关闭写保护 
+_ds1302_write_time:
+    0121 2722      CLR	R18
+    0122 E80E      LDI	R16,0x8E
+    0123 DFB4      RCALL	_ds1302_write_byte
+(0180) 	ds1302_write_byte(ds1302_sec_add,0x80);			//暂停 
+    0124 E820      LDI	R18,0x80
+    0125 E800      LDI	R16,0x80
+    0126 DFB1      RCALL	_ds1302_write_byte
+(0181) 	//ds1302_write_byte(ds1302_charger_add,0xa9);		//涓流充电 
+(0182) 	ds1302_write_byte(ds1302_year_add,time_buf[1]);		//年 
+    0127 91200101  LDS	R18,time_buf+1
+    0129 E80C      LDI	R16,0x8C
+    012A DFAD      RCALL	_ds1302_write_byte
+(0183) 	ds1302_write_byte(ds1302_month_add,time_buf[2]);	//月 
+    012B 91200102  LDS	R18,time_buf+2
+    012D E808      LDI	R16,0x88
+    012E DFA9      RCALL	_ds1302_write_byte
+(0184) 	ds1302_write_byte(ds1302_date_add,time_buf[3]);		//日 
+    012F 91200103  LDS	R18,time_buf+3
+    0131 E806      LDI	R16,0x86
+    0132 DFA5      RCALL	_ds1302_write_byte
+(0185) 	ds1302_write_byte(ds1302_day_add,time_buf[7]);		//周 
+    0133 91200107  LDS	R18,0x107
+    0135 E80A      LDI	R16,0x8A
+    0136 DFA1      RCALL	_ds1302_write_byte
+(0186) 	ds1302_write_byte(ds1302_hr_add,time_buf[4]);		//时 
+    0137 91200104  LDS	R18,0x104
+    0139 E804      LDI	R16,0x84
+    013A DF9D      RCALL	_ds1302_write_byte
+(0187) 	ds1302_write_byte(ds1302_min_add,time_buf[5]);		//分
+    013B 91200105  LDS	R18,0x105
+    013D E802      LDI	R16,0x82
+    013E DF99      RCALL	_ds1302_write_byte
+(0188) 	ds1302_write_byte(ds1302_sec_add,time_buf[6]);		//秒
+    013F 91200106  LDS	R18,0x106
+    0141 E800      LDI	R16,0x80
+    0142 DF95      RCALL	_ds1302_write_byte
+(0189) 	ds1302_write_byte(ds1302_day_add,time_buf[7]);		//周 
+    0143 91200107  LDS	R18,0x107
+    0145 E80A      LDI	R16,0x8A
+    0146 DF91      RCALL	_ds1302_write_byte
+(0190) 	ds1302_write_byte(ds1302_control_add,0x80);		//打开写保护 
+    0147 E820      LDI	R18,0x80
+    0148 E80E      LDI	R16,0x8E
+    0149 DF8E      RCALL	_ds1302_write_byte
+    014A 9508      RET
+(0191) }
+(0192) 
+(0193) //***********************************************************************
+(0194) //                     从DS302读出时钟数据
+(0195) //***********************************************************************
+(0196) 
+(0197) void ds1302_read_time(void)  
+(0198) { 
+(0199) 
+(0200) 	time_buf[1]=ds1302_read_byte(ds1302_year_add);		//年 
+_ds1302_read_time:
+    014B E80C      LDI	R16,0x8C
+    014C DFAF      RCALL	_ds1302_read_byte
+    014D 93000101  STS	time_buf+1,R16
+(0201) 	time_buf[2]=ds1302_read_byte(ds1302_month_add);		//月 
+    014F E808      LDI	R16,0x88
+    0150 DFAB      RCALL	_ds1302_read_byte
+    0151 93000102  STS	time_buf+2,R16
+(0202) 	time_buf[3]=ds1302_read_byte(ds1302_date_add);		//日 
+    0153 E806      LDI	R16,0x86
+    0154 DFA7      RCALL	_ds1302_read_byte
+    0155 93000103  STS	time_buf+3,R16
+(0203) 	time_buf[4]=ds1302_read_byte(ds1302_hr_add);		//时 
+    0157 E804      LDI	R16,0x84
+    0158 DFA3      RCALL	_ds1302_read_byte
+    0159 93000104  STS	0x104,R16
+(0204) 	time_buf[5]=ds1302_read_byte(ds1302_min_add);		//分 
+    015B E802      LDI	R16,0x82
+    015C DF9F      RCALL	_ds1302_read_byte
+    015D 93000105  STS	0x105,R16
+(0205) 	time_buf[6]=(ds1302_read_byte(ds1302_sec_add))&0x7F;//秒 
+    015F E800      LDI	R16,0x80
+    0160 DF9B      RCALL	_ds1302_read_byte
+    0161 2F80      MOV	R24,R16
+    0162 778F      ANDI	R24,0x7F
+    0163 93800106  STS	0x106,R24
+(0206) 	time_buf[7]=ds1302_read_byte(ds1302_day_add);		//周 
+    0165 E80A      LDI	R16,0x8A
+    0166 DF95      RCALL	_ds1302_read_byte
+    0167 93000107  STS	0x107,R16
+    0169 9508      RET
+(0207) }
+(0208) 
+(0209) //***********************************************************************
+(0210) //               DS302初始化函数
+(0211) //***********************************************************************
+(0212) 
+(0213) void ds1302_init(void) 
+(0214) {
+(0215) 	
+(0216) 	RST_CLR;			//RST脚置低
+_ds1302_init:
+    016A 981F      CBI	0x03,7
+(0217) 	SCK_CLR;			//SCK脚置低
+    016B 981D      CBI	0x03,5
+(0218) 	RST_OUT;			//RST脚设置为输出
+    016C 9A17      SBI	0x02,7
+(0219) 	SCK_OUT;			//SCK脚设置为输出
+    016D 9A15      SBI	0x02,5
+    016E 9508      RET
+_LCD_write_com:
+  com                  --> R20
+    016F 940E02A5  CALL	push_gset1
+    0171 2F40      MOV	R20,R16
+(0220) }
+(0221) 
+(0222) //***********************************************************************
+(0223) //	显示屏命令写入函数
+(0224) //***********************************************************************
+(0225) 
+(0226) 
+(0227) void LCD_write_com(unsigned char com) 
+(0228) {	
+(0229) 	RS_CLR;
+    0172 91800062  LDS	R24,0x62
+    0174 7F8D      ANDI	R24,0xFD
+    0175 93800062  STS	0x62,R24
+(0230) 	RW_CLR;
+    0177 91800062  LDS	R24,0x62
+    0179 7F8B      ANDI	R24,0xFB
+    017A 93800062  STS	0x62,R24
+(0231) 	EN_SET;
+    017C 91800062  LDS	R24,0x62
+    017E 6088      ORI	R24,0x8
+    017F 93800062  STS	0x62,R24
+(0232) 	Data_IO = com;
+    0181 BB4B      OUT	0x1B,R20
+(0233) 	delay_nms(5);
+    0182 E005      LDI	R16,5
+    0183 E010      LDI	R17,0
+    0184 DF27      RCALL	_delay_nms
+(0234) 	EN_CLR;
+    0185 91800062  LDS	R24,0x62
+    0187 7F87      ANDI	R24,0xF7
+    0188 93800062  STS	0x62,R24
+    018A 940E02A8  CALL	pop_gset1
+    018C 9508      RET
+_LCD_write_data:
+  data                 --> R20
+    018D 940E02A5  CALL	push_gset1
+    018F 2F40      MOV	R20,R16
+(0235) }
+(0236) //***********************************************************************
+(0237) //	显示屏数据写入函数
+(0238) //***********************************************************************
+(0239) 
+(0240) void LCD_write_data(unsigned char data) 
+(0241) {
+(0242) 	RS_SET;
+    0190 91800062  LDS	R24,0x62
+    0192 6082      ORI	R24,2
+    0193 93800062  STS	0x62,R24
+(0243) 	RW_CLR;
+    0195 91800062  LDS	R24,0x62
+    0197 7F8B      ANDI	R24,0xFB
+    0198 93800062  STS	0x62,R24
+(0244) 	EN_SET;
+    019A 91800062  LDS	R24,0x62
+    019C 6088      ORI	R24,0x8
+    019D 93800062  STS	0x62,R24
+(0245) 	Data_IO = data;
+    019F BB4B      OUT	0x1B,R20
+(0246) 	delay_nms(5);
+    01A0 E005      LDI	R16,5
+    01A1 E010      LDI	R17,0
+    01A2 DF09      RCALL	_delay_nms
+(0247) 	EN_CLR;
+    01A3 91800062  LDS	R24,0x62
+    01A5 7F87      ANDI	R24,0xF7
+    01A6 93800062  STS	0x62,R24
+    01A8 940E02A8  CALL	pop_gset1
+    01AA 9508      RET
+(0248) }
+(0249) //***********************************************************************
+(0250) //	显示屏清空显示
+(0251) //***********************************************************************
+(0252) 
+(0253) void LCD_clear(void) 
+(0254) {
+(0255) 	LCD_write_com(0x01);
+_LCD_clear:
+    01AB E001      LDI	R16,1
+    01AC DFC2      RCALL	_LCD_write_com
+(0256) 	delay_nms(5);
+    01AD E005      LDI	R16,5
+    01AE E010      LDI	R17,0
+    01AF DEFC      RCALL	_delay_nms
+    01B0 9508      RET
+_LCD_write_str:
+  s                    --> R20
+  y                    --> R10
+  x                    --> R22
+    01B1 940E02A1  CALL	push_gset3
+    01B3 2EA2      MOV	R10,R18
+    01B4 2F60      MOV	R22,R16
+    01B5 814E      LDD	R20,Y+6
+    01B6 815F      LDD	R21,Y+7
+(0257) }
+(0258) //***********************************************************************
+(0259) //	显示屏字符串写入函数
+(0260) //***********************************************************************
+(0261) 
+(0262) void LCD_write_str(unsigned char x,unsigned char y,unsigned char *s) 
+(0263) {
+(0264) 	
+(0265)     if (y == 0) 
+    01B7 20AA      TST	R10
+    01B8 F421      BNE	0x01BD
+(0266)     {
+(0267)     	LCD_write_com(0x80 + x);
+    01B9 2F06      MOV	R16,R22
+    01BA 5800      SUBI	R16,0x80
+    01BB DFB3      RCALL	_LCD_write_com
+(0268)     }
+    01BC C009      RJMP	0x01C6
+(0269)     else 
+(0270)     {
+(0271)     	LCD_write_com(0xC0 + x);
+    01BD 2F06      MOV	R16,R22
+    01BE 5400      SUBI	R16,0x40
+    01BF DFAF      RCALL	_LCD_write_com
+(0272)     }
+    01C0 C005      RJMP	0x01C6
+(0273)     
+(0274)     while (*s) 
+(0275)     {
+(0276)     	LCD_write_data( *s);
+    01C1 01FA      MOVW	R30,R20
+    01C2 8100      LDD	R16,Z+0
+    01C3 DFC9      RCALL	_LCD_write_data
+(0277)     	s ++;
+    01C4 5F4F      SUBI	R20,0xFF
+    01C5 4F5F      SBCI	R21,0xFF
+    01C6 01FA      MOVW	R30,R20
+    01C7 8020      LDD	R2,Z+0
+    01C8 2022      TST	R2
+    01C9 F7B9      BNE	0x01C1
+    01CA 940E029A  CALL	pop_gset3
+    01CC 9508      RET
+_LCD_write_char:
+  data                 --> Y+4
+  y                    --> R22
+  x                    --> R20
+    01CD 940E02A3  CALL	push_gset2
+    01CF 2F62      MOV	R22,R18
+    01D0 2F40      MOV	R20,R16
+(0278)     }
+(0279) }
+(0280) //***********************************************************************
+(0281) //	显示屏单字符写入函数
+(0282) //***********************************************************************
+(0283) 
+(0284) void LCD_write_char(unsigned char x,unsigned char y,unsigned char data) 
+(0285) {
+(0286) 	
+(0287)     if (y == 0) 
+    01D1 2366      TST	R22
+    01D2 F421      BNE	0x01D7
+(0288)     {
+(0289)     	LCD_write_com(0x80 + x);
+    01D3 2F04      MOV	R16,R20
+    01D4 5800      SUBI	R16,0x80
+    01D5 DF99      RCALL	_LCD_write_com
+(0290)     }
+    01D6 C003      RJMP	0x01DA
+(0291)     else 
+(0292)     {
+(0293)     	LCD_write_com(0xC0 + x);
+    01D7 2F04      MOV	R16,R20
+    01D8 5400      SUBI	R16,0x40
+    01D9 DF95      RCALL	_LCD_write_com
+(0294)     }
+(0295)     
+(0296)     LCD_write_data( data);  
+    01DA 810C      LDD	R16,Y+4
+    01DB DFB1      RCALL	_LCD_write_data
+    01DC 940E0297  CALL	pop_gset2
+    01DE 9508      RET
+(0297) }
+(0298) //***********************************************************************
+(0299) //	显示屏初始化函数
+(0300) //***********************************************************************
+(0301) 
+(0302) void LCD_init(void) 
+(0303) {
+(0304) 	system_init();
+_LCD_init:
+    01DF DEEA      RCALL	_system_init
+(0305) 	LCD_write_com(0x38);				//显示模式设置
+    01E0 E308      LDI	R16,0x38
+    01E1 DF8D      RCALL	_LCD_write_com
+(0306) 	delay_nms(5);
+    01E2 E005      LDI	R16,5
+    01E3 E010      LDI	R17,0
+    01E4 DEC7      RCALL	_delay_nms
+(0307) 	LCD_write_com(0x08);				//显示关闭
+    01E5 E008      LDI	R16,0x8
+    01E6 DF88      RCALL	_LCD_write_com
+(0308) 	delay_nms(5);
+    01E7 E005      LDI	R16,5
+    01E8 E010      LDI	R17,0
+    01E9 DEC2      RCALL	_delay_nms
+(0309)     LCD_write_com(0x01);				//显示清屏
+    01EA E001      LDI	R16,1
+    01EB DF83      RCALL	_LCD_write_com
+(0310) 	delay_nms(5);
+    01EC E005      LDI	R16,5
+    01ED E010      LDI	R17,0
+    01EE DEBD      RCALL	_delay_nms
+(0311)     LCD_write_com(0x06);				//显示光标移动设置
+    01EF E006      LDI	R16,6
+    01F0 DF7E      RCALL	_LCD_write_com
+(0312) 	delay_nms(5);
+    01F1 E005      LDI	R16,5
+    01F2 E010      LDI	R17,0
+    01F3 DEB8      RCALL	_delay_nms
+(0313) 	LCD_write_com(0x0C);				//显示开及光标设置
+    01F4 E00C      LDI	R16,0xC
+    01F5 DF79      RCALL	_LCD_write_com
+(0314)     delay_nms(5);
+    01F6 E005      LDI	R16,5
+    01F7 E010      LDI	R17,0
+    01F8 DEB3      RCALL	_delay_nms
+    01F9 9508      RET
+_main:
+  temp                 --> R20
+    01FA 9721      SBIW	R28,1
+(0315) }
+(0316) 
+(0317) //***********************************************************************
+(0318) //	主函数
+(0319) //***********************************************************************
+(0320) 
+(0321) void main(void) 
+(0322) 
+(0323) {
+(0324) 
+(0325) 	unsigned char temp;
+(0326)  	delay_nms(200);
+    01FB EC08      LDI	R16,0xC8
+    01FC E010      LDI	R17,0
+    01FD DEAE      RCALL	_delay_nms
+(0327) 	LCD_init();                           //1602液晶初始化
+    01FE DFE0      RCALL	_LCD_init
+(0328) 	ds1302_init();                        //DS1302初始化
+    01FF DF6A      RCALL	_ds1302_init
+(0329) 	delay_nms(10);
+    0200 E00A      LDI	R16,0xA
+    0201 E010      LDI	R17,0
+    0202 DEA9      RCALL	_delay_nms
+(0330) 	ds1302_write_time();                 //向DS1302写初始数据，如年月和时间等
+    0203 DF1D      RCALL	_ds1302_write_time
+    0204 C08F      RJMP	0x0294
+(0331) 
+(0332) 	while (1) 
+(0333) 	{
+(0334) 		delay_nms(200);
+    0205 EC08      LDI	R16,0xC8
+    0206 E010      LDI	R17,0
+    0207 DEA4      RCALL	_delay_nms
+(0335) 		ds1302_read_time();                //读DS1302数据
+    0208 DF42      RCALL	_ds1302_read_time
+(0336) 			
+(0337) 		temp = (time_buf[0] >> 4) + '0';   //在LCD上写要显示的数据
+    0209 91400100  LDS	R20,time_buf
+    020B 9542      SWAP	R20
+    020C 704F      ANDI	R20,0xF
+    020D 5D40      SUBI	R20,0xD0
+(0338) 		LCD_write_char(0, 0, temp);/*年*/
+    020E 8348      STD	Y+0,R20
+    020F 2722      CLR	R18
+    0210 2700      CLR	R16
+    0211 DFBB      RCALL	_LCD_write_char
+(0339) 		temp = (time_buf[0] & 0x0F) + '0';
+    0212 91400100  LDS	R20,time_buf
+    0214 704F      ANDI	R20,0xF
+    0215 5D40      SUBI	R20,0xD0
+(0340) 		LCD_write_char(1, 0, temp);
+    0216 8348      STD	Y+0,R20
+    0217 2722      CLR	R18
+    0218 E001      LDI	R16,1
+    0219 DFB3      RCALL	_LCD_write_char
+(0341) 		temp = (time_buf[1] >> 4) + '0';
+    021A 91400101  LDS	R20,time_buf+1
+    021C 9542      SWAP	R20
+    021D 704F      ANDI	R20,0xF
+    021E 5D40      SUBI	R20,0xD0
+(0342) 		LCD_write_char(2, 0, temp);
+    021F 8348      STD	Y+0,R20
+    0220 2722      CLR	R18
+    0221 E002      LDI	R16,2
+    0222 DFAA      RCALL	_LCD_write_char
+(0343) 		temp = (time_buf[1] & 0x0F) + '0';
+    0223 91400101  LDS	R20,time_buf+1
+    0225 704F      ANDI	R20,0xF
+    0226 5D40      SUBI	R20,0xD0
+(0344) 		LCD_write_char(3, 0, temp);
+    0227 8348      STD	Y+0,R20
+    0228 2722      CLR	R18
+    0229 E003      LDI	R16,3
+    022A DFA2      RCALL	_LCD_write_char
+(0345) 		LCD_write_char(4, 0, '-');
+    022B E28D      LDI	R24,0x2D
+    022C 8388      STD	Y+0,R24
+    022D 2722      CLR	R18
+    022E E004      LDI	R16,4
+    022F DF9D      RCALL	_LCD_write_char
+(0346) 		
+(0347) 		temp = (time_buf[2] >> 4) + '0';
+    0230 91400102  LDS	R20,time_buf+2
+    0232 9542      SWAP	R20
+    0233 704F      ANDI	R20,0xF
+    0234 5D40      SUBI	R20,0xD0
+(0348) 		LCD_write_char(5, 0, temp);/*月*/
+    0235 8348      STD	Y+0,R20
+    0236 2722      CLR	R18
+    0237 E005      LDI	R16,5
+    0238 DF94      RCALL	_LCD_write_char
+(0349) 		temp = (time_buf[2] & 0x0F) + '0';
+    0239 91400102  LDS	R20,time_buf+2
+    023B 704F      ANDI	R20,0xF
+    023C 5D40      SUBI	R20,0xD0
+(0350) 		LCD_write_char(6, 0, temp);
+    023D 8348      STD	Y+0,R20
+    023E 2722      CLR	R18
+    023F E006      LDI	R16,6
+    0240 DF8C      RCALL	_LCD_write_char
+(0351) 		LCD_write_char(7, 0, '-');
+    0241 E28D      LDI	R24,0x2D
+    0242 8388      STD	Y+0,R24
+    0243 2722      CLR	R18
+    0244 E007      LDI	R16,7
+    0245 DF87      RCALL	_LCD_write_char
+(0352) 		
+(0353) 		temp = (time_buf[3] >> 4) + '0';
+    0246 91400103  LDS	R20,time_buf+3
+    0248 9542      SWAP	R20
+    0249 704F      ANDI	R20,0xF
+    024A 5D40      SUBI	R20,0xD0
+(0354) 		LCD_write_char(8, 0, temp);/*日*/
+    024B 8348      STD	Y+0,R20
+    024C 2722      CLR	R18
+    024D E008      LDI	R16,0x8
+    024E DF7E      RCALL	_LCD_write_char
+(0355) 		temp = (time_buf[3] & 0x0F) + '0';
+    024F 91400103  LDS	R20,time_buf+3
+    0251 704F      ANDI	R20,0xF
+    0252 5D40      SUBI	R20,0xD0
+(0356) 		LCD_write_char(9, 0, temp);
+    0253 8348      STD	Y+0,R20
+    0254 2722      CLR	R18
+    0255 E009      LDI	R16,0x9
+    0256 DF76      RCALL	_LCD_write_char
+(0357) 		
+(0358) 		temp = (time_buf[4] >> 4) + '0';
+    0257 91400104  LDS	R20,0x104
+    0259 9542      SWAP	R20
+    025A 704F      ANDI	R20,0xF
+    025B 5D40      SUBI	R20,0xD0
+(0359) 		LCD_write_char(8, 1, temp);/*时*/
+    025C 8348      STD	Y+0,R20
+    025D E021      LDI	R18,1
+    025E E008      LDI	R16,0x8
+    025F DF6D      RCALL	_LCD_write_char
+(0360) 		temp = (time_buf[4] & 0x0F) + '0';
+    0260 91400104  LDS	R20,0x104
+    0262 704F      ANDI	R20,0xF
+    0263 5D40      SUBI	R20,0xD0
+(0361) 		LCD_write_char(9, 1, temp);
+    0264 8348      STD	Y+0,R20
+    0265 E021      LDI	R18,1
+    0266 E009      LDI	R16,0x9
+    0267 DF65      RCALL	_LCD_write_char
+(0362) 		LCD_write_char(10, 1, ':');
+    0268 E38A      LDI	R24,0x3A
+    0269 8388      STD	Y+0,R24
+    026A E021      LDI	R18,1
+    026B E00A      LDI	R16,0xA
+    026C DF60      RCALL	_LCD_write_char
+(0363) 		
+(0364) 		temp = (time_buf[5] >> 4) + '0';
+    026D 91400105  LDS	R20,0x105
+    026F 9542      SWAP	R20
+    0270 704F      ANDI	R20,0xF
+    0271 5D40      SUBI	R20,0xD0
+(0365) 		LCD_write_char(11, 1, temp);/*分*/
+    0272 8348      STD	Y+0,R20
+    0273 E021      LDI	R18,1
+    0274 E00B      LDI	R16,0xB
+    0275 DF57      RCALL	_LCD_write_char
+(0366) 		temp = (time_buf[5] & 0x0F) + '0';
+    0276 91400105  LDS	R20,0x105
+    0278 704F      ANDI	R20,0xF
+    0279 5D40      SUBI	R20,0xD0
+(0367) 		LCD_write_char(12, 1, temp);
+    027A 8348      STD	Y+0,R20
+    027B E021      LDI	R18,1
+    027C E00C      LDI	R16,0xC
+    027D DF4F      RCALL	_LCD_write_char
+(0368) 		LCD_write_char(13, 1, ':');
+    027E E38A      LDI	R24,0x3A
+    027F 8388      STD	Y+0,R24
+    0280 E021      LDI	R18,1
+    0281 E00D      LDI	R16,0xD
+    0282 DF4A      RCALL	_LCD_write_char
+(0369) 		
+(0370) 		temp = (time_buf[6] >> 4) + '0';
+    0283 91400106  LDS	R20,0x106
+    0285 9542      SWAP	R20
+    0286 704F      ANDI	R20,0xF
+    0287 5D40      SUBI	R20,0xD0
+(0371) 		LCD_write_char(14, 1, temp);/*秒*/
+    0288 8348      STD	Y+0,R20
+    0289 E021      LDI	R18,1
+    028A E00E      LDI	R16,0xE
+    028B DF41      RCALL	_LCD_write_char
+(0372) 		temp = (time_buf[6] & 0x0F) + '0';
+    028C 91400106  LDS	R20,0x106
+    028E 704F      ANDI	R20,0xF
+    028F 5D40      SUBI	R20,0xD0
+(0373) 		LCD_write_char(15, 1, temp);
+FILE: <library>
+    0290 8348      STD	Y+0,R20
+    0291 E021      LDI	R18,1
+    0292 E00F      LDI	R16,0xF
+    0293 DF39      RCALL	_LCD_write_char
+    0294 CF70      RJMP	0x0205
+    0295 9621      ADIW	R28,1
+    0296 9508      RET
+pop_gset2:
+    0297 E0E2      LDI	R30,2
+    0298 940C02A9  JMP	pop
+pop_gset3:
+    029A E0E4      LDI	R30,4
+    029B 940C02A9  JMP	pop
+push_gset5:
+    029D 92FA      ST	R15,-Y
+    029E 92EA      ST	R14,-Y
+push_gset4:
+    029F 92DA      ST	R13,-Y
+    02A0 92CA      ST	R12,-Y
+push_gset3:
+    02A1 92BA      ST	R11,-Y
+    02A2 92AA      ST	R10,-Y
+push_gset2:
+    02A3 937A      ST	R23,-Y
+    02A4 936A      ST	R22,-Y
+push_gset1:
+    02A5 935A      ST	R21,-Y
+    02A6 934A      ST	R20,-Y
+    02A7 9508      RET
+pop_gset1:
+    02A8 E0E1      LDI	R30,1
+pop:
+    02A9 9149      LD	R20,Y+
+    02AA 9159      LD	R21,Y+
+    02AB FDE0      SBRC	R30,0
+    02AC 9508      RET
+    02AD 9169      LD	R22,Y+
+    02AE 9179      LD	R23,Y+
+    02AF FDE1      SBRC	R30,1
+    02B0 9508      RET
+    02B1 90A9      LD	R10,Y+
+    02B2 90B9      LD	R11,Y+
+    02B3 FDE2      SBRC	R30,2
+    02B4 9508      RET
+    02B5 90C9      LD	R12,Y+
+    02B6 90D9      LD	R13,Y+
+    02B7 FDE3      SBRC	R30,3
+    02B8 9508      RET
+    02B9 90E9      LD	R14,Y+
+    02BA 90F9      LD	R15,Y+
+    02BB 9508      RET

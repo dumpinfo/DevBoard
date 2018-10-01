@@ -1,0 +1,1 @@
+TFT.o: C:/icc/include/BMP_TFT.h C:/icc/include/string.h C:/icc/include/_const.h C:/icc/include/stdio.h C:/icc/include/stdarg.h C:/icc/include/_const.h C:/icc/include/math.h C:/icc/include/iom128v.h C:/icc/include/ascii8x16.h C:/icc/include/GB2312.h

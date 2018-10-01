@@ -1,0 +1,401 @@
+XL
+H 5 areas 1D global symbols
+M ADC.C
+S mod16u Ref0000
+S div16u Ref0000
+S push_xgset003C Ref0000
+S empy16s Ref0000
+S pop_xgset003C Ref0000
+A text size 2B2 flags 0
+dbfile E:\DMAVR-~3\ADC\ADC.C
+dbfile F:\PROGRA~1\iccavr\include\delay.h
+dbfunc e delay_1us 0 fV
+dbline FFFFFFFF 0
+dbline 9 0
+dbline A 0
+dbline B 2
+dbline C 4
+dbline D 6
+dbline E 8
+dbline F A
+dbline FFFFFFFE C
+dbline 0 C
+dbfunc e delay_3us E fV
+dbline FFFFFFFF E
+dbline 13 E
+dbline 15 E
+dbline 16 10
+dbline 17 12
+dbline 18 14
+dbline 19 16
+dbline 1A 18
+dbline 1B 1A
+dbline 1C 1C
+dbline 1D 1E
+dbline 1E 20
+dbline 1F 22
+dbline 20 24
+dbline 21 26
+dbline 22 28
+dbline 23 2A
+dbline 24 2C
+dbline 25 2E
+dbline 26 30
+dbline 27 32
+dbline 28 34
+dbline 29 36
+dbline FFFFFFFE 38
+dbline 0 38
+dbfunc e delay_10us 3A fV
+dbline FFFFFFFF 3A
+dbline 2D 3A
+dbline 2E 3A
+dbline 2F 3C
+dbline 30 3E
+dbline FFFFFFFE 3E
+dbline 0 3E
+dbfunc e delay_50us 40 fV
+dbline FFFFFFFF 40
+dbline 34 40
+dbline 35 40
+dbline 36 42
+dbline 37 44
+dbline 38 46
+dbline FFFFFFFE 46
+dbline 0 46
+dbfunc e delay_100us 48 fV
+dbline FFFFFFFF 48
+dbline 3B 48
+dbline 3C 48
+dbline 3D 4A
+dbline FFFFFFFE 4A
+dbline 0 4A
+dbfunc e delay_n100us 4C fV
+dbsym r n100us 14 c
+dbline FFFFFFFF 50
+dbline 40 50
+dbline 42 52
+dbline 41 54
+dbline FFFFFFFE 5E
+dbline 0 5E
+dbfunc e delay_1ms 62 fV
+dbline FFFFFFFF 62
+dbline 4E 62
+dbline 4F 62
+dbline 50 64
+dbline 51 66
+dbline 52 68
+dbline 53 6A
+dbline 54 6C
+dbline 55 6E
+dbline 56 70
+dbline 57 72
+dbline 58 74
+dbline FFFFFFFE 74
+dbline 0 74
+dbfunc e delay_nms 76 fV
+dbsym r nms 14 i
+dbline FFFFFFFF 7C
+dbline 62 7C
+dbline 64 7E
+dbline 63 80
+dbline FFFFFFFE 8E
+dbline 0 8E
+dbfunc e delay_ns 94 fV
+dbsym r ns 14 c
+dbline FFFFFFFF 98
+dbline 67 98
+dbline 69 9A
+dbline 68 A0
+dbline FFFFFFFE AA
+dbline 0 AA
+dbfile E:\DMAVR-~3\ADC\ADC.C
+dbfunc e system_init AE fV
+dbline FFFFFFFF AE
+dbline 2A AE
+dbline 2B AE
+dbline 2C B2
+dbline 2E B4
+dbline 2F B6
+dbline 31 B8
+dbline 32 BA
+dbline FFFFFFFE BC
+dbline 0 BC
+dbfunc e Display_ADC BE fV
+dbsym r i 16 c
+dbsym r j 14 c
+dbline FFFFFFFF C2
+dbline 3A C2
+dbline 3C C2
+dbline 3D C4
+dbline 3E C6
+dbline 3F CA
+dbline 40 CA
+dbline 41 CC
+dbline 42 CE
+dbline 43 D4
+dbline 44 D6
+dbline 45 D8
+dbline 46 DC
+dbline 47 DE
+dbline 48 E4
+dbline 3E E4
+dbline 3E E6
+dbline 49 EA
+dbline 4A EC
+dbline 4B EE
+dbline 4C F4
+dbline 4D F6
+dbline 4E F8
+dbline 4F 10A
+dbline 50 10C
+dbline 52 112
+dbline 53 114
+dbline 54 116
+dbline 55 11C
+dbline 56 11E
+dbline 57 120
+dbline 58 132
+dbline 59 134
+dbline 5B 13A
+dbline 5C 13C
+dbline 5D 13E
+dbline 5E 144
+dbline 5F 146
+dbline 60 148
+dbline 61 15A
+dbline 62 15C
+dbline 64 162
+dbline 65 164
+dbline 66 166
+dbline 67 16C
+dbline 68 16E
+dbline 69 170
+dbline 6A 182
+dbline 6B 184
+dbline FFFFFFFE 18A
+dbline 0 18A
+dbfunc e adc_init 190 fV
+dbline FFFFFFFF 190
+dbline 72 190
+dbline 73 190
+dbline 74 194
+dbline 75 198
+dbline FFFFFFFE 19C
+dbline 0 19C
+dbfunc e data_do 19E fV
+dbsym r temp_3 C i
+dbsym r temp_2 A i
+dbsym r temp_1 A i
+dbsym r temp_dl C i
+dbsym r temp_dh A i
+dbline FFFFFFFF 1A6
+dbline 7C 1A6
+dbline 7E 1A6
+dbline 7F 1BC
+dbline 80 1C4
+dbline 81 1D2
+dbline 82 1DE
+dbline 83 1EA
+dbline 84 1F6
+dbline 85 202
+dbline FFFFFFFE 210
+dbline 0 210
+dbfunc e ADC_ISR 214 fV
+dbline FFFFFFFF 240
+dbline 8D 240
+dbline 8E 240
+dbline 8F 246
+dbline 90 24C
+dbline 91 258
+dbline 92 25E
+dbline 93 266
+dbline 94 266
+dbline 95 268
+dbline 92 268
+dbline 92 272
+dbline FFFFFFFE 27A
+dbline 0 27A
+dbfunc e main 2A8 fV
+dbline FFFFFFFF 2A8
+dbline 9E 2A8
+dbline 9F 2A8
+dbline A0 2AA
+dbline A1 2AC
+dbline A3 2AE
+dbline A5 2AE
+dbline A2 2AE
+dbline FFFFFFFE 2B0
+dbline 0 2B0
+S _main Def02A8
+S _delay_10us Def003A
+S _system_init Def00AE
+S _delay_50us Def0040
+S _delay_nms Def0076
+S _data_do Def019E
+S _delay_100us Def0048
+S _Display_ADC Def00BE
+S _ADC_ISR Def0214
+S _adc_init Def0190
+S _delay_ns Def0094
+S _delay_n100us Def004C
+S _delay_1ms Def0062
+S _delay_1us Def0000
+S _delay_3us Def000E
+A data size 10 flags 20
+dbfile F:\PROGRA~1\iccavr\include\delay.h
+dbfile E:\DMAVR-~3\ADC\ADC.C
+dbsym e table 0 A[16:16]c
+S _table Def0000
+A idata size 10 flags 0
+A vector size 58 flags C
+A bss size 8 flags 20
+dbfile E:\DMAVR-~3\ADC\ADC.C
+dbsym e j 0 c
+dbsym e flag 1 c
+dbsym e A4 2 c
+dbsym e A3 3 c
+dbsym e A2 4 c
+dbsym e A1 5 c
+dbsym e adc_datal 6 c
+dbsym e adc_datah 7 c
+S _j Def0000
+S _A1 Def0005
+S _A2 Def0004
+S _A3 Def0003
+S _A4 Def0002
+S _adc_datah Def0007
+S _adc_datal Def0006
+S _flag Def0001
+T 00 00 00 00 00 00 00 00 00 00 00 00 00 00 08 95
+R 00 00 00 00
+T 0E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 1C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 2A 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 38 00 08 95
+R 00 00 00 00
+T 3A 00 E9 DF E8 DF E7 CF
+R 00 00 00 00
+T 40 00 FC DF FB DF FA DF F9 CF
+R 00 00 00 00
+T 48 00 FB DF FA CF
+R 00 00 00 00
+T 4C 00 4A 93 40 2F 01 C0 FA DF 24 2E 33 24 41 50
+R 00 00 00 00
+T 5A 00 22 20 D1 F7 49 91 08 95
+R 00 00 00 00
+T 62 00 F2 DF F1 DF F0 DF EF DF EE DF ED DF EC DF
+R 00 00 00 00
+T 70 00 EB DF EA DF E9 CF
+R 00 00 00 00
+T 76 00 4A 93 5A 93 A8 01 01 C0 F1 DF 1A 01 41 50
+R 00 00 00 00
+T 84 00 50 40 22 20 D1 F7 33 20 C1 F7 59 91 49 91
+R 00 00 00 00
+T 92 00 08 95
+R 00 00 00 00
+T 94 00 4A 93 40 2F 03 C0 08 EE 13 E0 EB DF 24 2E
+R 00 00 00 00
+T A2 00 33 24 41 50 22 20 C1 F7 49 91 08 95
+R 00 00 00 00
+T 00 00 3F 06
+R 00 00 02 00
+T 02 00 5B 4F
+R 00 00 02 00
+T 04 00 66 6D
+R 00 00 02 00
+T 06 00 7D 07
+R 00 00 02 00
+T 08 00 7F 6F
+R 00 00 02 00
+T 0A 00 77 7C
+R 00 00 02 00
+T 0C 00 39 5E
+R 00 00 02 00
+T 0E 00 79 71
+R 00 00 02 00
+T AE 00 8F EF 8B BB 8A BB 82 BB 81 BB 88 BB 87 BB
+R 00 00 00 00
+T BC 00 08 95
+R 00 00 00 00
+T BE 00 4A 93 6A 93 F5 DF 41 E0 66 27 0E C0 94 9A
+R 00 00 00 00
+T CC 00 95 9A 24 2E 20 94 2B BA 95 98 44 0F 22 24
+R 00 00 00 00
+T DA 00 2B BA 94 98 01 E0 10 E0 C9 DF 63 95 64 30
+R 00 00 00 00
+T E8 00 80 F3 94 9A 95 9A 24 2E 20 94 2B BA 95 98
+R 00 00 00 00
+T F6 00 44 0F 80 E0 90 E0 E0 91
+R 00 00 00 00 20 04 01 00 00 00 40 06 01 00 00 00
+T FE 00 05 00 FF 27 E8 0F F9 1F 20 80 2B BA 94 98
+R 00 00 00 00 00 02 04 00
+T 0C 01 01 E0 10 E0 B2 DF 94 9A 95 9A 24 2E 20 94
+R 00 00 00 00
+T 1A 01 2B BA 95 98 44 0F 80 E0 90 E0 E0 91
+R 00 00 00 00 20 08 01 00 00 00 40 0A 01 00 00 00
+T 26 01 04 00 FF 27 E8 0F F9 1F 20 80 2B BA 94 98
+R 00 00 00 00 00 02 04 00
+T 34 01 01 E0 10 E0 9E DF 94 9A 95 9A 24 2E 20 94
+R 00 00 00 00
+T 42 01 2B BA 95 98 44 0F 80 E0 90 E0 E0 91
+R 00 00 00 00 20 08 01 00 00 00 40 0A 01 00 00 00
+T 4E 01 03 00 FF 27 E8 0F F9 1F 20 80 2B BA 94 98
+R 00 00 00 00 00 02 04 00
+T 5C 01 01 E0 10 E0 8A DF 94 9A 95 9A 24 2E 20 94
+R 00 00 00 00
+T 6A 01 2B BA 95 98 44 0F 80 E0 90 E0 E0 91
+R 00 00 00 00 20 08 01 00 00 00 40 0A 01 00 00 00
+T 76 01 02 00 FF 27 E8 0F F9 1F 20 80 2B BA 94 98
+R 00 00 00 00 00 02 04 00
+T 84 01 01 E0 10 E0 76 DF 69 91 49 91 08 95
+R 00 00 00 00
+T 90 01 80 E4 87 B9 88 EF 86 B9 22 24 20 BC 08 95
+R 00 00 00 00
+T 9E 01 0E 94 00 00 69 01 58 01 00 E1 10 E0 95 01
+R 00 00 00 00 12 04 02 00
+T AC 01 0E 94 00 00 98 01 00 E1 10 E0 0E 94 00 00
+R 00 00 00 00 12 04 03 00 12 0E 03 00
+T BA 01 58 01 15 01 2C 0C 3D 1C 61 01 28 EE 33 E0
+R 00 00 00 00
+T C8 01 81 01 0E 94 00 00 00 93 05 00 28 EE 33 E0
+R 00 00 00 00 12 06 01 00 00 0A 04 00
+T D6 01 86 01 0E 94 00 00 58 01 24 E6 30 E0
+R 00 00 00 00 12 06 00 00
+T E2 01 0E 94 00 00 00 93 04 00 24 E6 30 E0 85 01
+R 00 00 00 00 12 04 01 00 00 08 04 00
+T F0 01 0E 94 00 00 58 01 2A E0 30 E0 0E 94 00 00
+R 00 00 00 00 12 04 00 00 12 0E 01 00
+T FE 01 00 93 03 00 2A E0 30 E0 85 01 0E 94 00 00
+R 00 00 00 00 00 04 04 00 12 0E 00 00
+T 0C 02 00 93 02 00 0C 94 00 00
+R 00 00 00 00 00 04 04 00 12 08 04 00
+T 54 00 0C 94 0A 01
+R 00 00 03 00 10 04 00 00
+T 14 02 0A 92 1A 92 2A 92 3A 92 4A 92 5A 92 6A 92
+R 00 00 00 00
+T 22 02 7A 92 8A 92 9A 92 0A 93 1A 93 2A 93 3A 93
+R 00 00 00 00
+T 30 02 8A 93 9A 93 AA 93 BA 93 EA 93 FA 93 0F B6
+R 00 00 00 00
+T 3E 02 0A 92 24 B0 20 92 06 00 25 B0 20 92 07 00
+R 00 00 00 00 00 08 04 00 00 0E 04 00
+T 4C 02 20 91 06 00 33 27 02 2D 11 27 A3 DF 81 E0
+R 00 00 00 00 00 04 04 00
+T 5A 02 80 93 01 00 22 24 20 92 00 00 06 C0 2B DF
+R 00 00 00 00 00 04 04 00 00 0A 04 00
+T 68 02 80 91 00 00 8F 5F 80 93 00 00 80 91 00 00
+R 00 00 00 00 00 04 04 00 00 0A 04 00 00 0E 04 00
+T 76 02 82 33 B0 F3 09 90 0F BE F9 91 E9 91 B9 91
+R 00 00 00 00
+T 84 02 A9 91 99 91 89 91 39 91 29 91 19 91 09 91
+R 00 00 00 00
+T 92 02 99 90 89 90 79 90 69 90 59 90 49 90 39 90
+R 00 00 00 00
+T A0 02 29 90 19 90 09 90 18 95
+R 00 00 00 00
+T A8 02 02 DF 72 DF 78 94 FF CF 08 95
+R 00 00 00 00

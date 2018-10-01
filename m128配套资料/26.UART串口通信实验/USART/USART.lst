@@ -1,0 +1,1172 @@
+__start:
+__text_start:
+    014C EFCF      LDI	R28,0xFF
+    014D E1D0      LDI	R29,0x10
+    014E BFCD      OUT	0x3D,R28
+    014F BFDE      OUT	0x3E,R29
+    0150 51CE      SUBI	R28,0x1E
+    0151 40D0      SBCI	R29,0
+    0152 EA0A      LDI	R16,0xAA
+    0153 8308      STD	Y+0,R16
+    0154 2400      CLR	R0
+    0155 E0E9      LDI	R30,0x9
+    0156 E0F2      LDI	R31,2
+    0157 E012      LDI	R17,2
+    0158 32E4      CPI	R30,0x24
+    0159 07F1      CPC	R31,R17
+    015A F011      BEQ	0x015D
+    015B 9201      ST	R0,Z+
+    015C CFFB      RJMP	0x0158
+    015D 8300      STD	Z+0,R16
+    015E E8EF      LDI	R30,0x8F
+    015F E0F1      LDI	R31,1
+    0160 E0A0      LDI	R26,0
+    0161 E0B1      LDI	R27,1
+    0162 E012      LDI	R17,2
+    0163 39E8      CPI	R30,0x98
+    0164 07F1      CPC	R31,R17
+    0165 F021      BEQ	0x016A
+    0166 95C8      LPM
+    0167 9631      ADIW	R30,1
+    0168 920D      ST	R0,X+
+    0169 CFF9      RJMP	0x0163
+    016A 940E0200  CALL	_main
+_exit:
+    016C CFFF      RJMP	_exit
+FILE: C:\icc\include\delay.h
+(0001) //********************************************************************
+(0002) /*函 数 名：delay_us
+(0003) 建立日期：2010年1月28日
+(0004) 编译环境：ICCAVR7.16A
+(0005) 函数作用：微秒级的延时程序
+(0006) 说    明：7.3728M晶振下
+(0007) ********************************************************************/
+(0008) void delay_1us(void);
+(0009) void delay_3us(void);
+(0010) void delay_10us(void);
+(0011) void delay_50us(void);
+(0012) void delay_100us(void);
+(0013) void delay_n100us(unsigned char n100us);
+(0014) void delay_1ms(void);
+(0015) void delay_nms(unsigned int nms);
+(0016) void delay_ns(unsigned char ns);
+(0017) 
+(0018) 
+(0019) void delay_1us(void)                 //1us延时函数，不能连续调用， 
+(0020) { 
+(0021)    asm("nop");                       //1时钟周期
+_delay_1us:
+    016D 0000      NOP
+(0022)    asm("nop");
+    016E 0000      NOP
+(0023)    asm("nop");
+    016F 0000      NOP
+(0024)    asm("nop");
+    0170 0000      NOP
+(0025)    asm("nop");                       //1T
+    0171 0000      NOP
+(0026)    asm("nop");
+    0172 0000      NOP
+    0173 9508      RET
+(0027) 
+(0028) }
+(0029) void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+(0030) { 
+(0031)    
+(0032)    asm("nop");
+_delay_3us:
+    0174 0000      NOP
+(0033)    asm("nop");
+    0175 0000      NOP
+(0034)    asm("nop");                       
+    0176 0000      NOP
+(0035)    asm("nop");
+    0177 0000      NOP
+(0036)    asm("nop");
+    0178 0000      NOP
+(0037)    asm("nop");
+    0179 0000      NOP
+(0038)    asm("nop");                       
+    017A 0000      NOP
+(0039)    asm("nop");
+    017B 0000      NOP
+(0040)    asm("nop");
+    017C 0000      NOP
+(0041)    asm("nop");
+    017D 0000      NOP
+(0042)    asm("nop");                       
+    017E 0000      NOP
+(0043)    asm("nop");
+    017F 0000      NOP
+(0044)    asm("nop");
+    0180 0000      NOP
+(0045)    asm("nop");
+    0181 0000      NOP
+(0046)    asm("nop");                       
+    0182 0000      NOP
+(0047)    asm("nop");
+    0183 0000      NOP
+(0048)    asm("nop");
+    0184 0000      NOP
+(0049)    asm("nop");
+    0185 0000      NOP
+(0050)    asm("nop");
+    0186 0000      NOP
+(0051)    asm("nop");
+    0187 0000      NOP
+(0052)    asm("nop");                       
+    0188 0000      NOP
+    0189 9508      RET
+(0053) } 
+(0054) 
+(0055) void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+(0056) {
+(0057)    delay_3us();
+_delay_10us:
+    018A DFE9      RCALL	_delay_3us
+(0058)    delay_3us(); 
+    018B DFE8      RCALL	_delay_3us
+(0059)    delay_3us();  
+    018C DFE7      RCALL	_delay_3us
+    018D 9508      RET
+(0060) }
+(0061)   
+(0062) void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+(0063) { 
+(0064)    delay_10us();
+_delay_50us:
+    018E DFFB      RCALL	_delay_10us
+(0065)    delay_10us(); 
+    018F DFFA      RCALL	_delay_10us
+(0066)    delay_10us();
+    0190 DFF9      RCALL	_delay_10us
+(0067)    delay_10us();
+    0191 DFF8      RCALL	_delay_10us
+    0192 9508      RET
+(0068) }
+(0069) void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+(0070) {
+(0071)  delay_50us();
+_delay_100us:
+    0193 DFFA      RCALL	_delay_50us
+(0072)  delay_50us();
+    0194 DFF9      RCALL	_delay_50us
+    0195 9508      RET
+_delay_n100us:
+  n100us               --> R20
+    0196 940E0411  CALL	push_gset1
+    0198 2F40      MOV	R20,R16
+(0073) }
+(0074) void delay_n100us(unsigned char n100us)
+(0075) {
+    0199 C001      RJMP	0x019B
+(0076)  while(n100us--)                          
+(0077)  delay_100us();
+    019A DFF8      RCALL	_delay_100us
+    019B 2E24      MOV	R2,R20
+    019C 2433      CLR	R3
+    019D 5041      SUBI	R20,1
+    019E 2022      TST	R2
+    019F F7D1      BNE	0x019A
+    01A0 940E0414  CALL	pop_gset1
+    01A2 9508      RET
+(0078) }
+(0079) /*delay_n100us(2)        250us
+(0080) delay_n100us(3)          360us
+(0081) delay_n100us(4)          470us
+(0082) delay_n100us(5)          580us
+(0083) delay_n100us(6)          690us
+(0084) delay_n100us(7)       800us
+(0085) delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+(0086) 
+(0087) */
+(0088) void delay_1ms()
+(0089) {
+(0090)  delay_100us();
+_delay_1ms:
+    01A3 DFEF      RCALL	_delay_100us
+(0091)  delay_100us();
+    01A4 DFEE      RCALL	_delay_100us
+(0092)  delay_100us();
+    01A5 DFED      RCALL	_delay_100us
+(0093)  delay_100us();
+    01A6 DFEC      RCALL	_delay_100us
+(0094)  delay_100us();
+    01A7 DFEB      RCALL	_delay_100us
+(0095)  delay_100us();
+    01A8 DFEA      RCALL	_delay_100us
+(0096)  delay_100us();
+    01A9 DFE9      RCALL	_delay_100us
+(0097)  delay_100us();
+    01AA DFE8      RCALL	_delay_100us
+(0098)  delay_100us();
+    01AB DFE7      RCALL	_delay_100us
+(0099)  delay_100us();
+    01AC DFE6      RCALL	_delay_100us
+    01AD 9508      RET
+_delay_nms:
+  nms                  --> R20
+    01AE 940E0411  CALL	push_gset1
+    01B0 01A8      MOVW	R20,R16
+(0100) }
+(0101) /********************************************************************
+(0102) 函 数 名：Delay_ms
+(0103) 建立日期：2010年1月28日
+(0104) 修改日期：
+(0105) 函数作用：毫秒级的精确延时程序
+(0106) 说    明：
+(0107) ********************************************************************/
+(0108) void delay_nms(unsigned int nms)
+(0109) {
+    01B1 C001      RJMP	0x01B3
+(0110)  while(nms--) 
+(0111)  delay_1ms();
+    01B2 DFF0      RCALL	_delay_1ms
+    01B3 011A      MOVW	R2,R20
+    01B4 5041      SUBI	R20,1
+    01B5 4050      SBCI	R21,0
+    01B6 2022      TST	R2
+    01B7 F7D1      BNE	0x01B2
+    01B8 2033      TST	R3
+    01B9 F7C1      BNE	0x01B2
+    01BA 940E0414  CALL	pop_gset1
+    01BC 9508      RET
+_delay_ns:
+  ns                   --> R20
+    01BD 940E0411  CALL	push_gset1
+    01BF 2F40      MOV	R20,R16
+(0112) }
+(0113) void delay_ns(unsigned char ns)
+(0114) {
+    01C0 C003      RJMP	0x01C4
+(0115)  while(ns--) 
+(0116)  delay_nms(1000);
+    01C1 EE08      LDI	R16,0xE8
+    01C2 E013      LDI	R17,3
+    01C3 DFEA      RCALL	_delay_nms
+    01C4 2E24      MOV	R2,R20
+    01C5 2433      CLR	R3
+    01C6 5041      SUBI	R20,1
+    01C7 2022      TST	R2
+    01C8 F7C1      BNE	0x01C1
+    01C9 940E0414  CALL	pop_gset1
+    01CB 9508      RET
+_putchar:
+  c                    --> R20
+    01CC 940E0411  CALL	push_gset1
+    01CE 2F40      MOV	R20,R16
+FILE: E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\26.UART串口通信实验\USART\USART.c
+(0001) //ATMEGA128的串口通信实验，通过getchar与printf输入和输出字符
+(0002) //编译环境 ICCAVR
+(0003) //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+(0004) //忠兴电子元件店编辑																	
+(0005) //日期：2010.01.14
+(0006) //***********************************************************************
+(0007) //			包含文件
+(0008) //***********************************************************************
+(0009) #include <stdio.h>
+(0010) #include <string.h>
+(0011) #include <iom128v.h>
+(0012) #include <delay.h>
+(0013) 
+(0014) #define uchar           unsigned char
+(0015) #define uint            unsigned int
+(0016) #define ulong           unsigned long
+(0017) 
+(0018) /*数码管连接情况*/
+(0019) #define Data_IO	        PORTA                			//数码管数据口
+(0020) #define Data_DDR        DDRA                 			//数据口方向寄存器
+(0021) #define D_LE0	        PORTD &= ~(1 << PD4) 			//数码管段控制位为0，锁存端口数据
+(0022) #define D_LE1           PORTD |= (1 << PD4)  			//数码管段控制位为1，锁存器输出与端口一致
+(0023) #define W_LE0	        PORTD &= ~(1 << PD5) 			//数码管位控制位为0
+(0024) #define W_LE1           PORTD |= (1 << PD5)  			//数码管位控制位为1
+(0025) 
+(0026) #define	F_CPU		   7372800		 						    // 单片机主频为7.3728MHz
+(0027) #define baud           9600                                     //设置波特率的大小
+(0028) #define baud_setting   (uint)((ulong)F_CPU/(16*(ulong)baud)-1)  //波特率计算公式
+(0029) #define baud_h         (uchar)(baud_setting>>8)                 //提取高位
+(0030) #define baud_l         (uchar)(baud_setting)                    //低位
+(0031) 
+(0032) 
+(0033) extern int _textmode;
+(0034) //***********************************************************************
+(0035) // 用于输出的标准格式函数，用printf输出到UART1
+(0036) //***********************************************************************
+(0037) int putchar(char c)
+(0038)     {
+(0039)     if (_textmode && c == '\n')
+    01CF 90200222  LDS	R2,_textmode
+    01D1 90300223  LDS	R3,_textmode+1
+    01D3 2022      TST	R2
+    01D4 F411      BNE	0x01D7
+    01D5 2033      TST	R3
+    01D6 F021      BEQ	0x01DB
+    01D7 304A      CPI	R20,0xA
+    01D8 F411      BNE	0x01DB
+(0040)         putchar('\r');
+    01D9 E00D      LDI	R16,0xD
+    01DA DFF1      RCALL	_putchar
+(0041)     while ( !(UCSR1A & (1<<UDRE1)) )   // UDRE, data register empty
+    01DB 9020009B  LDS	R2,0x9B
+    01DD FE25      SBRS	R2,5
+    01DE CFFC      RJMP	0x01DB
+(0042)         ;
+(0043)     UDR1 = c;
+    01DF 9340009C  STS	0x9C,R20
+(0044)     return c;
+    01E1 2F04      MOV	R16,R20
+    01E2 2711      CLR	R17
+    01E3 940E0414  CALL	pop_gset1
+    01E5 9508      RET
+(0045)     }
+(0046) //***********************************************************************
+(0047) // 用于输入的标准格式函数，用getchar通过UART1输入到单片机，代替C中的scanf
+(0048) //***********************************************************************
+(0049) 
+(0050) int getchar(void)
+(0051)     {
+(0052)     while ((UCSR1A & 0x80) == 0)
+_getchar:
+    01E6 9020009B  LDS	R2,0x9B
+    01E8 FE27      SBRS	R2,7
+    01E9 CFFC      RJMP	_getchar
+(0053)         ;
+(0054)     return UDR1;
+    01EA 9100009C  LDS	R16,0x9C
+    01EC 2711      CLR	R17
+    01ED 9508      RET
+(0055)     } 
+(0056) //***********************************************************************
+(0057) // 串口1初始化接口函数
+(0058) // 初始化uart,查询方式读写
+(0059) //***********************************************************************
+(0060) void UART_Init(void)
+(0061) {
+(0062)  
+(0063)   UCSR1B =(1<<RXEN1)|(1<<TXEN1);             		//发送接收使能
+_UART_Init:
+    01EE E188      LDI	R24,0x18
+    01EF 9380009A  STS	0x9A,R24
+(0064)   UBRR1H=baud_h;                                	//写波特率的值
+    01F1 2422      CLR	R2
+    01F2 92200098  STS	0x98,R2
+(0065)   UBRR1L=baud_l; 
+    01F4 E28F      LDI	R24,0x2F
+    01F5 93800099  STS	0x99,R24
+    01F7 9508      RET
+(0066) }
+(0067) 
+(0068) //***********************************************************************
+(0069) //		关闭数码管函数，为了数码管不显示乱码，属于初始化函数
+(0070) //***********************************************************************
+(0071) 
+(0072) void LED_Off()
+(0073) {
+(0074)     PORTD=0xFF;
+_LED_Off:
+    01F8 EF8F      LDI	R24,0xFF
+    01F9 BB82      OUT	0x12,R24
+(0075) 	DDRD=0xFF;
+    01FA BB81      OUT	0x11,R24
+(0076) 	D_LE1;                             //关掉数码管，以免显示乱码                   
+    01FB 9A94      SBI	0x12,4
+(0077)     W_LE1;                     
+    01FC 9A95      SBI	0x12,5
+(0078)     Data_IO=0xFF;                      //关数码管            
+    01FD BB8B      OUT	0x1B,R24
+(0079)     W_LE0; 
+    01FE 9895      CBI	0x12,5
+    01FF 9508      RET
+(0080) }
+(0081) 
+(0082) //***********************************************************************
+(0083) //			主函数，调用SD卡读写函数
+(0084) //***********************************************************************
+(0085) 
+(0086) void main(void)
+(0087) {
+(0088)  unsigned char a;
+(0089)  
+(0090)  UART_Init();                 							  //串口初始化
+_main:
+  a                    --> R20
+    0200 DFED      RCALL	_UART_Init
+(0091)  LED_Off();               							      //关数码管
+    0201 DFF6      RCALL	_LED_Off
+    0202 C010      RJMP	0x0213
+(0092)  while(1)
+(0093)  {
+(0094)   printf("M128_ZZX2串口通信实验\r\n");
+    0203 E302      LDI	R16,0x32
+    0204 E011      LDI	R17,1
+    0205 940E04F4  CALL	_printf
+(0095)   printf("请通过串口调试助手发送字符\r\n");
+    0207 E105      LDI	R16,0x15
+    0208 E011      LDI	R17,1
+    0209 940E04F4  CALL	_printf
+(0096)   a=getchar();
+    020B DFDA      RCALL	_getchar
+    020C 2F40      MOV	R20,R16
+(0097)   printf("接收到的字符是：%c\r\n",a);
+FILE: <library>
+    020D 2F24      MOV	R18,R20
+    020E 2733      CLR	R19
+    020F E000      LDI	R16,0
+    0210 E011      LDI	R17,1
+    0211 940E04F4  CALL	_printf
+    0213 CFEF      RJMP	0x0203
+    0214 9508      RET
+__print:
+    0215 940E03C4  CALL	push_arg4
+    0217 940E0409  CALL	push_gset5
+    0219 972A      SBIW	R28,0xA
+    021A 2400      CLR	R0
+    021B 2411      CLR	R1
+    021C 821F      STD	Y+7,R1
+    021D 820E      STD	Y+6,R0
+    021E C18F      RJMP	0x03AE
+    021F 89EE      LDD	R30,Y+22
+    0220 89FF      LDD	R31,Y+23
+    0221 8180      LDD	R24,Z+0
+    0222 3285      CPI	R24,0x25
+    0223 F059      BEQ	0x022F
+    0224 8100      LDD	R16,Z+0
+    0225 89EC      LDD	R30,Y+20
+    0226 89FD      LDD	R31,Y+21
+    0227 940E0428  CALL	xicall
+    0229 818E      LDD	R24,Y+6
+    022A 819F      LDD	R25,Y+7
+    022B 9601      ADIW	R24,1
+    022C 839F      STD	Y+7,R25
+    022D 838E      STD	Y+6,R24
+    022E C17A      RJMP	0x03A9
+    022F 24EE      CLR	R14
+    0230 24FF      CLR	R15
+    0231 E049      LDI	R20,0x9
+    0232 E052      LDI	R21,2
+    0233 E260      LDI	R22,0x20
+    0234 898E      LDD	R24,Y+22
+    0235 899F      LDD	R25,Y+23
+    0236 9601      ADIW	R24,1
+    0237 8B9F      STD	Y+23,R25
+    0238 8B8E      STD	Y+22,R24
+    0239 2FE8      MOV	R30,R24
+    023A 2FF9      MOV	R31,R25
+    023B 8020      LDD	R2,Z+0
+    023C 2433      CLR	R3
+    023D 823D      STD	Y+5,R3
+    023E 822C      STD	Y+4,R2
+    023F 2D82      MOV	R24,R2
+    0240 2D93      MOV	R25,R3
+    0241 3588      CPI	R24,0x58
+    0242 E0E0      LDI	R30,0
+    0243 079E      CPC	R25,R30
+    0244 F409      BNE	0x0246
+    0245 C08B      RJMP	0x02D1
+    0246 E588      LDI	R24,0x58
+    0247 1582      CP	R24,R2
+    0248 0593      CPC	R25,R3
+    0249 F0A4      BLT	0x025E
+    024A 818C      LDD	R24,Y+4
+    024B 819D      LDD	R25,Y+5
+    024C 3485      CPI	R24,0x45
+    024D E0E0      LDI	R30,0
+    024E 079E      CPC	R25,R30
+    024F F409      BNE	0x0251
+    0250 C153      RJMP	0x03A4
+    0251 3485      CPI	R24,0x45
+    0252 E0E0      LDI	R30,0
+    0253 079E      CPC	R25,R30
+    0254 F40C      BGE	0x0256
+    0255 C043      RJMP	0x0299
+    0256 818C      LDD	R24,Y+4
+    0257 819D      LDD	R25,Y+5
+    0258 3583      CPI	R24,0x53
+    0259 E0E0      LDI	R30,0
+    025A 079E      CPC	R25,R30
+    025B F409      BNE	0x025D
+    025C C0E2      RJMP	0x033F
+    025D C03B      RJMP	0x0299
+    025E 818C      LDD	R24,Y+4
+    025F 819D      LDD	R25,Y+5
+    0260 368F      CPI	R24,0x6F
+    0261 E0E0      LDI	R30,0
+    0262 079E      CPC	R25,R30
+    0263 F409      BNE	0x0265
+    0264 C06C      RJMP	0x02D1
+    0265 E68F      LDI	R24,0x6F
+    0266 E090      LDI	R25,0
+    0267 802C      LDD	R2,Y+4
+    0268 803D      LDD	R3,Y+5
+    0269 1582      CP	R24,R2
+    026A 0593      CPC	R25,R3
+    026B F0DC      BLT	0x0287
+    026C 818C      LDD	R24,Y+4
+    026D 819D      LDD	R25,Y+5
+    026E 3683      CPI	R24,0x63
+    026F E0E0      LDI	R30,0
+    0270 079E      CPC	R25,R30
+    0271 F409      BNE	0x0273
+    0272 C0B6      RJMP	0x0329
+    0273 3684      CPI	R24,0x64
+    0274 E0E0      LDI	R30,0
+    0275 079E      CPC	R25,R30
+    0276 F409      BNE	0x0278
+    0277 C02E      RJMP	0x02A6
+    0278 3685      CPI	R24,0x65
+    0279 E0E0      LDI	R30,0
+    027A 079E      CPC	R25,R30
+    027B F409      BNE	0x027D
+    027C C127      RJMP	0x03A4
+    027D 3686      CPI	R24,0x66
+    027E E0E0      LDI	R30,0
+    027F 079E      CPC	R25,R30
+    0280 F409      BNE	0x0282
+    0281 C122      RJMP	0x03A4
+    0282 3689      CPI	R24,0x69
+    0283 E0E0      LDI	R30,0
+    0284 079E      CPC	R25,R30
+    0285 F101      BEQ	0x02A6
+    0286 C012      RJMP	0x0299
+    0287 818C      LDD	R24,Y+4
+    0288 819D      LDD	R25,Y+5
+    0289 3783      CPI	R24,0x73
+    028A E0E0      LDI	R30,0
+    028B 079E      CPC	R25,R30
+    028C F409      BNE	0x028E
+    028D C0E0      RJMP	0x036E
+    028E 3785      CPI	R24,0x75
+    028F E0E0      LDI	R30,0
+    0290 079E      CPC	R25,R30
+    0291 F409      BNE	0x0293
+    0292 C03E      RJMP	0x02D1
+    0293 3788      CPI	R24,0x78
+    0294 E0E0      LDI	R30,0
+    0295 079E      CPC	R25,R30
+    0296 F409      BNE	0x0298
+    0297 C039      RJMP	0x02D1
+    0298 C000      RJMP	0x0299
+    0299 89EE      LDD	R30,Y+22
+    029A 89FF      LDD	R31,Y+23
+    029B 8100      LDD	R16,Z+0
+    029C 89EC      LDD	R30,Y+20
+    029D 89FD      LDD	R31,Y+21
+    029E 940E0428  CALL	xicall
+    02A0 818E      LDD	R24,Y+6
+    02A1 819F      LDD	R25,Y+7
+    02A2 9601      ADIW	R24,1
+    02A3 839F      STD	Y+7,R25
+    02A4 838E      STD	Y+6,R24
+    02A5 C103      RJMP	0x03A9
+    02A6 8D88      LDD	R24,Y+24
+    02A7 8D99      LDD	R25,Y+25
+    02A8 9602      ADIW	R24,2
+    02A9 8F99      STD	Y+25,R25
+    02AA 8F88      STD	Y+24,R24
+    02AB 2FE8      MOV	R30,R24
+    02AC 2FF9      MOV	R31,R25
+    02AD 9732      SBIW	R30,2
+    02AE 8020      LDD	R2,Z+0
+    02AF 8031      LDD	R3,Z+1
+    02B0 8639      STD	Y+9,R3
+    02B1 8628      STD	Y+8,R2
+    02B2 2D82      MOV	R24,R2
+    02B3 2D93      MOV	R25,R3
+    02B4 3080      CPI	R24,0
+    02B5 E0E0      LDI	R30,0
+    02B6 079E      CPC	R25,R30
+    02B7 F474      BGE	0x02C6
+    02B8 2D8E      MOV	R24,R14
+    02B9 2D9F      MOV	R25,R15
+    02BA 6088      ORI	R24,0x8
+    02BB 2EE8      MOV	R14,R24
+    02BC 2EF9      MOV	R15,R25
+    02BD E26D      LDI	R22,0x2D
+    02BE 2D82      MOV	R24,R2
+    02BF 2D93      MOV	R25,R3
+    02C0 9580      COM	R24
+    02C1 9590      COM	R25
+    02C2 5F8F      SUBI	R24,0xFF
+    02C3 4F9F      SBCI	R25,0xFF
+    02C4 8799      STD	Y+9,R25
+    02C5 8788      STD	Y+8,R24
+    02C6 E08A      LDI	R24,0xA
+    02C7 E090      LDI	R25,0
+    02C8 8399      STD	Y+1,R25
+    02C9 8388      STD	Y+0,R24
+    02CA 8528      LDD	R18,Y+8
+    02CB 8539      LDD	R19,Y+9
+    02CC 2F04      MOV	R16,R20
+    02CD 2F15      MOV	R17,R21
+    02CE 940E043A  CALL	_itoa
+    02D0 C053      RJMP	0x0324
+    02D1 8D88      LDD	R24,Y+24
+    02D2 8D99      LDD	R25,Y+25
+    02D3 9602      ADIW	R24,2
+    02D4 8F99      STD	Y+25,R25
+    02D5 8F88      STD	Y+24,R24
+    02D6 2FE8      MOV	R30,R24
+    02D7 2FF9      MOV	R31,R25
+    02D8 9732      SBIW	R30,2
+    02D9 8020      LDD	R2,Z+0
+    02DA 8031      LDD	R3,Z+1
+    02DB 8639      STD	Y+9,R3
+    02DC 8628      STD	Y+8,R2
+    02DD 89EE      LDD	R30,Y+22
+    02DE 89FF      LDD	R31,Y+23
+    02DF 8180      LDD	R24,Z+0
+    02E0 3785      CPI	R24,0x75
+    02E1 F459      BNE	0x02ED
+    02E2 E08A      LDI	R24,0xA
+    02E3 E090      LDI	R25,0
+    02E4 8399      STD	Y+1,R25
+    02E5 8388      STD	Y+0,R24
+    02E6 2D22      MOV	R18,R2
+    02E7 2D33      MOV	R19,R3
+    02E8 2F04      MOV	R16,R20
+    02E9 2F15      MOV	R17,R21
+    02EA 940E0493  CALL	_utoa
+    02EC C037      RJMP	0x0324
+    02ED 89EE      LDD	R30,Y+22
+    02EE 89FF      LDD	R31,Y+23
+    02EF 8180      LDD	R24,Z+0
+    02F0 368F      CPI	R24,0x6F
+    02F1 F459      BNE	0x02FD
+    02F2 E088      LDI	R24,0x8
+    02F3 E090      LDI	R25,0
+    02F4 8399      STD	Y+1,R25
+    02F5 8388      STD	Y+0,R24
+    02F6 8528      LDD	R18,Y+8
+    02F7 8539      LDD	R19,Y+9
+    02F8 2F04      MOV	R16,R20
+    02F9 2F15      MOV	R17,R21
+    02FA 940E0493  CALL	_utoa
+    02FC C027      RJMP	0x0324
+    02FD E180      LDI	R24,0x10
+    02FE E090      LDI	R25,0
+    02FF 8399      STD	Y+1,R25
+    0300 8388      STD	Y+0,R24
+    0301 8528      LDD	R18,Y+8
+    0302 8539      LDD	R19,Y+9
+    0303 2F04      MOV	R16,R20
+    0304 2F15      MOV	R17,R21
+    0305 940E0493  CALL	_utoa
+    0307 89EE      LDD	R30,Y+22
+    0308 89FF      LDD	R31,Y+23
+    0309 8180      LDD	R24,Z+0
+    030A 3588      CPI	R24,0x58
+    030B F4C1      BNE	0x0324
+    030C E089      LDI	R24,0x9
+    030D E092      LDI	R25,2
+    030E 2EC8      MOV	R12,R24
+    030F 2ED9      MOV	R13,R25
+    0310 C00E      RJMP	0x031F
+    0311 2DEC      MOV	R30,R12
+    0312 2DFD      MOV	R31,R13
+    0313 8100      LDD	R16,Z+0
+    0314 2711      CLR	R17
+    0315 940E04DD  CALL	_toupper
+    0317 2DEC      MOV	R30,R12
+    0318 2DFD      MOV	R31,R13
+    0319 8300      STD	Z+0,R16
+    031A 2D8C      MOV	R24,R12
+    031B 2D9D      MOV	R25,R13
+    031C 9601      ADIW	R24,1
+    031D 2EC8      MOV	R12,R24
+    031E 2ED9      MOV	R13,R25
+    031F 2DEC      MOV	R30,R12
+    0320 2DFD      MOV	R31,R13
+    0321 8020      LDD	R2,Z+0
+    0322 2022      TST	R2
+    0323 F769      BNE	0x0311
+    0324 E089      LDI	R24,0x9
+    0325 E092      LDI	R25,2
+    0326 2EC8      MOV	R12,R24
+    0327 2ED9      MOV	R13,R25
+    0328 C057      RJMP	0x0380
+    0329 8D88      LDD	R24,Y+24
+    032A 8D99      LDD	R25,Y+25
+    032B 9602      ADIW	R24,2
+    032C 8F99      STD	Y+25,R25
+    032D 8F88      STD	Y+24,R24
+    032E 2FE8      MOV	R30,R24
+    032F 2FF9      MOV	R31,R25
+    0330 9732      SBIW	R30,2
+    0331 8020      LDD	R2,Z+0
+    0332 8031      LDD	R3,Z+1
+    0333 822A      STD	Y+2,R2
+    0334 2D02      MOV	R16,R2
+    0335 89EC      LDD	R30,Y+20
+    0336 89FD      LDD	R31,Y+21
+    0337 940E0428  CALL	xicall
+    0339 818E      LDD	R24,Y+6
+    033A 819F      LDD	R25,Y+7
+    033B 9601      ADIW	R24,1
+    033C 839F      STD	Y+7,R25
+    033D 838E      STD	Y+6,R24
+    033E C06A      RJMP	0x03A9
+    033F 8D88      LDD	R24,Y+24
+    0340 8D99      LDD	R25,Y+25
+    0341 9602      ADIW	R24,2
+    0342 8F99      STD	Y+25,R25
+    0343 8F88      STD	Y+24,R24
+    0344 2FE8      MOV	R30,R24
+    0345 2FF9      MOV	R31,R25
+    0346 9732      SBIW	R30,2
+    0347 80A0      LDD	R10,Z+0
+    0348 80B1      LDD	R11,Z+1
+    0349 326D      CPI	R22,0x2D
+    034A F4E9      BNE	0x0368
+    034B E20D      LDI	R16,0x2D
+    034C 89EC      LDD	R30,Y+20
+    034D 89FD      LDD	R31,Y+21
+    034E 940E0428  CALL	xicall
+    0350 818E      LDD	R24,Y+6
+    0351 819F      LDD	R25,Y+7
+    0352 9601      ADIW	R24,1
+    0353 839F      STD	Y+7,R25
+    0354 838E      STD	Y+6,R24
+    0355 C012      RJMP	0x0368
+    0356 2DEA      MOV	R30,R10
+    0357 2DFB      MOV	R31,R11
+    0358 95C8      LPM
+    0359 2D00      MOV	R16,R0
+    035A 89EC      LDD	R30,Y+20
+    035B 89FD      LDD	R31,Y+21
+    035C 940E0428  CALL	xicall
+    035E 818E      LDD	R24,Y+6
+    035F 819F      LDD	R25,Y+7
+    0360 9601      ADIW	R24,1
+    0361 839F      STD	Y+7,R25
+    0362 838E      STD	Y+6,R24
+    0363 2D8A      MOV	R24,R10
+    0364 2D9B      MOV	R25,R11
+    0365 9601      ADIW	R24,1
+    0366 2EA8      MOV	R10,R24
+    0367 2EB9      MOV	R11,R25
+    0368 2DEA      MOV	R30,R10
+    0369 2DFB      MOV	R31,R11
+    036A 95C8      LPM
+    036B 2000      TST	R0
+    036C F749      BNE	0x0356
+    036D C03B      RJMP	0x03A9
+    036E 8D88      LDD	R24,Y+24
+    036F 8D99      LDD	R25,Y+25
+    0370 9602      ADIW	R24,2
+    0371 8F99      STD	Y+25,R25
+    0372 8F88      STD	Y+24,R24
+    0373 2FE8      MOV	R30,R24
+    0374 2FF9      MOV	R31,R25
+    0375 9732      SBIW	R30,2
+    0376 80C0      LDD	R12,Z+0
+    0377 80D1      LDD	R13,Z+1
+    0378 20CC      TST	R12
+    0379 F431      BNE	0x0380
+    037A 20DD      TST	R13
+    037B F421      BNE	0x0380
+    037C EA8D      LDI	R24,0xAD
+    037D E091      LDI	R25,1
+    037E 2EC8      MOV	R12,R24
+    037F 2ED9      MOV	R13,R25
+    0380 326D      CPI	R22,0x2D
+    0381 F4E1      BNE	0x039E
+    0382 E20D      LDI	R16,0x2D
+    0383 89EC      LDD	R30,Y+20
+    0384 89FD      LDD	R31,Y+21
+    0385 940E0428  CALL	xicall
+    0387 818E      LDD	R24,Y+6
+    0388 819F      LDD	R25,Y+7
+    0389 9601      ADIW	R24,1
+    038A 839F      STD	Y+7,R25
+    038B 838E      STD	Y+6,R24
+    038C C011      RJMP	0x039E
+    038D 2DEC      MOV	R30,R12
+    038E 2DFD      MOV	R31,R13
+    038F 8100      LDD	R16,Z+0
+    0390 89EC      LDD	R30,Y+20
+    0391 89FD      LDD	R31,Y+21
+    0392 940E0428  CALL	xicall
+    0394 818E      LDD	R24,Y+6
+    0395 819F      LDD	R25,Y+7
+    0396 9601      ADIW	R24,1
+    0397 839F      STD	Y+7,R25
+    0398 838E      STD	Y+6,R24
+    0399 2D8C      MOV	R24,R12
+    039A 2D9D      MOV	R25,R13
+    039B 9601      ADIW	R24,1
+    039C 2EC8      MOV	R12,R24
+    039D 2ED9      MOV	R13,R25
+    039E 2DEC      MOV	R30,R12
+    039F 2DFD      MOV	R31,R13
+    03A0 8020      LDD	R2,Z+0
+    03A1 2022      TST	R2
+    03A2 F751      BNE	0x038D
+    03A3 C005      RJMP	0x03A9
+    03A4 E48A      LDI	R24,0x4A
+    03A5 E091      LDI	R25,1
+    03A6 2EC8      MOV	R12,R24
+    03A7 2ED9      MOV	R13,R25
+    03A8 CFD7      RJMP	0x0380
+    03A9 898E      LDD	R24,Y+22
+    03AA 899F      LDD	R25,Y+23
+    03AB 9601      ADIW	R24,1
+    03AC 8B9F      STD	Y+23,R25
+    03AD 8B8E      STD	Y+22,R24
+    03AE 89EE      LDD	R30,Y+22
+    03AF 89FF      LDD	R31,Y+23
+    03B0 8020      LDD	R2,Z+0
+    03B1 2022      TST	R2
+    03B2 F009      BEQ	0x03B4
+    03B3 CE6B      RJMP	0x021F
+    03B4 810E      LDD	R16,Y+6
+    03B5 811F      LDD	R17,Y+7
+    03B6 962A      ADIW	R28,0xA
+    03B7 940E0406  CALL	pop_gset5
+    03B9 9624      ADIW	R28,4
+    03BA 9508      RET
+_strcpy:
+    03BB 2FA0      MOV	R26,R16
+    03BC 2FB1      MOV	R27,R17
+    03BD 2FE2      MOV	R30,R18
+    03BE 2FF3      MOV	R31,R19
+    03BF 9001      LD	R0,Z+
+    03C0 920D      ST	R0,X+
+    03C1 2000      TST	R0
+    03C2 F7E1      BNE	0x03BF
+    03C3 9508      RET
+push_arg4:
+    03C4 933A      ST	R19,-Y
+    03C5 932A      ST	R18,-Y
+push_arg2:
+    03C6 931A      ST	R17,-Y
+    03C7 930A      ST	R16,-Y
+    03C8 9508      RET
+mod16s:
+    03C9 9468      BSET	6
+    03CA 92DA      ST	R13,-Y
+    03CB 2ED1      MOV	R13,R17
+    03CC C004      RJMP	0x03D1
+div16s:
+    03CD 94E8      BCLR	6
+    03CE 92DA      ST	R13,-Y
+    03CF 2ED1      MOV	R13,R17
+    03D0 26D3      EOR	R13,R19
+    03D1 FF17      SBRS	R17,7
+    03D2 C004      RJMP	0x03D7
+    03D3 9510      COM	R17
+    03D4 9500      COM	R16
+    03D5 5F0F      SUBI	R16,0xFF
+    03D6 4F1F      SBCI	R17,0xFF
+    03D7 FF37      SBRS	R19,7
+    03D8 C004      RJMP	0x03DD
+    03D9 9530      COM	R19
+    03DA 9520      COM	R18
+    03DB 5F2F      SUBI	R18,0xFF
+    03DC 4F3F      SBCI	R19,0xFF
+    03DD 940E03EA  CALL	xdiv16u
+    03DF FED7      SBRS	R13,7
+    03E0 C004      RJMP	0x03E5
+    03E1 9510      COM	R17
+    03E2 9500      COM	R16
+    03E3 5F0F      SUBI	R16,0xFF
+    03E4 4F1F      SBCI	R17,0xFF
+    03E5 90D9      LD	R13,Y+
+    03E6 9508      RET
+mod16u:
+    03E7 9468      BSET	6
+    03E8 C001      RJMP	xdiv16u
+div16u:
+    03E9 94E8      BCLR	6
+xdiv16u:
+    03EA 92EA      ST	R14,-Y
+    03EB 92FA      ST	R15,-Y
+    03EC 938A      ST	R24,-Y
+    03ED 24EE      CLR	R14
+    03EE 24FF      CLR	R15
+    03EF E180      LDI	R24,0x10
+    03F0 0F00      LSL	R16
+    03F1 1F11      ROL	R17
+    03F2 1CEE      ROL	R14
+    03F3 1CFF      ROL	R15
+    03F4 16E2      CP	R14,R18
+    03F5 06F3      CPC	R15,R19
+    03F6 F018      BCS	0x03FA
+    03F7 1AE2      SUB	R14,R18
+    03F8 0AF3      SBC	R15,R19
+    03F9 9503      INC	R16
+    03FA 958A      DEC	R24
+    03FB F7A1      BNE	0x03F0
+    03FC F416      BRTC	0x03FF
+    03FD 2D0E      MOV	R16,R14
+    03FE 2D1F      MOV	R17,R15
+    03FF 9189      LD	R24,Y+
+    0400 90F9      LD	R15,Y+
+    0401 90E9      LD	R14,Y+
+    0402 9508      RET
+pop_gset4:
+    0403 E0E8      LDI	R30,0x8
+    0404 940C0415  JMP	pop
+pop_gset5:
+    0406 27EE      CLR	R30
+    0407 940C0415  JMP	pop
+push_gset5:
+    0409 92FA      ST	R15,-Y
+    040A 92EA      ST	R14,-Y
+push_gset4:
+    040B 92DA      ST	R13,-Y
+    040C 92CA      ST	R12,-Y
+push_gset3:
+    040D 92BA      ST	R11,-Y
+    040E 92AA      ST	R10,-Y
+push_gset2:
+    040F 937A      ST	R23,-Y
+    0410 936A      ST	R22,-Y
+push_gset1:
+    0411 935A      ST	R21,-Y
+    0412 934A      ST	R20,-Y
+    0413 9508      RET
+pop_gset1:
+    0414 E0E1      LDI	R30,1
+pop:
+    0415 9149      LD	R20,Y+
+    0416 9159      LD	R21,Y+
+    0417 FDE0      SBRC	R30,0
+    0418 9508      RET
+    0419 9169      LD	R22,Y+
+    041A 9179      LD	R23,Y+
+    041B FDE1      SBRC	R30,1
+    041C 9508      RET
+    041D 90A9      LD	R10,Y+
+    041E 90B9      LD	R11,Y+
+    041F FDE2      SBRC	R30,2
+    0420 9508      RET
+    0421 90C9      LD	R12,Y+
+    0422 90D9      LD	R13,Y+
+    0423 FDE3      SBRC	R30,3
+    0424 9508      RET
+    0425 90E9      LD	R14,Y+
+    0426 90F9      LD	R15,Y+
+    0427 9508      RET
+xicall:
+    0428 920A      ST	R0,-Y
+    0429 95C8      LPM
+    042A 920A      ST	R0,-Y
+    042B 9631      ADIW	R30,1
+    042C 95C8      LPM
+    042D 2DF0      MOV	R31,R0
+    042E 91E9      LD	R30,Y+
+    042F 9009      LD	R0,Y+
+    0430 9409      IJMP
+__va_start:
+    0431 2F82      MOV	R24,R18
+    0432 2F93      MOV	R25,R19
+    0433 9601      ADIW	R24,1
+    0434 7F8E      ANDI	R24,0xFE
+    0435 0F80      ADD	R24,R16
+    0436 1F91      ADC	R25,R17
+    0437 2F08      MOV	R16,R24
+    0438 2F19      MOV	R17,R25
+    0439 9508      RET
+_itoa:
+    043A 940E0409  CALL	push_gset5
+    043C 2EC2      MOV	R12,R18
+    043D 2ED3      MOV	R13,R19
+    043E 2F40      MOV	R20,R16
+    043F 2F51      MOV	R21,R17
+    0440 97A2      SBIW	R28,0x22
+    0441 A4AC      LDD	R10,Y+44
+    0442 A4BD      LDD	R11,Y+45
+    0443 2D8C      MOV	R24,R12
+    0444 2D9D      MOV	R25,R13
+    0445 3080      CPI	R24,0
+    0446 E0E0      LDI	R30,0
+    0447 079E      CPC	R25,R30
+    0448 F444      BGE	0x0451
+    0449 E061      LDI	R22,1
+    044A 9580      COM	R24
+    044B 9590      COM	R25
+    044C 5F8F      SUBI	R24,0xFF
+    044D 4F9F      SBCI	R25,0xFF
+    044E 2EC8      MOV	R12,R24
+    044F 2ED9      MOV	R13,R25
+    0450 C001      RJMP	0x0452
+    0451 2766      CLR	R22
+    0452 2422      CLR	R2
+    0453 A229      STD	Y+33,R2
+    0454 2F8C      MOV	R24,R28
+    0455 2F9D      MOV	R25,R29
+    0456 9681      ADIW	R24,0x21
+    0457 2EE8      MOV	R14,R24
+    0458 2EF9      MOV	R15,R25
+    0459 2D8E      MOV	R24,R14
+    045A 2D9F      MOV	R25,R15
+    045B 9701      SBIW	R24,1
+    045C 2E28      MOV	R2,R24
+    045D 2E39      MOV	R3,R25
+    045E 2EE8      MOV	R14,R24
+    045F 2EF9      MOV	R15,R25
+    0460 2D2A      MOV	R18,R10
+    0461 2D3B      MOV	R19,R11
+    0462 2D0C      MOV	R16,R12
+    0463 2D1D      MOV	R17,R13
+    0464 940E03C9  CALL	mod16s
+    0466 2FE0      MOV	R30,R16
+    0467 2FF1      MOV	R31,R17
+    0468 EB8F      LDI	R24,0xBF
+    0469 E091      LDI	R25,1
+    046A 0FE8      ADD	R30,R24
+    046B 1FF9      ADC	R31,R25
+    046C 8040      LDD	R4,Z+0
+    046D 2DE2      MOV	R30,R2
+    046E 2DF3      MOV	R31,R3
+    046F 8240      STD	Z+0,R4
+    0470 2D2A      MOV	R18,R10
+    0471 2D3B      MOV	R19,R11
+    0472 2D0C      MOV	R16,R12
+    0473 2D1D      MOV	R17,R13
+    0474 940E03CD  CALL	div16s
+    0476 2EC0      MOV	R12,R16
+    0477 2ED1      MOV	R13,R17
+    0478 20CC      TST	R12
+    0479 F6F9      BNE	0x0459
+    047A 20DD      TST	R13
+    047B F6E9      BNE	0x0459
+    047C 2366      TST	R22
+    047D F059      BEQ	0x0489
+    047E 2D8E      MOV	R24,R14
+    047F 2D9F      MOV	R25,R15
+    0480 9701      SBIW	R24,1
+    0481 2E28      MOV	R2,R24
+    0482 2E39      MOV	R3,R25
+    0483 2EE8      MOV	R14,R24
+    0484 2EF9      MOV	R15,R25
+    0485 E28D      LDI	R24,0x2D
+    0486 2DE2      MOV	R30,R2
+    0487 2DF3      MOV	R31,R3
+    0488 8380      STD	Z+0,R24
+    0489 2D2E      MOV	R18,R14
+    048A 2D3F      MOV	R19,R15
+    048B 2F04      MOV	R16,R20
+    048C 2F15      MOV	R17,R21
+    048D 940E03BB  CALL	_strcpy
+    048F 96A2      ADIW	R28,0x22
+    0490 940E0406  CALL	pop_gset5
+    0492 9508      RET
+_utoa:
+    0493 940E040B  CALL	push_gset4
+    0495 2EA2      MOV	R10,R18
+    0496 2EB3      MOV	R11,R19
+    0497 2EC0      MOV	R12,R16
+    0498 2ED1      MOV	R13,R17
+    0499 97A2      SBIW	R28,0x22
+    049A A56A      LDD	R22,Y+42
+    049B A57B      LDD	R23,Y+43
+    049C 2422      CLR	R2
+    049D A229      STD	Y+33,R2
+    049E 2F4C      MOV	R20,R28
+    049F 2F5D      MOV	R21,R29
+    04A0 5D4F      SUBI	R20,0xDF
+    04A1 4F5F      SBCI	R21,0xFF
+    04A2 2F84      MOV	R24,R20
+    04A3 2F95      MOV	R25,R21
+    04A4 9701      SBIW	R24,1
+    04A5 2E28      MOV	R2,R24
+    04A6 2E39      MOV	R3,R25
+    04A7 2F48      MOV	R20,R24
+    04A8 2F59      MOV	R21,R25
+    04A9 2F26      MOV	R18,R22
+    04AA 2F37      MOV	R19,R23
+    04AB 2D0A      MOV	R16,R10
+    04AC 2D1B      MOV	R17,R11
+    04AD 940E03E7  CALL	mod16u
+    04AF 2FE0      MOV	R30,R16
+    04B0 2FF1      MOV	R31,R17
+    04B1 EE84      LDI	R24,0xE4
+    04B2 E091      LDI	R25,1
+    04B3 0FE8      ADD	R30,R24
+    04B4 1FF9      ADC	R31,R25
+    04B5 8040      LDD	R4,Z+0
+    04B6 2DE2      MOV	R30,R2
+    04B7 2DF3      MOV	R31,R3
+    04B8 8240      STD	Z+0,R4
+    04B9 2F26      MOV	R18,R22
+    04BA 2F37      MOV	R19,R23
+    04BB 2D0A      MOV	R16,R10
+    04BC 2D1B      MOV	R17,R11
+    04BD 940E03E9  CALL	div16u
+    04BF 2EA0      MOV	R10,R16
+    04C0 2EB1      MOV	R11,R17
+    04C1 20AA      TST	R10
+    04C2 F6F9      BNE	0x04A2
+    04C3 20BB      TST	R11
+    04C4 F6E9      BNE	0x04A2
+    04C5 2F24      MOV	R18,R20
+    04C6 2F35      MOV	R19,R21
+    04C7 2D0C      MOV	R16,R12
+    04C8 2D1D      MOV	R17,R13
+    04C9 940E03BB  CALL	_strcpy
+    04CB 96A2      ADIW	R28,0x22
+    04CC 940E0403  CALL	pop_gset4
+    04CE 9508      RET
+_islower:
+    04CF E88F      LDI	R24,0x8F
+    04D0 E090      LDI	R25,0
+    04D1 2E20      MOV	R2,R16
+    04D2 2E31      MOV	R3,R17
+    04D3 0E28      ADD	R2,R24
+    04D4 1E39      ADC	R3,R25
+    04D5 2DE2      MOV	R30,R2
+    04D6 2DF3      MOV	R31,R3
+    04D7 95C8      LPM
+    04D8 2D00      MOV	R16,R0
+    04D9 2711      CLR	R17
+    04DA 7002      ANDI	R16,2
+    04DB 7010      ANDI	R17,0
+    04DC 9508      RET
+_toupper:
+    04DD 940E0411  CALL	push_gset1
+    04DF 2F40      MOV	R20,R16
+    04E0 2F51      MOV	R21,R17
+    04E1 2F04      MOV	R16,R20
+    04E2 2F15      MOV	R17,R21
+    04E3 940E04CF  CALL	_islower
+    04E5 3000      CPI	R16,0
+    04E6 0701      CPC	R16,R17
+    04E7 F039      BEQ	0x04EF
+    04E8 2F04      MOV	R16,R20
+    04E9 2F15      MOV	R17,R21
+    04EA 5601      SUBI	R16,0x61
+    04EB 4010      SBCI	R17,0
+    04EC 5B0F      SUBI	R16,0xBF
+    04ED 4F1F      SBCI	R17,0xFF
+    04EE C002      RJMP	0x04F1
+    04EF 2F04      MOV	R16,R20
+    04F0 2F15      MOV	R17,R21
+    04F1 940E0414  CALL	pop_gset1
+    04F3 9508      RET
+_printf:
+    04F4 940E03C4  CALL	push_arg4
+    04F6 940E0411  CALL	push_gset1
+    04F8 9722      SBIW	R28,2
+    04F9 E022      LDI	R18,2
+    04FA E030      LDI	R19,0
+    04FB 2F0C      MOV	R16,R28
+    04FC 2F1D      MOV	R17,R29
+    04FD 5F0C      SUBI	R16,0xFC
+    04FE 4F1F      SBCI	R17,0xFF
+    04FF 940E0431  CALL	__va_start
+    0501 2F40      MOV	R20,R16
+    0502 2F51      MOV	R21,R17
+    0503 8359      STD	Y+1,R21
+    0504 8348      STD	Y+0,R20
+    0505 812C      LDD	R18,Y+4
+    0506 813D      LDD	R19,Y+5
+    0507 E80C      LDI	R16,0x8C
+    0508 E010      LDI	R17,0
+    0509 940E0215  CALL	__print
+    050B 2F40      MOV	R20,R16
+    050C 2F51      MOV	R21,R17
+    050D 9622      ADIW	R28,2
+    050E 940E0414  CALL	pop_gset1
+    0510 9624      ADIW	R28,4
+    0511 9508      RET

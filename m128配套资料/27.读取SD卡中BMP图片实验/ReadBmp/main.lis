@@ -1,0 +1,1854 @@
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128读取SD卡中BMP图片实验，基于FAT16/32文件系统
+ 0000           ; //SD卡中图片文件为BMP形式，用Img2LCD将JPG图片转换为24位BMP图形式即可
+ 0000           ; //编译环境 ICCAVR 7.16A
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //忠兴电子元件店
+ 0000           ; //日期：2010.01.14
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <BMP_main.h>
+ 0000           ; 
+ 0000           ; int i;
+ 0000           ; WORD image_count = 0 ,image_all = 0 ;
+ 0000           ; 
+ 0000           ; extern u16 SectorsPerClust;//每簇扇区数
+ 0000           ; 
+ 0000           ; extern u08  FAT32_Enable;
+ 0000           ;  extern char _bss_end;
+ 0000           ; 
+ 0000                   .dbline 21
+ 0000           ; //***********************************************************************
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; //                    显示图片函数，每张图片轮流显示，文件位于根目录下，24位色
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; //***********************************************************************
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; void disp_image(void)
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ;   {
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ;     WORD count= 1 ,i =0   ;
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ;       u08 *buffer ;
+ 000E           ;       u08 type ,x , rgb,first ,color_byte,byte1,byte2,byte3 ;
+ 000E           ;       u16 y ,color,tmp_color ;
+ 000E           ;     u32 p;                                                    //簇指示值              
+ 000E                   .dbline 32
+ 000E           ;       struct FileInfoStruct FileInfo; //文件信息      
+ 000E           ;       struct direntry BMPInfo;                //要显示的BMP文件信息   
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ;       type = 1 ;
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ;       
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ;       
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ;       
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ;       
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ;       if( image_all == 0 )                    //读取总图片数
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ;         {
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ;          image_count =  0 ;
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ;            byte1 = Search(&BMPInfo,&image_count,&type) ;
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ;                image_all = image_count ;
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;                DisplayChar(image_all/10+'0',8,9,0xffff);  //BMP图片数量显示
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ;                DisplayChar(image_all%10+'0',9,9,0xffff);  //BMP图片数量显示
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ;                DisplayString("       ",10,9,0xffff);          //BMP图片数量，最大显示99张，可以更改算法
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ;                delay_nms(1000);
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ;                image_count = 1 ;
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ;                                
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ;         }
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ;       else  
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ;       {               
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ;           byte1 = Search(&BMPInfo,&image_count,&type) ;
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ;       }       
+ 003A           ;        
+ 003A           ;        
+ 003A           ;        
+ 003A                   .dbline 57
+ 003A           ;       p = BMPInfo.deStartCluster+(((u32)BMPInfo.deHighClust)<<16);//读文件首簇
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;       
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;       x = 0 ;
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ;       y = 159 ;
+ 0042           ;       rgb = 0 ;
+ 0042           ;       count = 0 ;
+ 0042           ;       first = 0 ;
+ 0042                   .dbline 64
+ 0042           ;       buffer=malloc(512);     
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ;       while(1)
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ;        {
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ;               i = 0 ;
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;       
+ 004C           ;           for( ; i < SectorsPerClust ; i++ )      //簇
+ 004C           ;            {
+ 004C                   .dbline 71
+ 004C           ;        
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ;               FAT_LoadPartCluster(p,i,buffer);        //读一个扇区    
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ;          
+ 0058           ;               if(i==0 && first==0) { count= buffer[0x0a] ; color_byte = buffer[0x1c] / 8  ;  first = 1 ; } 
+ 0058           ;               else { count=0 ; }
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ;          
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ;               
+ 006C           ;                       
+ 006C           ;                       while(count<512)  //读取一簇512扇区 (SectorsPerClust 每簇扇区数)
+ 006C           ;                 {
+ 006C           ;                  
+ 006C           ;                       if(color_byte == 3)   //24位颜色图
+ 006C           ;                         {
+ 006C           ;                       switch ( rgb ) 
+ 006C           ;                         {
+ 006C           ;                                      case 0 : tmp_color = buffer[count]>>3 ;
+ 006C           ;                                               color |= tmp_color;
+ 006C           ;                                                       break ;
+ 006C           ;                                         
+ 006C                   .dbline 90
+ 006C           ;                                      case 1 : tmp_color = buffer[count]>>2 ;
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ;                                               tmp_color <<= 5 ;
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ;                                               color |= tmp_color ;
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ;                                                       break ;
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ;                                          
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ;                                          case 2 : tmp_color = buffer[count]>>3 ;
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ;                                               tmp_color <<= 11 ;
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ;                                               color |= tmp_color ;
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ;                                                        break ;                        
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ;                                   }
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ;                       
+ 0088           ;                       rgb ++ ;
+ 0088           ;                             }
+ 0088           ;                       else
+ 0088           ;                         {
+ 0088           ;                                 if(color_byte==2)  //16位颜色图
+ 0088           ;                                       {
+ 0088           ;                                         switch ( rgb )
+ 0088           ;                                               {
+ 0088           ;                                                 case 0 : byte1 = buffer[count] ;
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ;                                                                      break ; 
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ;                                                                  
+ 00A6           ;                                                     case 1 :    
+ 00A6           ;                                                                      color = buffer[count] ;
+ 00A6           ;                                                                      color<<=8 ;
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ;                                                                      color |= byte1 ;
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000           _image_count::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 0000              .word 0
+                        .area data(ram, con, rel)
+ 0002                   .dbfile C:/icc/include/delay.h
+ 0002                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0002                   .dbsym e image_count _image_count i
+ 0002           _image_all::
+ 0002                   .blkb 2
+                        .area idata
+ 0002 0000              .word 0
+                        .area data(ram, con, rel)
+ 0004                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0004                   .dbsym e image_all _image_all i
+                        .area text(rom, con, rel)
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 00BE                   .dbfunc e disp_image _disp_image fV
+ 00BE                   .dbstruct 0 32 direntry
+ 00BE                   .dbfield 0 deName A[8:8]c
+ 00BE                   .dbfield 8 deExtension A[3:3]c
+ 00BE                   .dbfield 11 deAttributes c
+ 00BE                   .dbfield 12 deLowerCase c
+ 00BE                   .dbfield 13 deCHundredth c
+ 00BE                   .dbfield 14 deCTime A[2:2]c
+ 00BE                   .dbfield 16 deCDate A[2:2]c
+ 00BE                   .dbfield 18 deADate A[2:2]c
+ 00BE                   .dbfield 20 deHighClust i
+ 00BE                   .dbfield 22 deMTime A[2:2]c
+ 00BE                   .dbfield 24 deMDate A[2:2]c
+ 00BE                   .dbfield 26 deStartCluster i
+ 00BE                   .dbfield 28 deFileSize l
+ 00BE                   .dbend
+ 00BE                   .dbstruct 0 15 FileInfoStruct
+ 00BE                   .dbfield 0 StartCluster l
+ 00BE                   .dbfield 4 Size l
+ 00BE                   .dbfield 8 Attr c
+ 00BE                   .dbfield 9 Sector l
+ 00BE                   .dbfield 13 Offset i
+ 00BE                   .dbend
+ 00BE           ;       FileInfo -> y+41
+ 00BE           ;           type -> y+40
+ 00BE           ;        BMPInfo -> y+8
+ 00BE           ;          byte3 -> y+71
+ 00BE           ;          byte2 -> R10
+ 00BE           ;          byte1 -> y+70
+ 00BE           ;              p -> y+4
+ 00BE           ;          first -> y+69
+ 00BE           ;              i -> y+67
+ 00BE           ;      tmp_color -> R14,R15
+ 00BE           ;         buffer -> y+65
+ 00BE           ;              y -> y+63
+ 00BE           ;          color -> R12,R13
+ 00BE           ;              x -> y+62
+ 00BE           ;          count -> y+60
+ 00BE           ;     color_byte -> y+59
+ 00BE           ;            rgb -> y+58
+                        .even
+ 00BE           _disp_image::
+ 00BE 0E940000          xcall push_gset5
+ 00C2 EF97              sbiw R28,63
+ 00C4 2997              sbiw R28,9  ; offset = 72
+ 00C6                   .dbline -1
+ 00C6                   .dbline 25
+ 00C6                   .dbline 26
+ 00C6 81E0              ldi R24,1
+ 00C8 90E0              ldi R25,0
+ 00CA 9DAF              std y+61,R25
+ 00CC 8CAF              std y+60,R24
+ 00CE                   .dbline 26
+ 00CE 0024              clr R0
+ 00D0 1124              clr R1
+ 00D2 FE01              movw R30,R28
+ 00D4 ED5B              subi R30,189  ; addi 67
+ 00D6 FF4F              sbci R31,255
+ 00D8 1182              std z+1,R1
+ 00DA 0082              std z+0,R0
+ 00DC                   .dbline 33
+ 00DC 88A7              std y+40,R24
+ 00DE                   .dbline 38
+ 00DE 20900200          lds R2,_image_all
+ 00E2 30900300          lds R3,_image_all+1
+ 00E6 2220              tst R2
+ 00E8 09F0              breq X11
+ 00EA 65C0              xjmp L20
+ 00EC           X11:
+ 00EC 3320              tst R3
+ 00EE 09F0              breq X12
+ 00F0 62C0              xjmp L20
+ 00F2           X12:
+ 00F2           X1:
+ 00F2                   .dbline 39
+ 00F2                   .dbline 40
+ 00F2 2224              clr R2
+ 00F4 3324              clr R3
+ 00F6 30920100          sts _image_count+1,R3
+ 00FA 20920000          sts _image_count,R2
+ 00FE                   .dbline 41
+ 00FE CE01              movw R24,R28
+ 0100 8896              adiw R24,40
+ 0102 9983              std y+1,R25
+ 0104 8883              std y+0,R24
+ 0106 20E0              ldi R18,<_image_count
+ 0108 30E0              ldi R19,>_image_count
+ 010A 8E01              movw R16,R28
+ 010C 085F              subi R16,248  ; offset = 8
+ 010E 1F4F              sbci R17,255
+ 0110 0E940000          xcall _Search
+ 0114 FE01              movw R30,R28
+ 0116 EA5B              subi R30,186  ; addi 70
+ 0118 FF4F              sbci R31,255
+ 011A 0083              std z+0,R16
+ 011C                   .dbline 42
+ 011C 20900000          lds R2,_image_count
+ 0120 30900100          lds R3,_image_count+1
+ 0124 30920300          sts _image_all+1,R3
+ 0128 20920200          sts _image_all,R2
+ 012C                   .dbline 43
+ 012C 8FEF              ldi R24,65535
+ 012E 9FEF              ldi R25,255
+ 0130 9B83              std y+3,R25
+ 0132 8A83              std y+2,R24
+ 0134 89E0              ldi R24,9
+ 0136 8883              std y+0,R24
+ 0138 28E0              ldi R18,8
+ 013A 8AE0              ldi R24,10
+ 013C 90E0              ldi R25,0
+ 013E 00910200          lds R16,_image_all
+ 0142 10910300          lds R17,_image_all+1
+ 0146 2F93              push R18
+ 0148 3F93              push R19
+ 014A 9C01              movw R18,R24
+ 014C 0E940000          xcall div16u
+ 0150 3F91              pop R19
+ 0152 2F91              pop R18
+ 0154 005D              subi R16,208  ; offset = 48
+ 0156 1F4F              sbci R17,255
+ 0158 0E940000          xcall _DisplayChar
+ 015C                   .dbline 44
+ 015C 8FEF              ldi R24,65535
+ 015E 9FEF              ldi R25,255
+ 0160 9B83              std y+3,R25
+ 0162 8A83              std y+2,R24
+ 0164 89E0              ldi R24,9
+ 0166 8883              std y+0,R24
+ 0168 29E0              ldi R18,9
+ 016A 8AE0              ldi R24,10
+ 016C 90E0              ldi R25,0
+ 016E 00910200          lds R16,_image_all
+ 0172 10910300          lds R17,_image_all+1
+ 0176 2F93              push R18
+ 0178 3F93              push R19
+ 017A 9C01              movw R18,R24
+ 017C 0E940000          xcall mod16u
+ 0180 3F91              pop R19
+ 0182 2F91              pop R18
+ 0184 005D              subi R16,208  ; offset = 48
+ 0186 1F4F              sbci R17,255
+ 0188 0E940000          xcall _DisplayChar
+ 018C                   .dbline 45
+ 018C 8FEF              ldi R24,65535
+ 018E 9FEF              ldi R25,255
+ 0190 9B83              std y+3,R25
+ 0192 8A83              std y+2,R24
+ 0194 89E0              ldi R24,9
+ 0196 8883              std y+0,R24
+ 0198 2AE0              ldi R18,10
+ 019A 00E0              ldi R16,<L22
+ 019C 10E0              ldi R17,>L22
+ 019E 0E940000          xcall _DisplayString
+ 01A2                   .dbline 46
+ 01A2 08EE              ldi R16,1000
+ 01A4 13E0              ldi R17,3
+ 01A6 6DDF              xcall _delay_nms
+ 01A8                   .dbline 47
+ 01A8 81E0              ldi R24,1
+ 01AA 90E0              ldi R25,0
+ 01AC 90930100          sts _image_count+1,R25
+ 01B0 80930000          sts _image_count,R24
+ 01B4                   .dbline 49
+ 01B4 0FC0              xjmp L21
+ 01B6           L20:
+ 01B6                   .dbline 51
+ 01B6                   .dbline 52
+ 01B6 CE01              movw R24,R28
+ 01B8 8896              adiw R24,40
+ 01BA 9983              std y+1,R25
+ 01BC 8883              std y+0,R24
+ 01BE 20E0              ldi R18,<_image_count
+ 01C0 30E0              ldi R19,>_image_count
+ 01C2 8E01              movw R16,R28
+ 01C4 085F              subi R16,248  ; offset = 8
+ 01C6 1F4F              sbci R17,255
+ 01C8 0E940000          xcall _Search
+ 01CC FE01              movw R30,R28
+ 01CE EA5B              subi R30,186  ; addi 70
+ 01D0 FF4F              sbci R31,255
+ 01D2 0083              std z+0,R16
+ 01D4                   .dbline 53
+ 01D4           L21:
+ 01D4                   .dbline 57
+ 01D4 2C8C              ldd R2,y+28
+ 01D6 3D8C              ldd R3,y+29
+ 01D8 4424              clr R4
+ 01DA 5524              clr R5
+ 01DC 2101              movw R4,R2
+ 01DE 2224              clr R2
+ 01E0 3324              clr R3
+ 01E2 6AA0              ldd R6,y+34
+ 01E4 7BA0              ldd R7,y+35
+ 01E6 8824              clr R8
+ 01E8 9924              clr R9
+ 01EA 620C              add R6,R2
+ 01EC 731C              adc R7,R3
+ 01EE 841C              adc R8,R4
+ 01F0 951C              adc R9,R5
+ 01F2 FE01              movw R30,R28
+ 01F4 6482              std z+4,R6
+ 01F6 7582              std z+5,R7
+ 01F8 8682              std z+6,R8
+ 01FA 9782              std z+7,R9
+ 01FC                   .dbline 59
+ 01FC 0024              clr R0
+ 01FE 0EAE              std y+62,R0
+ 0200                   .dbline 60
+ 0200 8FE9              ldi R24,159
+ 0202 90E0              ldi R25,0
+ 0204 FE01              movw R30,R28
+ 0206 FF96              adiw R30,63
+ 0208 9183              std z+1,R25
+ 020A 8083              std z+0,R24
+ 020C                   .dbline 61
+ 020C 0AAE              std y+58,R0
+ 020E                   .dbline 62
+ 020E 1124              clr R1
+ 0210 1DAE              std y+61,R1
+ 0212 0CAE              std y+60,R0
+ 0214                   .dbline 63
+ 0214 FE01              movw R30,R28
+ 0216 EB5B              subi R30,187  ; addi 69
+ 0218 FF4F              sbci R31,255
+ 021A 0082              std z+0,R0
+ 021C                   .dbline 64
+ 021C 00E0              ldi R16,512
+ 021E 12E0              ldi R17,2
+ 0220 0E940000          xcall _malloc
+ 0224 FE01              movw R30,R28
+ 0226 EF5B              subi R30,191  ; addi 65
+ 0228 FF4F              sbci R31,255
+ 022A 1183              std z+1,R17
+ 022C 0083              std z+0,R16
+ 022E FCC1              xjmp L26
+ 0230           L25:
+ 0230                   .dbline 66
+ 0230                   .dbline 67
+ 0230 0024              clr R0
+ 0232 1124              clr R1
+ 0234 FE01              movw R30,R28
+ 0236 ED5B              subi R30,189  ; addi 67
+ 0238 FF4F              sbci R31,255
+ 023A 1182              std z+1,R1
+ 023C 0082              std z+0,R0
+ 023E                   .dbline 69
+ 023E 95C1              xjmp L31
+ 0240           L28:
+ 0240                   .dbline 70
+ 0240                   .dbline 72
+ 0240 FE01              movw R30,R28
+ 0242 EF5B              subi R30,191  ; addi 65
+ 0244 FF4F              sbci R31,255
+ 0246 0080              ldd R0,z+0
+ 0248 1180              ldd R1,z+1
+ 024A 1B82              std y+3,R1
+ 024C 0A82              std y+2,R0
+ 024E FE01              movw R30,R28
+ 0250 ED5B              subi R30,189  ; addi 67
+ 0252 FF4F              sbci R31,255
+ 0254 0080              ldd R0,z+0
+ 0256 1180              ldd R1,z+1
+ 0258 1982              std y+1,R1
+ 025A 0882              std y+0,R0
+ 025C FE01              movw R30,R28
+ 025E 0481              ldd R16,z+4
+ 0260 1581              ldd R17,z+5
+ 0262 2681              ldd R18,z+6
+ 0264 3781              ldd R19,z+7
+ 0266 0E940000          xcall _FAT_LoadPartCluster
+ 026A                   .dbline 74
+ 026A FE01              movw R30,R28
+ 026C ED5B              subi R30,189  ; addi 67
+ 026E FF4F              sbci R31,255
+ 0270 0080              ldd R0,z+0
+ 0272 1180              ldd R1,z+1
+ 0274 0020              tst R0
+ 0276 11F5              brne L32
+ 0278 1120              tst R1
+ 027A 01F5              brne L32
+ 027C           X2:
+ 027C FE01              movw R30,R28
+ 027E EB5B              subi R30,187  ; addi 69
+ 0280 FF4F              sbci R31,255
+ 0282 0080              ldd R0,z+0
+ 0284 0020              tst R0
+ 0286 D1F4              brne L32
+ 0288                   .dbline 74
+ 0288                   .dbline 74
+ 0288 DE01              movw R26,R28
+ 028A AF5B              subi R26,191  ; addi 65
+ 028C BF4F              sbci R27,255
+ 028E ED91              ld R30,x+
+ 0290 FC91              ld R31,x
+ 0292 2284              ldd R2,z+10
+ 0294 3324              clr R3
+ 0296 3DAE              std y+61,R3
+ 0298 2CAE              std y+60,R2
+ 029A                   .dbline 74
+ 029A DE01              movw R26,R28
+ 029C AF5B              subi R26,191  ; addi 65
+ 029E BF4F              sbci R27,255
+ 02A0 ED91              ld R30,x+
+ 02A2 FC91              ld R31,x
+ 02A4 248C              ldd R2,z+28
+ 02A6 2694              lsr R2
+ 02A8 2694              lsr R2
+ 02AA 2694              lsr R2
+ 02AC 2BAE              std y+59,R2
+ 02AE                   .dbline 74
+ 02AE 0024              clr R0
+ 02B0 0394              inc R0
+ 02B2 FE01              movw R30,R28
+ 02B4 EB5B              subi R30,187  ; addi 69
+ 02B6 FF4F              sbci R31,255
+ 02B8 0082              std z+0,R0
+ 02BA                   .dbline 74
+ 02BA 45C1              xjmp L35
+ 02BC           L32:
+ 02BC                   .dbline 75
+ 02BC                   .dbline 75
+ 02BC 0024              clr R0
+ 02BE 1124              clr R1
+ 02C0 1DAE              std y+61,R1
+ 02C2 0CAE              std y+60,R0
+ 02C4                   .dbline 75
+ 02C4 40C1              xjmp L35
+ 02C6           L34:
+ 02C6                   .dbline 80
+ 02C6                   .dbline 82
+ 02C6 8BAD              ldd R24,y+59
+ 02C8 8330              cpi R24,3
+ 02CA 09F0              breq X13
+ 02CC 5CC0              xjmp L37
+ 02CE           X13:
+ 02CE                   .dbline 83
+ 02CE                   .dbline 84
+ 02CE 2AAC              ldd R2,y+58
+ 02D0 3324              clr R3
+ 02D2 39AE              std y+57,R3
+ 02D4 28AE              std y+56,R2
+ 02D6 2220              tst R2
+ 02D8 11F4              brne X3
+ 02DA 3320              tst R3
+ 02DC 59F0              breq L42
+ 02DE           X3:
+ 02DE 88AD              ldd R24,y+56
+ 02E0 99AD              ldd R25,y+57
+ 02E2 8130              cpi R24,1
+ 02E4 E0E0              ldi R30,0
+ 02E6 9E07              cpc R25,R30
+ 02E8 C9F0              breq L43
+ 02EA 8230              cpi R24,2
+ 02EC E0E0              ldi R30,0
+ 02EE 9E07              cpc R25,R30
+ 02F0 69F1              breq L44
+ 02F2 45C0              xjmp L39
+ 02F4           X4:
+ 02F4                   .dbline 85
+ 02F4           L42:
+ 02F4                   .dbline 86
+ 02F4 ECAD              ldd R30,y+60
+ 02F6 FDAD              ldd R31,y+61
+ 02F8 DE01              movw R26,R28
+ 02FA AF5B              subi R26,191  ; addi 65
+ 02FC BF4F              sbci R27,255
+ 02FE 0D90              ld R0,x+
+ 0300 1C90              ld R1,x
+ 0302 E00D              add R30,R0
+ 0304 F11D              adc R31,R1
+ 0306 E080              ldd R14,z+0
+ 0308 FF24              clr R15
+ 030A F594              asr R15
+ 030C E794              ror R14
+ 030E F594              asr R15
+ 0310 E794              ror R14
+ 0312 F594              asr R15
+ 0314 E794              ror R14
+ 0316                   .dbline 87
+ 0316 CE28              or R12,R14
+ 0318 DF28              or R13,R15
+ 031A                   .dbline 88
+ 031A 31C0              xjmp L40
+ 031C           L43:
+ 031C                   .dbline 90
+ 031C ECAD              ldd R30,y+60
+ 031E FDAD              ldd R31,y+61
+ 0320 DE01              movw R26,R28
+ 0322 AF5B              subi R26,191  ; addi 65
+ 0324 BF4F              sbci R27,255
+ 0326 0D90              ld R0,x+
+ 0328 1C90              ld R1,x
+ 032A E00D              add R30,R0
+ 032C F11D              adc R31,R1
+ 032E E080              ldd R14,z+0
+ 0330 FF24              clr R15
+ 0332 F594              asr R15
+ 0334 E794              ror R14
+ 0336 F594              asr R15
+ 0338 E794              ror R14
+ 033A                   .dbline 91
+ 033A 25E0              ldi R18,5
+ 033C 30E0              ldi R19,0
+ 033E 8701              movw R16,R14
+ 0340 0E940000          xcall lsl16
+ 0344 7801              movw R14,R16
+ 0346                   .dbline 92
+ 0346 C02A              or R12,R16
+ 0348 D12A              or R13,R17
+ 034A                   .dbline 93
+ 034A 19C0              xjmp L40
+ 034C           L44:
+ 034C                   .dbline 95
+ 034C ECAD              ldd R30,y+60
+ 034E FDAD              ldd R31,y+61
+ 0350 DE01              movw R26,R28
+ 0352 AF5B              subi R26,191  ; addi 65
+ 0354 BF4F              sbci R27,255
+ 0356 0D90              ld R0,x+
+ 0358 1C90              ld R1,x
+ 035A E00D              add R30,R0
+ 035C F11D              adc R31,R1
+ 035E E080              ldd R14,z+0
+ 0360 FF24              clr R15
+ 0362 F594              asr R15
+ 0364 E794              ror R14
+ 0366 F594              asr R15
+ 0368 E794              ror R14
+ 036A F594              asr R15
+ 036C E794              ror R14
+ 036E                   .dbline 96
+ 036E 2BE0              ldi R18,11
+ 0370 30E0              ldi R19,0
+ 0372 8701              movw R16,R14
+ 0374 0E940000          xcall lsl16
+ 0378 7801              movw R14,R16
+ 037A                   .dbline 97
+ 037A C02A              or R12,R16
+ 037C D12A              or R13,R17
+ 037E                   .dbline 98
+ 037E           L39:
+ 037E           L40:
+ 037E                   .dbline 101
+ 037E 0AAC              ldd R0,y+58
+ 0380 0394              inc R0
+ 0382 0AAE              std y+58,R0
+ 0384                   .dbline 102
+ 0384 AEC0              xjmp L38
+ 0386           L37:
+ 0386                   .dbline 104
+ 0386                   .dbline 105
+ 0386 8BAD              ldd R24,y+59
+ 0388 8230              cpi R24,2
+ 038A 09F0              breq X14
+ 038C 36C0              xjmp L45
+ 038E           X14:
+ 038E                   .dbline 106
+ 038E                   .dbline 107
+ 038E 2AAC              ldd R2,y+58
+ 0390 3324              clr R3
+ 0392 39AE              std y+57,R3
+ 0394 28AE              std y+56,R2
+ 0396 2220              tst R2
+ 0398 11F4              brne X5
+ 039A 3320              tst R3
+ 039C 39F0              breq L50
+ 039E           X5:
+ 039E 88AD              ldd R24,y+56
+ 03A0 99AD              ldd R25,y+57
+ 03A2 8130              cpi R24,1
+ 03A4 E0E0              ldi R30,0
+ 03A6 9E07              cpc R25,R30
+ 03A8 81F0              breq L51
+ 03AA 23C0              xjmp L47
+ 03AC           X6:
+ 03AC                   .dbline 108
+ 03AC           L50:
+ 03AC                   .dbline 109
+ 03AC ECAD              ldd R30,y+60
+ 03AE FDAD              ldd R31,y+61
+ 03B0 DE01              movw R26,R28
+ 03B2 AF5B              subi R26,191  ; addi 65
+ 03B4 BF4F              sbci R27,255
+ 03B6 0D90              ld R0,x+
+ 03B8 1C90              ld R1,x
+ 03BA E00D              add R30,R0
+ 03BC F11D              adc R31,R1
+ 03BE 2080              ldd R2,z+0
+ 03C0 FE01              movw R30,R28
+ 03C2 EA5B              subi R30,186  ; addi 70
+ 03C4 FF4F              sbci R31,255
+ 03C6 2082              std z+0,R2
+ 03C8                   .dbline 110
+ 03C8 14C0              xjmp L48
+ 03CA           L51:
+ 03CA                   .dbline 113
+ 03CA ECAD              ldd R30,y+60
+ 03CC FDAD              ldd R31,y+61
+ 03CE DE01              movw R26,R28
+ 03D0 AF5B              subi R26,191  ; addi 65
+ 03D2 BF4F              sbci R27,255
+ 03D4 0D90              ld R0,x+
+ 03D6 1C90              ld R1,x
+ 03D8 E00D              add R30,R0
+ 03DA F11D              adc R31,R1
+ 03DC C080              ldd R12,z+0
+ 03DE DD24              clr R13
+ 03E0                   .dbline 114
+ 03E0 DC2C              mov R13,R12
+ 03E2 CC24              clr R12
+ 03E4                   .dbline 115
+ 03E4 FE01              movw R30,R28
+ 03E6 EA5B              subi R30,186  ; addi 70
+ 03E8 FF4F              sbci R31,255
+ 03EA 2080              ldd R2,z+0
+ 03EC 3324              clr R3
+ 03EE C228              or R12,R2
+ 03F0 D328              or R13,R3
+ 03F2                   .dbline 116
+ 03F2           ;                                                                      break ;
+ 03F2           L47:
+ 03F2           L48:
+ 03F2                   .dbline 119
+ 03F2           ;                                            
+ 03F2           ;                                               }
+ 03F2           ;                                             rgb ++ ;
+ 03F2 0AAC              ldd R0,y+58
+ 03F4 0394              inc R0
+ 03F6 0AAE              std y+58,R0
+ 03F8                   .dbline 121
+ 03F8           ;                                   
+ 03F8           ;                                       }
+ 03F8 74C0              xjmp L46
+ 03FA           L45:
+ 03FA                   .dbline 123
+ 03FA           ;                                     else 
+ 03FA           ;                                       {
+ 03FA                   .dbline 124
+ 03FA           ;                                         if(color_byte==4) //32位颜色图
+ 03FA 8BAD              ldd R24,y+59
+ 03FC 8430              cpi R24,4
+ 03FE 09F0              breq X15
+ 0400 70C0              xjmp L52
+ 0402           X15:
+ 0402                   .dbline 125
+ 0402           ;                                           {
+ 0402                   .dbline 126
+ 0402           ;                                             switch ( rgb )
+ 0402 2AAC              ldd R2,y+58
+ 0404 3324              clr R3
+ 0406 39AE              std y+57,R3
+ 0408 28AE              std y+56,R2
+ 040A 2220              tst R2
+ 040C 11F4              brne X7
+ 040E 3320              tst R3
+ 0410 79F0              breq L57
+ 0412           X7:
+ 0412 88AD              ldd R24,y+56
+ 0414 99AD              ldd R25,y+57
+ 0416 8130              cpi R24,1
+ 0418 E0E0              ldi R30,0
+ 041A 9E07              cpc R25,R30
+ 041C C1F0              breq L58
+ 041E 8230              cpi R24,2
+ 0420 E0E0              ldi R30,0
+ 0422 9E07              cpc R25,R30
+ 0424 F9F0              breq L59
+ 0426 8330              cpi R24,3
+ 0428 E0E0              ldi R30,0
+ 042A 9E07              cpc R25,R30
+ 042C 51F1              breq L60
+ 042E 56C0              xjmp L54
+ 0430           X8:
+ 0430                   .dbline 127
+ 0430           ;                                                   {
+ 0430           L57:
+ 0430                   .dbline 128
+ 0430           ;                                                     case 0 :  byte1 = buffer[count] ;
+ 0430 ECAD              ldd R30,y+60
+ 0432 FDAD              ldd R31,y+61
+ 0434 DE01              movw R26,R28
+ 0436 AF5B              subi R26,191  ; addi 65
+ 0438 BF4F              sbci R27,255
+ 043A 0D90              ld R0,x+
+ 043C 1C90              ld R1,x
+ 043E E00D              add R30,R0
+ 0440 F11D              adc R31,R1
+ 0442 2080              ldd R2,z+0
+ 0444 FE01              movw R30,R28
+ 0446 EA5B              subi R30,186  ; addi 70
+ 0448 FF4F              sbci R31,255
+ 044A 2082              std z+0,R2
+ 044C                   .dbline 129
+ 044C           ;                                                                           break ; 
+ 044C 47C0              xjmp L55
+ 044E           L58:
+ 044E                   .dbline 131
+ 044E           ;                                                                  
+ 044E           ;                                                         case 1 :  byte2 = buffer[count] ;
+ 044E ECAD              ldd R30,y+60
+ 0450 FDAD              ldd R31,y+61
+ 0452 DE01              movw R26,R28
+ 0454 AF5B              subi R26,191  ; addi 65
+ 0456 BF4F              sbci R27,255
+ 0458 0D90              ld R0,x+
+ 045A 1C90              ld R1,x
+ 045C E00D              add R30,R0
+ 045E F11D              adc R31,R1
+ 0460 A080              ldd R10,z+0
+ 0462                   .dbline 132
+ 0462           ;                                             break ;
+ 0462 3CC0              xjmp L55
+ 0464           L59:
+ 0464                   .dbline 134
+ 0464           ;                                                                          
+ 0464           ;                                                             case 2 :  byte3 = buffer[count] ;
+ 0464 ECAD              ldd R30,y+60
+ 0466 FDAD              ldd R31,y+61
+ 0468 DE01              movw R26,R28
+ 046A AF5B              subi R26,191  ; addi 65
+ 046C BF4F              sbci R27,255
+ 046E 0D90              ld R0,x+
+ 0470 1C90              ld R1,x
+ 0472 E00D              add R30,R0
+ 0474 F11D              adc R31,R1
+ 0476 2080              ldd R2,z+0
+ 0478 FE01              movw R30,R28
+ 047A E95B              subi R30,185  ; addi 71
+ 047C FF4F              sbci R31,255
+ 047E 2082              std z+0,R2
+ 0480                   .dbline 135
+ 0480           ;                                                                       break ;
+ 0480 2DC0              xjmp L55
+ 0482           L60:
+ 0482                   .dbline 137
+ 0482           ;                                                                          
+ 0482           ;                                                             case 3 :  tmp_color = byte1 >> 3 ;
+ 0482 FE01              movw R30,R28
+ 0484 EA5B              subi R30,186  ; addi 70
+ 0486 FF4F              sbci R31,255
+ 0488 E080              ldd R14,z+0
+ 048A FF24              clr R15
+ 048C F594              asr R15
+ 048E E794              ror R14
+ 0490 F594              asr R15
+ 0492 E794              ror R14
+ 0494 F594              asr R15
+ 0496 E794              ror R14
+ 0498                   .dbline 138
+ 0498           ;                                                       color |= tmp_color;
+ 0498 CE28              or R12,R14
+ 049A DF28              or R13,R15
+ 049C                   .dbline 139
+ 049C           ;                                                                               tmp_color = byte2 >>2 ;
+ 049C EA2C              mov R14,R10
+ 049E FF24              clr R15
+ 04A0 F594              asr R15
+ 04A2 E794              ror R14
+ 04A4 F594              asr R15
+ 04A6 E794              ror R14
+ 04A8                   .dbline 140
+ 04A8           ;                                                       tmp_color <<= 5 ;
+ 04A8 25E0              ldi R18,5
+ 04AA 30E0              ldi R19,0
+ 04AC 8701              movw R16,R14
+ 04AE 0E940000          xcall lsl16
+ 04B2                   .dbline 141
+ 04B2           ;                                                       color |= tmp_color ;
+ 04B2 C02A              or R12,R16
+ 04B4 D12A              or R13,R17
+ 04B6                   .dbline 142
+ 04B6           ;                                                                               tmp_color = byte3 >>3 ;
+ 04B6 FE01              movw R30,R28
+ 04B8 E95B              subi R30,185  ; addi 71
+ 04BA FF4F              sbci R31,255
+ 04BC E080              ldd R14,z+0
+ 04BE FF24              clr R15
+ 04C0 F594              asr R15
+ 04C2 E794              ror R14
+ 04C4 F594              asr R15
+ 04C6 E794              ror R14
+ 04C8 F594              asr R15
+ 04CA E794              ror R14
+ 04CC                   .dbline 143
+ 04CC           ;                                                       tmp_color <<= 11 ;
+ 04CC 2BE0              ldi R18,11
+ 04CE 30E0              ldi R19,0
+ 04D0 8701              movw R16,R14
+ 04D2 0E940000          xcall lsl16
+ 04D6 7801              movw R14,R16
+ 04D8                   .dbline 144
+ 04D8           ;                                                       color |= tmp_color ;
+ 04D8 C02A              or R12,R16
+ 04DA D12A              or R13,R17
+ 04DC                   .dbline 145
+ 04DC           ;                                                                               break ;
+ 04DC           L54:
+ 04DC           L55:
+ 04DC                   .dbline 148
+ 04DC           ;                                            
+ 04DC           ;                                                   }
+ 04DC           ;                                                  rgb ++ ;
+ 04DC 0AAC              ldd R0,y+58
+ 04DE 0394              inc R0
+ 04E0 0AAE              std y+58,R0
+ 04E2                   .dbline 150
+ 04E2           ;                                   
+ 04E2           ;                                           }
+ 04E2           L52:
+ 04E2                   .dbline 152
+ 04E2           ;                                    
+ 04E2           ;                                       }   
+ 04E2           L46:
+ 04E2                   .dbline 154
+ 04E2           ;                        
+ 04E2           ;                              }
+ 04E2           L38:
+ 04E2                   .dbline 156
+ 04E2           ;            
+ 04E2           ;                  count ++ ;
+ 04E2 8CAD              ldd R24,y+60
+ 04E4 9DAD              ldd R25,y+61
+ 04E6 0196              adiw R24,1
+ 04E8 9DAF              std y+61,R25
+ 04EA 8CAF              std y+60,R24
+ 04EC                   .dbline 158
+ 04EC           ;                  
+ 04EC           ;                  if(rgb == color_byte)        //读取1像素数数据后显示
+ 04EC 0AAC              ldd R0,y+58
+ 04EE 0BAD              ldd R16,y+59
+ 04F0 0016              cp R0,R16
+ 04F2 09F0              breq X16
+ 04F4 28C0              xjmp L61
+ 04F6           X16:
+ 04F6                   .dbline 159
+ 04F6           ;                    {
+ 04F6                   .dbline 160
+ 04F6           ;                           GUIpoint(x, y,color) ;
+ 04F6 D982              std y+1,R13
+ 04F8 C882              std y+0,R12
+ 04FA FE01              movw R30,R28
+ 04FC FF96              adiw R30,63
+ 04FE 2081              ldd R18,z+0
+ 0500 3181              ldd R19,z+1
+ 0502 0EAD              ldd R16,y+62
+ 0504 0E940000          xcall _GUIpoint
+ 0508                   .dbline 161
+ 0508           ;                               color = 0x00 ;
+ 0508 CC24              clr R12
+ 050A DD24              clr R13
+ 050C                   .dbline 162
+ 050C           ;                           x++ ;
+ 050C 0EAC              ldd R0,y+62
+ 050E 0394              inc R0
+ 0510 0EAE              std y+62,R0
+ 0512                   .dbline 163
+ 0512           ;                           if(x>=128)
+ 0512 802D              mov R24,R0
+ 0514 8038              cpi R24,128
+ 0516 A8F0              brlo L63
+ 0518                   .dbline 164
+ 0518           ;                                 {
+ 0518                   .dbline 165
+ 0518           ;                                   y-- ;
+ 0518 FE01              movw R30,R28
+ 051A FF96              adiw R30,63
+ 051C 8081              ldd R24,z+0
+ 051E 9181              ldd R25,z+1
+ 0520 0197              sbiw R24,1
+ 0522 FE01              movw R30,R28
+ 0524 FF96              adiw R30,63
+ 0526 9183              std z+1,R25
+ 0528 8083              std z+0,R24
+ 052A                   .dbline 167
+ 052A           ;                                       
+ 052A           ;                                       if( (y+1)<=0 )
+ 052A 0196              adiw R24,1
+ 052C 41F4              brne L65
+ 052E           X9:
+ 052E                   .dbline 168
+ 052E           ;                             {
+ 052E                   .dbline 170
+ 052E           ;                                           
+ 052E           ;                                               free(buffer) ;
+ 052E FE01              movw R30,R28
+ 0530 EF5B              subi R30,191  ; addi 65
+ 0532 FF4F              sbci R31,255
+ 0534 0081              ldd R16,z+0
+ 0536 1181              ldd R17,z+1
+ 0538 0E940000          xcall _free
+ 053C                   .dbline 171
+ 053C           ;                                   return ;
+ 053C 7DC0              xjmp L19
+ 053E           L65:
+ 053E                   .dbline 173
+ 053E           ;                                 }
+ 053E           ;                                       x = 0 ;
+ 053E 0024              clr R0
+ 0540 0EAE              std y+62,R0
+ 0542                   .dbline 174
+ 0542           ;                                 }
+ 0542           L63:
+ 0542                   .dbline 176
+ 0542           ;                       
+ 0542           ;                               rgb = 0 ;
+ 0542 0024              clr R0
+ 0544 0AAE              std y+58,R0
+ 0546                   .dbline 177
+ 0546           ;                        }
+ 0546           L61:
+ 0546                   .dbline 180
+ 0546           L35:
+ 0546                   .dbline 79
+ 0546 8CAD              ldd R24,y+60
+ 0548 9DAD              ldd R25,y+61
+ 054A 8030              cpi R24,0
+ 054C E2E0              ldi R30,2
+ 054E 9E07              cpc R25,R30
+ 0550 08F4              brsh X17
+ 0552 B9CE              xjmp L34
+ 0554           X17:
+ 0554                   .dbline 182
+ 0554           L29:
+ 0554                   .dbline 69
+ 0554 FE01              movw R30,R28
+ 0556 ED5B              subi R30,189  ; addi 67
+ 0558 FF4F              sbci R31,255
+ 055A 8081              ldd R24,z+0
+ 055C 9181              ldd R25,z+1
+ 055E 0196              adiw R24,1
+ 0560 FE01              movw R30,R28
+ 0562 ED5B              subi R30,189  ; addi 67
+ 0564 FF4F              sbci R31,255
+ 0566 9183              std z+1,R25
+ 0568 8083              std z+0,R24
+ 056A           L31:
+ 056A                   .dbline 69
+ 056A 20900000          lds R2,_SectorsPerClust
+ 056E 30900100          lds R3,_SectorsPerClust+1
+ 0572 FE01              movw R30,R28
+ 0574 ED5B              subi R30,189  ; addi 67
+ 0576 FF4F              sbci R31,255
+ 0578 0080              ldd R0,z+0
+ 057A 1180              ldd R1,z+1
+ 057C 0214              cp R0,R2
+ 057E 1304              cpc R1,R3
+ 0580 08F4              brsh X18
+ 0582 5ECE              xjmp L28
+ 0584           X18:
+ 0584                   .dbline 184
+ 0584           ;                        
+ 0584           ;                       
+ 0584           ;               }
+ 0584           ;          
+ 0584           ;        }  // 读取完一簇数据
+ 0584           ;        
+ 0584           ;        free(buffer) ;
+ 0584 FE01              movw R30,R28
+ 0586 EF5B              subi R30,191  ; addi 65
+ 0588 FF4F              sbci R31,255
+ 058A 0081              ldd R16,z+0
+ 058C 1181              ldd R17,z+1
+ 058E 0E940000          xcall _free
+ 0592                   .dbline 185
+ 0592           ;        p=FAT_NextCluster(p);//读下一簇数据                    
+ 0592 FE01              movw R30,R28
+ 0594 0481              ldd R16,z+4
+ 0596 1581              ldd R17,z+5
+ 0598 2681              ldd R18,z+6
+ 059A 3781              ldd R19,z+7
+ 059C 0E940000          xcall _FAT_NextCluster
+ 05A0 FE01              movw R30,R28
+ 05A2 0483              std z+4,R16
+ 05A4 1583              std z+5,R17
+ 05A6 2683              std z+6,R18
+ 05A8 3783              std z+7,R19
+ 05AA                   .dbline 186
+ 05AA           ;        buffer=malloc(512);    
+ 05AA 00E0              ldi R16,512
+ 05AC 12E0              ldi R17,2
+ 05AE 0E940000          xcall _malloc
+ 05B2 FE01              movw R30,R28
+ 05B4 EF5B              subi R30,191  ; addi 65
+ 05B6 FF4F              sbci R31,255
+ 05B8 1183              std z+1,R17
+ 05BA 0083              std z+0,R16
+ 05BC                   .dbline 188
+ 05BC           ;       
+ 05BC           ;       if(p == 0x0fffffff || p == 0x0ffffff8 || (FAT32_Enable == 0 && p == 0xffff))//如果无后续簇则结束
+ 05BC 4FEF              ldi R20,255
+ 05BE 5FEF              ldi R21,255
+ 05C0 6FEF              ldi R22,255
+ 05C2 7FE0              ldi R23,15
+ 05C4 FE01              movw R30,R28
+ 05C6 2480              ldd R2,z+4
+ 05C8 3580              ldd R3,z+5
+ 05CA 4680              ldd R4,z+6
+ 05CC 5780              ldd R5,z+7
+ 05CE 2416              cp R2,R20
+ 05D0 3506              cpc R3,R21
+ 05D2 4606              cpc R4,R22
+ 05D4 5706              cpc R5,R23
+ 05D6 01F1              breq L70
+ 05D8 48EF              ldi R20,248
+ 05DA 5FEF              ldi R21,255
+ 05DC 6FEF              ldi R22,255
+ 05DE 7FE0              ldi R23,15
+ 05E0 FE01              movw R30,R28
+ 05E2 2480              ldd R2,z+4
+ 05E4 3580              ldd R3,z+5
+ 05E6 4680              ldd R4,z+6
+ 05E8 5780              ldd R5,z+7
+ 05EA 2416              cp R2,R20
+ 05EC 3506              cpc R3,R21
+ 05EE 4606              cpc R4,R22
+ 05F0 5706              cpc R5,R23
+ 05F2 91F0              breq L70
+ 05F4 20900000          lds R2,_FAT32_Enable
+ 05F8 2220              tst R2
+ 05FA B1F4              brne L67
+ 05FC 4FEF              ldi R20,255
+ 05FE 5FEF              ldi R21,255
+ 0600 60E0              ldi R22,0
+ 0602 70E0              ldi R23,0
+ 0604 FE01              movw R30,R28
+ 0606 2480              ldd R2,z+4
+ 0608 3580              ldd R3,z+5
+ 060A 4680              ldd R4,z+6
+ 060C 5780              ldd R5,z+7
+ 060E 2416              cp R2,R20
+ 0610 3506              cpc R3,R21
+ 0612 4606              cpc R4,R22
+ 0614 5706              cpc R5,R23
+ 0616 41F4              brne L67
+ 0618           L70:
+ 0618                   .dbline 189
+ 0618           ;               {
+ 0618                   .dbline 190
+ 0618           ;                       free(buffer) ;
+ 0618 FE01              movw R30,R28
+ 061A EF5B              subi R30,191  ; addi 65
+ 061C FF4F              sbci R31,255
+ 061E 0081              ldd R16,z+0
+ 0620 1181              ldd R17,z+1
+ 0622 0E940000          xcall _free
+ 0626                   .dbline 191
+ 0626           ;                               return ;
+ 0626 08C0              xjmp L19
+ 0628           L67:
+ 0628                   .dbline 194
+ 0628           L26:
+ 0628                   .dbline 65
+ 0628 03CE              xjmp L25
+ 062A           X10:
+ 062A                   .dbline 196
+ 062A           ;               }
+ 062A           ;        
+ 062A           ;   }
+ 062A           ;               
+ 062A           ;       free(buffer) ;
+ 062A FE01              movw R30,R28
+ 062C EF5B              subi R30,191  ; addi 65
+ 062E FF4F              sbci R31,255
+ 0630 0081              ldd R16,z+0
+ 0632 1181              ldd R17,z+1
+ 0634 0E940000          xcall _free
+ 0638                   .dbline -2
+ 0638           L19:
+ 0638 EF96              adiw R28,63
+ 063A 2996              adiw R28,9  ; offset = 72
+ 063C 0E940000          xcall pop_gset5
+ 0640                   .dbline 0 ; func end
+ 0640 0895              ret
+ 0642                   .dbsym l FileInfo 41 S[FileInfoStruct]
+ 0642                   .dbsym l type 40 c
+ 0642                   .dbsym l BMPInfo 8 S[direntry]
+ 0642                   .dbsym l byte3 71 c
+ 0642                   .dbsym r byte2 10 c
+ 0642                   .dbsym l byte1 70 c
+ 0642                   .dbsym l p 4 l
+ 0642                   .dbsym l first 69 c
+ 0642                   .dbsym l i 67 i
+ 0642                   .dbsym r tmp_color 14 s
+ 0642                   .dbsym l buffer 65 pc
+ 0642                   .dbsym l y 63 s
+ 0642                   .dbsym r color 12 s
+ 0642                   .dbsym l x 62 c
+ 0642                   .dbsym l count 60 i
+ 0642                   .dbsym l color_byte 59 c
+ 0642                   .dbsym l rgb 58 c
+ 0642                   .dbend
+ 0642                   .dbfunc e LED_Off _LED_Off fV
+                        .even
+ 0642           _LED_Off::
+ 0642                   .dbline -1
+ 0642                   .dbline 203
+ 0642           ;   
+ 0642           ;  }
+ 0642           ; //***********************************************************************
+ 0642           ; //                    关闭数码管，防止显示乱码
+ 0642           ; //***********************************************************************
+ 0642           ; void LED_Off()
+ 0642           ; {
+ 0642                   .dbline 204
+ 0642           ;     PORTD=0xFF;
+ 0642 8FEF              ldi R24,255
+ 0644 82BB              out 0x12,R24
+ 0646                   .dbline 205
+ 0646           ;       DDRD=0xFF;
+ 0646 81BB              out 0x11,R24
+ 0648                   .dbline 206
+ 0648           ;       D_LE1;                                                          //关掉数码管，以免显示乱码                   
+ 0648 949A              sbi 0x12,4
+ 064A                   .dbline 207
+ 064A           ;     W_LE1;                     
+ 064A 959A              sbi 0x12,5
+ 064C                   .dbline 208
+ 064C           ;     Data_IO=0xFF;                                                     //关数码管            
+ 064C 8BBB              out 0x1b,R24
+ 064E                   .dbline 209
+ 064E           ;     W_LE0; 
+ 064E 9598              cbi 0x12,5
+ 0650                   .dbline -2
+ 0650           L71:
+ 0650                   .dbline 0 ; func end
+ 0650 0895              ret
+ 0652                   .dbend
+ 0652                   .dbfunc e main _main fV
+ 0652           ;              y -> R20,R21
+ 0652           ;             er -> R10
+ 0652           ;             ok -> R12
+ 0652           ;              x -> R20
+ 0652           ;          retry -> R22
+ 0652           ;              i -> R20
+                        .even
+ 0652           _main::
+ 0652 2697              sbiw R28,6
+ 0654                   .dbline -1
+ 0654                   .dbline 215
+ 0654           ; }
+ 0654           ; //***********************************************************************
+ 0654           ; //                    主函数，初始化及函数调用
+ 0654           ; //***********************************************************************
+ 0654           ; void main(void)
+ 0654           ; {
+ 0654                   .dbline 216
+ 0654           ;   unsigned char i, x,retry=0;
+ 0654 6627              clr R22
+ 0656                   .dbline 219
+ 0656           ;   u08 ok,er ;
+ 0656           ;   unsigned int y ;
+ 0656           ;   delay_nms(10);
+ 0656 0AE0              ldi R16,10
+ 0658 10E0              ldi R17,0
+ 065A 13DD              xcall _delay_nms
+ 065C                   .dbline 220
+ 065C           ;   McuInit();
+ 065C 0E940000          xcall _McuInit
+ 0660                   .dbline 221
+ 0660           ;   UART_Init();
+ 0660 0E940000          xcall _UART_Init
+ 0664                   .dbline 222
+ 0664           ;   LCD_RD1; 
+ 0664 80916500          lds R24,101
+ 0668 8061              ori R24,16
+ 066A 80936500          sts 101,R24
+ 066E                   .dbline 223
+ 066E           ;   LCD_Init();                                                                         //LCD初始化
+ 066E 0E940000          xcall _LCD_Init
+ 0672                   .dbline 224
+ 0672           ;   x = 1 ;
+ 0672 41E0              ldi R20,1
+ 0674                   .dbline 225
+ 0674           ;   y = 0 ;
+ 0674 4427              clr R20
+ 0676 5527              clr R21
+ 0678                   .dbline 226
+ 0678           ;   LCD_clear(0) ;
+ 0678 0027              clr R16
+ 067A 1127              clr R17
+ 067C 0E940000          xcall _LCD_clear
+ 0680                   .dbline 228
+ 0680           ;       
+ 0680           ;   for(i=0; i<5 ;i++)
+ 0680 0DC0              xjmp L76
+ 0682           L73:
+ 0682                   .dbline 229
+ 0682                   .dbline 230
+ 0682 80EE              ldi R24,2016
+ 0684 97E0              ldi R25,7
+ 0686 9B83              std y+3,R25
+ 0688 8A83              std y+2,R24
+ 068A 2224              clr R2
+ 068C 2882              std y+0,R2
+ 068E 242F              mov R18,R20
+ 0690 2F5F              subi R18,255    ; addi 1
+ 0692 042F              mov R16,R20
+ 0694 0E5E              subi R16,238    ; addi 18
+ 0696 0E940000          xcall _DisplayGB2312
+ 069A                   .dbline 231
+ 069A           L74:
+ 069A                   .dbline 228
+ 069A 4395              inc R20
+ 069C           L76:
+ 069C                   .dbline 228
+ 069C 4530              cpi R20,5
+ 069E 88F3              brlo L73
+ 06A0                   .dbline 232
+ 06A0           ;    {
+ 06A0           ;       DisplayGB2312(i+18,i+1,0,0x07E0) ;                      //显示欣世纪电子
+ 06A0           ;    }
+ 06A0           ;       DisplayString("DMAVR-128 Board",0,1,0xf800);    //字符串显示调用
+ 06A0 80E0              ldi R24,63488
+ 06A2 98EF              ldi R25,248
+ 06A4 9B83              std y+3,R25
+ 06A6 8A83              std y+2,R24
+ 06A8 81E0              ldi R24,1
+ 06AA 8883              std y+0,R24
+ 06AC 2227              clr R18
+ 06AE 00E0              ldi R16,<L77
+ 06B0 10E0              ldi R17,>L77
+ 06B2 0E940000          xcall _DisplayString
+ 06B6                   .dbline 233
+ 06B6           ;       DisplayString("Show BMP from SD",0,2,0xeee);    //字符串显示调用
+ 06B6 8EEE              ldi R24,3822
+ 06B8 9EE0              ldi R25,14
+ 06BA 9B83              std y+3,R25
+ 06BC 8A83              std y+2,R24
+ 06BE 82E0              ldi R24,2
+ 06C0 8883              std y+0,R24
+ 06C2 2227              clr R18
+ 06C4 00E0              ldi R16,<L78
+ 06C6 10E0              ldi R17,>L78
+ 06C8 0E940000          xcall _DisplayString
+ 06CC                   .dbline 234
+ 06CC           ;       GUIline(0,49,127,49,0xe387);
+ 06CC 87E8              ldi R24,58247
+ 06CE 93EE              ldi R25,227
+ 06D0 9D83              std y+5,R25
+ 06D2 8C83              std y+4,R24
+ 06D4 81E3              ldi R24,49
+ 06D6 8A83              std y+2,R24
+ 06D8 8FE7              ldi R24,127
+ 06DA 8883              std y+0,R24
+ 06DC 21E3              ldi R18,49
+ 06DE 0027              clr R16
+ 06E0 0E940000          xcall _GUIline
+ 06E4                   .dbline 235
+ 06E4           ;       GUIline(0,51,127,51,0xfef);
+ 06E4 8FEE              ldi R24,4079
+ 06E6 9FE0              ldi R25,15
+ 06E8 9D83              std y+5,R25
+ 06EA 8C83              std y+4,R24
+ 06EC 83E3              ldi R24,51
+ 06EE 8A83              std y+2,R24
+ 06F0 8FE7              ldi R24,127
+ 06F2 8883              std y+0,R24
+ 06F4 23E3              ldi R18,51
+ 06F6 0027              clr R16
+ 06F8 0E940000          xcall _GUIline
+ 06FC                   .dbline 237
+ 06FC           ;               
+ 06FC           ;       ok = 0 ;
+ 06FC CC24              clr R12
+ 06FE                   .dbline 238
+ 06FE           ;       er = 0 ;
+ 06FE AA24              clr R10
+ 0700                   .dbline 239
+ 0700           ;       DisplayString("Starting Init SD",0,4,0xffff);  //字符串显示调用
+ 0700 8FEF              ldi R24,65535
+ 0702 9FEF              ldi R25,255
+ 0704 9B83              std y+3,R25
+ 0706 8A83              std y+2,R24
+ 0708 84E0              ldi R24,4
+ 070A 8883              std y+0,R24
+ 070C 2227              clr R18
+ 070E 00E0              ldi R16,<L79
+ 0710 10E0              ldi R17,>L79
+ 0712 0E940000          xcall _DisplayString
+ 0716                   .dbline 240
+ 0716           ;       DisplayString("Waiting...",0,5,0xffff);                 //字符串显示调用
+ 0716 8FEF              ldi R24,65535
+ 0718 9FEF              ldi R25,255
+ 071A 9B83              std y+3,R25
+ 071C 8A83              std y+2,R24
+ 071E 85E0              ldi R24,5
+ 0720 8883              std y+0,R24
+ 0722 2227              clr R18
+ 0724 00E0              ldi R16,<L80
+ 0726 10E0              ldi R17,>L80
+ 0728 0E940000          xcall _DisplayString
+ 072C                   .dbline 241
+ 072C           ;       mmcInit();
+ 072C 0E940000          xcall _mmcInit
+ 0730                   .dbline 242
+ 0730           ;       delay_nms(1);
+ 0730 01E0              ldi R16,1
+ 0732 10E0              ldi R17,0
+ 0734 A6DC              xcall _delay_nms
+ 0736 1CC0              xjmp L82
+ 0738           L81:
+ 0738                   .dbline 246
+ 0738           ;   
+ 0738           ;         
+ 0738           ;   while(mmcReset())                                                                   //初始化SD卡                                    
+ 0738           ;       {
+ 0738                   .dbline 247
+ 0738           ;               retry++;
+ 0738 6395              inc R22
+ 073A                   .dbline 248
+ 073A           ;               if(retry>20)
+ 073A 84E1              ldi R24,20
+ 073C 8617              cp R24,R22
+ 073E C0F4              brsh L84
+ 0740                   .dbline 249
+ 0740           ;               {
+ 0740 16C0              xjmp L87
+ 0742           L86:
+ 0742                   .dbline 251
+ 0742                   .dbline 252
+ 0742 80E0              ldi R24,63488
+ 0744 98EF              ldi R25,248
+ 0746 9B83              std y+3,R25
+ 0748 8A83              std y+2,R24
+ 074A 87E0              ldi R24,7
+ 074C 8883              std y+0,R24
+ 074E 2227              clr R18
+ 0750 00E0              ldi R16,<L89
+ 0752 10E0              ldi R17,>L89
+ 0754 0E940000          xcall _DisplayString
+ 0758                   .dbline 253
+ 0758 80E0              ldi R24,63488
+ 075A 98EF              ldi R25,248
+ 075C 9B83              std y+3,R25
+ 075E 8A83              std y+2,R24
+ 0760 88E0              ldi R24,8
+ 0762 8883              std y+0,R24
+ 0764 2227              clr R18
+ 0766 00E0              ldi R16,<L90
+ 0768 10E0              ldi R17,>L90
+ 076A 0E940000          xcall _DisplayString
+ 076E                   .dbline 254
+ 076E           L87:
+ 076E                   .dbline 250
+ 076E           ;                       while(1)                                                                                        //初始化失败显示
+ 076E E9CF              xjmp L86
+ 0770           X19:
+ 0770                   .dbline 255
+ 0770           ;                       {
+ 0770           ;                               DisplayString("Init Failure",0,7,0xf800);               //字符串显示调用
+ 0770           ;                   DisplayString("Please Check SD",0,8,0xf800);        //字符串显示调用
+ 0770           ;                       }
+ 0770           ;               }
+ 0770           L84:
+ 0770                   .dbline 256
+ 0770           L82:
+ 0770                   .dbline 245
+ 0770 0E940000          xcall _mmcReset
+ 0774 0023              tst R16
+ 0776 01F7              brne L81
+ 0778                   .dbline 258
+ 0778           ;       } 
+ 0778           ;                 
+ 0778           ;       DisplayString("Init SD Success!",0,6,0xffff);                           //字符串显示调用
+ 0778 8FEF              ldi R24,65535
+ 077A 9FEF              ldi R25,255
+ 077C 9B83              std y+3,R25
+ 077E 8A83              std y+2,R24
+ 0780 86E0              ldi R24,6
+ 0782 8883              std y+0,R24
+ 0784 2227              clr R18
+ 0786 00E0              ldi R16,<L91
+ 0788 10E0              ldi R17,>L91
+ 078A 0E940000          xcall _DisplayString
+ 078E                   .dbline 261
+ 078E           ;        
+ 078E           ;       
+ 078E           ;       if(FAT_Init())                                                                                          //初始化文件系统 支持FAT16和FAT32       
+ 078E 0E940000          xcall _FAT_Init
+ 0792 0023              tst R16
+ 0794 71F0              breq L92
+ 0796                   .dbline 262
+ 0796           ;       {
+ 0796 0CC0              xjmp L95
+ 0798           X20:
+ 0798                   .dbline 264
+ 0798           ;               while(1)
+ 0798           ;               {
+ 0798           L97:
+ 0798                   .dbline 266
+ 0798                   .dbline 267
+ 0798 80E0              ldi R24,63488
+ 079A 98EF              ldi R25,248
+ 079C 9B83              std y+3,R25
+ 079E 8A83              std y+2,R24
+ 07A0 87E0              ldi R24,7
+ 07A2 8883              std y+0,R24
+ 07A4 2227              clr R18
+ 07A6 00E0              ldi R16,<L100
+ 07A8 10E0              ldi R17,>L100
+ 07AA 0E940000          xcall _DisplayString
+ 07AE                   .dbline 268
+ 07AE           L98:
+ 07AE                   .dbline 265
+ 07AE           ;                       while(1)
+ 07AE F4CF              xjmp L97
+ 07B0           X21:
+ 07B0                   .dbline 269
+ 07B0           L95:
+ 07B0                   .dbline 263
+ 07B0 FECF              xjmp L98
+ 07B2           X22:
+ 07B2                   .dbline 271
+ 07B2           ;                       {
+ 07B2           ;                               DisplayString("Init FAT Failure",0,7,0xf800);  //字符串显示调用
+ 07B2           ;                       }
+ 07B2           ;               }
+ 07B2           ; 
+ 07B2           ;       }
+ 07B2           L92:
+ 07B2                   .dbline 272
+ 07B2           ;       printf("Begin initing\r\n");
+ 07B2 00E0              ldi R16,<L101
+ 07B4 10E0              ldi R17,>L101
+ 07B6 0E940000          xcall _printf
+ 07BA                   .dbline 273
+ 07BA           ;       _NewHeap(&_bss_end+1, &_bss_end + 550);                     //动态分配内存(malloc(512))需要初始化，空间比需要分配的要大才行
+ 07BA 20E0              ldi R18,<__bss_end+550
+ 07BC 30E0              ldi R19,>__bss_end+550
+ 07BE 00E0              ldi R16,<__bss_end+1
+ 07C0 10E0              ldi R17,>__bss_end+1
+ 07C2 0E940000          xcall __NewHeap
+ 07C6                   .dbline 274
+ 07C6           ;       SearchInit();                                                                                           //搜索文件初始化
+ 07C6 0E940000          xcall _SearchInit
+ 07CA 22C0              xjmp L105
+ 07CC           L104:
+ 07CC                   .dbline 278
+ 07CC           ; 
+ 07CC           ;       
+ 07CC           ;       while(1)                                                                        //轮流显示SD卡中的图片
+ 07CC           ;        {
+ 07CC                   .dbline 279
+ 07CC           ;           disp_image() ;
+ 07CC 78DC              xcall _disp_image
+ 07CE                   .dbline 280
+ 07CE           ;               delay_nms(1000) ;
+ 07CE 08EE              ldi R16,1000
+ 07D0 13E0              ldi R17,3
+ 07D2 57DC              xcall _delay_nms
+ 07D4                   .dbline 281
+ 07D4           ;               delay_nms(1000) ;
+ 07D4 08EE              ldi R16,1000
+ 07D6 13E0              ldi R17,3
+ 07D8 54DC              xcall _delay_nms
+ 07DA                   .dbline 282
+ 07DA           ;               delay_nms(1000) ;
+ 07DA 08EE              ldi R16,1000
+ 07DC 13E0              ldi R17,3
+ 07DE 51DC              xcall _delay_nms
+ 07E0                   .dbline 284
+ 07E0           ;                                                               
+ 07E0           ;               if(image_count<image_all)                                                               //轮流显示SD卡中的BMP图片
+ 07E0 20900200          lds R2,_image_all
+ 07E4 30900300          lds R3,_image_all+1
+ 07E8 40900000          lds R4,_image_count
+ 07EC 50900100          lds R5,_image_count+1
+ 07F0 4214              cp R4,R2
+ 07F2 5304              cpc R5,R3
+ 07F4 38F4              brsh L107
+ 07F6                   .dbline 285
+ 07F6           ;                   {
+ 07F6                   .dbline 286
+ 07F6           ;                     image_count ++ ;
+ 07F6 C201              movw R24,R4
+ 07F8 0196              adiw R24,1
+ 07FA 90930100          sts _image_count+1,R25
+ 07FE 80930000          sts _image_count,R24
+ 0802                   .dbline 287
+ 0802           ;                   }
+ 0802 06C0              xjmp L108
+ 0804           L107:
+ 0804                   .dbline 289
+ 0804           ;                else 
+ 0804           ;                   {
+ 0804                   .dbline 290
+ 0804           ;                         image_count = 1 ;
+ 0804 81E0              ldi R24,1
+ 0806 90E0              ldi R25,0
+ 0808 90930100          sts _image_count+1,R25
+ 080C 80930000          sts _image_count,R24
+ 0810                   .dbline 291
+ 0810           ;                       } 
+ 0810           L108:
+ 0810                   .dbline 294
+ 0810           L105:
+ 0810                   .dbline 277
+ 0810 DDCF              xjmp L104
+ 0812           X23:
+ 0812                   .dbline -2
+ 0812           L72:
+ 0812 2696              adiw R28,6
+ 0814                   .dbline 0 ; func end
+ 0814 0895              ret
+ 0816                   .dbsym r y 20 i
+ 0816                   .dbsym r er 10 c
+ 0816                   .dbsym r ok 12 c
+ 0816                   .dbsym r x 20 c
+ 0816                   .dbsym r retry 22 c
+ 0816                   .dbsym r i 20 c
+ 0816                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0000           _i::
+ 0000                   .blkb 2
+ 0002                   .dbsym e i _i I
+                        .area data(ram, con, rel)
+ 0004                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0004           L101:
+ 0004                   .blkb 16
+                        .area idata
+ 0004 426567696E20696E6974696E670D0A00  .byte 'B,'e,'g,'i,'n,32,'i,'n,'i,'t,'i,'n,'g,13,10,0
+                        .area data(ram, con, rel)
+ 0014                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0014           L100:
+ 0014                   .blkb 17
+                        .area idata
+ 0014 496E697420464154204661696C757265  .byte 'I,'n,'i,'t,32,'F,'A,'T,32,'F,'a,'i,'l,'u,'r,'e
+ 0024 00                .byte 0
+                        .area data(ram, con, rel)
+ 0025                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0025           L91:
+ 0025                   .blkb 17
+                        .area idata
+ 0025 496E6974205344205375636365737321  .byte 'I,'n,'i,'t,32,'S,'D,32,'S,'u,'c,'c,'e,'s,'s,33
+ 0035 00                .byte 0
+                        .area data(ram, con, rel)
+ 0036                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0036           L90:
+ 0036                   .blkb 16
+                        .area idata
+ 0036 506C6561736520436865636B20534400  .byte 'P,'l,'e,'a,'s,'e,32,'C,'h,'e,'c,'k,32,'S,'D,0
+                        .area data(ram, con, rel)
+ 0046                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0046           L89:
+ 0046                   .blkb 13
+                        .area idata
+ 0046 496E6974204661696C75726500        .byte 'I,'n,'i,'t,32,'F,'a,'i,'l,'u,'r,'e,0
+                        .area data(ram, con, rel)
+ 0053                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0053           L80:
+ 0053                   .blkb 11
+                        .area idata
+ 0053 57616974696E672E2E2E00    .byte 'W,'a,'i,'t,'i,'n,'g,46,46,46,0
+                        .area data(ram, con, rel)
+ 005E                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 005E           L79:
+ 005E                   .blkb 17
+                        .area idata
+ 005E 5374617274696E6720496E6974205344  .byte 'S,'t,'a,'r,'t,'i,'n,'g,32,'I,'n,'i,'t,32,'S,'D
+ 006E 00                .byte 0
+                        .area data(ram, con, rel)
+ 006F                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 006F           L78:
+ 006F                   .blkb 17
+                        .area idata
+ 006F 53686F7720424D502066726F6D205344  .byte 'S,'h,'o,'w,32,'B,'M,'P,32,'f,'r,'o,'m,32,'S,'D
+ 007F 00                .byte 0
+                        .area data(ram, con, rel)
+ 0080                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0080           L77:
+ 0080                   .blkb 16
+                        .area idata
+ 0080 444D4156522D31323820426F61726400  .byte 'D,'M,'A,'V,'R,45,49,50,56,32,'B,'o,'a,'r,'d,0
+                        .area data(ram, con, rel)
+ 0090                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c
+ 0090           L22:
+ 0090                   .blkb 8
+                        .area idata
+ 0090 2020202020202000  .byte 32,32,32,32,32,32,32,0
+                        .area data(ram, con, rel)
+ 0098                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\main.c

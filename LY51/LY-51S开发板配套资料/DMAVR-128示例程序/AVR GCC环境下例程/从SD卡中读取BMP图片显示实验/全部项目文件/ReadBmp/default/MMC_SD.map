@@ -1,0 +1,553 @@
+Archive member included because of file (symbol)
+
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mulsi3.o)
+                              mmc.o (__mulsi3)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodhi4.o)
+                              main.o (__udivmodhi4)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodsi4.o)
+                              FAT.o (__udivmodsi4)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o (exit)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                              main.o (__do_clear_bss)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(malloc.o)
+                              main.o (malloc)
+
+Allocating common symbols
+Common symbol       size              file
+
+FirstDirSector      0x4               FAT.o
+RootDirCount        0x4               FAT.o
+SectorsPerClust     0x2               FAT.o
+FirstDataSector     0x4               FAT.o
+__brkval            0x2               f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(malloc.o)
+spiTransferComplete
+                    0x1               spi.o
+FirstFATSector      0x4               FAT.o
+i                   0x2               main.o
+FileInfo            0xf               FAT.o
+FAT32_Enable        0x1               FAT.o
+FATsectors          0x2               FAT.o
+RootDirSectors      0x4               FAT.o
+BytesPerSector      0x2               FAT.o
+__flp               0x2               f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(malloc.o)
+FirstDirClust       0x4               FAT.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+LOAD main.o
+LOAD spi.o
+LOAD mmc.o
+LOAD FAT.o
+LOAD TFT.o
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x24ea
+ *(.vectors)
+ .vectors       0x00000000       0x8c f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+                0x0000008c                . = ALIGN (0x2)
+                0x0000008c                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x0000008c        0x0 linker stubs
+ *(.trampolines*)
+                0x0000008c                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x0000008c                __ctors_start = .
+ *(.ctors)
+                0x0000008c                __ctors_end = .
+                0x0000008c                __dtors_start = .
+ *(.dtors)
+                0x0000008c                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x0000008c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x0000008c                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x0000008c        0xc f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000098       0x1a f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x00000098                __do_copy_data
+ .init4         0x000000b2       0x10 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                0x000000b2                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000000c2        0x8 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ *(.init9)
+ *(.text)
+ .text          0x000000ca        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x000000ca                __vector_22
+                0x000000ca                __vector_28
+                0x000000ca                __vector_1
+                0x000000ca                __vector_32
+                0x000000ca                __vector_34
+                0x000000ca                __vector_24
+                0x000000ca                __vector_12
+                0x000000ca                __bad_interrupt
+                0x000000ca                __vector_6
+                0x000000ca                __vector_31
+                0x000000ca                __vector_3
+                0x000000ca                __vector_23
+                0x000000ca                __vector_30
+                0x000000ca                __vector_25
+                0x000000ca                __vector_11
+                0x000000ca                __vector_13
+                0x000000ca                __vector_17
+                0x000000ca                __vector_19
+                0x000000ca                __vector_7
+                0x000000ca                __vector_27
+                0x000000ca                __vector_5
+                0x000000ca                __vector_33
+                0x000000ca                __vector_4
+                0x000000ca                __vector_9
+                0x000000ca                __vector_2
+                0x000000ca                __vector_21
+                0x000000ca                __vector_15
+                0x000000ca                __vector_29
+                0x000000ca                __vector_8
+                0x000000ca                __vector_26
+                0x000000ca                __vector_14
+                0x000000ca                __vector_10
+                0x000000ca                __vector_16
+                0x000000ca                __vector_18
+                0x000000ca                __vector_20
+ .text          0x000000ce      0x4e0 main.o
+                0x000000de                disp_image
+                0x0000041a                main
+                0x000000ce                LED_Off
+ .text          0x000005ae       0x52 spi.o
+                0x000005e2                spiTransferWord
+                0x000005d0                spiSendByte
+                0x000005ae                spiInit
+                0x000005d8                spiTransferByte
+ .text          0x00000600      0x39c mmc.o
+                0x00000680                MMC_SD_ReadCapacity
+                0x00000600                mmcCommand
+                0x00000876                mmcRead
+                0x0000065e                mmcSendCommand
+                0x00000914                mmcReset
+                0x00000982                mmcInit
+                0x000007d6                mmcWrite
+ .text          0x0000099c      0xcfa FAT.o
+                0x00000c24                GetFolderCluster
+                0x0000130e                SD_SizeDisplay
+                0x00000ba6                WriteFolderCluster
+                0x00000a06                FAT_NextCluster
+                0x00000c9a                Search
+                0x00000fae                SearchFolder
+                0x00001236                SearchInit
+                0x0000099c                FAT_LoadPartCluster
+                0x0000147e                FAT_Init
+                0x00000b18                CopyDirentruyItem
+ .text          0x00001696      0xb9c TFT.o
+                0x000019e8                LCD_clear
+                0x0000186a                LCD_WR_DataP
+                0x000016c8                LCD_WR_REG
+                0x00001702                LCD_RD_REG16
+                0x00002010                plotC
+                0x00002152                GUI_sprintf_nu
+                0x000017c2                LCD_WR_CMD
+                0x00001ada                DisplayChar
+                0x000021e8                GUI_sprintf_chartohex
+                0x000020aa                GUIcircle
+                0x00001d44                DisplayString
+                0x00001696                McuInit
+                0x00001fcc                GUIfull
+                0x0000187e                LCD_Init
+                0x00001e92                GUIline
+                0x00001c10                DisplayGB2312
+                0x00001848                LCD_WR_Data
+                0x00001d8e                GUIback
+                0x00002164                GUI_sprintf_chartobit
+                0x00001e12                GUIpoint
+ .text          0x00002232        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mulsi3.o)
+ .text          0x00002232        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodhi4.o)
+ .text          0x00002232        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodsi4.o)
+ .text          0x00002232        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .text          0x00002232        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ .text          0x00002232      0x20a f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(malloc.o)
+                0x00002232                malloc
+                0x0000238c                free
+                0x0000243c                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x0000243c       0x3e f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mulsi3.o)
+                0x0000243c                __mulsi3
+ .text.libgcc   0x0000247a       0x28 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodhi4.o)
+                0x0000247a                __udivmodhi4
+ .text.libgcc   0x000024a2       0x44 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodsi4.o)
+                0x000024a2                __udivmodsi4
+ .text.libgcc   0x000024e6        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .text.libgcc   0x000024e6        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                0x000024e6                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x000024e6        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+                0x000024e6                exit
+                0x000024e6                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x000024e6        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ *(.fini0)
+                0x000024ea                _etext = .
+
+.data           0x00800100      0xb9c load address 0x000024ea
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ .data          0x00800100       0x84 main.o
+ .data          0x00800184        0x0 spi.o
+ .data          0x00800184        0x0 mmc.o
+ .data          0x00800184       0x22 FAT.o
+                0x008001a4                FAT_WriteSector
+                0x008001a2                FAT_ReadSector
+ .data          0x008001a6      0xaf0 TFT.o
+                0x00800c86                color
+                0x008001a6                ascii
+                0x008009a6                GB2312
+ .data          0x00800c96        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mulsi3.o)
+ .data          0x00800c96        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodhi4.o)
+ .data          0x00800c96        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodsi4.o)
+ .data          0x00800c96        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .data          0x00800c96        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ .data          0x00800c96        0x6 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(malloc.o)
+                0x00800c98                __malloc_heap_start
+                0x00800c9a                __malloc_heap_end
+                0x00800c96                __malloc_margin
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x00800c9c                . = ALIGN (0x2)
+                0x00800c9c                _edata = .
+                0x00800c9c                PROVIDE (__data_end, .)
+
+.bss            0x00800c9c       0x41
+                0x00800c9c                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x00800c9c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ .bss           0x00800c9c        0x4 main.o
+                0x00800c9e                image_all
+                0x00800c9c                image_count
+ .bss           0x00800ca0        0x0 spi.o
+ .bss           0x00800ca0        0x0 mmc.o
+ .bss           0x00800ca0        0x8 FAT.o
+ .bss           0x00800ca8        0x0 TFT.o
+ .bss           0x00800ca8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mulsi3.o)
+ .bss           0x00800ca8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodhi4.o)
+ .bss           0x00800ca8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_udivmodsi4.o)
+ .bss           0x00800ca8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .bss           0x00800ca8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ .bss           0x00800ca8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(malloc.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x00800ca8        0x2 main.o
+                0x00800ca8                i
+ COMMON         0x00800caa        0x1 spi.o
+                0x00800caa                spiTransferComplete
+ COMMON         0x00800cab       0x2e FAT.o
+                0x00800cab                FirstDirSector
+                0x00800caf                RootDirCount
+                0x00800cb3                SectorsPerClust
+                0x00800cb5                FirstDataSector
+                0x00800cb9                FirstFATSector
+                0x00800cbd                FileInfo
+                0x00800ccc                FAT32_Enable
+                0x00800ccd                FATsectors
+                0x00800ccf                RootDirSectors
+                0x00800cd3                BytesPerSector
+                0x00800cd5                FirstDirClust
+ COMMON         0x00800cd9        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(malloc.o)
+                0x00800cd9                __brkval
+                0x00800cdb                __flp
+                0x00800cdd                PROVIDE (__bss_end, .)
+                0x000024ea                __data_load_start = LOADADDR (.data)
+                0x00003086                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00800cdd        0x0
+                0x00800cdd                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00800cdd                PROVIDE (__noinit_end, .)
+                0x00800cdd                _end = .
+                0x00800cdd                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0xa0
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 main.o
+ .debug_aranges
+                0x00000020       0x20 spi.o
+ .debug_aranges
+                0x00000040       0x20 mmc.o
+ .debug_aranges
+                0x00000060       0x20 FAT.o
+ .debug_aranges
+                0x00000080       0x20 TFT.o
+
+.debug_pubnames
+                0x00000000      0x468
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0x5a main.o
+ .debug_pubnames
+                0x0000005a       0x6e spi.o
+ .debug_pubnames
+                0x000000c8       0x7e mmc.o
+ .debug_pubnames
+                0x00000146      0x1b6 FAT.o
+ .debug_pubnames
+                0x000002fc      0x16c TFT.o
+
+.debug_info     0x00000000     0x22d2
+ *(.debug_info)
+ .debug_info    0x00000000      0x58b main.o
+ .debug_info    0x0000058b      0x17f spi.o
+ .debug_info    0x0000070a      0x2c2 mmc.o
+ .debug_info    0x000009cc      0xb33 FAT.o
+ .debug_info    0x000014ff      0xdd3 TFT.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x91c
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x201 main.o
+ .debug_abbrev  0x00000201      0x122 spi.o
+ .debug_abbrev  0x00000323      0x105 mmc.o
+ .debug_abbrev  0x00000428      0x28e FAT.o
+ .debug_abbrev  0x000006b6      0x266 TFT.o
+
+.debug_line     0x00000000     0x1df4
+ *(.debug_line)
+ .debug_line    0x00000000      0x4b0 main.o
+ .debug_line    0x000004b0      0x1a8 spi.o
+ .debug_line    0x00000658      0x3a8 mmc.o
+ .debug_line    0x00000a00      0x7d2 FAT.o
+ .debug_line    0x000011d2      0xc22 TFT.o
+
+.debug_frame    0x00000000      0x310
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x40 main.o
+ .debug_frame   0x00000040       0x50 spi.o
+ .debug_frame   0x00000090       0x80 mmc.o
+ .debug_frame   0x00000110       0xb0 FAT.o
+ .debug_frame   0x000001c0      0x150 TFT.o
+
+.debug_str      0x00000000      0x861
+ *(.debug_str)
+ .debug_str     0x00000000      0x224 main.o
+                                0x287 (size before relaxing)
+ .debug_str     0x00000224       0x58 spi.o
+                                0x12c (size before relaxing)
+ .debug_str     0x0000027c       0x5e mmc.o
+                                0x14a (size before relaxing)
+ .debug_str     0x000002da      0x3d6 FAT.o
+                                0x59e (size before relaxing)
+ .debug_str     0x000006b0      0x1b1 TFT.o
+                                0x2c0 (size before relaxing)
+
+.debug_loc      0x00000000     0x1822
+ *(.debug_loc)
+ .debug_loc     0x00000000      0x2bc main.o
+ .debug_loc     0x000002bc       0x43 spi.o
+ .debug_loc     0x000002ff      0x368 mmc.o
+ .debug_loc     0x00000667      0x678 FAT.o
+ .debug_loc     0x00000cdf      0xb43 TFT.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(MMC_SD.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000      0x178
+ .debug_ranges  0x00000000       0x48 main.o
+ .debug_ranges  0x00000048      0x100 FAT.o
+ .debug_ranges  0x00000148       0x30 TFT.o

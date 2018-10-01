@@ -1,0 +1,251 @@
+                        .module spi.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\WRSD\spi.c
+ 0000                   .dbfunc e spiInit _spiInit fV
+                        .even
+ 0000           _spiInit::
+ 0000                   .dbline -1
+ 0000                   .dbline 36
+ 0000           ; //SPI接口驱动程序，采用开源的第三方库函数
+ 0000           ; //欣世纪电子略作修改
+ 0000           ; 
+ 0000           ; //#include <avr/io.h>
+ 0000           ; //#include <avr/interrupt.h>
+ 0000           ; 
+ 0000           ; #include "DM_spi.h"
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; //#include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; 
+ 0000           ; #define   set(x)                (1<<(x))
+ 0000           ; #define   sbi(temp,x)                 temp|=(1<<(x))
+ 0000           ; #define   clr(x)                (~(1<<(x)))
+ 0000           ; #define   cbi(temp,x)                 temp&=~(1<<(x))
+ 0000           ; 
+ 0000           ; #define       outb(addr, data)        addr = (data)
+ 0000           ; #define       inb(addr)                       (addr)
+ 0000           ; #define       outw(addr, data)        addr = (data)
+ 0000           ; #define       inw(addr)                       (addr)
+ 0000           ; 
+ 0000           ; 
+ 0000           ; volatile u08 spiTransferComplete;
+ 0000           ; 
+ 0000           ; // SPI interrupt service handler
+ 0000           ; #ifdef SPI_USEINT
+ 0000           ; SIGNAL(SIG_SPI)
+ 0000           ; {
+ 0000           ;       spiTransferComplete = TRUE;
+ 0000           ; }
+ 0000           ; #endif
+ 0000           ; 
+ 0000           ; // access routines
+ 0000           ; void spiInit()
+ 0000           ; {
+ 0000                   .dbline 38
+ 0000           ;       // setup SPI I/O pins
+ 0000           ;       sbi(PORTB, 1);  // set SCK hi
+ 0000 C19A              sbi 0x18,1
+ 0002                   .dbline 39
+ 0002           ;       sbi(DDRB, 1);   // set SCK as output
+ 0002 B99A              sbi 0x17,1
+ 0004                   .dbline 40
+ 0004           ;       cbi(DDRB, 3);   // set MISO as input
+ 0004 BB98              cbi 0x17,3
+ 0006                   .dbline 41
+ 0006           ;       sbi(DDRB, 2);   // set MOSI as output
+ 0006 BA9A              sbi 0x17,2
+ 0008                   .dbline 42
+ 0008           ;       sbi(DDRB, 0);   // SS must be output for Master mode to work
+ 0008 B89A              sbi 0x17,0
+ 000A                   .dbline 43
+ 000A           ;       sbi(PORTB,0);   // set SS hi
+ 000A C09A              sbi 0x18,0
+ 000C                   .dbline 47
+ 000C           ;       
+ 000C           ;       // setup SPI interface :
+ 000C           ;       // master mode
+ 000C           ;       sbi(SPCR, MSTR);
+ 000C 6C9A              sbi 0xd,4
+ 000E                   .dbline 52
+ 000E           ;       // clock = f/4
+ 000E           ; //    cbi(SPCR, SPR0);
+ 000E           ; //    cbi(SPCR, SPR1);
+ 000E           ;       // clock = f/16
+ 000E           ;       cbi(SPCR, SPR0);
+ 000E 6898              cbi 0xd,0
+ 0010                   .dbline 53
+ 0010           ;       sbi(SPCR, SPR1);
+ 0010 699A              sbi 0xd,1
+ 0012                   .dbline 55
+ 0012           ;       // select clock phase positive-going in middle of data
+ 0012           ;       cbi(SPCR, CPOL);
+ 0012 6B98              cbi 0xd,3
+ 0014                   .dbline 57
+ 0014           ;       // Data order MSB first
+ 0014           ;       cbi(SPCR,DORD);
+ 0014 6D98              cbi 0xd,5
+ 0016                   .dbline 59
+ 0016           ;       // enable SPI
+ 0016           ;       sbi(SPCR, SPE);
+ 0016 6E9A              sbi 0xd,6
+ 0018                   .dbline 68
+ 0018           ;               
+ 0018           ;       
+ 0018           ;       // some other possible configs
+ 0018           ;       //outp((1<<MSTR)|(1<<SPE)|(1<<SPR0), SPCR );
+ 0018           ;       //outp((1<<CPHA)|(1<<CPOL)|(1<<MSTR)|(1<<SPE)|(1<<SPR0)|(1<<SPR1), SPCR );
+ 0018           ;       //outp((1<<CPHA)|(1<<MSTR)|(1<<SPE)|(1<<SPR0), SPCR );
+ 0018           ;       
+ 0018           ;       // clear status
+ 0018           ;       inb(SPSR);
+ 0018                   .dbline 69
+ 0018           ;       spiTransferComplete = TRUE;
+ 0018 8FEF              ldi R24,255
+ 001A 80930000          sts _spiTransferComplete,R24
+ 001E                   .dbline -2
+ 001E           L1:
+ 001E                   .dbline 0 ; func end
+ 001E 0895              ret
+ 0020                   .dbend
+ 0020                   .dbfunc e spiSendByte _spiSendByte fV
+ 0020           ;           data -> R16
+                        .even
+ 0020           _spiSendByte::
+ 0020                   .dbline -1
+ 0020                   .dbline 83
+ 0020           ; 
+ 0020           ;       // enable SPI interrupt
+ 0020           ;       #ifdef SPI_USEINT
+ 0020           ;       sbi(SPCR, SPIE);
+ 0020           ;       #endif
+ 0020           ; }
+ 0020           ; /*
+ 0020           ; void spiSetBitrate(u08 spr)
+ 0020           ; {
+ 0020           ;       outb(SPCR, (inb(SPCR) & ((1<<SPR0)|(1<<SPR1))) | (spr&((1<<SPR0)|(1<<SPR1)))));
+ 0020           ; }
+ 0020           ; */
+ 0020           ; void spiSendByte(u08 data)
+ 0020           ; {
+ 0020           L3:
+ 0020                   .dbline 89
+ 0020           ;       // send a byte over SPI and ignore reply
+ 0020           ;       #ifdef SPI_USEINT
+ 0020           ;               while(!spiTransferComplete);
+ 0020           ;               spiTransferComplete = FALSE;
+ 0020           ;       #else
+ 0020           ;               while(!(inb(SPSR) & (1<<SPIF)));
+ 0020           L4:
+ 0020                   .dbline 89
+ 0020 779B              sbis 0xe,7
+ 0022 FECF              rjmp L3
+ 0024           X0:
+ 0024                   .dbline 92
+ 0024           ;       #endif
+ 0024           ; 
+ 0024           ;       outb(SPDR, data);
+ 0024 0FB9              out 0xf,R16
+ 0026                   .dbline -2
+ 0026           L2:
+ 0026                   .dbline 0 ; func end
+ 0026 0895              ret
+ 0028                   .dbsym r data 16 c
+ 0028                   .dbend
+ 0028                   .dbfunc e spiTransferByte _spiTransferByte fc
+ 0028           ;           data -> R16
+                        .even
+ 0028           _spiTransferByte::
+ 0028                   .dbline -1
+ 0028                   .dbline 96
+ 0028           ; }
+ 0028           ; 
+ 0028           ; u08 spiTransferByte(u08 data)
+ 0028           ; {
+ 0028                   .dbline 105
+ 0028           ;       #ifdef SPI_USEINT
+ 0028           ;       // send the given data
+ 0028           ;       spiTransferComplete = FALSE;
+ 0028           ;       outb(SPDR, data);
+ 0028           ;       // wait for transfer to complete
+ 0028           ;       while(!spiTransferComplete);
+ 0028           ;       #else
+ 0028           ;       // send the given data
+ 0028           ;       outb(SPDR, data);
+ 0028 0FB9              out 0xf,R16
+ 002A           L7:
+ 002A                   .dbline 107
+ 002A           ;       // wait for transfer to complete
+ 002A           ;       while(!(inb(SPSR) & (1<<SPIF)));
+ 002A           L8:
+ 002A                   .dbline 107
+ 002A 779B              sbis 0xe,7
+ 002C FECF              rjmp L7
+ 002E           X1:
+ 002E                   .dbline 110
+ 002E           ;       #endif
+ 002E           ;       // return the received data
+ 002E           ;       return inb(SPDR);
+ 002E 0FB1              in R16,0xf
+ 0030                   .dbline -2
+ 0030           L6:
+ 0030                   .dbline 0 ; func end
+ 0030 0895              ret
+ 0032                   .dbsym r data 16 c
+ 0032                   .dbend
+ 0032                   .dbfunc e spiTransferWord _spiTransferWord fs
+ 0032           ;         rxData -> R10,R11
+ 0032           ;           data -> R20,R21
+                        .even
+ 0032           _spiTransferWord::
+ 0032 0E940000          xcall push_xgset300C
+ 0036 A801              movw R20,R16
+ 0038                   .dbline -1
+ 0038                   .dbline 114
+ 0038           ; }
+ 0038           ; 
+ 0038           ; u16 spiTransferWord(u16 data)
+ 0038           ; {
+ 0038                   .dbline 115
+ 0038           ;       u16 rxData = 0;
+ 0038                   .dbline 118
+ 0038           ; 
+ 0038           ;       // send MS byte of given data
+ 0038           ;       rxData = (spiTransferByte((data>>8) & 0x00FF))<<8;
+ 0038 8A01              movw R16,R20
+ 003A 012F              mov R16,R17
+ 003C 1127              clr R17
+ 003E 1070              andi R17,0
+ 0040 F3DF              xcall _spiTransferByte
+ 0042 A02E              mov R10,R16
+ 0044 BB24              clr R11
+ 0046 BA2C              mov R11,R10
+ 0048 AA24              clr R10
+ 004A                   .dbline 120
+ 004A           ;       // send LS byte of given data
+ 004A           ;       rxData |= (spiTransferByte(data & 0x00FF));
+ 004A 8A01              movw R16,R20
+ 004C 1070              andi R17,0
+ 004E ECDF              xcall _spiTransferByte
+ 0050 202E              mov R2,R16
+ 0052 3324              clr R3
+ 0054 A228              or R10,R2
+ 0056 B328              or R11,R3
+ 0058                   .dbline 123
+ 0058           ; 
+ 0058           ;       // return the received data
+ 0058           ;       return rxData;
+ 0058 8501              movw R16,R10
+ 005A                   .dbline -2
+ 005A           L10:
+ 005A                   .dbline 0 ; func end
+ 005A 0C940000          xjmp pop_xgset300C
+ 005E                   .dbsym r rxData 10 s
+ 005E                   .dbsym r data 20 s
+ 005E                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\WRSD\spi.c
+ 0000           _spiTransferComplete::
+ 0000                   .blkb 1
+ 0001                   .dbsym e spiTransferComplete _spiTransferComplete c
+ 0001           ; }

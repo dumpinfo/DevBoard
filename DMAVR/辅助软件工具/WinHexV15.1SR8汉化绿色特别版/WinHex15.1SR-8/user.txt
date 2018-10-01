@@ -1,0 +1,8 @@
+// WinHex license file
+
+Name: "Cun"
+Addr1: "ynafa@126.com"
+Addr2: "www.it228.com"
+Key1: AE4FBE8BEDE45A90EC63826472908F73
+Key2: 76F44EB542584BCBB97E1E191D8857A6
+Chksm: 5B

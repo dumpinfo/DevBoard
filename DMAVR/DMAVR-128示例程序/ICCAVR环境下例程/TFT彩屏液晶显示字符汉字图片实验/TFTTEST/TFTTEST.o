@@ -1,0 +1,287 @@
+XL
+H 4 areas 16 global symbols
+M TFTTEST.C
+S _McuInit Ref0000
+S _LCD_Init Ref0000
+S _LCD_MM Ref0000
+S _LCD_test Ref0000
+S _LCD_ph Ref0000
+S _DisplayGB2312 Ref0000
+S _LCD_clear Ref0000
+S _DisplayString Ref0000
+S _DisplayChar Ref0000
+A text size 24E flags 0
+dbfile E:\DMAVR-~3\TFTTEST\TFTTEST.C
+dbfile F:\PROGRA~1\iccavr\include\delay.h
+dbfunc e delay_1us 0 fV
+dbline FFFFFFFF 0
+dbline 14 0
+dbline 15 0
+dbline 16 2
+dbline 17 4
+dbline 18 6
+dbline 19 8
+dbline 1A A
+dbline FFFFFFFE C
+dbline 0 C
+dbfunc e delay_3us E fV
+dbline FFFFFFFF E
+dbline 1E E
+dbline 20 E
+dbline 21 10
+dbline 22 12
+dbline 23 14
+dbline 24 16
+dbline 25 18
+dbline 26 1A
+dbline 27 1C
+dbline 28 1E
+dbline 29 20
+dbline 2A 22
+dbline 2B 24
+dbline 2C 26
+dbline 2D 28
+dbline 2E 2A
+dbline 2F 2C
+dbline 30 2E
+dbline 31 30
+dbline 32 32
+dbline 33 34
+dbline 34 36
+dbline FFFFFFFE 38
+dbline 0 38
+dbfunc e delay_10us 3A fV
+dbline FFFFFFFF 3A
+dbline 38 3A
+dbline 39 3A
+dbline 3A 3C
+dbline 3B 3E
+dbline FFFFFFFE 3E
+dbline 0 3E
+dbfunc e delay_50us 40 fV
+dbline FFFFFFFF 40
+dbline 3F 40
+dbline 40 40
+dbline 41 42
+dbline 42 44
+dbline 43 46
+dbline FFFFFFFE 46
+dbline 0 46
+dbfunc e delay_100us 48 fV
+dbline FFFFFFFF 48
+dbline 46 48
+dbline 47 48
+dbline 48 4A
+dbline FFFFFFFE 4A
+dbline 0 4A
+dbfunc e delay_n100us 4C fV
+dbsym r n100us 14 c
+dbline FFFFFFFF 50
+dbline 4B 50
+dbline 4D 52
+dbline 4C 54
+dbline FFFFFFFE 5E
+dbline 0 5E
+dbfunc e delay_1ms 62 fV
+dbline FFFFFFFF 62
+dbline 59 62
+dbline 5A 62
+dbline 5B 64
+dbline 5C 66
+dbline 5D 68
+dbline 5E 6A
+dbline 5F 6C
+dbline 60 6E
+dbline 61 70
+dbline 62 72
+dbline 63 74
+dbline FFFFFFFE 74
+dbline 0 74
+dbfunc e delay_nms 76 fV
+dbsym r nms 14 i
+dbline FFFFFFFF 7C
+dbline 6D 7C
+dbline 6F 7E
+dbline 6E 80
+dbline FFFFFFFE 8E
+dbline 0 8E
+dbfunc e delay_ns 94 fV
+dbsym r ns 14 c
+dbline FFFFFFFF 98
+dbline 72 98
+dbline 74 9A
+dbline 73 A0
+dbline FFFFFFFE AA
+dbline 0 AA
+dbfile E:\DMAVR-~3\TFTTEST\TFTTEST.C
+dbfunc e DisplayData AE fV
+dbline FFFFFFFF B0
+dbline 17 B0
+dbline 18 B0
+dbline 19 C4
+dbline 1A D8
+dbline 1B EC
+dbline 1D 100
+dbline 1F 114
+dbline 20 128
+dbline 21 13C
+dbline 24 150
+dbline 25 164
+dbline 27 178
+dbline 28 18C
+dbline 29 1A0
+dbline FFFFFFFE 1B4
+dbline 0 1B4
+dbfunc e main 1B8 fV
+dbsym l i 5 c
+dbline FFFFFFFF 1BA
+dbline 33 1BA
+dbline 36 1BA
+dbline 37 1BE
+dbline 38 1C8
+dbline 39 1CC
+dbline 3C 1D6
+dbline 3D 1D6
+dbline 3E 1EC
+dbline 3F 202
+dbline 40 204
+dbline 41 20A
+dbline 42 210
+dbline 43 216
+dbline 44 21C
+dbline 45 220
+dbline 46 226
+dbline 47 22C
+dbline 48 230
+dbline 49 236
+dbline 4A 23C
+dbline 4B 240
+dbline 4E 248
+dbline 3B 248
+dbline FFFFFFFE 24A
+dbline 0 24A
+S _main Def01B8
+S _delay_10us Def003A
+S _delay_50us Def0040
+S _delay_nms Def0076
+S _delay_100us Def0048
+S _delay_ns Def0094
+S _DisplayData Def00AE
+S _delay_n100us Def004C
+S _delay_1ms Def0062
+S _delay_1us Def0000
+S _delay_3us Def000E
+A bss size 2 flags 20
+dbfile E:\DMAVR-~3\TFTTEST\TFTTEST.C
+dbfile F:\PROGRA~1\iccavr\include\TFT_main.h
+dbsym e postion_y 0 c
+dbsym e postion_x 1 c
+S _postion_x Def0001
+S _postion_y Def0000
+A data size 1C flags 20
+dbfile F:\PROGRA~1\iccavr\include\TFT_main.h
+A idata size 1C flags 0
+T 00 00 00 00 00 00 00 00 00 00 00 00 00 00 08 95
+R 00 00 00 00
+T 0E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 1C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 2A 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 38 00 08 95
+R 00 00 00 00
+T 3A 00 E9 DF E8 DF E7 CF
+R 00 00 00 00
+T 40 00 FC DF FB DF FA DF F9 CF
+R 00 00 00 00
+T 48 00 FB DF FA CF
+R 00 00 00 00
+T 4C 00 4A 93 40 2F 01 C0 FA DF 24 2E 33 24 41 50
+R 00 00 00 00
+T 5A 00 22 20 D1 F7 49 91 08 95
+R 00 00 00 00
+T 62 00 F2 DF F1 DF F0 DF EF DF EE DF ED DF EC DF
+R 00 00 00 00
+T 70 00 EB DF EA DF E9 CF
+R 00 00 00 00
+T 76 00 4A 93 5A 93 A8 01 01 C0 F1 DF 1A 01 41 50
+R 00 00 00 00
+T 84 00 50 40 22 20 D1 F7 33 20 C1 F7 59 91 49 91
+R 00 00 00 00
+T 92 00 08 95
+R 00 00 00 00
+T 94 00 4A 93 40 2F 03 C0 08 EE 13 E0 EB DF 24 2E
+R 00 00 00 00
+T A2 00 33 24 41 50 22 20 C1 F7 49 91 08 95
+R 00 00 00 00
+T AE 00 24 97 8E EE 9E E0 9B 83 8A 83 84 E0 88 83
+R 00 00 00 00
+T BC 00 22 27 02 E3 0E 94 00 00 8E EE 9E E0 9B 83
+R 00 00 00 00 12 08 08 00
+T CA 00 8A 83 84 E0 88 83 21 E0 00 E3 0E 94 00 00
+R 00 00 00 00 12 0E 08 00
+T D8 00 8E EE 9E E0 9B 83 8A 83 84 E0 88 83 22 E0
+R 00 00 00 00
+T E6 00 01 E3 0E 94 00 00 8E EE 9E E0 9B 83 8A 83
+R 00 00 00 00 12 06 08 00
+T F4 00 84 E0 88 83 23 E0 00 E3 0E 94 00 00 8E EE
+R 00 00 00 00 12 0C 08 00
+T 02 01 9E E0 9B 83 8A 83 84 E0 88 83 24 E0 0F E2
+R 00 00 00 00
+T 10 01 0E 94 00 00 8E EE 9E E0 9B 83 8A 83 84 E0
+R 00 00 00 00 12 04 08 00
+T 1E 01 88 83 25 E0 00 E3 0E 94 00 00 8E EE 9E E0
+R 00 00 00 00 12 0A 08 00
+T 2C 01 9B 83 8A 83 84 E0 88 83 26 E0 01 E3
+R 00 00 00 00
+T 38 01 0E 94 00 00 8E EE 9E E0 9B 83 8A 83 84 E0
+R 00 00 00 00 12 04 08 00
+T 46 01 88 83 27 E0 0F E2 0E 94 00 00 8E EE 9E E0
+R 00 00 00 00 12 0A 08 00
+T 54 01 9B 83 8A 83 84 E0 88 83 28 E0 02 E3
+R 00 00 00 00
+T 60 01 0E 94 00 00 8E EE 9E E0 9B 83 8A 83 84 E0
+R 00 00 00 00 12 04 08 00
+T 6E 01 88 83 29 E0 09 E3 0E 94 00 00 80 E0 90 EA
+R 00 00 00 00 12 0A 08 00
+T 7C 01 9B 83 8A 83 84 E0 88 83 25 E0 06 E0
+R 00 00 00 00
+T 88 01 0E 94 00 00 80 E0 90 EA 9B 83 8A 83 84 E0
+R 00 00 00 00 12 04 05 00
+T 96 01 88 83 26 E0 07 E0 0E 94 00 00 80 E0 90 EA
+R 00 00 00 00 12 0A 05 00
+T A4 01 9B 83 8A 83 84 E0 88 83 27 E0 0C E0
+R 00 00 00 00
+T B0 01 0E 94 00 00 24 96 08 95
+R 00 00 00 00 12 04 05 00
+T B8 01 24 97 0E 94 00 00 80 91 65 00 80 61 80 93
+R 00 00 00 00 12 06 00 00
+T C6 01 65 00 0E 94 00 00 00 27 11 27 0E 94 00 00
+R 00 00 00 00 12 06 01 00 12 0E 06 00
+T D4 01 39 C0 8E EE 9E E0 9B 83 8A 83 81 E0 88 83
+R 00 00 00 00
+T E2 01 22 27 00 E0 10 E0
+R 00 00 00 00 20 04 02 00 0C 00 40 06 02 00 0C 00
+T E8 01 0E 94 00 00 8E EE 9E E0 9B 83 8A 83 82 E0
+R 00 00 00 00 12 04 07 00
+T F6 01 88 83 22 E0 00 E0 10 E0
+R 00 00 00 00 20 06 02 00 00 00 40 08 02 00 00 00
+T FE 01 0E 94 00 00 55 DF 08 EE 13 E0 36 DF 08 EE
+R 00 00 00 00 12 04 07 00
+T 0C 02 13 E0 33 DF 08 EE 13 E0 30 DF 08 EE 13 E0
+R 00 00 00 00
+T 1A 02 2D DF 0E 94 00 00 08 EE 13 E0 28 DF 08 EE
+R 00 00 00 00 12 06 04 00
+T 28 02 13 E0 25 DF 0E 94 00 00 08 EE 13 E0 20 DF
+R 00 00 00 00 12 08 02 00
+T 36 02 08 EE 13 E0 1D DF 0E 94 00 00 00 27 11 27
+R 00 00 00 00 12 0A 03 00
+T 44 02 0E 94 00 00 C6 CF 24 96 08 95
+R 00 00 00 00 12 04 06 00
+T 00 00 54 46 54 20 54 65 73 74 69 6E 67 00
+R 00 00 03 00
+T 0C 00 44 4D 41 56 52 2D 31 32 38 20 42 6F 61 72
+R 00 00 03 00
+T 1A 00 64 00
+R 00 00 03 00

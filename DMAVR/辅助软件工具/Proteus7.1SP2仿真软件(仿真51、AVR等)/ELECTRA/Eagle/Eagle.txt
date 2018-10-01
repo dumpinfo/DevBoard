@@ -1,0 +1,61 @@
+-----------------------------------------------------------------
+Cadsoft Eagle PCB interface to Electra
+Copyright (c) 2003-2006 by KONEKT SPRL, all rights reserved
+-----------------------------------------------------------------
+
+This interface is for Eagle v4.1
+
+Main features of the bi-directional interface:
+
+* GUI based routing strategy and rules constraints
+* User definable routing layers, preferred direction, layer type and usage cost
+* Reads native Eagle DRC rules from the DRU file
+* Supports Eagle Net classes with pre-defined width, clearance and drill size
+* Set clearance between object type of wire, via, pin, smd pad and board outline
+* Set wiring rules (via at smd, same net minimum gap, ...)
+* Fanout parameters
+* Max limits (bends, vias, crossings...)
+* Automatic save and restore of the defined rules
+* Handles Eagle restricted regions (wire and via keepouts)
+* Converts power planes for autorouting
+* Supports Eagle pre-routed wires and vias by protected them
+
+
+Translation from CadSoft/EagleTM to Electra Autorouter
+=======================================================
+
+
+1) Start EAGLE Layout Editor and load your board file. 
+
+2) Execute PCB_To_DSN.ulp either by typing in the RUN command in the command line of EAGLE Layout Editor, 
+or by selecting the icon ULP and choosing PCB_To_DSN.ulp in a dialog window presented. You can also assign a shortcut 
+under Options/Assign to run the script, the value assign to a key would be for example: 
+  
+	run <Electra_install_directory>\Eagle\PCB_To_DSN.ulp
+
+Note: PCB_To_DSN.ulp is located under the <Electra_install_directory>\Eagle\PCB_To_DSN.ulp 
+
+3) Choose the location on your hard disk, where the <board.dsn> file should be saved. 
+
+4) From the ELECTRA setup dialog, set the routing strategy and click OK when done.
+
+5) Start Electra, load the <board.dsn>, you are now ready to autoroute your board. 
+
+
+
+Translation from Electra to CadSoft/EagleTM
+===========================================
+
+
+1) From Electra, invoke the menu File / Export / Script..., this will generate a script file with the routed wires and vias. 
+Choose the location on your hard disk, where the <board.scr> file should be saved. 
+
+2) In the EAGLE Layout Editor, execute <board.scr> file either by typing in the SCR command in the command line 
+of EAGLE Layout Editor, or by selecting the icon SCR and choosing <board.scr> in a dialog window presented. 
+
+
+Note: To invoke PCB_To_DSN.ulp from the Eagle control panel, you just need to copy PCB_To_DSN.ulp to 
+the <Eagle_install_directory>\ulp folder.
+
+
+

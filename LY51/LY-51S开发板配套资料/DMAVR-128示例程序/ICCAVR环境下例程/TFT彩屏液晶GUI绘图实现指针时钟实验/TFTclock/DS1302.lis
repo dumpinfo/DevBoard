@@ -1,0 +1,491 @@
+                        .module DS1302.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+ 0000           _time_buf::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 2010              .byte 32,16
+                        .area data(ram, con, rel)
+ 0002                   .dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+ 0002                   .blkb 2
+                        .area idata
+ 0002 0201              .byte 2,1
+                        .area data(ram, con, rel)
+ 0004                   .dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+ 0004                   .blkb 2
+                        .area idata
+ 0004 A322              .byte 163,34
+                        .area data(ram, con, rel)
+ 0006                   .dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+ 0006                   .blkb 2
+                        .area idata
+ 0006 0001              .byte 0,1
+                        .area data(ram, con, rel)
+ 0008                   .dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+ 0008                   .dbsym e time_buf _time_buf A[8:8]c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\TFTclock\DS1302.c
+ 0000                   .dbfunc e ds1302_write_byte _ds1302_write_byte fV
+ 0000           ;              i -> R20
+ 0000           ;              d -> R18
+ 0000           ;           addr -> R16
+                        .even
+ 0000           _ds1302_write_byte::
+ 0000 4A93              st -y,R20
+ 0002                   .dbline -1
+ 0002                   .dbline 16
+ 0002           ; //DMAVR-128的DS1302实时时钟芯片驱动程序
+ 0002           ; //编译环境 AVR Studio 4.17/AVR GCC
+ 0002           ; //使用前请通过修改time_buf[8]来设置当前启动日期
+ 0002           ; //当前设置2010-01-29 10：48 上午 周五
+ 0002           ; //0xb0表示12小时制，下午，当前时间的小时数为10，具体位的意义参考DS1302的数据手册
+ 0002           ; 
+ 0002           ; 
+ 0002           ; #include  <DS1302.h>
+ 0002           ; 
+ 0002           ; unsigned char time_buf[8] = {0x20,0x10,0x02,0x01,0xa3,0x22,0x00,0x01};  //12小时制，要写下午还是上午
+ 0002           ; 
+ 0002           ; //***********************************************************************
+ 0002           ; //向DS1302写入一字节数据
+ 0002           ; //***********************************************************************
+ 0002           ; void ds1302_write_byte(unsigned char addr, unsigned char d) 
+ 0002           ; {
+ 0002                   .dbline 19
+ 0002           ; 
+ 0002           ;       unsigned char i;
+ 0002           ;       RST_SET;                                        //启动DS1302总线
+ 0002 1F9A              sbi 0x3,7
+ 0004                   .dbline 22
+ 0004           ;       
+ 0004           ;                                                       //写入目标地址：addr
+ 0004           ;       IO_OUT;
+ 0004 169A              sbi 0x2,6
+ 0006                   .dbline 23
+ 0006           ;       addr = addr & 0xFE;                            //最低位置零
+ 0006 0E7F              andi R16,254
+ 0008                   .dbline 24
+ 0008           ;       for (i = 0; i < 8; i ++) {
+ 0008 4427              clr R20
+ 000A 09C0              xjmp L5
+ 000C           L2:
+ 000C                   .dbline 24
+ 000C                   .dbline 25
+ 000C           ;               if (addr & 0x01) {
+ 000C 00FF              sbrs R16,0
+ 000E 02C0              rjmp L6
+ 0010           X0:
+ 0010                   .dbline 25
+ 0010                   .dbline 26
+ 0010           ;                       IO_SET;
+ 0010 1E9A              sbi 0x3,6
+ 0012                   .dbline 27
+ 0012           ;                       }
+ 0012 01C0              xjmp L7
+ 0014           L6:
+ 0014                   .dbline 28
+ 0014           ;               else {
+ 0014                   .dbline 29
+ 0014           ;                       IO_CLR;
+ 0014 1E98              cbi 0x3,6
+ 0016                   .dbline 30
+ 0016           ;                       }
+ 0016           L7:
+ 0016                   .dbline 31
+ 0016           ;               SCK_SET;
+ 0016 1D9A              sbi 0x3,5
+ 0018                   .dbline 32
+ 0018           ;               SCK_CLR;
+ 0018 1D98              cbi 0x3,5
+ 001A                   .dbline 33
+ 001A           ;               addr = addr >> 1;
+ 001A 0695              lsr R16
+ 001C                   .dbline 34
+ 001C           ;               }
+ 001C           L3:
+ 001C                   .dbline 24
+ 001C 4395              inc R20
+ 001E           L5:
+ 001E                   .dbline 24
+ 001E 4830              cpi R20,8
+ 0020 A8F3              brlo L2
+ 0022           X1:
+ 0022                   .dbline 37
+ 0022           ;       
+ 0022           ;                                                     //写入数据：d
+ 0022           ;       IO_OUT;
+ 0022 169A              sbi 0x2,6
+ 0024                   .dbline 38
+ 0024           ;       for (i = 0; i < 8; i ++) {
+ 0024 4427              clr R20
+ 0026 09C0              xjmp L11
+ 0028           L8:
+ 0028                   .dbline 38
+ 0028                   .dbline 39
+ 0028           ;               if (d & 0x01) {
+ 0028 20FF              sbrs R18,0
+ 002A 02C0              rjmp L12
+ 002C           X2:
+ 002C                   .dbline 39
+ 002C                   .dbline 40
+ 002C           ;                       IO_SET;
+ 002C 1E9A              sbi 0x3,6
+ 002E                   .dbline 41
+ 002E           ;                       }
+ 002E 01C0              xjmp L13
+ 0030           L12:
+ 0030                   .dbline 42
+ 0030           ;               else {
+ 0030                   .dbline 43
+ 0030           ;                       IO_CLR;
+ 0030 1E98              cbi 0x3,6
+ 0032                   .dbline 44
+ 0032           ;                       }
+ 0032           L13:
+ 0032                   .dbline 45
+ 0032           ;               SCK_SET;
+ 0032 1D9A              sbi 0x3,5
+ 0034                   .dbline 46
+ 0034           ;               SCK_CLR;
+ 0034 1D98              cbi 0x3,5
+ 0036                   .dbline 47
+ 0036           ;               d = d >> 1;
+ 0036 2695              lsr R18
+ 0038                   .dbline 48
+ 0038           ;               }
+ 0038           L9:
+ 0038                   .dbline 38
+ 0038 4395              inc R20
+ 003A           L11:
+ 003A                   .dbline 38
+ 003A 4830              cpi R20,8
+ 003C A8F3              brlo L8
+ 003E           X3:
+ 003E                   .dbline 49
+ 003E           ;       RST_CLR;                                        //停止DS1302总线
+ 003E 1F98              cbi 0x3,7
+ 0040                   .dbline -2
+ 0040           L1:
+ 0040                   .dbline 0 ; func end
+ 0040 4991              ld R20,y+
+ 0042 0895              ret
+ 0044                   .dbsym r i 20 c
+ 0044                   .dbsym r d 18 c
+ 0044                   .dbsym r addr 16 c
+ 0044                   .dbend
+ 0044                   .dbfunc e ds1302_read_byte _ds1302_read_byte fc
+ 0044           ;           temp -> R20
+ 0044           ;              i -> R22
+ 0044           ;           addr -> R16
+                        .even
+ 0044           _ds1302_read_byte::
+ 0044 4A93              st -y,R20
+ 0046 6A93              st -y,R22
+ 0048                   .dbline -1
+ 0048                   .dbline 55
+ 0048           ; }
+ 0048           ; //***********************************************************************
+ 0048           ; //                   从DS1302读出一字节数据
+ 0048           ; //***********************************************************************
+ 0048           ; unsigned char ds1302_read_byte(unsigned char addr)
+ 0048           ;  {
+ 0048                   .dbline 59
+ 0048           ; 
+ 0048           ;       unsigned char i;
+ 0048           ;       unsigned char temp;
+ 0048           ;       RST_SET;                                        //启动DS1302总线
+ 0048 1F9A              sbi 0x3,7
+ 004A                   .dbline 62
+ 004A           ; 
+ 004A           ;                                                       //写入目标地址：addr
+ 004A           ;       IO_OUT;
+ 004A 169A              sbi 0x2,6
+ 004C                   .dbline 63
+ 004C           ;       addr = addr | 0x01;                             //最低位置高
+ 004C 0160              ori R16,1
+ 004E                   .dbline 64
+ 004E           ;       for (i = 0; i < 8; i ++) {
+ 004E 6627              clr R22
+ 0050 09C0              xjmp L18
+ 0052           L15:
+ 0052                   .dbline 64
+ 0052                   .dbline 65
+ 0052           ;               if (addr & 0x01) {
+ 0052 00FF              sbrs R16,0
+ 0054 02C0              rjmp L19
+ 0056           X4:
+ 0056                   .dbline 65
+ 0056                   .dbline 66
+ 0056           ;                       IO_SET;
+ 0056 1E9A              sbi 0x3,6
+ 0058                   .dbline 67
+ 0058           ;                       }
+ 0058 01C0              xjmp L20
+ 005A           L19:
+ 005A                   .dbline 68
+ 005A           ;               else {
+ 005A                   .dbline 69
+ 005A           ;                       IO_CLR;
+ 005A 1E98              cbi 0x3,6
+ 005C                   .dbline 70
+ 005C           ;                       }
+ 005C           L20:
+ 005C                   .dbline 71
+ 005C           ;               SCK_SET;
+ 005C 1D9A              sbi 0x3,5
+ 005E                   .dbline 72
+ 005E           ;               SCK_CLR;
+ 005E 1D98              cbi 0x3,5
+ 0060                   .dbline 73
+ 0060           ;               addr = addr >> 1;
+ 0060 0695              lsr R16
+ 0062                   .dbline 74
+ 0062           ;               }
+ 0062           L16:
+ 0062                   .dbline 64
+ 0062 6395              inc R22
+ 0064           L18:
+ 0064                   .dbline 64
+ 0064 6830              cpi R22,8
+ 0066 A8F3              brlo L15
+ 0068           X5:
+ 0068                   .dbline 77
+ 0068           ;       
+ 0068           ;       /*输出数据：temp*/
+ 0068           ;       IO_IN;
+ 0068 1698              cbi 0x2,6
+ 006A                   .dbline 78
+ 006A           ;       for (i = 0; i < 8; i ++) {
+ 006A 6627              clr R22
+ 006C 09C0              xjmp L24
+ 006E           L21:
+ 006E                   .dbline 78
+ 006E                   .dbline 79
+ 006E           ;               temp = temp >> 1;
+ 006E 4695              lsr R20
+ 0070                   .dbline 80
+ 0070           ;               if (IO_R) {
+ 0070 0E9B              sbis 0x1,6
+ 0072 02C0              rjmp L25
+ 0074           X6:
+ 0074                   .dbline 80
+ 0074                   .dbline 81
+ 0074           ;                       temp |= 0x80;
+ 0074 4068              ori R20,128
+ 0076                   .dbline 82
+ 0076           ;                       }
+ 0076 01C0              xjmp L26
+ 0078           L25:
+ 0078                   .dbline 83
+ 0078           ;               else {
+ 0078                   .dbline 84
+ 0078           ;                       temp &= 0x7F;
+ 0078 4F77              andi R20,127
+ 007A                   .dbline 85
+ 007A           ;                       }
+ 007A           L26:
+ 007A                   .dbline 86
+ 007A           ;               SCK_SET;
+ 007A 1D9A              sbi 0x3,5
+ 007C                   .dbline 87
+ 007C           ;               SCK_CLR;
+ 007C 1D98              cbi 0x3,5
+ 007E                   .dbline 88
+ 007E           ;               }
+ 007E           L22:
+ 007E                   .dbline 78
+ 007E 6395              inc R22
+ 0080           L24:
+ 0080                   .dbline 78
+ 0080 6830              cpi R22,8
+ 0082 A8F3              brlo L21
+ 0084           X7:
+ 0084                   .dbline 90
+ 0084           ;       
+ 0084           ;       RST_CLR;                                        //停止DS1302总线
+ 0084 1F98              cbi 0x3,7
+ 0086                   .dbline 91
+ 0086           ;       return temp;
+ 0086 042F              mov R16,R20
+ 0088                   .dbline -2
+ 0088           L14:
+ 0088                   .dbline 0 ; func end
+ 0088 6991              ld R22,y+
+ 008A 4991              ld R20,y+
+ 008C 0895              ret
+ 008E                   .dbsym r temp 20 c
+ 008E                   .dbsym r i 22 c
+ 008E                   .dbsym r addr 16 c
+ 008E                   .dbend
+ 008E                   .dbfunc e ds1302_write_time _ds1302_write_time fV
+                        .even
+ 008E           _ds1302_write_time::
+ 008E                   .dbline -1
+ 008E                   .dbline 99
+ 008E           ; }
+ 008E           ; 
+ 008E           ; //***********************************************************************
+ 008E           ; //                   向DS302写入时钟数据
+ 008E           ; //***********************************************************************
+ 008E           ; 
+ 008E           ; void ds1302_write_time(void)
+ 008E           ;  {
+ 008E                   .dbline 101
+ 008E           ; 
+ 008E           ;       ds1302_write_byte(ds1302_control_add,0x00);             //关闭写保护 
+ 008E 2227              clr R18
+ 0090 0EE8              ldi R16,142
+ 0092 B6DF              xcall _ds1302_write_byte
+ 0094                   .dbline 102
+ 0094           ;       ds1302_write_byte(ds1302_sec_add,0x80);                 //暂停 
+ 0094 20E8              ldi R18,128
+ 0096 00E8              ldi R16,128
+ 0098 B3DF              xcall _ds1302_write_byte
+ 009A                   .dbline 104
+ 009A           ;       //ds1302_write_byte(ds1302_charger_add,0xa9);           //涓流充电 
+ 009A           ;       ds1302_write_byte(ds1302_year_add,time_buf[1]);         //年 
+ 009A 20910100          lds R18,_time_buf+1
+ 009E 0CE8              ldi R16,140
+ 00A0 AFDF              xcall _ds1302_write_byte
+ 00A2                   .dbline 105
+ 00A2           ;       ds1302_write_byte(ds1302_month_add,time_buf[2]);        //月 
+ 00A2 20910200          lds R18,_time_buf+2
+ 00A6 08E8              ldi R16,136
+ 00A8 ABDF              xcall _ds1302_write_byte
+ 00AA                   .dbline 106
+ 00AA           ;       ds1302_write_byte(ds1302_date_add,time_buf[3]);         //日 
+ 00AA 20910300          lds R18,_time_buf+3
+ 00AE 06E8              ldi R16,134
+ 00B0 A7DF              xcall _ds1302_write_byte
+ 00B2                   .dbline 107
+ 00B2           ;       ds1302_write_byte(ds1302_day_add,time_buf[7]);          //周 
+ 00B2 20910700          lds R18,_time_buf+7
+ 00B6 0AE8              ldi R16,138
+ 00B8 A3DF              xcall _ds1302_write_byte
+ 00BA                   .dbline 108
+ 00BA           ;       ds1302_write_byte(ds1302_hr_add,time_buf[4]);           //时 
+ 00BA 20910400          lds R18,_time_buf+4
+ 00BE 04E8              ldi R16,132
+ 00C0 9FDF              xcall _ds1302_write_byte
+ 00C2                   .dbline 109
+ 00C2           ;       ds1302_write_byte(ds1302_min_add,time_buf[5]);          //分
+ 00C2 20910500          lds R18,_time_buf+5
+ 00C6 02E8              ldi R16,130
+ 00C8 9BDF              xcall _ds1302_write_byte
+ 00CA                   .dbline 110
+ 00CA           ;       ds1302_write_byte(ds1302_sec_add,time_buf[6]);          //秒
+ 00CA 20910600          lds R18,_time_buf+6
+ 00CE 00E8              ldi R16,128
+ 00D0 97DF              xcall _ds1302_write_byte
+ 00D2                   .dbline 111
+ 00D2           ;       ds1302_write_byte(ds1302_day_add,time_buf[7]);          //周 
+ 00D2 20910700          lds R18,_time_buf+7
+ 00D6 0AE8              ldi R16,138
+ 00D8 93DF              xcall _ds1302_write_byte
+ 00DA                   .dbline 112
+ 00DA           ;       ds1302_write_byte(ds1302_control_add,0x80);             //打开写保护 
+ 00DA 20E8              ldi R18,128
+ 00DC 0EE8              ldi R16,142
+ 00DE                   .dbline -2
+ 00DE           L27:
+ 00DE                   .dbline 0 ; func end
+ 00DE 90CF              xjmp _ds1302_write_byte
+ 00E0                   .dbend
+ 00E0                   .dbfunc e ds1302_read_time _ds1302_read_time fV
+                        .even
+ 00E0           _ds1302_read_time::
+ 00E0 AA92              st -y,R10
+ 00E2 4A93              st -y,R20
+ 00E4                   .dbline -1
+ 00E4                   .dbline 120
+ 00E4           ; }
+ 00E4           ; 
+ 00E4           ; //***********************************************************************
+ 00E4           ; //                     从DS302读出时钟数据
+ 00E4           ; //***********************************************************************
+ 00E4           ; 
+ 00E4           ; void ds1302_read_time(void)  
+ 00E4           ; { 
+ 00E4                   .dbline 122
+ 00E4           ; 
+ 00E4           ;       time_buf[1]=ds1302_read_byte(ds1302_year_add);          //年 
+ 00E4 0CE8              ldi R16,140
+ 00E6 AEDF              xcall _ds1302_read_byte
+ 00E8 00930100          sts _time_buf+1,R16
+ 00EC                   .dbline 123
+ 00EC           ;       time_buf[2]=ds1302_read_byte(ds1302_month_add);         //月 
+ 00EC 08E8              ldi R16,136
+ 00EE AADF              xcall _ds1302_read_byte
+ 00F0 00930200          sts _time_buf+2,R16
+ 00F4                   .dbline 124
+ 00F4           ;       time_buf[3]=ds1302_read_byte(ds1302_date_add);          //日 
+ 00F4 06E8              ldi R16,134
+ 00F6 A6DF              xcall _ds1302_read_byte
+ 00F8 A02E              mov R10,R16
+ 00FA A0920300          sts _time_buf+3,R10
+ 00FE                   .dbline 125
+ 00FE           ;       time_buf[4]=ds1302_read_byte(ds1302_hr_add);            //时 
+ 00FE 04E8              ldi R16,132
+ 0100 A1DF              xcall _ds1302_read_byte
+ 0102 A02E              mov R10,R16
+ 0104 A0920400          sts _time_buf+4,R10
+ 0108                   .dbline 126
+ 0108           ;       time_buf[5]=ds1302_read_byte(ds1302_min_add);           //分 
+ 0108 02E8              ldi R16,130
+ 010A 9CDF              xcall _ds1302_read_byte
+ 010C A02E              mov R10,R16
+ 010E A0920500          sts _time_buf+5,R10
+ 0112                   .dbline 127
+ 0112           ;       time_buf[6]=(ds1302_read_byte(ds1302_sec_add))&0x7F;//秒 
+ 0112 00E8              ldi R16,128
+ 0114 97DF              xcall _ds1302_read_byte
+ 0116 402F              mov R20,R16
+ 0118 842F              mov R24,R20
+ 011A 8F77              andi R24,127
+ 011C 80930600          sts _time_buf+6,R24
+ 0120                   .dbline 128
+ 0120           ;       time_buf[7]=ds1302_read_byte(ds1302_day_add);           //周 
+ 0120 0AE8              ldi R16,138
+ 0122 90DF              xcall _ds1302_read_byte
+ 0124 A02E              mov R10,R16
+ 0126 A0920700          sts _time_buf+7,R10
+ 012A                   .dbline -2
+ 012A           L36:
+ 012A                   .dbline 0 ; func end
+ 012A 4991              ld R20,y+
+ 012C A990              ld R10,y+
+ 012E 0895              ret
+ 0130                   .dbend
+ 0130                   .dbfunc e ds1302_init _ds1302_init fV
+                        .even
+ 0130           _ds1302_init::
+ 0130                   .dbline -1
+ 0130                   .dbline 136
+ 0130           ; }
+ 0130           ; 
+ 0130           ; //***********************************************************************
+ 0130           ; //               DS302初始化函数
+ 0130           ; //***********************************************************************
+ 0130           ; 
+ 0130           ; void ds1302_init(void) 
+ 0130           ; {
+ 0130                   .dbline 138
+ 0130           ;       
+ 0130           ;       RST_CLR;                        //RST脚置低
+ 0130 1F98              cbi 0x3,7
+ 0132                   .dbline 139
+ 0132           ;       SCK_CLR;                        //SCK脚置低
+ 0132 1D98              cbi 0x3,5
+ 0134                   .dbline 140
+ 0134           ;       RST_OUT;                        //RST脚设置为输出
+ 0134 179A              sbi 0x2,7
+ 0136                   .dbline 141
+ 0136           ;       SCK_OUT;                        //SCK脚设置为输出
+ 0136 159A              sbi 0x2,5
+ 0138                   .dbline -2
+ 0138           L44:
+ 0138                   .dbline 0 ; func end
+ 0138 0895              ret
+ 013A                   .dbend
+ 013A           ; }

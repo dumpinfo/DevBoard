@@ -1,0 +1,83 @@
+XL
+H 2 areas 8 global symbols
+M SPI.c
+S push_xgset300C Ref0000
+S pop_xgset300C Ref0000
+A text size 5E flags 0
+dbfile ..\..\DMAVR-~3\FAT-NE~1\SPI.c
+dbfile E:\DMAVR-~3\FAT-NE~1\SPI.c
+dbfunc e spiInit 0 fV
+dbline FFFFFFFF 0
+dbline 32 0
+dbline 35 0
+dbline 36 2
+dbline 37 4
+dbline 38 6
+dbline 39 8
+dbline 3A A
+dbline 3C C
+dbline 3E 10
+dbline FFFFFFFE 16
+dbline 0 16
+dbfunc e spiLow 18 fV
+dbline FFFFFFFF 18
+dbline 4A 18
+dbline 4B 18
+dbline 4C 1C
+dbline FFFFFFFE 1E
+dbline 0 1E
+dbfunc e spiHigh 20 fV
+dbline FFFFFFFF 20
+dbline 56 20
+dbline 57 20
+dbline 58 24
+dbline FFFFFFFE 26
+dbline 0 26
+dbfunc e spiSendByte 28 fc
+dbsym r data 10 c
+dbline FFFFFFFF 28
+dbline 61 28
+dbline 67 28
+dbline 68 2A
+dbline 68 2A
+dbline 6A 2E
+dbline FFFFFFFE 30
+dbline 0 30
+dbfunc e spiTransferWord 32 fi
+dbsym r rxData A i
+dbsym r data 14 i
+dbline FFFFFFFF 38
+dbline 74 38
+dbline 75 38
+dbline 77 38
+dbline 78 4A
+dbline 79 58
+dbline FFFFFFFE 5A
+dbline 0 5A
+S _spiHigh Def0020
+S _spiInit Def0000
+S _spiTransferWord Def0032
+S _spiSendByte Def0028
+S _spiLow Def0018
+A bss size 1 flags 20
+dbfile E:\DMAVR-~3\FAT-NE~1\SPI.c
+dbsym e spiTransferComplete 0 c
+S _spiTransferComplete Def0000
+T 00 00 C1 9A B9 9A BB 98 BA 9A B8 9A C0 9A 82 E5
+R 00 00 00 00
+T 0E 00 8D B9 81 E0 80 93 00 00 08 95
+R 00 00 00 00 00 08 01 00
+T 18 00 82 E5 8D B9 70 98 08 95
+R 00 00 00 00
+T 20 00 81 E5 8D B9 70 9A 08 95
+R 00 00 00 00
+T 28 00 0F B9 77 9B FE CF 0F B1 08 95
+R 00 00 00 00
+T 32 00 0E 94 00 00 A8 01 8A 01 01 2F 11 27 10 70
+R 00 00 00 00 12 04 00 00
+T 40 00 F3 DF A0 2E BB 24 BA 2C AA 24 8A 01 10 70
+R 00 00 00 00
+T 4E 00 EC DF 20 2E 33 24 A2 28 B3 28 85 01
+R 00 00 00 00
+T 5A 00 0C 94 00 00
+R 00 00 00 00 12 04 01 00

@@ -1,0 +1,5 @@
+"TFT_test.obj",
+"qqp.obj",
+"mmp.obj" 
+TO "TFT_test" 
+RAMSIZE(256) 

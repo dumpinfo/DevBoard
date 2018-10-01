@@ -1,0 +1,82 @@
+XL
+H 2 areas 7 global symbols
+M spi.c
+S push_gset2 Ref0000
+S pop_gset2 Ref0000
+A text size 64 flags 0
+dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\spi.c
+dbfunc e spiInit 0 fV
+dbline FFFFFFFF 0
+dbline 24 0
+dbline 26 0
+dbline 27 2
+dbline 28 4
+dbline 29 6
+dbline 2A 8
+dbline 2B A
+dbline 2F C
+dbline 34 E
+dbline 35 10
+dbline 37 12
+dbline 39 14
+dbline 3B 16
+dbline 44 18
+dbline 45 18
+dbline FFFFFFFE 1E
+dbline 0 1E
+dbfunc e spiSendByte 20 fV
+dbsym r data 10 c
+dbline FFFFFFFF 20
+dbline 53 20
+dbline 59 20
+dbline 59 20
+dbline 5C 24
+dbline FFFFFFFE 26
+dbline 0 26
+dbfunc e spiTransferByte 28 fc
+dbsym r data 10 c
+dbline FFFFFFFF 28
+dbline 60 28
+dbline 69 28
+dbline 6B 2A
+dbline 6B 2A
+dbline 6E 2E
+dbline FFFFFFFE 30
+dbline 0 30
+dbfunc e spiTransferWord 32 fs
+dbsym r rxData 14 s
+dbsym r data 16 s
+dbline FFFFFFFF 38
+dbline 72 38
+dbline 73 38
+dbline 76 3C
+dbline 78 4E
+dbline 7B 5C
+dbline FFFFFFFE 5E
+dbline 0 62
+S _spiInit Def0000
+S _spiTransferByte Def0028
+S _spiTransferWord Def0032
+S _spiSendByte Def0020
+A bss size 1 flags 20
+dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\spi.c
+dbsym e spiTransferComplete 0 c
+S _spiTransferComplete Def0000
+T 00 00 C1 9A B9 9A BB 98 BA 9A B8 9A C0 9A 6C 9A
+R 00 00 00 00
+T 0E 00 68 98 69 9A 6B 98 6D 98 6E 9A 8F EF 80 93
+R 00 00 00 00
+T 1C 00 00 00 08 95
+R 00 00 00 00 00 02 01 00
+T 20 00 77 9B FE CF 0F B9 08 95
+R 00 00 00 00
+T 28 00 0F B9 77 9B FE CF 0F B1 08 95
+R 00 00 00 00
+T 32 00 0E 94 00 00 B8 01 44 27 55 27 8B 01 01 2F
+R 00 00 00 00 12 04 00 00
+T 40 00 11 27 10 70 F1 DF 40 2F 55 27 54 2F 44 27
+R 00 00 00 00
+T 4E 00 06 2F 10 70 EA DF 20 2E 33 24 42 29 53 29
+R 00 00 00 00
+T 5C 00 8A 01 0E 94 00 00 08 95
+R 00 00 00 00 12 06 01 00

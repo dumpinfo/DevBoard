@@ -1,0 +1,720 @@
+                        .module INTKEY.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\INTKEY\INTKEY.C
+ 0000                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 9
+ 0000           ; //********************************************************************
+ 0000           ; /*函 数 名：delay_us
+ 0000           ; 建立日期：2010年1月28日
+ 0000           ; 编译环境：ICCAVR7.16A
+ 0000           ; 函数作用：微秒级的延时程序
+ 0000           ; 说    明：7.3728M晶振下
+ 0000           ; ********************************************************************/
+ 0000           ; void delay_1us(void)                 //1us延时函数，不能连续调用， 
+ 0000           ; { 
+ 0000                   .dbline 10
+ 0000           ;    asm("nop");                       //1时钟周期
+ 0000 0000              nop
+ 0002                   .dbline 11
+ 0002           ;    asm("nop");
+ 0002 0000              nop
+ 0004                   .dbline 12
+ 0004           ;    asm("nop");
+ 0004 0000              nop
+ 0006                   .dbline 13
+ 0006           ;    asm("nop");
+ 0006 0000              nop
+ 0008                   .dbline 14
+ 0008           ;    asm("nop");                       //1T
+ 0008 0000              nop
+ 000A                   .dbline 15
+ 000A           ;    asm("nop");
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 19
+ 000E           ; 
+ 000E           ; }
+ 000E           ; void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+ 000E           ; { 
+ 000E                   .dbline 21
+ 000E           ;    
+ 000E           ;    asm("nop");
+ 000E 0000              nop
+ 0010                   .dbline 22
+ 0010           ;    asm("nop");
+ 0010 0000              nop
+ 0012                   .dbline 23
+ 0012           ;    asm("nop");                       
+ 0012 0000              nop
+ 0014                   .dbline 24
+ 0014           ;    asm("nop");
+ 0014 0000              nop
+ 0016                   .dbline 25
+ 0016           ;    asm("nop");
+ 0016 0000              nop
+ 0018                   .dbline 26
+ 0018           ;    asm("nop");
+ 0018 0000              nop
+ 001A                   .dbline 27
+ 001A           ;    asm("nop");                       
+ 001A 0000              nop
+ 001C                   .dbline 28
+ 001C           ;    asm("nop");
+ 001C 0000              nop
+ 001E                   .dbline 29
+ 001E           ;    asm("nop");
+ 001E 0000              nop
+ 0020                   .dbline 30
+ 0020           ;    asm("nop");
+ 0020 0000              nop
+ 0022                   .dbline 31
+ 0022           ;    asm("nop");                       
+ 0022 0000              nop
+ 0024                   .dbline 32
+ 0024           ;    asm("nop");
+ 0024 0000              nop
+ 0026                   .dbline 33
+ 0026           ;    asm("nop");
+ 0026 0000              nop
+ 0028                   .dbline 34
+ 0028           ;    asm("nop");
+ 0028 0000              nop
+ 002A                   .dbline 35
+ 002A           ;    asm("nop");                       
+ 002A 0000              nop
+ 002C                   .dbline 36
+ 002C           ;    asm("nop");
+ 002C 0000              nop
+ 002E                   .dbline 37
+ 002E           ;    asm("nop");
+ 002E 0000              nop
+ 0030                   .dbline 38
+ 0030           ;    asm("nop");
+ 0030 0000              nop
+ 0032                   .dbline 39
+ 0032           ;    asm("nop");
+ 0032 0000              nop
+ 0034                   .dbline 40
+ 0034           ;    asm("nop");
+ 0034 0000              nop
+ 0036                   .dbline 41
+ 0036           ;    asm("nop");                       
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 45
+ 003A           ; } 
+ 003A           ; 
+ 003A           ; void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+ 003A           ; {
+ 003A                   .dbline 46
+ 003A           ;    delay_3us();
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 47
+ 003C           ;    delay_3us(); 
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 48
+ 003E           ;    delay_3us();  
+ 003E                   .dbline -2
+ 003E           L3:
+ 003E                   .dbline 0 ; func end
+ 003E E7CF              xjmp _delay_3us
+ 0040                   .dbend
+ 0040                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0040           _delay_50us::
+ 0040                   .dbline -1
+ 0040                   .dbline 52
+ 0040           ; }
+ 0040           ;   
+ 0040           ; void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+ 0040           ; { 
+ 0040                   .dbline 53
+ 0040           ;    delay_10us();
+ 0040 FCDF              xcall _delay_10us
+ 0042                   .dbline 54
+ 0042           ;    delay_10us(); 
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 55
+ 0044           ;    delay_10us();
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 56
+ 0046           ;    delay_10us();
+ 0046                   .dbline -2
+ 0046           L4:
+ 0046                   .dbline 0 ; func end
+ 0046 F9CF              xjmp _delay_10us
+ 0048                   .dbend
+ 0048                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 0048           _delay_100us::
+ 0048                   .dbline -1
+ 0048                   .dbline 59
+ 0048           ; }
+ 0048           ; void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+ 0048           ; {
+ 0048                   .dbline 60
+ 0048           ;  delay_50us();
+ 0048 FBDF              xcall _delay_50us
+ 004A                   .dbline 61
+ 004A           ;  delay_50us();
+ 004A                   .dbline -2
+ 004A           L5:
+ 004A                   .dbline 0 ; func end
+ 004A FACF              xjmp _delay_50us
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_n100us _delay_n100us fV
+ 004C           ;         n100us -> R20
+                        .even
+ 004C           _delay_n100us::
+ 004C 4A93              st -y,R20
+ 004E 402F              mov R20,R16
+ 0050                   .dbline -1
+ 0050                   .dbline 64
+ 0050           ; }
+ 0050           ; void delay_n100us(unsigned char n100us)
+ 0050           ; {
+ 0050 01C0              xjmp L8
+ 0052           L7:
+ 0052                   .dbline 66
+ 0052           ;  while(n100us--)                          
+ 0052           ;  delay_100us();
+ 0052 FADF              xcall _delay_100us
+ 0054           L8:
+ 0054                   .dbline 65
+ 0054 242E              mov R2,R20
+ 0056 3324              clr R3
+ 0058 4150              subi R20,1
+ 005A 2220              tst R2
+ 005C D1F7              brne L7
+ 005E           X0:
+ 005E                   .dbline -2
+ 005E           L6:
+ 005E                   .dbline 0 ; func end
+ 005E 4991              ld R20,y+
+ 0060 0895              ret
+ 0062                   .dbsym r n100us 20 c
+ 0062                   .dbend
+ 0062                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 0062           _delay_1ms::
+ 0062                   .dbline -1
+ 0062                   .dbline 78
+ 0062           ; }
+ 0062           ; /*delay_n100us(2)        250us
+ 0062           ; delay_n100us(3)          360us
+ 0062           ; delay_n100us(4)          470us
+ 0062           ; delay_n100us(5)          580us
+ 0062           ; delay_n100us(6)          690us
+ 0062           ; delay_n100us(7)       800us
+ 0062           ; delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+ 0062           ; 
+ 0062           ; */
+ 0062           ; void delay_1ms()
+ 0062           ; {
+ 0062                   .dbline 79
+ 0062           ;  delay_100us();
+ 0062 F2DF              xcall _delay_100us
+ 0064                   .dbline 80
+ 0064           ;  delay_100us();
+ 0064 F1DF              xcall _delay_100us
+ 0066                   .dbline 81
+ 0066           ;  delay_100us();
+ 0066 F0DF              xcall _delay_100us
+ 0068                   .dbline 82
+ 0068           ;  delay_100us();
+ 0068 EFDF              xcall _delay_100us
+ 006A                   .dbline 83
+ 006A           ;  delay_100us();
+ 006A EEDF              xcall _delay_100us
+ 006C                   .dbline 84
+ 006C           ;  delay_100us();
+ 006C EDDF              xcall _delay_100us
+ 006E                   .dbline 85
+ 006E           ;  delay_100us();
+ 006E ECDF              xcall _delay_100us
+ 0070                   .dbline 86
+ 0070           ;  delay_100us();
+ 0070 EBDF              xcall _delay_100us
+ 0072                   .dbline 87
+ 0072           ;  delay_100us();
+ 0072 EADF              xcall _delay_100us
+ 0074                   .dbline 88
+ 0074           ;  delay_100us();
+ 0074                   .dbline -2
+ 0074           L10:
+ 0074                   .dbline 0 ; func end
+ 0074 E9CF              xjmp _delay_100us
+ 0076                   .dbend
+ 0076                   .dbfunc e delay_nms _delay_nms fV
+ 0076           ;            nms -> R20,R21
+                        .even
+ 0076           _delay_nms::
+ 0076 4A93              st -y,R20
+ 0078 5A93              st -y,R21
+ 007A A801              movw R20,R16
+ 007C                   .dbline -1
+ 007C                   .dbline 98
+ 007C           ; }
+ 007C           ; /********************************************************************
+ 007C           ; 函 数 名：Delay_ms
+ 007C           ; 建立日期：2010年1月28日
+ 007C           ; 修改日期：
+ 007C           ; 函数作用：毫秒级的精确延时程序
+ 007C           ; 说    明：
+ 007C           ; ********************************************************************/
+ 007C           ; void delay_nms(unsigned int nms)
+ 007C           ; {
+ 007C 01C0              xjmp L13
+ 007E           L12:
+ 007E                   .dbline 100
+ 007E           ;  while(nms--) 
+ 007E           ;  delay_1ms();
+ 007E F1DF              xcall _delay_1ms
+ 0080           L13:
+ 0080                   .dbline 99
+ 0080 1A01              movw R2,R20
+ 0082 4150              subi R20,1
+ 0084 5040              sbci R21,0
+ 0086 2220              tst R2
+ 0088 D1F7              brne L12
+ 008A 3320              tst R3
+ 008C C1F7              brne L12
+ 008E           X1:
+ 008E                   .dbline -2
+ 008E           L11:
+ 008E                   .dbline 0 ; func end
+ 008E 5991              ld R21,y+
+ 0090 4991              ld R20,y+
+ 0092 0895              ret
+ 0094                   .dbsym r nms 20 i
+ 0094                   .dbend
+ 0094                   .dbfunc e delay_ns _delay_ns fV
+ 0094           ;             ns -> R20
+                        .even
+ 0094           _delay_ns::
+ 0094 4A93              st -y,R20
+ 0096 402F              mov R20,R16
+ 0098                   .dbline -1
+ 0098                   .dbline 103
+ 0098           ; }
+ 0098           ; void delay_ns(unsigned char ns)
+ 0098           ; {
+ 0098 03C0              xjmp L17
+ 009A           L16:
+ 009A                   .dbline 105
+ 009A           ;  while(ns--) 
+ 009A           ;  delay_nms(1000);
+ 009A 08EE              ldi R16,1000
+ 009C 13E0              ldi R17,3
+ 009E EBDF              xcall _delay_nms
+ 00A0           L17:
+ 00A0                   .dbline 104
+ 00A0 242E              mov R2,R20
+ 00A2 3324              clr R3
+ 00A4 4150              subi R20,1
+ 00A6 2220              tst R2
+ 00A8 C1F7              brne L16
+ 00AA           X2:
+ 00AA                   .dbline -2
+ 00AA           L15:
+ 00AA                   .dbline 0 ; func end
+ 00AA 4991              ld R20,y+
+ 00AC 0895              ret
+ 00AE                   .dbsym r ns 20 c
+ 00AE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0000           _table::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 3F06              .byte 63,6
+                        .area data(ram, con, rel)
+ 0002                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0002                   .blkb 2
+                        .area idata
+ 0002 5B4F              .byte 91,'O
+                        .area data(ram, con, rel)
+ 0004                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0004                   .blkb 2
+                        .area idata
+ 0004 666D              .byte 'f,'m
+                        .area data(ram, con, rel)
+ 0006                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0006                   .blkb 2
+                        .area idata
+ 0006 7D07              .byte 125,7
+                        .area data(ram, con, rel)
+ 0008                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0008                   .blkb 2
+                        .area idata
+ 0008 7F6F              .byte 127,'o
+                        .area data(ram, con, rel)
+ 000A                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 000A                   .blkb 2
+                        .area idata
+ 000A 777C              .byte 'w,124
+                        .area data(ram, con, rel)
+ 000C                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 000C                   .blkb 2
+                        .area idata
+ 000C 395E              .byte 57,94
+                        .area data(ram, con, rel)
+ 000E                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 000E                   .blkb 2
+                        .area idata
+ 000E 7971              .byte 'y,'q
+                        .area data(ram, con, rel)
+ 0010                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0010                   .dbfile E:\DMAVR-~3\INTKEY\INTKEY.C
+ 0010                   .dbsym e table _table A[16:16]c
+                        .area text(rom, con, rel)
+ 00AE                   .dbfile E:\DMAVR-~3\INTKEY\INTKEY.C
+ 00AE                   .dbfunc e System_Init _System_Init fV
+                        .even
+ 00AE           _System_Init::
+ 00AE                   .dbline -1
+ 00AE                   .dbline 41
+ 00AE           ; //DMAVR-M16中断式独立键盘示例程序，键值变化可能不稳，因为键盘硬件的抖动原因
+ 00AE           ; //两个中断键盘进行加1或者减1计数
+ 00AE           ; //注意ICCAVR中断函数处理方法，中断向量号可以在头文件iom128v.h中查找
+ 00AE           ; //编译环境 ICCAVR 7.16A
+ 00AE           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 00AE           ; //作者：阿迪 www.avrgcc.com
+ 00AE           ; //日期：2010.01.14
+ 00AE           ; 
+ 00AE           ; //***********************************************************************
+ 00AE           ; //                    包含文件
+ 00AE           ; //***********************************************************************
+ 00AE           ; 
+ 00AE           ; #include <string.h>
+ 00AE           ; #include <stdio.h>
+ 00AE           ; #include <delay.h>
+ 00AE           ; #include <iom128v.h>
+ 00AE           ; 
+ 00AE           ; #define Data_IO               PORTA                //数据口
+ 00AE           ; #define Data_DDR        DDRA                 //数据口方向寄存器
+ 00AE           ; #define D_LE0         PORTD &= ~(1 << PD4) //数码管段控制位为0
+ 00AE           ; #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1
+ 00AE           ; #define W_LE0         PORTD &= ~(1 << PD5) //数码管位控制位为0
+ 00AE           ; #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+ 00AE           ; 
+ 00AE           ; #define uchar           unsigned char
+ 00AE           ; #define uint            unsigned int
+ 00AE           ; 
+ 00AE           ; uchar count;                                  //定义键盘计数变量
+ 00AE           ; 
+ 00AE           ; //***********************************************************************
+ 00AE           ; //                    共阴数码管显示的断码表
+ 00AE           ; //***********************************************************************
+ 00AE           ; 
+ 00AE           ; uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+ 00AE           ; 
+ 00AE           ; //***********************************************************************
+ 00AE           ; //                    IO端口初始化
+ 00AE           ; //***********************************************************************
+ 00AE           ; 
+ 00AE           ; void System_Init()
+ 00AE           ; {
+ 00AE                   .dbline 42
+ 00AE           ;     Data_IO=0xFF;             //数据口为输出
+ 00AE 8FEF              ldi R24,255
+ 00B0 8BBB              out 0x1b,R24
+ 00B2                   .dbline 43
+ 00B2           ;     Data_DDR=0xFF;
+ 00B2 8ABB              out 0x1a,R24
+ 00B4                   .dbline 45
+ 00B4           ; 
+ 00B4           ;       PORTD=0x7F;               //PD0 PD1设置为输入
+ 00B4 8FE7              ldi R24,127
+ 00B6 82BB              out 0x12,R24
+ 00B8                   .dbline 46
+ 00B8           ;       DDRD=0x70;                //PD0 PD1上拉电阻使能有效
+ 00B8 80E7              ldi R24,112
+ 00BA 81BB              out 0x11,R24
+ 00BC                   .dbline 48
+ 00BC           ;       
+ 00BC           ;       PORTB=0xFF;                               //关闭发光二极管
+ 00BC 8FEF              ldi R24,255
+ 00BE 88BB              out 0x18,R24
+ 00C0                   .dbline 49
+ 00C0           ;       DDRB=0xFF;
+ 00C0 87BB              out 0x17,R24
+ 00C2                   .dbline -2
+ 00C2           L19:
+ 00C2                   .dbline 0 ; func end
+ 00C2 0895              ret
+ 00C4                   .dbend
+ 00C4                   .dbfunc e Display_Key _Display_Key fV
+ 00C4           ;              j -> R22
+ 00C4           ;              i -> R20
+ 00C4           ;            num -> R10
+                        .even
+ 00C4           _Display_Key::
+ 00C4 0E940000          xcall push_xgsetF00C
+ 00C8 A02E              mov R10,R16
+ 00CA                   .dbline -1
+ 00CA                   .dbline 57
+ 00CA           ; }
+ 00CA           ; 
+ 00CA           ; //*************************************************************************
+ 00CA           ; //                    74HC573控制数码管动态扫描显示函数
+ 00CA           ; //*************************************************************************
+ 00CA           ; 
+ 00CA           ; void Display_Key(uchar num)
+ 00CA           ; {
+ 00CA                   .dbline 59
+ 00CA           ;        uchar i,j;
+ 00CA           ;        System_Init();
+ 00CA F1DF              xcall _System_Init
+ 00CC                   .dbline 60
+ 00CC           ;      j=0x01;                    //此数据用来控制位选
+ 00CC 61E0              ldi R22,1
+ 00CE                   .dbline 61
+ 00CE           ;   for(i=0;i<8;i++)
+ 00CE 4427              clr R20
+ 00D0 13C0              xjmp L24
+ 00D2           L21:
+ 00D2                   .dbline 62
+ 00D2           ;   {
+ 00D2                   .dbline 63
+ 00D2           ;     D_LE1;                    //控制数码管段数据的74HC573的LE管脚置高
+ 00D2 949A              sbi 0x12,4
+ 00D4                   .dbline 64
+ 00D4           ;     W_LE1;                    //控制数码管位的74HC573的LE管脚置高
+ 00D4 959A              sbi 0x12,5
+ 00D6                   .dbline 65
+ 00D6           ;     Data_IO=0x00;               //设置要显示的位，也就是哪一个数码管亮，这里是八个一起显示
+ 00D6 2224              clr R2
+ 00D8 2BBA              out 0x1b,R2
+ 00DA                   .dbline 66
+ 00DA           ;     W_LE0;                    //锁存位数据，下面送上段数据以后，就显示出来了
+ 00DA 9598              cbi 0x12,5
+ 00DC                   .dbline 67
+ 00DC           ;       j=(j<<1);
+ 00DC 660F              lsl R22
+ 00DE                   .dbline 68
+ 00DE           ;     Data_IO=table[num];         //送要显示的数据，就是段数据，如显示0送的是0x3f
+ 00DE 80E0              ldi R24,<_table
+ 00E0 90E0              ldi R25,>_table
+ 00E2 EA2D              mov R30,R10
+ 00E4 FF27              clr R31
+ 00E6 E80F              add R30,R24
+ 00E8 F91F              adc R31,R25
+ 00EA 2080              ldd R2,z+0
+ 00EC 2BBA              out 0x1b,R2
+ 00EE                   .dbline 69
+ 00EE           ;     D_LE0;                    //锁存段数据，数码管亮一个时间片刻
+ 00EE 9498              cbi 0x12,4
+ 00F0                   .dbline 70
+ 00F0           ;     delay_nms(1);              //显示一个时间片刻，会影响亮度和闪烁性
+ 00F0 01E0              ldi R16,1
+ 00F2 10E0              ldi R17,0
+ 00F4 C0DF              xcall _delay_nms
+ 00F6                   .dbline 72
+ 00F6           ; 
+ 00F6           ;   }
+ 00F6           L22:
+ 00F6                   .dbline 61
+ 00F6 4395              inc R20
+ 00F8           L24:
+ 00F8                   .dbline 61
+ 00F8 4830              cpi R20,8
+ 00FA 58F3              brlo L21
+ 00FC           X3:
+ 00FC                   .dbline -2
+ 00FC           L20:
+ 00FC                   .dbline 0 ; func end
+ 00FC 0C940000          xjmp pop_xgsetF00C
+ 0100                   .dbsym r j 22 c
+ 0100                   .dbsym r i 20 c
+ 0100                   .dbsym r num 10 c
+ 0100                   .dbend
+ 0100                   .dbfunc e Interrupt_Init _Interrupt_Init fV
+                        .even
+ 0100           _Interrupt_Init::
+ 0100                   .dbline -1
+ 0100                   .dbline 77
+ 0100           ; 
+ 0100           ; }
+ 0100           ; 
+ 0100           ; void Interrupt_Init()
+ 0100           ; {
+ 0100                   .dbline 78
+ 0100           ;   EIMSK|=0x03;                                     //使能外部中断0和外部中断1
+ 0100 89B7              in R24,0x39
+ 0102 8360              ori R24,3
+ 0104 89BF              out 0x39,R24
+ 0106                   .dbline 79
+ 0106           ;   EICRA=0x0A;                                     //下降沿触发方式
+ 0106 8AE0              ldi R24,10
+ 0108 80936A00          sts 106,R24
+ 010C                   .dbline 80
+ 010C           ;   MCUCSR=0x00;                                    //控制和状态寄存器初始化
+ 010C 2224              clr R2
+ 010E 24BE              out 0x34,R2
+ 0110                   .dbline -2
+ 0110           L25:
+ 0110                   .dbline 0 ; func end
+ 0110 0895              ret
+ 0112                   .dbend
+                        .area vector(rom, abs)
+                        .org 4
+ 0004 0C948900          jmp _INT0_ISR
+                        .area text(rom, con, rel)
+ 0112                   .dbfile E:\DMAVR-~3\INTKEY\INTKEY.C
+ 0112                   .dbfunc e INT0_ISR _INT0_ISR fV
+                        .even
+ 0112           _INT0_ISR::
+ 0112 2A92              st -y,R2
+ 0114 8A93              st -y,R24
+ 0116 9A93              st -y,R25
+ 0118 2FB6              in R2,0x3f
+ 011A 2A92              st -y,R2
+ 011C                   .dbline -1
+ 011C                   .dbline 89
+ 011C           ; }
+ 011C           ; 
+ 011C           ; //*************************************************************************
+ 011C           ; //       中断服务子程序
+ 011C           ; //*************************************************************************
+ 011C           ; 
+ 011C           ; #pragma interrupt_handler  INT0_ISR:iv_INT0 //int0_ISR：中断函数名，接着是中断向量号
+ 011C           ; void INT0_ISR()                                                       //中断0服务程序
+ 011C           ;    { 
+ 011C                   .dbline 90
+ 011C           ;        if(++count>=16) 
+ 011C 80910000          lds R24,_count
+ 0120 8F5F              subi R24,255    ; addi 1
+ 0122 282E              mov R2,R24
+ 0124 20920000          sts _count,R2
+ 0128 8031              cpi R24,16
+ 012A 18F0              brlo L27
+ 012C           X4:
+ 012C                   .dbline 91
+ 012C           ;        count=0;
+ 012C 2224              clr R2
+ 012E 20920000          sts _count,R2
+ 0132           L27:
+ 0132                   .dbline -2
+ 0132           L26:
+ 0132                   .dbline 0 ; func end
+ 0132 2990              ld R2,y+
+ 0134 2FBE              out 0x3f,R2
+ 0136 9991              ld R25,y+
+ 0138 8991              ld R24,y+
+ 013A 2990              ld R2,y+
+ 013C 1895              reti
+ 013E                   .dbend
+                        .area vector(rom, abs)
+                        .org 8
+ 0008 0C949F00          jmp _INT1_ISR
+                        .area text(rom, con, rel)
+ 013E                   .dbfile E:\DMAVR-~3\INTKEY\INTKEY.C
+ 013E                   .dbfunc e INT1_ISR _INT1_ISR fV
+                        .even
+ 013E           _INT1_ISR::
+ 013E 2A92              st -y,R2
+ 0140 8A93              st -y,R24
+ 0142 2FB6              in R2,0x3f
+ 0144 2A92              st -y,R2
+ 0146                   .dbline -1
+ 0146                   .dbline 96
+ 0146           ;    } 
+ 0146           ; 
+ 0146           ; #pragma interrupt_handler  INT1_ISR:iv_INT1
+ 0146           ; void INT1_ISR()                                                  //中断1服务程序
+ 0146           ;    { 
+ 0146                   .dbline 97
+ 0146           ;        if(count) --count;
+ 0146 20900000          lds R2,_count
+ 014A 2220              tst R2
+ 014C 29F0              breq L30
+ 014E           X5:
+ 014E                   .dbline 97
+ 014E 822D              mov R24,R2
+ 0150 8150              subi R24,1
+ 0152 80930000          sts _count,R24
+ 0156 03C0              xjmp L31
+ 0158           L30:
+ 0158                   .dbline 98
+ 0158           ;        else count=15;
+ 0158 8FE0              ldi R24,15
+ 015A 80930000          sts _count,R24
+ 015E           L31:
+ 015E                   .dbline -2
+ 015E           L29:
+ 015E                   .dbline 0 ; func end
+ 015E 2990              ld R2,y+
+ 0160 2FBE              out 0x3f,R2
+ 0162 8991              ld R24,y+
+ 0164 2990              ld R2,y+
+ 0166 1895              reti
+ 0168                   .dbend
+ 0168                   .dbfunc e main _main fI
+                        .even
+ 0168           _main::
+ 0168                   .dbline -1
+ 0168                   .dbline 106
+ 0168           ;   }
+ 0168           ; 
+ 0168           ; 
+ 0168           ; //*************************************************************************
+ 0168           ; //                    主程序
+ 0168           ; //*************************************************************************
+ 0168           ; int main(void)
+ 0168           ; {
+ 0168                   .dbline 107
+ 0168           ;   System_Init();                             //系统初始化
+ 0168 A2DF              xcall _System_Init
+ 016A                   .dbline 108
+ 016A           ;   Interrupt_Init();                          //中断配置初始化
+ 016A CADF              xcall _Interrupt_Init
+ 016C                   .dbline 109
+ 016C           ;   SREG|=0x80;                                //开启全局中断
+ 016C 7894              bset 7
+ 016E 03C0              xjmp L34
+ 0170           L33:
+ 0170                   .dbline 111
+ 0170           ;   while(1)
+ 0170           ;   {
+ 0170                   .dbline 112
+ 0170           ;     Display_Key(count);                     //显示键值
+ 0170 00910000          lds R16,_count
+ 0174 A7DF              xcall _Display_Key
+ 0176                   .dbline 113
+ 0176           ;   }
+ 0176           L34:
+ 0176                   .dbline 110
+ 0176 FCCF              xjmp L33
+ 0178           X6:
+ 0178                   .dbline -2
+ 0178           L32:
+ 0178                   .dbline 0 ; func end
+ 0178 0895              ret
+ 017A                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\INTKEY\INTKEY.C
+ 0000           _count::
+ 0000                   .blkb 1
+ 0001                   .dbsym e count _count c
+ 0001           ; }

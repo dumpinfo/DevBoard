@@ -1,0 +1,3926 @@
+ (routes 
+  (resolution inch 2540000)
+  (parser
+  )
+  (parser
+  )
+  (structure_out
+   (layer S1 (type signal)
+   )
+   (layer P1 (type power)
+   )
+   (layer P2 (type power)
+   )
+   (layer COMP16 (type signal)
+   )
+  )
+  (library_out
+  (padstack v1
+   (shape (circ S1 127000 0 0))
+   (shape (circ COMP16 127000 0 0))
+  )
+  )
+  (network_out
+   (Net gnd 
+   )
+   (Net sig1 
+   (wire (path COMP16 25400  4064000 12700000 4191000 12700000 4191000 9779000
+     3937000 9779000 3937000 6286500 3429000 6286500 3429000 5461000
+     4699000 5461000 4699000 317500 7620000 317500 7620000 508000)
+    (connect (terminal pin u46-8) (terminal pin j2-A6))
+   )
+   )
+   (Net sig2 
+   (wire (path COMP16 25400  3302000 12954000 3175000 12954000 3175000 8079625
+     3429000 8079625 3429000 7493000 2921000 7493000 2921000 190500
+     7874000 190500 7874000 508000)
+    (connect (terminal pin u46-6) (terminal pin j2-A5))
+   )
+   )
+   (Net sig3 
+   (wire (path S1 25400  15748000 3556000 15494000 3556000)
+    (connect (terminal via) (terminal pin u19-6))
+   )
+   (wire (path COMP16 25400  15748000 1270000 15748000 3556000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  17653000 254000 17653000 1206500 15748000 1206500
+     15748000 1270000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  20320000 254000 17653000 254000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  22225000 1270000 22225000 317500 20353353 317500
+     20353353 254000 20320000 254000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  22098000 762000 21971000 762000 21971000 1206500
+     22225000 1206500 22225000 1270000)
+    (connect (terminal pin j1-B1) (terminal via))
+   )
+   (wire (path S1 25400  14732000 3683000 15176500 3683000 15176500 3556000
+     15494000 3556000)
+    (connect (terminal via) (terminal pin u19-6))
+   )
+   (wire (path COMP16 25400  13970000 8382000 13970000 8001000 14605000 8001000
+     14605000 3683000 14732000 3683000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  3429000 8509000 3429000 8572500 10031698 8572500
+     10031698 8509000 13970000 8509000 13970000 8382000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  3302000 10414000 3429000 10414000 3429000 8509000)
+    (connect (terminal pin u47-4) (terminal via))
+   )
+   (via v1 15748000 3556000)
+   (via v1 15748000 1270000)
+   (via v1 17653000 254000)
+   (via v1 20320000 254000)
+   (via v1 22225000 1270000)
+   (via v1 14732000 3683000)
+   (via v1 13970000 8382000)
+   (via v1 3429000 8509000)
+   )
+   (Net sig4 
+   (wire (path COMP16 25400  9906000 4064000 9715500 4064000 9715500 3429000
+     10033000 3429000 10033000 2761165 9906000 2761165 9906000 127000
+     21209000 127000 21209000 761999 21082000 761999 21082000 762000)
+    (connect (terminal pin u56-11) (terminal pin j1-B5))
+   )
+   )
+   (Net sig5 
+   (wire (path S1 25400  1524000 10414000 1778000 10414000 1778000 10287000
+     5080000 10287000 5080000 10541000 8318500 10541000 8318500 10414000
+     8890000 10414000)
+    (connect (terminal pin u53-11) (terminal pin u37-4))
+   )
+   (wire (path S1 25400  9652000 1397000 9588500 1397000 9588500 63500
+     19177000 63500 19177000 762000 19304000 762000)
+    (connect (terminal via) (terminal pin j1-B12))
+   )
+   (wire (path COMP16 25400  8890000 10414000 8763000 10414000 8763000 1385307
+     9652000 1385307 9652000 1397000)
+    (connect (terminal pin u37-4) (terminal via))
+   )
+   (via v1 9652000 1397000)
+   )
+   (Net sig6 
+   (wire (path S1 25400  2032000 7620000 2349500 7620000 2349500 7493000
+     5080000 7493000 5080000 7620000 5334000 7620000)
+    (connect (terminal pin u51-13) (terminal pin rn2-3))
+   )
+   (wire (path COMP16 25400  5461000 9271000 5461000 7620000 5334000 7620000)
+    (connect (terminal via) (terminal pin rn2-3))
+   )
+   (wire (path S1 25400  9652000 9271000 5461000 9271000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  9652000 9652000 9652000 9271000)
+    (connect (terminal pin u37-8) (terminal via))
+   )
+   (via v1 5461000 9271000)
+   (via v1 9652000 9271000)
+   )
+   (Net sig7 
+   (wire (path COMP16 25400  18796000 4064000 19050000 4064000 19050000 4445000
+     19431000 4445000 19431000 508000 19558000 508000)
+    (connect (terminal pin u11-14) (terminal pin j1-A11))
+   )
+   )
+   (Net sig8 
+   (wire (path COMP16 25400  15494000 4572000 15367000 4572000 15367000 762000
+     15240000 762000)
+    (connect (terminal pin u19-2) (terminal pin j1-B28))
+   )
+   )
+   (Net sig9 
+   (wire (path COMP16 25400  19050000 1905000 19050000 1016000)
+    (connect (terminal via) (terminal pin j1-C13))
+   )
+   (wire (path S1 25400  1143000 1651000 10795000 1651000 10795000 1905000
+     19050000 1905000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  1270000 6858000 1143000 6858000 1143000 1651000)
+    (connect (terminal pin u51-5) (terminal via))
+   )
+   (via v1 19050000 1905000)
+   (via v1 1143000 1651000)
+   )
+   (Net sig10 
+   (wire (path S1 25400  10668000 5080000 10414000 5080000)
+    (connect (terminal via) (terminal pin u35-3))
+   )
+   (wire (path COMP16 25400  10668000 1905000 10668000 5080000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  19304000 1778000 19304000 2032000 10731500 2032000
+     10731500 1905000 10668000 1905000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  19304000 1016000 19304001 1016000 19304001 1730088
+     19304000 1730088 19304000 1778000)
+    (connect (terminal pin j1-C12) (terminal via))
+   )
+   (wire (path COMP16 25400  8890000 10922000 9144000 10922000 9144000 11049000
+     9906000 11049000 9906000 5080000 10414000 5080000)
+    (connect (terminal pin u37-2) (terminal pin u35-3))
+   )
+   (via v1 10668000 5080000)
+   (via v1 10668000 1905000)
+   (via v1 19304000 1778000)
+   )
+   (Net a[10] 
+   (wire (path S1 25400  14986000 9906000 15303500 9906000 15303500 9525000
+     21082000 9525000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  12446000 7620000 12128500 7620000 12128500 9715500
+     14986000 9715500 14986000 9906000)
+    (connect (terminal pin u30-15) (terminal via))
+   )
+   (wire (path S1 25400  10414000 7366000 10668000 7366000 10668000 7493000
+     12192000 7493000 12192000 7620000 12446000 7620000)
+    (connect (terminal pin u34-7) (terminal pin u30-15))
+   )
+   (wire (path COMP16 25400  21082000 9525000 21209000 9525000 21209000 8636000
+     21082000 8636000)
+    (connect (terminal via) (terminal pin u6-22))
+   )
+   (wire (path S1 25400  23114000 8890000 22883019 8890000 22883019 9525000
+     21082000 9525000)
+    (connect (terminal pin u2-22) (terminal via))
+   )
+   (via v1 14986000 9906000)
+   (via v1 21082000 9525000)
+   )
+   (Net a[11] 
+   (wire (path S1 25400  11176000 7366000 11493500 7366000 11493500 6985000
+     12446000 6985000)
+    (connect (terminal pin u34-14) (terminal wire))
+   )
+   (wire (path S1 25400  12446000 6985000 15938500 6985000 15938500 7493000
+     16383000 7493000 16383000 7239000 16129000 7239000 16129000 6731000
+     17653000 6731000 17653000 7747000 20427063 7747000 20427063 7874000
+     21082000 7874000)
+    (connect (terminal wire) (terminal pin u6-19))
+   )
+   (wire (path S1 25400  12446000 6985000 12446000 6858000)
+    (connect (terminal wire) (terminal pin u30-12))
+   )
+   (wire (path S1 25400  23114000 8128000 22860000 8128000 22860000 8001000
+     21399500 8001000 21399500 7874000 21082000 7874000)
+    (connect (terminal pin u2-19) (terminal pin u6-19))
+   )
+   )
+   (Net a[12] 
+   (wire (path COMP16 25400  11684000 6858000 11493500 6858000 11493500 8128000
+     11176000 8128000)
+    (connect (terminal pin u30-9) (terminal pin u34-17))
+   )
+   )
+   (Net a[13] 
+   (wire (path S1 25400  12192000 11684000 11684000 11684000)
+    (connect (terminal via) (terminal pin u29-1))
+   )
+   (wire (path COMP16 25400  11938000 13335000 12192000 13335000 12192000 11684000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  11938000 13335000 11938000 14478000 11684000 14478000)
+    (connect (terminal wire) (terminal pin u28-1))
+   )
+   (wire (path COMP16 25400  11938000 11684000 11938000 13335000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  11938000 11684000 12001500 11684000 12001500 7670800
+     11684000 7670800 11684000 7620000)
+    (connect (terminal wire) (terminal pin u30-6))
+   )
+   (via v1 12192000 11684000)
+   )
+   (Net a[14] 
+   (wire (path COMP16 25400  11874500 11430001 11874500 14224000 11684000 14224000)
+    (connect (terminal wire) (terminal pin u28-2))
+   )
+   (wire (path COMP16 25400  11874500 11430000 11874500 8509000 11557000 8509000
+     11557000 8255000 11811000 8255000 11811000 7874000 11684000 7874000)
+    (connect (terminal wire) (terminal pin u30-5))
+   )
+   (wire (path COMP16 25400  11684000 11430000 11684000 11430001 11874500 11430001)
+    (connect (terminal pin u29-2) (terminal wire))
+   )
+   (wire (path COMP16 25400  11874500 11430001 11874500 11430000)
+    (connect (terminal wire) (terminal wire))
+   )
+   )
+   (Net a[15] 
+   (wire (path COMP16 25400  11684000 13970000 11811000 13970000 11811000 12509500
+     11557000 12509500 11557000 11176000 11684000 11176000)
+    (connect (terminal pin u28-3) (terminal pin u29-3))
+   )
+   (wire (path COMP16 25400  11684000 11176000 11811000 11176000 11811000 8636000
+     11684000 8636000)
+    (connect (terminal pin u29-3) (terminal pin u30-2))
+   )
+   )
+   (Net a[16] 
+   (wire (path COMP16 25400  14986000 6604000 14795500 6604000 14795500 8509000
+     14097000 8509000 14097000 8636000 13716000 8636000)
+    (connect (terminal pin u22-13) (terminal pin u26-19))
+   )
+   )
+   (Net a[1] 
+   (wire (path S1 25400  19177000 7112000 19431000 7112000 19431000 7366000
+     19558000 7366000)
+    (connect (terminal via) (terminal pin u6-8))
+   )
+   (wire (path COMP16 25400  18796000 8128000 19177000 8128000 19177000 7112000)
+    (connect (terminal pin u10-17) (terminal via))
+   )
+   (wire (path COMP16 25400  18034000 10922000 18415000 10922000 18415000 8001000)
+    (connect (terminal pin u9-7) (terminal via))
+   )
+   (wire (path S1 25400  21590000 7620000 21336000 7620000 21336000 7493000
+     19812000 7493000 19812000 7366000 19558000 7366000)
+    (connect (terminal pin u2-8) (terminal pin u6-8))
+   )
+   (wire (path S1 25400  18415000 8001000 18415000 8128000 18796000 8128000)
+    (connect (terminal via) (terminal pin u10-17))
+   )
+   (wire (path COMP16 25400  15875000 6858000 16256000 6858000)
+    (connect (terminal via) (terminal pin u18-9))
+   )
+   (wire (path S1 25400  11049000 6731000 15875000 6731000 15875000 6858000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11176000 5334000 11049000 5334000 11049000 6731000)
+    (connect (terminal pin u35-19) (terminal via))
+   )
+   (wire (path S1 25400  18923000 11049000 18034001 11049000 18034001 10922000
+     18034000 10922000)
+    (connect (terminal wire) (terminal pin u9-7))
+   )
+   (wire (path S1 25400  18415000 8001000 16570246 8001000 16570246 6858000
+     16256000 6858000)
+    (connect (terminal via) (terminal pin u18-9))
+   )
+   (wire (path S1 25400  17272000 10160000 17399000 10160000 17399000 10287000
+     18923000 10287000 18923000 11049000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  18923000 11049000 19050000 11049000 19050000 10795000
+     22098000 10795000 22098000 13843000 21589737 13843000 21589737 14224000
+     21082000 14224000)
+    (connect (terminal wire) (terminal pin u1-3))
+   )
+   (wire (path COMP16 25400  17145000 11430000 17272000 11430000 17272000 10160000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  15494000 11430000 15684500 11430000 15684500 11557000
+     17145000 11557000 17145000 11430000)
+    (connect (terminal pin u17-1) (terminal via))
+   )
+   (via v1 19177000 7112000)
+   (via v1 15875000 6858000)
+   (via v1 11049000 6731000)
+   (via v1 17272000 10160000)
+   (via v1 17145000 11430000)
+   (via v1 18415000 8001000)
+   )
+   (Net a[20] 
+   (wire (path COMP16 25400  12700000 7112000 12827000 7112000 12827000 6858000
+     12954000 6858000)
+    (connect (terminal via) (terminal pin u26-9))
+   )
+   (wire (path S1 25400  14986000 7620000 14732000 7620000 14732000 7493000
+     12827000 7493000 12827000 7112000 12700000 7112000)
+    (connect (terminal pin u22-17) (terminal via))
+   )
+   (via v1 12700000 7112000)
+   )
+   (Net a[21] 
+   (wire (path S1 25400  14986000 8382000 14795500 8382000 14795500 7747000
+     13208000 7747000 13208000 7620000 12954000 7620000)
+    (connect (terminal pin u22-20) (terminal pin u26-6))
+   )
+   )
+   (Net a[22] 
+   (wire (path S1 25400  14986000 8636000 14668500 8636000 14668500 8001000
+     13208000 8001000 13208000 7874000 12954000 7874000)
+    (connect (terminal pin u22-21) (terminal pin u26-5))
+   )
+   )
+   (Net a[23] 
+   (wire (path S1 25400  12954000 8636000 13208000 8636000 13208000 8763000
+     14414500 8763000 14414500 8890000 14986000 8890000)
+    (connect (terminal pin u26-2) (terminal pin u22-22))
+   )
+   )
+   (Net a[2] 
+   (wire (path COMP16 25400  18796000 7366000 18288000 7366000)
+    (connect (terminal pin u10-14) (terminal wire))
+   )
+   (wire (path S1 25400  10795000 4572000 11176000 4572000)
+    (connect (terminal via) (terminal pin u35-16))
+   )
+   (wire (path COMP16 25400  10795000 6604000 10795000 4572000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  18034000 6350000 11049000 6350000 11049000 6604000
+     10795000 6604000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  18288000 7366000 18288000 6794500 18161000 6794500
+     18161000 6350000 18034000 6350000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  18288000 7366000 18288000 10668000 18034000 10668000)
+    (connect (terminal wire) (terminal pin u9-8))
+   )
+   (wire (path S1 25400  21590000 7874000 21590000 7747000 20711104 7747000
+     20711104 7620000 19558000 7620000)
+    (connect (terminal pin u2-7) (terminal pin u6-7))
+   )
+   (wire (path S1 25400  15494000 11176000 15748000 11176000 15748000 11303000
+     17716500 11303000 17716500 10668000 18034000 10668000)
+    (connect (terminal pin u17-2) (terminal pin u9-8))
+   )
+   (wire (path S1 25400  19558000 7620000 19367500 7620000 19367500 7366000
+     18796000 7366000)
+    (connect (terminal pin u6-7) (terminal pin u10-14))
+   )
+   (via v1 10795000 4572000)
+   (via v1 10795000 6604000)
+   (via v1 18034000 6350000)
+   )
+   (Net a[3] 
+   (wire (path S1 25400  18415000 7112000 18669000 7112000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  18669000 7112000 18669000 7493000 19210281 7493000
+     19210281 7874000 19558000 7874000)
+    (connect (terminal wire) (terminal pin u6-6))
+   )
+   (wire (path S1 25400  18034000 10414000 17716500 10414000 17716500 10541000
+     16002000 10541000 16002000 10668000)
+    (connect (terminal pin u9-9) (terminal via))
+   )
+   (wire (path COMP16 25400  11176000 6223000 11303000 6223000 11303000 4318000
+     11176000 4318000)
+    (connect (terminal via) (terminal pin u35-15))
+   )
+   (wire (path S1 25400  18415000 7112000 18415000 6223000 11176000 6223000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  16764000 13970000 16446500 13970000 16446500 13589000
+     16002000 13589000 16002000 10668000)
+    (connect (terminal pin u12-2) (terminal via))
+   )
+   (wire (path S1 25400  21590000 8128000 21336000 8128000 21336000 8001000
+     19812000 8001000 19812000 7874000 19558000 7874000)
+    (connect (terminal pin u2-6) (terminal pin u6-6))
+   )
+   (wire (path S1 25400  15494000 10922000 15748000 10922000 15748000 10921999
+     16002000 10921999 16002000 10668000)
+    (connect (terminal pin u17-3) (terminal via))
+   )
+   (wire (path S1 25400  18669000 7112000 18796000 7112000)
+    (connect (terminal wire) (terminal pin u10-13))
+   )
+   (wire (path COMP16 25400  18415000 7112000 18415000 7302500 18224500 7302500
+     18224500 10414000 18034000 10414000)
+    (connect (terminal via) (terminal pin u9-9))
+   )
+   (via v1 11176000 6223000)
+   (via v1 16002000 10668000)
+   (via v1 18415000 7112000)
+   )
+   (Net a[4] 
+   (wire (path COMP16 25400  22098000 6096000 22098000 8382000 21590000 8382000)
+    (connect (terminal via) (terminal pin u2-5))
+   )
+   (wire (path S1 25400  10922000 6223000 10922000 6159500 19113500 6159500
+     19113500 6350000 19431000 6350000 19431000 6159500 19939000 6159500
+     19939000 6096000 22098000 6096000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11176000 3556000 10922000 3556000 10922000 6223000)
+    (connect (terminal pin u35-12) (terminal via))
+   )
+   (wire (path S1 25400  20574000 8128000 19558000 8128000)
+    (connect (terminal via) (terminal pin u6-5))
+   )
+   (wire (path S1 25400  20574000 8128000 20891500 8128000 20891500 8255000
+     21272500 8255000 21272500 8381999 21590000 8381999 21590000 8382000)
+    (connect (terminal via) (terminal pin u2-5))
+   )
+   (via v1 22098000 6096000)
+   (via v1 10922000 6223000)
+   (via v1 20574000 8128000)
+   )
+   (Net a[5] 
+   (wire (path S1 25400  15875000 8255000 15875000 8509000 18224500 8509000
+     18224500 8763000 19113500 8763000 19113500 8509000 19304000 8509000
+     19304000 8382000 19558000 8382000)
+    (connect (terminal via) (terminal pin u6-4))
+   )
+   (wire (path COMP16 25400  14097000 3429000 15240000 3429000 15240000 5016500
+     15748000 5016500 15748000 8195920 15875000 8195920 15875000 8255000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  10414000 3556000 10668000 3556000 10668000 3429000
+     14097000 3429000)
+    (connect (terminal pin u35-9) (terminal via))
+   )
+   (wire (path S1 25400  21590000 8636000 21272500 8636000 21272500 8509000
+     19812000 8509000 19812000 8382000 19558000 8382000)
+    (connect (terminal pin u2-4) (terminal pin u6-4))
+   )
+   (via v1 15875000 8255000)
+   (via v1 14097000 3429000)
+   )
+   (Net a[6] 
+   (wire (path S1 25400  15367000 8890000 15367000 9144000 19177000 9144000
+     19177000 8636000 19558000 8636000)
+    (connect (terminal via) (terminal pin u6-3))
+   )
+   (wire (path COMP16 25400  14732000 4191000 15176500 4191000 15176500 5143500
+     15367000 5143500 15367000 8890000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  10414000 4318000 10668000 4318000 10668000 4445000
+     13912949 4445000 13912949 4191000 14732000 4191000)
+    (connect (terminal pin u35-6) (terminal via))
+   )
+   (wire (path S1 25400  21590000 8890000 21590000 8763000 20891500 8763000
+     20891500 8636000 19558000 8636000)
+    (connect (terminal pin u2-3) (terminal pin u6-3))
+   )
+   (via v1 15367000 8890000)
+   (via v1 14732000 4191000)
+   )
+   (Net a[7] 
+   (wire (path COMP16 25400  19558000 9779000 19431000 9779000 19431000 9017000
+     19558000 9017000 19558000 8890000)
+    (connect (terminal via) (terminal pin u6-2))
+   )
+   (wire (path S1 25400  19050000 9779000 19558000 9779000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  19050000 9017000 19050000 9779000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  14351000 7239000 15113000 7239000 15113000 7747000
+     16383000 7747000 16383000 8001000 15748000 8001000 15748000 9017000
+     19050000 9017000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  14351000 4699000 14414500 4699000 14414500 7239000
+     14351000 7239000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  10414000 4572000 10668000 4572000 10668000 4699000
+     14351000 4699000)
+    (connect (terminal pin u35-5) (terminal via))
+   )
+   (wire (path S1 25400  19558000 8890000 19812000 8890000 19812000 9017000
+     21272500 9017000 21272500 9144000 21590000 9144000)
+    (connect (terminal pin u6-2) (terminal pin u2-2))
+   )
+   (via v1 19558000 9779000)
+   (via v1 19050000 9779000)
+   (via v1 19050000 9017000)
+   (via v1 14351000 7239000)
+   (via v1 14351000 4699000)
+   )
+   (Net a[8] 
+   (wire (path S1 25400  21590000 9398000 20891500 9398000 20891500 9144000
+     19558000 9144000)
+    (connect (terminal pin u2-1) (terminal pin u6-1))
+   )
+   (wire (path S1 25400  19558000 9144000 19304000 9144000 19304000 9271000
+     12763500 9271000 12763500 8636000 12446000 8636000)
+    (connect (terminal pin u6-1) (terminal pin u30-19))
+   )
+   )
+   (Net a[9] 
+   (wire (path S1 25400  23114000 9144000 23241000 9144000 23241000 8763000
+     22227123 8763000 22227123 9017000 21399500 9017000 21399500 8890000
+     21082000 8890000)
+    (connect (terminal pin u2-23) (terminal pin u6-23))
+   )
+   (wire (path S1 25400  10287000 8001000 12128500 8001000 12128500 7874000
+     12446000 7874000)
+    (connect (terminal via) (terminal pin u30-16))
+   )
+   (wire (path COMP16 25400  10414000 7112000 10287000 7112000 10287000 8001000)
+    (connect (terminal pin u34-8) (terminal via))
+   )
+   (wire (path COMP16 25400  12319000 8001000 12446000 8001000 12446000 7874000)
+    (connect (terminal wire) (terminal pin u30-16))
+   )
+   (wire (path COMP16 25400  15240000 9144000 15240000 9525000 12192000 9525000
+     12192000 8001000 12319000 8001000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  21082000 8890000 20764500 8890000 20764500 8763000
+     19240500 8763000 19240500 9207500 15240000 9207500 15240000 9144000)
+    (connect (terminal pin u6-23) (terminal via))
+   )
+   (via v1 10287000 8001000)
+   (via v1 15240000 9144000)
+   )
+   (Net aa1 
+   (wire (path COMP16 25400  7112000 3302000 6858000 3302000 6858000 2984500
+     5842000 2984500 5842000 1016000)
+    (connect (terminal pin u41-11) (terminal pin j2-C13))
+   )
+   (wire (path S1 25400  7112000 3302000 7620000 3302000)
+    (connect (terminal pin u41-11) (terminal pin rn3-8))
+    (attr bus)
+   )
+   )
+   (Net aa2 
+   (wire (path COMP16 25400  7112000 3556000 7239000 3556000 7239000 2921000
+     5969000 2921000 5969000 508000 5842000 508000)
+    (connect (terminal pin u41-12) (terminal pin j2-A13))
+   )
+   (wire (path S1 25400  7112000 3556000 7620000 3556000)
+    (connect (terminal pin u41-12) (terminal pin rn3-7))
+    (attr bus)
+   )
+   )
+   (Net aa3 
+   (wire (path COMP16 25400  7112000 3810000 6731000 3810000 6731000 3175000
+     5588000 3175000 5588000 1016000)
+    (connect (terminal pin u41-13) (terminal pin j2-C14))
+   )
+   (wire (path S1 25400  7112000 3810000 7620000 3810000)
+    (connect (terminal pin u41-13) (terminal pin rn3-6))
+    (attr bus)
+   )
+   )
+   (Net aa4 
+   (wire (path COMP16 25400  7112000 4064000 7239000 4064000 7239000 3683000
+     6794500 3683000 6794500 3111500 5715000 3111500 5715000 508000
+     5588000 508000)
+    (connect (terminal pin u41-14) (terminal pin j2-A14))
+   )
+   (wire (path S1 25400  7112000 4064000 7620000 4064000)
+    (connect (terminal pin u41-14) (terminal pin rn3-5))
+    (attr bus)
+   )
+   )
+   (Net aa5 
+   (wire (path COMP16 25400  7112000 4318000 6540500 4318000 6540500 4191000
+     5334000 4191000 5334000 1016000)
+    (connect (terminal pin u41-15) (terminal pin j2-C15))
+   )
+   (wire (path S1 25400  7112000 4318000 7620000 4318000)
+    (connect (terminal pin u41-15) (terminal pin rn3-4))
+    (attr bus)
+   )
+   )
+   (Net aa6 
+   (wire (path COMP16 25400  7112000 4572000 7239000 4572000 7239000 4191000
+     6921500 4191000 6921500 3937000 5461000 3937000 5461000 508000
+     5334000 508000)
+    (connect (terminal pin u41-16) (terminal pin j2-A15))
+   )
+   (wire (path S1 25400  7112000 4572000 7620000 4572000)
+    (connect (terminal pin u41-16) (terminal pin rn3-3))
+    (attr bus)
+   )
+   )
+   (Net aa7 
+   (wire (path COMP16 25400  7112000 4826000 6794500 4826000 6794500 4699000
+     5080000 4699000 5080000 1016000)
+    (connect (terminal pin u41-17) (terminal pin j2-C16))
+   )
+   (wire (path S1 25400  7112000 4826000 7620000 4826000)
+    (connect (terminal pin u41-17) (terminal pin rn3-2))
+    (attr bus)
+   )
+   )
+   (Net aa8 
+   (wire (path COMP16 25400  7112000 5080000 7239000 5080000 7239000 4699000
+     6921500 4699000 6921500 4445000 5207000 4445000 5207000 508000
+     5080000 508000)
+    (connect (terminal pin u41-18) (terminal pin j2-A16))
+   )
+   (wire (path S1 25400  7112000 5080000 7620000 5080000)
+    (connect (terminal pin u41-18) (terminal pin rn3-1))
+    (attr bus)
+   )
+   )
+   (Net cntl[1] 
+   (wire (path S1 25400  14478000 8255000 10414000 8255000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  15240000 5588000 15240000 6376988 14732000 6376988
+     14732000 8191500 14414500 8191500 14414500 8255000 14478000 8255000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  17145000 5588000 17145000 5715000 16573500 5715000
+     16573500 5651500 15240000 5651500 15240000 5588000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17145000 4953000 17145000 5588000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  19177000 5080000 19177000 6032500 19685000 6032500
+     19685000 11176000 20066000 11176000)
+    (connect (terminal wire) (terminal pin u5-10))
+   )
+   (wire (path COMP16 25400  17145000 4064000 17145000 4953000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  17145000 4953000 17653000 4953000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path S1 25400  16256000 3810000 16510000 3810000 16510000 3937000
+     17145000 3937000 17145000 4064000)
+    (connect (terminal pin u19-10) (terminal via))
+   )
+   (wire (path COMP16 25400  18796000 5080000 19177000 5080000)
+    (connect (terminal pin u11-18) (terminal wire))
+   )
+   (wire (path COMP16 25400  19177000 5080000 19177000 4953000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path S1 25400  10414000 8255000 5461000 8255000 5461000 8128000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path S1 25400  2540000 6604000 3111500 6604000 3111500 6858000
+     3302000 6858000)
+    (connect (terminal pin u48-6) (terminal pin u48-10))
+   )
+   (wire (path S1 25400  10414000 8128000 10414000 8255000)
+    (connect (terminal pin u34-4) (terminal wire))
+   )
+   (wire (path S1 25400  5334000 8128000 5334000 8127999 5461000 8127999)
+    (connect (terminal pin rn2-1) (terminal wire))
+   )
+   (wire (path S1 25400  5461000 8127999 5461000 8128000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  19558000 1016000 19558000 4953000 19177000 4953000)
+    (connect (terminal pin j1-C11) (terminal wire))
+   )
+   (wire (path S1 25400  17653000 4953000 18542000 4953000 18542000 5080000
+     18796000 5080000)
+    (connect (terminal via) (terminal pin u11-18))
+   )
+   (wire (path S1 25400  3302000 6858000 3873500 6858000 3873500 7239000
+     5461000 7239000 5461000 8127999)
+    (connect (terminal pin u48-10) (terminal wire))
+   )
+   (via v1 14478000 8255000)
+   (via v1 15240000 5588000)
+   (via v1 17145000 5588000)
+   (via v1 17145000 4064000)
+   (via v1 17653000 4953000)
+   )
+   (Net cntl[2] 
+   (wire (path COMP16 25400  20066000 6223000 20066000 10668000)
+    (connect (terminal via) (terminal pin u5-8))
+   )
+   (wire (path S1 25400  19304000 6223000 20066000 6223000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  18923000 4826000 18923000 6223000 19304000 6223000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  3302000 6350000 3810000 6350000 3810000 7747000)
+    (connect (terminal pin u48-8) (terminal via))
+   )
+   (wire (path S1 25400  3810000 7747000 5207000 7747000 5207000 7874000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  2540000 7620000 2794000 7620000 2794000 7747000
+     3810000 7747000)
+    (connect (terminal pin u48-2) (terminal via))
+   )
+   (wire (path S1 25400  5334000 7874000 5207000 7874000)
+    (connect (terminal pin rn2-2) (terminal wire))
+   )
+   (wire (path S1 25400  5207000 7874000 5207000 8509000 9702597 8509000
+     9702597 8382000 10414000 8382000)
+    (connect (terminal wire) (terminal pin u34-3))
+   )
+   (wire (path COMP16 25400  18923000 4826000 18923000 4191000 18605500 4191000
+     18605500 1333500 18415000 1333500 18415000 508000 18288000 508000)
+    (connect (terminal wire) (terminal pin j1-A16))
+   )
+   (wire (path COMP16 25400  18923000 4826000 18796000 4826000)
+    (connect (terminal wire) (terminal pin u11-17))
+   )
+   (wire (path S1 25400  10541000 6096000 10541000 6032500 19304000 6032500
+     19304000 6223000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  10414000 8382000 10541000 8382000 10541000 6096000)
+    (connect (terminal pin u34-3) (terminal via))
+   )
+   (via v1 20066000 6223000)
+   (via v1 10541000 6096000)
+   (via v1 19304000 6223000)
+   (via v1 3810000 7747000)
+   )
+   (Net cntl[3] 
+   (wire (path COMP16 25400  19177000 10287000 19177000 10922000 19304000 10922000)
+    (connect (terminal via) (terminal pin u5-6))
+   )
+   (wire (path S1 25400  19939000 10287000 19177000 10287000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  20193000 3429000 20193000 3683000 19875500 3683000
+     19875500 10223500 19939000 10223500 19939000 10287000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  18796000 3810000 18796000 3860800 19177000 3860800
+     19177000 3937000 19875500 3937000 19875500 3429000 20193000 3429000)
+    (connect (terminal pin u11-13) (terminal via))
+   )
+   (wire (path COMP16 25400  18986500 3809999 18986500 3810000 18796000 3810000)
+    (connect (terminal wire) (terminal pin u11-13))
+   )
+   (wire (path COMP16 25400  18986500 3809999 18986500 2410928 19177000 2410928
+     19177000 508000 19304000 508000)
+    (connect (terminal wire) (terminal pin j1-A12))
+   )
+   (via v1 19177000 10287000)
+   (via v1 19939000 10287000)
+   (via v1 20193000 3429000)
+   )
+   (Net cntl[4] 
+   (wire (path COMP16 25400  18542000 3810000 18542000 4254500 18605500 4254500
+     18605500 10541000 19050000 10541000 19050000 11049000 19431000 11049000
+     19431000 11430000 19304000 11430000)
+    (connect (terminal wire) (terminal pin u5-4))
+   )
+   (wire (path COMP16 25400  18415000 3810000 18542000 3810000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  18034000 3810000 18415000 3810000)
+    (connect (terminal pin u11-8) (terminal via))
+   )
+   (wire (path COMP16 25400  19050000 508000 19050000 635000 18669000 635000
+     18669000 2082928 18542000 2082928 18542000 3810000)
+    (connect (terminal pin j1-A13) (terminal wire))
+   )
+   (via v1 18415000 3810000)
+   )
+   (Net cntl[5] 
+   (wire (path COMP16 25400  17780000 508000 17907000 508000 17907000 4064000
+     18034000 4064000)
+    (connect (terminal pin j1-A18) (terminal pin u11-7))
+   )
+   (wire (path COMP16 25400  18415000 4191000 18415000 4623335 18542000 4623335
+     18542000 11049000 18986500 11049000 18986500 11938000 19304000 11938000)
+    (connect (terminal via) (terminal pin u5-2))
+   )
+   (wire (path S1 25400  18034000 4064000 18034000 4064001 18415000 4064001
+     18415000 4191000)
+    (connect (terminal pin u11-7) (terminal via))
+   )
+   (via v1 18415000 4191000)
+   )
+   (Net cntl[6] 
+   (wire (path COMP16 25400  2794000 8128000 2794000 7239000 2540000 7239000
+     2540000 7112000)
+    (connect (terminal via) (terminal pin u48-4))
+   )
+   (wire (path S1 25400  5080000 8128000 2794000 8128000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  5588000 7493000 5016500 7493000 5016500 8128000
+     5080000 8128000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  5588000 7493000 5588000 6985000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path S1 25400  18288000 6477000 10541000 6477000 10541000 6985000
+     9461500 6985000 9461500 7112000 8890000 7112000)
+    (connect (terminal via) (terminal pin u38-5))
+   )
+   (wire (path COMP16 25400  19304000 6477000 19367500 6477000 19367500 9993292
+     19621500 9993292 19621500 11684000 20066000 11684000)
+    (connect (terminal via) (terminal pin u5-12))
+   )
+   (wire (path S1 25400  18288000 6477000 19304000 6477000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  18161000 4826000 18288000 4826000 18288000 6477000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  5334000 9906000 5588000 9906000 5588000 7493000)
+    (connect (terminal pin u43-9) (terminal wire))
+   )
+   (wire (path COMP16 25400  5334000 6604000 5588000 6604000 5588000 6985000)
+    (connect (terminal pin rn2-7) (terminal via))
+   )
+   (wire (path COMP16 25400  18034000 4826000 18161000 4826000)
+    (connect (terminal pin u11-4) (terminal wire))
+   )
+   (wire (path COMP16 25400  18161000 4826000 18161000 381000 18796000 381000
+     18796000 508000)
+    (connect (terminal wire) (terminal pin j1-A14))
+   )
+   (wire (path S1 25400  8890000 7112000 8636000 7112000 8636000 6985000
+     5588000 6985000)
+    (connect (terminal pin u38-5) (terminal via))
+   )
+   (via v1 2794000 8128000)
+   (via v1 5080000 8128000)
+   (via v1 19304000 6477000)
+   (via v1 18288000 6477000)
+   (via v1 5588000 6985000)
+   )
+   (Net ct 
+   (wire (path S1 25400  8509000 635000 7112000 635000 7112000 508000)
+    (connect (terminal via) (terminal pin j2-A8))
+   )
+   (wire (path COMP16 25400  8509000 10541000 8509000 635000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  14224000 10922000 13906500 10922000 13906500 11049000
+     10604500 11049000 10604500 10541000 8509000 10541000)
+    (connect (terminal pin u21-4) (terminal via))
+   )
+   (via v1 8509000 635000)
+   (via v1 8509000 10541000)
+   )
+   (Net dd0 
+   (wire (path COMP16 25400  2286000 3048000 2286000 5207000 1778000 5207000
+     1778000 5080000 1524000 5080000)
+    (connect (terminal via) (terminal pin u54-18))
+   )
+   (wire (path S1 25400  2286000 3048000 2032000 3048000)
+    (connect (terminal via) (terminal pin rn5-1))
+   )
+   (wire (path COMP16 25400  2286000 3048000 2413000 3048000 2413000 508000
+     2286000 508000)
+    (connect (terminal via) (terminal pin j2-A27))
+   )
+   (via v1 2286000 3048000)
+   )
+   (Net dd1 
+   (wire (path COMP16 25400  1524000 4826000 1524000 4953000 2159000 4953000
+     2159000 3314701 2032000 3314701 2032000 3302000)
+    (connect (terminal pin u54-17) (terminal pin rn5-2))
+   )
+   (wire (path COMP16 25400  2032000 3302000 2159000 3302000)
+    (connect (terminal pin rn5-2) (terminal wire))
+   )
+   (wire (path COMP16 25400  2159000 3302000 2159000 1270000 2032000 1270000
+     2032000 1016000)
+    (connect (terminal wire) (terminal pin j2-C28))
+   )
+   )
+   (Net dd10 
+   (wire (path COMP16 25400  4318000 4572000 4445000 4572000 4445000 4953000
+     4127500 4953000 4127500 5207000 4572000 5207000 4572000 1143000
+     4191000 1143000 4191000 381000 3556000 381000 3556000 508000)
+    (connect (terminal pin u45-16) (terminal pin j2-A22))
+   )
+   (wire (path S1 25400  4318000 4572000 4826000 4572000)
+    (connect (terminal pin u45-16) (terminal pin rn4-3))
+    (attr bus)
+   )
+   )
+   (Net dd11 
+   (wire (path COMP16 25400  4318000 4318000 3810000 4318000 3810000 1333500
+     3302000 1333500 3302000 1016000)
+    (connect (terminal pin u45-15) (terminal pin j2-C23))
+   )
+   (wire (path S1 25400  4318000 4318000 4826000 4318000)
+    (connect (terminal pin u45-15) (terminal pin rn4-4))
+    (attr bus)
+   )
+   )
+   (Net dd12 
+   (wire (path S1 25400  2667000 4953000 3746500 4953000 3746500 4826000
+     4191000 4826000 4191000 4191000 4318000 4191000 4318000 4064000)
+    (connect (terminal via) (terminal pin u45-14))
+   )
+   (wire (path COMP16 25400  2667000 381000 2667000 4953000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  3175000 381000 2667000 381000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  3302000 508000 3175000 508000 3175000 381000)
+    (connect (terminal pin j2-A23) (terminal via))
+   )
+   (wire (path S1 25400  4318000 4064000 4826000 4064000)
+    (connect (terminal pin u45-14) (terminal pin rn4-5))
+    (attr bus)
+   )
+   (via v1 2667000 4953000)
+   (via v1 2667000 381000)
+   (via v1 3175000 381000)
+   )
+   (Net dd13 
+   (wire (path COMP16 25400  4318000 3810000 4127500 3810000 4127500 4191000
+     4445000 4191000 4445000 4445000 3746500 4445000 3746500 1460500
+     3048000 1460500 3048000 1016000)
+    (connect (terminal pin u45-13) (terminal pin j2-C24))
+   )
+   (wire (path S1 25400  4318000 3810000 4826000 3810000)
+    (connect (terminal pin u45-13) (terminal pin rn4-6))
+    (attr bus)
+   )
+   )
+   (Net dd14 
+   (wire (path COMP16 25400  4318000 3556000 3873500 3556000 3873500 1206500
+     3683000 1206500 3683000 635000 3048000 635000 3048000 508000)
+    (connect (terminal pin u45-12) (terminal pin j2-A24))
+   )
+   (wire (path S1 25400  4318000 3556000 4826000 3556000)
+    (connect (terminal pin u45-12) (terminal pin rn4-7))
+    (attr bus)
+   )
+   )
+   (Net dd15 
+   (wire (path S1 25400  4318000 1524000 2794000 1524000 2794000 1016000)
+    (connect (terminal via) (terminal pin j2-C25))
+   )
+   (wire (path COMP16 25400  4318000 3302000 4318000 1524000)
+    (connect (terminal pin u45-11) (terminal via))
+   )
+   (wire (path S1 25400  4318000 3302000 4826000 3302000)
+    (connect (terminal pin u45-11) (terminal pin rn4-8))
+    (attr bus)
+   )
+   (via v1 4318000 1524000)
+   )
+   (Net dd2 
+   (wire (path COMP16 25400  1905000 3555999 1841500 3555999 1841500 4572000
+     1524000 4572000)
+    (connect (terminal wire) (terminal pin u54-16))
+   )
+   (wire (path COMP16 25400  1905000 3555999 1905000 508000 2032000 508000)
+    (connect (terminal wire) (terminal pin j2-A28))
+   )
+   (wire (path COMP16 25400  2032000 3556000 2032000 3555999 1905000 3555999)
+    (connect (terminal pin rn5-3) (terminal wire))
+   )
+   )
+   (Net dd3 
+   (wire (path S1 25400  1905000 4699000 1905000 4445000 1778000 4445000
+     1778000 4318000 1524000 4318000)
+    (connect (terminal via) (terminal pin u54-15))
+   )
+   (wire (path COMP16 25400  2032000 3810000 1905000 3810000 1905000 4699000)
+    (connect (terminal pin rn5-4) (terminal via))
+   )
+   (wire (path COMP16 25400  1524000 4318000 1778000 4318000 1778000 3810000)
+    (connect (terminal pin u54-15) (terminal wire))
+   )
+   (wire (path COMP16 25400  1778000 1016000 1778000 3810000)
+    (connect (terminal pin j2-C29) (terminal wire))
+   )
+   (via v1 1905000 4699000)
+   )
+   (Net dd4 
+   (wire (path COMP16 25400  1524000 4064000 1714500 4064000 1714500 2476500
+     1651000 2476500 1651000 508000 1778000 508000)
+    (connect (terminal pin u54-14) (terminal pin j2-A29))
+   )
+   (wire (path S1 25400  2032000 4064000 1524000 4064000)
+    (connect (terminal pin rn5-5) (terminal pin u54-14))
+   )
+   )
+   (Net dd5 
+   (wire (path S1 25400  2032000 4318000 2159000 4318000 2159000 3937000
+     1778000 3937000 1778000 3810000 1524000 3810000)
+    (connect (terminal pin rn5-6) (terminal pin u54-13))
+   )
+   (wire (path COMP16 25400  1524000 3810000 1651000 3810000 1651000 2603500
+     1524000 2603500 1524000 1016000)
+    (connect (terminal pin u54-13) (terminal pin j2-C30))
+   )
+   )
+   (Net dd6 
+   (wire (path COMP16 25400  1524000 508000 1397000 508000 1397000 3556000
+     1524000 3556000)
+    (connect (terminal pin j2-A30) (terminal pin u54-12))
+   )
+   (wire (path S1 25400  2032000 4572000 2286000 4572000 2286000 3683000
+     1778000 3683000 1778000 3556000 1524000 3556000)
+    (connect (terminal pin rn5-7) (terminal pin u54-12))
+   )
+   )
+   (Net dd7 
+   (wire (path S1 25400  1270000 3302000 1524000 3302000)
+    (connect (terminal via) (terminal pin u54-11))
+   )
+   (wire (path COMP16 25400  1270000 3302000 1270000 1016000)
+    (connect (terminal via) (terminal pin j2-C31))
+   )
+   (wire (path COMP16 25400  2032000 4826000 1778000 4826000 1778000 4699000
+     1333500 4699000 1333500 3302000)
+    (connect (terminal pin rn5-8) (terminal wire))
+   )
+   (wire (path COMP16 25400  1333500 3302000 1270000 3302000 1270000 3302000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  1270000 1016000 1143000 1016000 1143000 508000
+     1270000 508000)
+    (connect (terminal pin j2-C31) (terminal pin j2-A31))
+   )
+   (via v1 1270000 3302000)
+   )
+   (Net dd8 
+   (wire (path COMP16 25400  4318000 5080000 4508500 5080000 4508500 1333500
+     3937000 1333500 3937000 508000 3810000 508000)
+    (connect (terminal pin u45-18) (terminal pin j2-A21))
+   )
+   (wire (path S1 25400  4318000 5080000 4826000 5080000)
+    (connect (terminal pin u45-18) (terminal pin rn4-1))
+    (attr bus)
+   )
+   )
+   (Net dd9 
+   (wire (path COMP16 25400  4318000 4826000 3683000 4826000 3683000 1397000
+     3175000 1397000 3175000 889000 3429000 889000 3429000 1015999
+     3556000 1015999 3556000 1016000)
+    (connect (terminal pin u45-17) (terminal pin j2-C22))
+   )
+   (wire (path S1 25400  4318000 4826000 4826000 4826000)
+    (connect (terminal pin u45-17) (terminal pin rn4-2))
+    (attr bus)
+   )
+   )
+   (Net i[13] 
+   (wire (path COMP16 25400  23114000 7112000 22542500 7112000 22542500 4572000
+     22098000 4572000)
+    (connect (terminal pin u2-15) (terminal pin u3-16))
+   )
+   )
+   (Net i[0] 
+   (wire (path COMP16 25400  18796000 8636000 19304000 8636000)
+    (connect (terminal pin u10-19) (terminal wire))
+   )
+   (wire (path COMP16 25400  19304000 8636000 19431000 8636000 19431000 7112000
+     19558000 7112000)
+    (connect (terminal wire) (terminal pin u6-9))
+   )
+   (wire (path COMP16 25400  19558000 12446000 19558000 10315277 19304000 10315277
+     19304000 8636000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  19558000 12446000 19558000 14986000 19304000 14986000)
+    (connect (terminal wire) (terminal pin u4-3))
+   )
+   (wire (path S1 25400  20574000 7112000 19558000 7112000)
+    (connect (terminal via) (terminal pin u6-9))
+   )
+   (wire (path COMP16 25400  20066000 3302000 20574000 3302000 20574000 7112000)
+    (connect (terminal pin u7-11) (terminal via))
+   )
+   (wire (path COMP16 25400  20193000 12446000 19558000 12446000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  21717000 12319000 20193000 12319000 20193000 12446000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  21844000 12446000 21653500 12446000 21653500 12319000
+     21717000 12319000)
+    (connect (terminal pin u1-13) (terminal via))
+   )
+   (via v1 20574000 7112000)
+   (via v1 20193000 12446000)
+   (via v1 21717000 12319000)
+   )
+   (Net i[10] 
+   (wire (path COMP16 25400  21590000 6858000 21780500 6858000 21780500 3860800
+     22098000 3860800 22098000 3810000)
+    (connect (terminal pin u2-11) (terminal pin u3-13))
+   )
+   )
+   (Net i[11] 
+   (wire (path COMP16 25400  23114000 6604000 23114000 4064000 22098000 4064000)
+    (connect (terminal pin u2-13) (terminal pin u3-14))
+   )
+   )
+   (Net i[12] 
+   (wire (path COMP16 25400  23114000 6858000 22669500 6858000 22669500 4318000
+     22098000 4318000)
+    (connect (terminal pin u2-14) (terminal pin u3-15))
+   )
+   )
+   (Net i[14] 
+   (wire (path COMP16 25400  23114000 7366000 22415500 7366000 22415500 4826000
+     22098000 4826000)
+    (connect (terminal pin u2-16) (terminal pin u3-17))
+   )
+   )
+   (Net i[15] 
+   (wire (path COMP16 25400  23114000 7620000 22288500 7620000 22288500 5080000
+     22098000 5080000)
+    (connect (terminal pin u2-17) (terminal pin u3-18))
+   )
+   )
+   (Net i[1] 
+   (wire (path COMP16 25400  19558000 6858000 19748500 6858000 19748500 3556000
+     20066000 3556000)
+    (connect (terminal pin u6-10) (terminal pin u7-12))
+   )
+   (wire (path COMP16 25400  18796000 7874000 19050000 7874000 19050000 6985000
+     19558000 6985000 19558000 6858000)
+    (connect (terminal pin u10-16) (terminal pin u6-10))
+   )
+   (wire (path COMP16 25400  19304000 14732000 19177000 14732000 19177000 13081000)
+    (connect (terminal pin u4-4) (terminal via))
+   )
+   (wire (path S1 25400  19177000 13081000 19431000 13081000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  21844000 12700000 21590000 12700000 21590000 12827000
+     19431000 12827000 19431000 13081000)
+    (connect (terminal pin u1-14) (terminal wire))
+   )
+   (wire (path S1 25400  16510000 13081000 19177000 13081000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  16256000 10668000 16446500 10668000 16446500 13081000
+     16510000 13081000)
+    (connect (terminal pin u17-13) (terminal via))
+   )
+   (wire (path S1 25400  16129000 8255000 18923000 8255000 18923000 7874000
+     18796000 7874000)
+    (connect (terminal via) (terminal pin u10-16))
+   )
+   (wire (path COMP16 25400  16256000 10668000 16129000 10668000 16129000 8255000)
+    (connect (terminal pin u17-13) (terminal via))
+   )
+   (via v1 19177000 13081000)
+   (via v1 16510000 13081000)
+   (via v1 16129000 8255000)
+   )
+   (Net i[2] 
+   (wire (path COMP16 25400  18796000 7620000 18986500 7620000 18986500 6350000
+     19431000 6350000 19431000 6477000 19558000 6477000 19558000 6604000)
+    (connect (terminal pin u10-15) (terminal pin u6-11))
+   )
+   (wire (path S1 25400  19812000 6604000 19558000 6604000)
+    (connect (terminal via) (terminal pin u6-11))
+   )
+   (wire (path COMP16 25400  19812000 6604000 19812000 6477000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  20066000 3810000 19812000 3810000 19812000 6477000)
+    (connect (terminal pin u7-13) (terminal wire))
+   )
+   (wire (path S1 25400  21844000 12954000 21590000 12954000 21590000 13081000
+     20320000 13081000 20320000 12954000)
+    (connect (terminal pin u1-15) (terminal via))
+   )
+   (wire (path S1 25400  19304000 13970000 19177000 13970000 19177000 13335000
+     19558000 13335000 19558000 12954000 20320000 12954000)
+    (connect (terminal pin u4-7) (terminal via))
+   )
+   (wire (path COMP16 25400  20320000 12954000 20320000 11049000 19812000 11049000
+     19812000 6604000)
+    (connect (terminal via) (terminal via))
+   )
+   (via v1 19812000 6604000)
+   (via v1 20320000 12954000)
+   )
+   (Net i[3] 
+   (wire (path S1 25400  18796000 6858000 19431000 6858000 19431000 6477000
+     20447000 6477000)
+    (connect (terminal pin u10-12) (terminal via))
+   )
+   (wire (path COMP16 25400  20066000 4064000 20447000 4064000 20447000 6477000)
+    (connect (terminal pin u7-14) (terminal via))
+   )
+   (wire (path S1 25400  19304000 13716000 19875500 13716000 19875500 13335000
+     20701000 13335000)
+    (connect (terminal pin u4-8) (terminal via))
+   )
+   (wire (path S1 25400  21844000 13208000 21590000 13208000 21590000 13335000
+     20701000 13335000)
+    (connect (terminal pin u1-16) (terminal via))
+   )
+   (wire (path S1 25400  21082000 6350000 20447000 6350000 20447000 6477000)
+    (connect (terminal pin u6-13) (terminal via))
+   )
+   (wire (path COMP16 25400  20701000 13335000 20701000 9969500 20447000 9969500
+     20447000 6477000)
+    (connect (terminal via) (terminal via))
+   )
+   (via v1 20701000 13335000)
+   (via v1 20447000 6477000)
+   )
+   (Net i[4] 
+   (wire (path S1 25400  18034000 6858000 18478500 6858000 18478500 6731000
+     20193000 6731000 20193000 6604000)
+    (connect (terminal pin u10-9) (terminal via))
+   )
+   (wire (path COMP16 25400  21844000 13462000 21399500 13462000 21399500 6604000
+     21082000 6604000)
+    (connect (terminal pin u1-17) (terminal pin u6-14))
+   )
+   (wire (path S1 25400  20066000 13716000 20320000 13716000 20320000 13589000
+     21507212 13589000 21507212 13462000 21844000 13462000)
+    (connect (terminal pin u4-13) (terminal pin u1-17))
+   )
+   (wire (path COMP16 25400  20066000 4318000 19939000 4318000 19939000 6032500
+     20193000 6032500 20193000 6604000)
+    (connect (terminal pin u7-15) (terminal via))
+   )
+   (wire (path S1 25400  21082000 6604000 20193000 6604000)
+    (connect (terminal pin u6-14) (terminal via))
+   )
+   (via v1 20193000 6604000)
+   )
+   (Net i[5] 
+   (wire (path S1 25400  18034000 7620000 18605500 7620000 18605500 7239000
+     20193000 7239000)
+    (connect (terminal pin u10-6) (terminal via))
+   )
+   (wire (path S1 25400  20701000 13843000 21399500 13843000 21399500 13716000
+     21844000 13716000)
+    (connect (terminal via) (terminal pin u1-18))
+   )
+   (wire (path S1 25400  21082000 6858000 21272500 6858000 21272500 7239000
+     20193000 7239000)
+    (connect (terminal pin u6-15) (terminal via))
+   )
+   (wire (path COMP16 25400  21082000 4953000 21463000 4953000 21463000 6033965
+     20891500 6033965 20891500 6858000 21082000 6858000)
+    (connect (terminal via) (terminal pin u6-15))
+   )
+   (wire (path S1 25400  20066000 4572000 21082000 4572000 21082000 4953000)
+    (connect (terminal pin u7-16) (terminal via))
+   )
+   (wire (path COMP16 25400  20193000 7239000 20193000 10198806 20447000 10198806
+     20447000 13843000 20701000 13843000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  20701000 13843000 20580606 13843000 20580606 13970000
+     20066000 13970000)
+    (connect (terminal via) (terminal pin u4-14))
+   )
+   (via v1 21082000 4953000)
+   (via v1 20701000 13843000)
+   (via v1 20193000 7239000)
+   )
+   (Net i[6] 
+   (wire (path S1 25400  18034000 7874000 18034000 7873999 17907000 7873999
+     17907000 7493000 18542000 7493000 18542000 6985000 20828000 6985000)
+    (connect (terminal pin u10-5) (terminal via))
+   )
+   (wire (path COMP16 25400  20828000 6985000 20828000 6985000 21082000 6985000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  21082000 6985000 21082000 7112000)
+    (connect (terminal wire) (terminal pin u6-16))
+   )
+   (wire (path COMP16 25400  21082000 6985000 21209000 6985000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path S1 25400  21844000 13970000 21653500 13970000 21653500 14605000
+     20891500 14605000 20891500 14732000 20066000 14732000)
+    (connect (terminal pin u1-19) (terminal pin u4-17))
+   )
+   (wire (path COMP16 25400  20066000 4826000 20193000 4826000 20193000 4191000
+     19939000 4191000 19939000 3937000 20256500 3937000 20256500 4000500
+     20510500 4000500 20510500 5468386 20828000 5468386 20828000 6985000)
+    (connect (terminal pin u7-17) (terminal via))
+   )
+   (wire (path COMP16 25400  21209000 6985000 21209000 6731000 20955000 6731000
+     20955000 6477000 21463000 6477000 21463000 13081000 21971000 13081000
+     21971000 13970000 21844000 13970000)
+    (connect (terminal wire) (terminal pin u1-19))
+   )
+   (via v1 20828000 6985000)
+   )
+   (Net i[7] 
+   (wire (path COMP16 25400  21082000 7366000 20955000 7366000 20955000 8255000)
+    (connect (terminal pin u6-17) (terminal wire))
+   )
+   (wire (path COMP16 25400  20955000 8255000 21336000 8255000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  21336000 14223999 21336000 14986000 20066000 14986000)
+    (connect (terminal wire) (terminal pin u4-18))
+   )
+   (wire (path COMP16 25400  20574000 8890000 20574000 8255000 20955000 8255000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  20320000 8890000 20574000 8890000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  20320000 8255000 20320000 8890000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  21844000 14224000 21844000 14223999 21336000 14223999)
+    (connect (terminal pin u1-20) (terminal wire))
+   )
+   (wire (path COMP16 25400  21336000 14223999 21336000 8255000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  20066000 5080000 20320000 5080000 20320000 8255000)
+    (connect (terminal pin u7-18) (terminal via))
+   )
+   (wire (path S1 25400  20320000 8255000 18986500 8255000 18986500 8509000
+     18288000 8509000 18288000 8636000 18034000 8636000)
+    (connect (terminal via) (terminal pin u10-2))
+   )
+   (via v1 20574000 8890000)
+   (via v1 20320000 8890000)
+   (via v1 20320000 8255000)
+   )
+   (Net i[8] 
+   (wire (path COMP16 25400  21590000 7366000 21971000 7366000 21971000 3937000
+     22288500 3937000 22288500 3302000 22098000 3302000)
+    (connect (terminal pin u2-9) (terminal pin u3-11))
+   )
+   )
+   (Net i[9] 
+   (wire (path COMP16 25400  21590000 7112000 21907500 7112000 21907500 3556000
+     22098000 3556000)
+    (connect (terminal pin u2-10) (terminal pin u3-12))
+   )
+   )
+   (Net irq2 
+   (wire (path COMP16 25400  15494000 4064000 15303500 4064000 15303500 1741899
+     15113000 1741899 15113000 762000 14986000 762000)
+    (connect (terminal pin u19-4) (terminal pin j1-B29))
+   )
+   )
+   (Net irq4 
+   (wire (path COMP16 25400  16256000 4318000 15621000 4318000 15621000 762000
+     15494000 762000)
+    (connect (terminal pin u19-12) (terminal pin j1-B27))
+   )
+   )
+   (Net irq5 
+   (wire (path COMP16 25400  16256000 3302000 16256000 3048000 15875000 3048000
+     15875000 762000 15748000 762000)
+    (connect (terminal pin u19-8) (terminal pin j1-B26))
+   )
+   )
+   (Net m_s 
+   (wire (path COMP16 25400  6477000 6096000 7302500 6096000 7302500 2222500
+     6096000 2222500 6096000 1016000)
+    (connect (terminal wire) (terminal pin j2-C12))
+   )
+   (wire (path COMP16 25400  6604000 9906000 6604000 9652000 6350000 9652000
+     6350000 6096000 6477000 6096000)
+    (connect (terminal pin r10-1) (terminal wire))
+   )
+   (wire (path COMP16 25400  6477000 6096000 6477000 5588001 6350000 5588001
+     6350000 5588000)
+    (connect (terminal wire) (terminal pin u41-1))
+   )
+   (wire (path S1 25400  6604000 10033000 6604000 9906000)
+    (connect (terminal wire) (terminal pin r10-1))
+   )
+   (wire (path S1 25400  10922000 9906000 10922000 10033000 6604000 10033000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  11176000 11176000 11430000 11176000 11430000 9398000
+     10922000 9398000 10922000 9906000)
+    (connect (terminal pin u33-13) (terminal via))
+   )
+   (wire (path S1 25400  5334000 10160000 6604000 10160000 6604000 10033000)
+    (connect (terminal pin u43-10) (terminal wire))
+   )
+   (via v1 10922000 9906000)
+   )
+   (Net n$1134 
+   (wire (path COMP16 25400  15494000 13208000 15621000 13208000 15621000 11682002
+     15367000 11682002 15367000 10287000 13970000 10287000 13970000 10160000
+     13716000 10160000)
+    (connect (terminal pin u55-5) (terminal pin u25-8))
+   )
+   (wire (path S1 25400  16256000 13970000 16383000 13970000 16383000 13081000
+     16065500 13081000 16065500 13208000 15494000 13208000)
+    (connect (terminal pin u55-13) (terminal pin u55-5))
+   )
+   )
+   (Net n$1221 
+   (wire (path S1 25400  3302000 10160000 3048000 10160000 3048000 10033000
+     1778000 10033000 1778000 10160000 1524000 10160000)
+    (connect (terminal pin u47-5) (terminal pin u53-10))
+   )
+   )
+   (Net n$1225 
+   (wire (path S1 25400  4064000 10160000 3803999 10160000 3803999 9906000
+     3302000 9906000)
+    (connect (terminal pin u47-10) (terminal pin u47-6))
+   )
+   (wire (path S1 25400  3302000 9906000 3048000 9906000 3048000 9779000
+     1778000 9779000 1778000 9906000 1524000 9906000)
+    (connect (terminal pin u47-6) (terminal pin u53-9))
+   )
+   )
+   (Net n$1228 
+   (wire (path S1 25400  5334000 10668000 4861182 10668000 4861182 10541000
+     4318000 10541000 4318000 10414000 4064000 10414000)
+    (connect (terminal pin u43-12) (terminal pin u47-11))
+   )
+   )
+   (Net n$1231 
+   (wire (path COMP16 25400  1524000 9652000 1153024 9652000 1153024 10668000
+     762000 10668000)
+    (connect (terminal pin u53-8) (terminal pin u53-3))
+   )
+   (wire (path S1 25400  9398000 9525000 1778000 9525000 1778000 9652000
+     1524000 9652000)
+    (connect (terminal via) (terminal pin u53-8))
+   )
+   (wire (path COMP16 25400  9652000 7366000 9398000 7366000 9398000 9525000)
+    (connect (terminal pin u38-11) (terminal via))
+   )
+   (via v1 9398000 9525000)
+   )
+   (Net n$1233 
+   (wire (path COMP16 25400  762000 10414000 762000 10160000)
+    (connect (terminal pin u53-4) (terminal pin u53-5))
+   )
+   )
+   (Net n$1235 
+   (wire (path S1 25400  9652000 8890000 1270000 8890000 1270000 9906000
+     762000 9906000)
+    (connect (terminal via) (terminal pin u53-6))
+   )
+   (wire (path COMP16 25400  9652000 7620000 9779000 7620000 9779000 8890000
+     9652000 8890000)
+    (connect (terminal pin u38-12) (terminal via))
+   )
+   (via v1 9652000 8890000)
+   )
+   (Net n$1237 
+   (wire (path S1 25400  9525000 9779000 4318000 9779000 4318000 9906000
+     4064000 9906000)
+    (connect (terminal via) (terminal pin u47-9))
+   )
+   (wire (path COMP16 25400  9652000 7874000 9525000 7874000 9525000 9779000)
+    (connect (terminal pin u38-13) (terminal via))
+   )
+   (via v1 9525000 9779000)
+   )
+   (Net n$1246 
+   (wire (path COMP16 25400  9271000 10795000 9271000 7175500 9334500 7175500
+     9334500 4318000 9906000 4318000)
+    (connect (terminal via) (terminal pin u56-12))
+   )
+   (wire (path S1 25400  6731000 11176000 6731000 10795000 9271000 10795000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  6604000 12954000 6731000 12954000 6731000 11176000)
+    (connect (terminal pin u39-6) (terminal via))
+   )
+   (via v1 9271000 10795000)
+   (via v1 6731000 11176000)
+   )
+   (Net n$1247 
+   (wire (path S1 25400  6985000 11049000 10160000 11049000 10160000 11176000
+     10414000 11176000)
+    (connect (terminal via) (terminal pin u33-2))
+   )
+   (wire (path COMP16 25400  6604000 13462000 6921500 13462000 6921500 11049000
+     6985000 11049000)
+    (connect (terminal pin u39-4) (terminal via))
+   )
+   (via v1 6985000 11049000)
+   )
+   (Net n$1271 
+   (wire (path S1 25400  8128000 10414000 5334000 10414000)
+    (connect (terminal via) (terminal pin u43-11))
+   )
+   (wire (path COMP16 25400  7366000 13970000 8128000 13970000 8128000 10414000)
+    (connect (terminal pin u39-13) (terminal via))
+   )
+   (via v1 8128000 10414000)
+   )
+   (Net n$1295 
+   (wire (path S1 25400  19304000 15240000 16319500 15240000 16319500 15684500
+     12192000 15684500 12192000 15494000)
+    (connect (terminal pin u4-2) (terminal pin ds10-1))
+   )
+   )
+   (Net n$1296 
+   (wire (path S1 25400  19304000 14478000 19050000 14478000 19050000 14351000
+     12827000 14351000 12827000 15240000 12700000 15240000 12700000 15494000)
+    (connect (terminal pin u4-5) (terminal pin ds9-1))
+   )
+   )
+   (Net n$1297 
+   (wire (path S1 25400  19304000 14224000 18986500 14224000 18986500 14097000
+     17793767 14097000 17793767 14478000 13335000 14478000 13335000 15240000
+     13208000 15240000 13208000 15494000)
+    (connect (terminal pin u4-6) (terminal pin ds8-1))
+   )
+   )
+   (Net n$1298 
+   (wire (path S1 25400  14859000 14859000 13589000 14859000 13589000 15494000
+     13716000 15494000)
+    (connect (terminal via) (terminal pin ds7-1))
+   )
+   (wire (path COMP16 25400  19685000 13462000 19685000 15113000 14890069 15113000
+     14890069 14859000 14859000 14859000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  19304000 13462000 19685000 13462000)
+    (connect (terminal pin u4-9) (terminal via))
+   )
+   (via v1 14859000 14859000)
+   (via v1 19685000 13462000)
+   )
+   (Net n$1299 
+   (wire (path COMP16 25400  20066000 13462000 19875500 13462000 19875500 15684500
+     14224000 15684500 14224000 15494000)
+    (connect (terminal pin u4-12) (terminal pin ds6-1))
+   )
+   )
+   (Net n$1300 
+   (wire (path S1 25400  20066000 14224000 20256500 14224000 20256500 14605000
+     19875500 14605000 19875500 14859000 15621000 14859000 15621000 15621000
+     14732000 15621000 14732000 15494000)
+    (connect (terminal pin u4-15) (terminal pin ds5-1))
+   )
+   )
+   (Net n$1301 
+   (wire (path S1 25400  20066000 14478000 19621500 14478000 19621500 14605000
+     15240000 14605000 15240000 15494000)
+    (connect (terminal pin u4-16) (terminal pin ds4-1))
+   )
+   )
+   (Net n$1399 
+   (wire (path COMP16 25400  762000 12954000 1145120 12954000 1145120 13970000
+     1524000 13970000)
+    (connect (terminal pin u52-6) (terminal pin u52-13))
+   )
+   )
+   (Net n$1410 
+   (wire (path COMP16 25400  2794000 13462000 2667000 13462000 2667000 9652000
+     2794000 9652000)
+    (connect (terminal pin u49-11) (terminal pin u50-8))
+   )
+   )
+   (Net n$1411 
+   (wire (path COMP16 25400  2032000 12954000 2476500 12954000 2476500 13970000
+     2794000 13970000)
+    (connect (terminal pin u49-6) (terminal pin u49-13))
+   )
+   )
+   (Net n$1417 
+   (wire (path COMP16 25400  2794000 10414000 3047410 10414000 3047410 7620000
+     3302000 7620000)
+    (connect (terminal pin u50-11) (terminal pin u48-13))
+   )
+   )
+   (Net n$1435 
+   (wire (path S1 25400  19431000 10541000 19050000 10541000 19050000 10033000
+     18605500 10033000 18605500 9906000 18034000 9906000)
+    (connect (terminal via) (terminal pin u9-11))
+   )
+   (wire (path COMP16 25400  19304000 12827000 19494500 12827000 19494500 10541000
+     19431000 10541000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  17780000 12954000 19240500 12954000 19240500 12827000
+     19304000 12827000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17653000 11938000 17653000 12954000 17780000 12954000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  11303000 11938000 15208842 11938000 15208842 12065000
+     16446500 12065000 16446500 11938000 17653000 11938000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11176000 13462000 11303000 13462000 11303000 11938000)
+    (connect (terminal pin u32-12) (terminal via))
+   )
+   (via v1 19431000 10541000)
+   (via v1 19304000 12827000)
+   (via v1 17780000 12954000)
+   (via v1 17653000 11938000)
+   (via v1 11303000 11938000)
+   )
+   (Net n$1472 
+   (wire (path S1 25400  762000 13716000 1016000 13716000 1016000 13589000
+     3048000 13589000 3048000 13462000 3302000 13462000)
+    (connect (terminal pin u52-3) (terminal pin u46-4))
+   )
+   (wire (path COMP16 25400  3302000 13462000 3302000 13208000)
+    (connect (terminal pin u46-4) (terminal pin u46-5))
+   )
+   )
+   (Net n$1486 
+   (wire (path S1 25400  16256000 12954000 15776626 12954000 15776626 13081000
+     14986000 13081000 14986000 13208000)
+    (connect (terminal pin u55-9) (terminal pin u20-10))
+   )
+   )
+   (Net n$1488 
+   (wire (path S1 25400  16256000 12700000 16510000 12700000 16510000 12573000
+     19748500 12573000 19748500 10922000 20066000 10922000)
+    (connect (terminal pin u55-8) (terminal pin u5-9))
+   )
+   )
+   (Net n$1490 
+   (wire (path S1 25400  13081000 13335000 16256000 13335000 16256000 13208000)
+    (connect (terminal via) (terminal pin u55-10))
+   )
+   (wire (path COMP16 25400  11176000 9906000 11049000 9906000 11049000 14668500
+     13081000 14668500 13081000 13335000)
+    (connect (terminal pin u33-8) (terminal via))
+   )
+   (via v1 13081000 13335000)
+   )
+   (Net n$153 
+   (wire (path COMP16 25400  16256000 7112000 16129000 7112000 16129000 7620000)
+    (connect (terminal pin u18-10) (terminal wire))
+   )
+   (wire (path COMP16 25400  16256000 7620000 16129000 7620000)
+    (connect (terminal pin u18-12) (terminal wire))
+   )
+   (wire (path S1 25400  16002000 10033000 15113000 10033000 15113000 11049000
+     14033500 11049000 14033500 11176000 13716000 11176000)
+    (connect (terminal via) (terminal pin u25-12))
+   )
+   (wire (path COMP16 25400  16129000 7620000 16002000 7620000 16002000 10033000)
+    (connect (terminal wire) (terminal via))
+   )
+   (via v1 16002000 10033000)
+   )
+   (Net n$1542 
+   (wire (path COMP16 25400  8890000 13208000 8763000 13208000 8763000 10541000
+     9017000 10541000 9017000 7874000 8890000 7874000)
+    (connect (terminal pin u36-5) (terminal pin u38-2))
+   )
+   )
+   (Net n$1559 
+   (wire (path S1 25400  8382000 8001000 9902283 8001000 9902283 7874000
+     10414000 7874000)
+    (connect (terminal via) (terminal pin u34-5))
+   )
+   (wire (path COMP16 25400  8382000 7620000 8382000 8001000)
+    (connect (terminal pin r12-1) (terminal via))
+   )
+   (wire (path S1 25400  5969000 8001000 8382000 8001000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  5969000 9017000 5969000 8001000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  3683000 9017000 5969000 9017000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  3302000 7112000 3683000 7112000 3683000 9017000)
+    (connect (terminal pin u48-11) (terminal via))
+   )
+   (via v1 5969000 8001000)
+   (via v1 5969000 9017000)
+   (via v1 3683000 9017000)
+   (via v1 8382000 8001000)
+   )
+   (Net n$1560 
+   (wire (path S1 25400  2540000 8509000 2540000 8636000 10414000 8636000)
+    (connect (terminal via) (terminal pin u34-2))
+   )
+   (wire (path S1 25400  1270000 8636000 1524000 8636000 1524000 8509000
+     2540000 8509000)
+    (connect (terminal pin r14-1) (terminal via))
+   )
+   (wire (path COMP16 25400  2540000 8509000 2540000 7874000)
+    (connect (terminal via) (terminal pin u48-1))
+   )
+   (via v1 2540000 8509000)
+   )
+   (Net n$160 
+   (wire (path COMP16 25400  16256000 6604000 16129000 6604000 16129000 4445000
+     16383000 4445000 16383000 4064000 16256000 4064000)
+    (connect (terminal pin u18-8) (terminal pin u19-11))
+   )
+   )
+   (Net n$1614 
+   (wire (path S1 25400  8255000 7366000 8890000 7366000)
+    (connect (terminal via) (terminal pin u38-4))
+   )
+   (wire (path COMP16 25400  8255000 12065000 8255000 7366000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  17780000 12192000 13769902 12192000 13769902 12065000
+     8255000 12065000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17780000 12700000 17780000 12192000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  20066000 11938000 19875500 11938000 19875500 12636500
+     17780000 12636500 17780000 12700000)
+    (connect (terminal pin u5-13) (terminal via))
+   )
+   (via v1 8255000 7366000)
+   (via v1 8255000 12065000)
+   (via v1 17780000 12192000)
+   (via v1 17780000 12700000)
+   )
+   (Net n$1621 
+   (wire (path S1 25400  9144000 3810000 9587904 3810000 9587904 3556000
+     9906000 3556000)
+    (connect (terminal pin u56-5) (terminal pin u56-9))
+   )
+   (wire (path COMP16 25400  9906000 3556000 10096500 3556000 10096500 4953000
+     10541000 4953000 10541000 5461000 10033000 5461000 10033000 10668000
+     10414000 10668000)
+    (connect (terminal pin u56-9) (terminal pin u33-4))
+   )
+   )
+   (Net n$164 
+   (wire (path S1 25400  16256000 7366000 16065500 7366000 16065500 6413500
+     11366500 6413500 11366500 6985000 10604500 6985000 10604500 6413500
+     10259137 6413500 10259137 6159500 5566116 6159500 5566116 5969000
+     1543142 5969000 1543142 6477000 1270000 6477000 1270000 6604000)
+    (connect (terminal pin u18-11) (terminal pin u51-6))
+   )
+   )
+   (Net n$1721 
+   (wire (path COMP16 25400  18034000 11430000 17716500 11430000 17716500 9652000
+     17526000 9652000)
+    (connect (terminal pin u9-5) (terminal pin u13-8))
+   )
+   )
+   (Net n$1722 
+   (wire (path S1 25400  18796000 10668000 18542000 10668000 18542000 10541000
+     17843500 10541000 17843500 10604500 17653000 10604500 17653000 10922000
+     17526000 10922000)
+    (connect (terminal pin u9-17) (terminal pin u13-13))
+   )
+   )
+   (Net n$1723 
+   (wire (path COMP16 25400  18034000 12192000 17907000 12192000 17907000 13716000
+     18034000 13716000)
+    (connect (terminal pin u9-2) (terminal pin u8-6))
+   )
+   )
+   (Net n$1724 
+   (wire (path COMP16 25400  18796000 11430000 18669000 11430000 18669000 13144500
+     18923000 13144500 18923000 14605000 18605500 14605000 18605500 14986000
+     18034000 14986000)
+    (connect (terminal pin u9-20) (terminal pin u8-1))
+   )
+   )
+   (Net n$1725 
+   (wire (path COMP16 25400  18034000 11938000 18605500 11938000 18605500 13208000
+     18796000 13208000 18796000 13462000)
+    (connect (terminal pin u9-3) (terminal pin u8-8))
+   )
+   )
+   (Net n$1726 
+   (wire (path COMP16 25400  18796000 11176000 18923000 11176000 18923000 12001500
+     18986500 12001500 18986500 14732000 18796000 14732000)
+    (connect (terminal pin u9-19) (terminal pin u8-13))
+   )
+   )
+   (Net n$1727 
+   (wire (path COMP16 25400  18034000 11684000 16891000 11684000 16891000 9906000
+     16764000 9906000)
+    (connect (terminal pin u9-4) (terminal pin u13-6))
+   )
+   )
+   (Net n$1728 
+   (wire (path S1 25400  16764000 11176000 17298168 11176000 17298168 11049000
+     17780000 11049000 17780000 10795000 18542000 10795000 18542000 10922000
+     18796000 10922000)
+    (connect (terminal pin u13-1) (terminal pin u9-18))
+   )
+   )
+   (Net n$1729 
+   (wire (path S1 25400  18288000 11176000 18161000 11176000 18161000 11684000
+     18796000 11684000)
+    (connect (terminal via) (terminal pin u9-21))
+   )
+   (wire (path COMP16 25400  16256000 3556000 16446500 3556000 16446500 5778500
+     17653000 5778500 17653000 8572500 17145000 8572500 17145000 9779000
+     17399000 9779000 17399000 9461500 17843500 9461500 17843500 11049000
+     18288000 11049000 18288000 11176000)
+    (connect (terminal pin u19-9) (terminal via))
+   )
+   (via v1 18288000 11176000)
+   )
+   (Net n$1753 
+   (wire (path COMP16 25400  18796000 10414000 18669000 10414000 18669000 8382000
+     18796000 8382000)
+    (connect (terminal pin u9-16) (terminal pin u10-18))
+   )
+   )
+   (Net n$1755 
+   (wire (path COMP16 25400  15494000 10414000 15811500 10414000 15811500 14732000
+     18034000 14732000)
+    (connect (terminal pin u17-5) (terminal pin u8-2))
+   )
+   )
+   (Net n$1767 
+   (wire (path COMP16 25400  15494000 10668000 15684500 10668000 15684500 14351000
+     18542000 14351000 18542000 14478000 18796000 14478000)
+    (connect (terminal pin u17-4) (terminal pin u8-12))
+   )
+   )
+   (Net n$1771 
+   (wire (path COMP16 25400  18415000 12319000 18351500 12319000 18351500 14224000
+     18796000 14224000)
+    (connect (terminal via) (terminal pin u8-11))
+   )
+   (wire (path S1 25400  14605000 12065000 14838060 12065000 14838060 12319000
+     18415000 12319000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  14224000 10668000 14541500 10668000 14541500 12065000
+     14605000 12065000)
+    (connect (terminal pin u21-5) (terminal via))
+   )
+   (via v1 18415000 12319000)
+   (via v1 14605000 12065000)
+   )
+   (Net n$1773 
+   (wire (path COMP16 25400  15621000 10287000 15621000 9906000 15494000 9906000)
+    (connect (terminal via) (terminal pin u17-7))
+   )
+   (wire (path S1 25400  16764000 10922000 16510000 10922000 16510000 10795000
+     15621000 10795000 15621000 10287000)
+    (connect (terminal pin u13-2) (terminal via))
+   )
+   (via v1 15621000 10287000)
+   )
+   (Net n$1777 
+   (wire (path COMP16 25400  16764000 7620000 16637000 7620000 16637000 10668000
+     16764000 10668000)
+    (connect (terminal pin u14-3) (terminal pin u13-3))
+   )
+   (wire (path S1 25400  14986000 11176000 15176500 11176000 15176500 11049000
+     16891000 11049000 16891000 10668000 16764000 10668000)
+    (connect (terminal pin u21-12) (terminal pin u13-3))
+   )
+   (wire (path S1 25400  17526000 7366000 17208500 7366000 17208500 7620000
+     16764000 7620000)
+    (connect (terminal pin u14-11) (terminal pin u14-3))
+   )
+   )
+   (Net n$1802 
+   (wire (path S1 25400  14097000 10541000 11430000 10541000 11430000 10414000
+     11176000 10414000)
+    (connect (terminal via) (terminal pin u33-10))
+   )
+   (wire (path COMP16 25400  14224000 11684000 14097000 11684000 14097000 10541000)
+    (connect (terminal pin u21-1) (terminal via))
+   )
+   (via v1 14097000 10541000)
+   )
+   (Net n$1806 
+   (wire (path COMP16 25400  16256000 8382000 16256000 9652000)
+    (connect (terminal via) (terminal pin u17-9))
+   )
+   (wire (path S1 25400  17272000 8382000 16256000 8382000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17272000 7874000 17272000 8382000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  17272000 7874000 16764000 7874000)
+    (connect (terminal via) (terminal pin u14-2))
+   )
+   (wire (path S1 25400  17399000 7493000 17399000 7874000 17272000 7874000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17526000 7112000 17399000 7112000 17399000 7493000)
+    (connect (terminal pin u14-10) (terminal via))
+   )
+   (via v1 16256000 8382000)
+   (via v1 17272000 8382000)
+   (via v1 17272000 7874000)
+   (via v1 17399000 7493000)
+   )
+   (Net n$1819 
+   (wire (path COMP16 25400  16764000 6858000 16510000 6858000 16510000 6731000
+     16002000 6731000 16002000 4826000 15494000 4826000)
+    (connect (terminal pin u14-6) (terminal pin u19-1))
+   )
+   )
+   (Net n$1850 
+   (wire (path COMP16 25400  17145000 9906000 17081500 9906000 17081500 7620000
+     17526000 7620000)
+    (connect (terminal via) (terminal pin u14-12))
+   )
+   (wire (path S1 25400  16383000 10033000 17145000 10033000 17145000 9906000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  16256000 9906000 16383000 9906000 16383000 10033000)
+    (connect (terminal pin u17-10) (terminal via))
+   )
+   (via v1 17145000 9906000)
+   (via v1 16383000 10033000)
+   )
+   (Net n$1855 
+   (wire (path COMP16 25400  16764000 14224000 16954500 14224000 16954500 8382000
+     16764000 8382000 16764000 8128000)
+    (connect (terminal pin u12-1) (terminal pin u14-1))
+   )
+   )
+   (Net n$1858 
+   (wire (path S1 25400  17018000 6604000 17526000 6604000)
+    (connect (terminal via) (terminal pin u14-8))
+   )
+   (wire (path COMP16 25400  15494000 4318000 15494000 4368800 16065500 4368800
+     16065500 6413500 17018000 6413500 17018000 6604000)
+    (connect (terminal pin u19-3) (terminal via))
+   )
+   (via v1 17018000 6604000)
+   )
+   (Net n$1965 
+   (wire (path COMP16 25400  21082000 14478000 20828000 14478000 20828000 14605000
+     19939000 14605000 19939000 15811500 14097000 15811500 14097000 14668500
+     14351000 14668500 14351000 12335076 13970000 12335076 13970000 10541000
+     13208000 10541000 13208000 10414000 12954000 10414000)
+    (connect (terminal pin u1-2) (terminal pin u25-6))
+   )
+   )
+   (Net n$2065 
+   (wire (path COMP16 25400  8890000 13462000 9433468 13462000 9433468 13081000
+     10287000 13081000 10287000 11811000)
+    (connect (terminal pin u36-4) (terminal via))
+   )
+   (wire (path COMP16 25400  10414000 10922000 10287000 10922000 10287000 11811000)
+    (connect (terminal pin u33-3) (terminal via))
+   )
+   (wire (path COMP16 25400  19304000 11684000 19431000 11684000 19431000 12192000
+     19304000 12192000)
+    (connect (terminal pin u5-3) (terminal pin u5-1))
+   )
+   (wire (path COMP16 25400  19304000 11176000 19177000 11176000 19177000 11684000
+     19304000 11684000)
+    (connect (terminal pin u5-5) (terminal pin u5-3))
+   )
+   (wire (path S1 25400  10287000 11811000 19050000 11811000 19050000 11684000
+     19304000 11684000)
+    (connect (terminal via) (terminal pin u5-3))
+   )
+   (via v1 10287000 11811000)
+   )
+   (Net n$2067 
+   (wire (path S1 25400  8890000 6350000 8890000 6477000 6167790 6477000
+     6167790 6731000 3556000 6731000 3556000 6604000 3302000 6604000)
+    (connect (terminal via) (terminal pin u48-9))
+   )
+   (wire (path COMP16 25400  9144000 3556000 8890000 3556000 8890000 6350000)
+    (connect (terminal pin u56-6) (terminal via))
+   )
+   (via v1 8890000 6350000)
+   )
+   (Net n$2069 
+   (wire (path COMP16 25400  9144000 5715000 9271000 5715000 9271000 3302000
+     9906000 3302000)
+    (connect (terminal via) (terminal pin u56-8))
+   )
+   (wire (path S1 25400  4826000 5588000 6159500 5588000 6159500 5715000
+     9144000 5715000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  4826000 6096000 4826000 5588000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  2794000 6096000 4826000 6096000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  2540000 6858000 2730500 6858000 2730500 6096000
+     2794000 6096000)
+    (connect (terminal pin u48-5) (terminal via))
+   )
+   (via v1 9144000 5715000)
+   (via v1 4826000 5588000)
+   (via v1 4826000 6096000)
+   (via v1 2794000 6096000)
+   )
+   (Net n$211 
+   (wire (path S1 25400  14605000 12954000 14986000 12954000)
+    (connect (terminal via) (terminal pin u20-9))
+   )
+   (wire (path COMP16 25400  14605000 12700000 14605000 12954000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  10541000 12319000 10541000 12446000 14414500 12446000
+     14414500 12700000 14605000 12700000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  10414000 10160000 10541000 10160000 10541000 12319000)
+    (connect (terminal pin u33-6) (terminal via))
+   )
+   (via v1 14605000 12954000)
+   (via v1 14605000 12700000)
+   (via v1 10541000 12319000)
+   )
+   (Net n$2119 
+   (wire (path S1 25400  18288000 11557000 19494500 11557000 19494500 11811000
+     19113500 11811000 19113500 11938000 18796000 11938000)
+    (connect (terminal via) (terminal pin u9-22))
+   )
+   (wire (path COMP16 25400  17018000 7239000 17018000 11557000 18288000 11557000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  17145000 6858000 17145000 7175500 17018000 7175500
+     17018000 7239000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  16256000 4572000 16383000 4572000 16383000 5905500
+     17145000 5905500 17145000 6858000)
+    (connect (terminal pin u19-13) (terminal via))
+   )
+   (via v1 18288000 11557000)
+   (via v1 17018000 7239000)
+   (via v1 17145000 6858000)
+   )
+   (Net n$2148 
+   (wire (path S1 25400  762000 13462000 1016000 13462000 1016000 13335000
+     3677541 13335000 3677541 13208000 4064000 13208000)
+    (connect (terminal pin u52-4) (terminal pin u46-10))
+   )
+   (wire (path COMP16 25400  4064000 12954000 4064000 13208000)
+    (connect (terminal pin u46-9) (terminal pin u46-10))
+   )
+   (wire (path S1 25400  4064000 12954000 4064000 12827000 7175500 12827000
+     7175500 13081000 12065000 13081000 12065000 12827000 18535937 12827000
+     18535937 12700000 20115455 12700000 20115455 12573000 21971000 12573000
+     21971000 13589000 21653500 13589000 21653500 13665200 21082000 13665200
+     21082000 13716000)
+    (connect (terminal pin u46-9) (terminal pin u1-5))
+   )
+   )
+   (Net n$2150 
+   (wire (path COMP16 25400  20955000 9398000 20955000 8382000 21082000 8382000)
+    (connect (terminal wire) (terminal pin u6-21))
+   )
+   (wire (path S1 25400  20701000 9398000 15113000 9398000 15113000 9525000
+     14478000 9525000 14478000 9398000 14224000 9398000)
+    (connect (terminal via) (terminal pin u22-1))
+   )
+   (wire (path COMP16 25400  20955000 9398000 20701000 9398000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  20955000 9398000 20955000 9794391 21209000 9794391
+     21209000 14732000 21082000 14732000)
+    (connect (terminal wire) (terminal pin u1-1))
+   )
+   (wire (path S1 25400  21082000 8382000 21082000 8432799 21399500 8432799
+     21399500 8509000 22860000 8509000 22860000 8636000 23114000 8636000)
+    (connect (terminal pin u6-21) (terminal pin u2-21))
+   )
+   (wire (path S1 25400  18034000 4572000 18288000 4572000 18288000 4699000
+     18986500 4699000 18986500 4445000 22391173 4445000 22391173 6350000
+     23241000 6350000 23241000 8636000 23114000 8636000)
+    (connect (terminal pin u11-5) (terminal pin u2-21))
+   )
+   (wire (path COMP16 25400  11430000 8763000 11430000 8382000 11176000 8382000)
+    (connect (terminal via) (terminal pin u34-18))
+   )
+   (wire (path S1 25400  14224000 9398000 12636500 9398000 12636500 8763000
+     11430000 8763000)
+    (connect (terminal pin u22-1) (terminal via))
+   )
+   (via v1 20701000 9398000)
+   (via v1 11430000 8763000)
+   )
+   (Net n$2156 
+   (wire (path COMP16 25400  12954000 14986000 12954000 15494000)
+    (connect (terminal pin rn1-3) (terminal pin ds9-2))
+   )
+   )
+   (Net n$2157 
+   (wire (path COMP16 25400  13208000 14986000 13208000 15303500 13462000 15303500
+     13462000 15494000)
+    (connect (terminal pin rn1-4) (terminal pin ds8-2))
+   )
+   )
+   (Net n$2160 
+   (wire (path COMP16 25400  13462000 14986000 13462000 15176500 13970000 15176500
+     13970000 15494000)
+    (connect (terminal pin rn1-5) (terminal pin ds7-2))
+   )
+   )
+   (Net n$2177 
+   (wire (path S1 25400  13716000 14986000 13716000 15303500 14478000 15303500
+     14478000 15494000)
+    (connect (terminal pin rn1-6) (terminal pin ds6-2))
+   )
+   )
+   (Net n$218 
+   (wire (path S1 25400  14224000 12954000 13970000 12954000 13970000 13081000
+     12255500 13081000 12255500 13462000 11684000 13462000)
+    (connect (terminal pin u20-6) (terminal pin u28-5))
+   )
+   )
+   (Net n$2180 
+   (wire (path S1 25400  13970000 14986000 13970000 15176500 14986000 15176500
+     14986000 15494000)
+    (connect (terminal pin rn1-7) (terminal pin ds5-2))
+   )
+   )
+   (Net n$2181 
+   (wire (path COMP16 25400  14224000 14986000 14224000 14795500 14605000 14795500
+     14605000 15303500 15494000 15303500 15494000 15494000)
+    (connect (terminal pin rn1-8) (terminal pin ds4-2))
+   )
+   )
+   (Net n$2183 
+   (wire (path S1 25400  20066000 15240000 19812000 15240000 19812000 15113000
+     15748000 15113000 15748000 15494000)
+    (connect (terminal pin u4-19) (terminal pin ds3-1))
+   )
+   )
+   (Net n$2184 
+   (wire (path COMP16 25400  14478000 14986000 14478000 15240000 14351000 15240000
+     14351000 15621000 16002000 15621000 16002000 15494000)
+    (connect (terminal pin rn1-9) (terminal pin ds3-2))
+   )
+   )
+   (Net n$2301 
+   (wire (path S1 25400  10160000 5715000 10541000 5715000 10541000 5588000
+     10985500 5588000 10985500 5778500 18582163 5778500 18582163 5334000
+     18796000 5334000)
+    (connect (terminal via) (terminal pin u11-19))
+   )
+   (wire (path COMP16 25400  10414000 14224000 10668000 14224000 10668000 5715000)
+    (connect (terminal pin u32-2) (terminal wire))
+   )
+   (wire (path COMP16 25400  9779000 5715000 9779000 5016500 10033000 5016500
+     10033000 3810000 9906000 3810000)
+    (connect (terminal via) (terminal pin u56-10))
+   )
+   (wire (path S1 25400  10160000 5715000 9779000 5715000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  10668000 5715000 10160000 5715000)
+    (connect (terminal wire) (terminal via))
+   )
+   (via v1 9779000 5715000)
+   (via v1 10160000 5715000)
+   )
+   (Net n$2310 
+   (wire (path S1 25400  12890500 9715500 15367000 9715500 15367000 9779000
+     16383000 9779000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  18796000 4318000 18478500 4318000 18478500 6921500
+     18161000 6921500 18161000 10160000 18034000 10160000)
+    (connect (terminal pin u11-15) (terminal pin u9-10))
+   )
+   (wire (path S1 25400  12954000 9144000 14097000 9144000 14097000 8382000
+     14224000 8382000)
+    (connect (terminal via) (terminal pin u22-5))
+   )
+   (wire (path COMP16 25400  12319000 9398000 12319000 9144000 12954000 9144000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  12890500 9715500 12890500 9525000 12319000 9525000
+     12319000 9398000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path S1 25400  12890500 9715500 11481163 9715500 11481163 10287000
+     11049000 10287000 11049000 10668000 11176000 10668000)
+    (connect (terminal wire) (terminal pin u33-11))
+   )
+   (wire (path COMP16 25400  16764000 13716000 16637000 13716000 16637000 12890500
+     16510000 12890500 16510000 9779000 16383000 9779000)
+    (connect (terminal pin u12-3) (terminal via))
+   )
+   (wire (path S1 25400  16383000 9779000 17335500 9779000 17335500 10033000
+     17780000 10033000 17780000 10160000 18034000 10160000)
+    (connect (terminal via) (terminal pin u9-10))
+   )
+   (via v1 12954000 9144000)
+   (via v1 12319000 9398000)
+   (via v1 16383000 9779000)
+   )
+   (Net n$24 
+   (wire (path COMP16 25400  13462000 12319000 13462000 11430000 13716000 11430000)
+    (connect (terminal via) (terminal pin u25-13))
+   )
+   (wire (path S1 25400  17526000 12446000 17526000 12382500 13462000 12382500
+     13462000 12319000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17843500 11811000 17462500 11811000 17462500 12446000
+     17526000 12446000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  17843500 11811000 17843500 11811000 17843500 12065000
+     18161000 12065000 18161000 12446000 18034000 12446000)
+    (connect (terminal wire) (terminal pin u9-1))
+   )
+   (wire (path COMP16 25400  18796000 4572000 18669000 4572000 18669000 6413500
+     18923000 6413500 18923000 7493000 18669000 7493000 18669000 8191500
+     18478500 8191500 18478500 11811000 17843500 11811000)
+    (connect (terminal pin u11-16) (terminal wire))
+   )
+   (wire (path S1 25400  9017000 5080000 10223500 5080000 10223500 4953000
+     16891000 4953000 16891000 4445000 17716500 4445000 17716500 3429000
+     18923000 3429000 18923000 4572000 18796000 4572000)
+    (connect (terminal via) (terminal pin u11-16))
+   )
+   (wire (path COMP16 25400  9144000 4064000 9017000 4064000 9017000 5080000)
+    (connect (terminal pin u56-4) (terminal via))
+   )
+   (via v1 13462000 12319000)
+   (via v1 17526000 12446000)
+   (via v1 9017000 5080000)
+   )
+   (Net n$242 
+   (wire (path S1 25400  11684000 10160000 11938000 10160000 11938000 10033000
+     14566259 10033000 14566259 11303000 15113000 11303000 15113000 11684000
+     17780000 11684000 17780000 11176000 18034000 11176000)
+    (connect (terminal pin u29-7) (terminal pin u9-6))
+   )
+   )
+   (Net n$243 
+   (wire (path S1 25400  12446000 9906000 12192000 9906000 12192000 9779000
+     11557000 9779000 11557000 10287000 13462000 10287000 13462000 10414000
+     13716000 10414000)
+    (connect (terminal pin u29-9) (terminal pin u25-9))
+   )
+   )
+   (Net n$247 
+   (wire (path S1 25400  12446000 10922000 12954000 10922000)
+    (connect (terminal pin u29-13) (terminal pin u25-4))
+   )
+   )
+   (Net n$2482 
+   (wire (path S1 25400  21336000 5588000 21082000 5588000 21082000 5715000
+     19304000 5715000 19304000 5842000)
+    (connect (terminal pin u3-1) (terminal via))
+   )
+   (wire (path COMP16 25400  7493000 5588000 7493000 6159500 6731000 6159500
+     6731000 10105541 6159500 10105541 6159500 13462000 5334000 13462000)
+    (connect (terminal via) (terminal pin u42-11))
+   )
+   (wire (path S1 25400  19304000 5842000 19304000 5905500 9588500 5905500
+     9588500 5588000 7493000 5588000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  19304000 5588000 19304000 5842000)
+    (connect (terminal pin u7-1) (terminal via))
+   )
+   (via v1 7493000 5588000)
+   (via v1 19304000 5842000)
+   )
+   (Net n$2483 
+   (wire (path COMP16 25400  11303000 9525000 11303000 10160000 11176000 10160000)
+    (connect (terminal via) (terminal pin u33-9))
+   )
+   (wire (path S1 25400  17272000 9652000 17272000 9461500 15176500 9461500
+     15176500 9588500 11303000 9588500 11303000 9525000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  18034000 8890000 17272000 8890000 17272000 9652000)
+    (connect (terminal pin u10-1) (terminal via))
+   )
+   (wire (path S1 25400  5461000 10287000 10604500 10287000 10604500 10160000
+     11176000 10160000)
+    (connect (terminal via) (terminal pin u33-9))
+   )
+   (wire (path COMP16 25400  5334000 13970000 5207000 13970000 5207000 10287000
+     5461000 10287000)
+    (connect (terminal pin u42-13) (terminal via))
+   )
+   (via v1 11303000 9525000)
+   (via v1 17272000 9652000)
+   (via v1 5461000 10287000)
+   )
+   (Net n$2484 
+   (wire (path COMP16 25400  12192000 10668000 12192000 10033000 15113000 10033000
+     15113000 8128000 14986000 8128000)
+    (connect (terminal via) (terminal pin u22-19))
+   )
+   (wire (path S1 25400  5334000 13716000 6281173 13716000 6281173 13335000
+     11430000 13335000 11430000 13208000 11684000 13208000)
+    (connect (terminal pin u42-12) (terminal pin u28-6))
+   )
+   (wire (path S1 25400  12192000 10668000 11684000 10668000)
+    (connect (terminal via) (terminal pin u29-5))
+   )
+   (wire (path S1 25400  12065000 13208000 11684000 13208000)
+    (connect (terminal via) (terminal pin u28-6))
+   )
+   (wire (path COMP16 25400  12192000 10668000 12065000 10668000 12065000 13208000)
+    (connect (terminal via) (terminal via))
+   )
+   (via v1 12065000 13208000)
+   (via v1 12192000 10668000)
+   )
+   (Net n$249 
+   (wire (path S1 25400  13081000 11303000 12763500 11303000 12763500 11430000
+     12446000 11430000)
+    (connect (terminal via) (terminal pin u29-15))
+   )
+   (wire (path COMP16 25400  12954000 11684000 13081000 11684000 13081000 11303000)
+    (connect (terminal pin u25-1) (terminal via))
+   )
+   (via v1 13081000 11303000)
+   )
+   (Net n$256 
+   (wire (path COMP16 25400  16129000 12573000 16129000 10922000 16256000 10922000)
+    (connect (terminal via) (terminal pin u17-14))
+   )
+   (wire (path S1 25400  11176000 12192000 13652500 12192000 13652500 12255500
+     14478000 12255500 14478000 12573000 16129000 12573000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11684000 12954000 11430000 12954000 11430000 11747500
+     11176000 11747500 11176000 12192000)
+    (connect (terminal pin u28-7) (terminal via))
+   )
+   (via v1 16129000 12573000)
+   (via v1 11176000 12192000)
+   )
+   (Net n$257 
+   (wire (path COMP16 25400  12446000 12700000 12446000 12446000 12700000 12446000
+     12700000 11049000 13335000 11049000 13335000 10668000 13716000 10668000)
+    (connect (terminal pin u28-9) (terminal pin u25-10))
+   )
+   )
+   (Net n$26 
+   (wire (path COMP16 25400  15240000 10668000 15240000 10795000 14859000 10795000
+     14859000 14414500 15621000 14414500 15621000 13462000 15494000 13462000)
+    (connect (terminal via) (terminal pin u55-4))
+   )
+   (wire (path S1 25400  15240000 10160000 15367000 10160000 15367000 10668000
+     15240000 10668000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  15621000 7874000 15621000 9350302 15367000 9350302
+     15367000 10160000 15240000 10160000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path S1 25400  14224000 8636000 14541500 8636000 14541500 8763000
+     15176500 8763000 15176500 7874000 15494000 7874000)
+    (connect (terminal pin u22-4) (terminal pin u18-2))
+   )
+   (wire (path S1 25400  15621000 5207000 16891000 5207000 16891000 5080000
+     16954500 5080000 16954500 4699000 17843500 4699000 17843500 3683000
+     18542000 3683000 18542000 3556000 18796000 3556000)
+    (connect (terminal via) (terminal pin u11-12))
+   )
+   (wire (path COMP16 25400  15621000 7874000 15621000 5207000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  15621000 7874000 15494000 7874000)
+    (connect (terminal wire) (terminal pin u18-2))
+   )
+   (via v1 15240000 10668000)
+   (via v1 15240000 10160000)
+   (via v1 15621000 5207000)
+   )
+   (Net n$261 
+   (wire (path COMP16 25400  12446000 13716000 12319000 13716000 12319000 10795000
+     12954000 10795000 12954000 10668000)
+    (connect (terminal pin u28-13) (terminal pin u25-5))
+   )
+   )
+   (Net n$262 
+   (wire (path S1 25400  14605000 13843000 12700000 13843000 12700000 13970000
+     12446000 13970000)
+    (connect (terminal via) (terminal pin u28-14))
+   )
+   (wire (path COMP16 25400  20066000 13208000 19812000 13208000 19812000 15367000
+     15748000 15367000 15748000 15176500 14668500 15176500 14668500 13843000
+     14605000 13843000)
+    (connect (terminal pin u4-11) (terminal via))
+   )
+   (via v1 14605000 13843000)
+   )
+   (Net n$263 
+   (wire (path COMP16 25400  12446000 14224000 12827000 14224000 12827000 11430000
+     12954000 11430000)
+    (connect (terminal pin u28-15) (terminal pin u25-2))
+   )
+   )
+   (Net n$2666 
+   (wire (path COMP16 25400  14224000 7620000 14478000 7620000 14478000 3556000
+     14224000 3556000)
+    (connect (terminal pin u22-8) (terminal pin u23-9))
+   )
+   )
+   (Net n$2669 
+   (wire (path COMP16 25400  14224000 7366000 14033500 7366000 14033500 4318000
+     14224000 4318000)
+    (connect (terminal pin u22-9) (terminal pin u23-6))
+   )
+   )
+   (Net n$2670 
+   (wire (path COMP16 25400  14224000 8128000 14668500 8128000 14668500 4318000
+     14986000 4318000)
+    (connect (terminal pin u22-6) (terminal pin u23-15))
+   )
+   )
+   (Net n$2672 
+   (wire (path COMP16 25400  14224000 7112000 14097000 7112000 14097000 4572000
+     14224000 4572000)
+    (connect (terminal pin u22-10) (terminal pin u23-5))
+   )
+   )
+   (Net n$2675 
+   (wire (path COMP16 25400  14224000 7874000 14541500 7874000 14541500 3556000
+     14986000 3556000)
+    (connect (terminal pin u22-7) (terminal pin u23-12))
+   )
+   )
+   (Net n$2677 
+   (wire (path COMP16 25400  14224000 6858000 14351000 6858000 14351000 5334000
+     14224000 5334000)
+    (connect (terminal pin u22-11) (terminal pin u23-2))
+   )
+   )
+   (Net n$2695 
+   (wire (path COMP16 25400  9906000 11684000 9956800 11684000 9956800 5334000
+     10414000 5334000)
+    (connect (terminal via) (terminal pin u35-2))
+   )
+   (wire (path COMP16 25400  9906000 11684000 9969500 11684000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  9969500 11684000 9969500 12954000 9652000 12954000)
+    (connect (terminal wire) (terminal pin u36-9))
+   )
+   (wire (path S1 25400  3937000 11684000 9906000 11684000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  4064000 10922000 3873500 10922000 3873500 11684000
+     3937000 11684000)
+    (connect (terminal pin u47-13) (terminal via))
+   )
+   (via v1 9906000 11684000)
+   (via v1 3937000 11684000)
+   )
+   (Net n$27 
+   (wire (path S1 25400  17907000 8763000 17907000 8890000 15875000 8890000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17907000 7239000 17907000 8763000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  17780000 6604000 17907000 6604000 17907000 7239000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  18034000 3556000 17780000 3556000 17780000 6604000)
+    (connect (terminal pin u11-9) (terminal via))
+   )
+   (wire (path COMP16 25400  14224000 8890000 14478000 8890000 14478000 9017000
+     15494000 9017000 15494000 8890000)
+    (connect (terminal pin u22-3) (terminal wire))
+   )
+   (wire (path COMP16 25400  15875000 8890000 15494000 8890000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  15494000 8890000 15494000 8128000)
+    (connect (terminal wire) (terminal pin u18-1))
+   )
+   (wire (path COMP16 25400  15875000 8890000 15875000 13716000 16256000 13716000)
+    (connect (terminal wire) (terminal pin u55-12))
+   )
+   (via v1 17907000 8763000)
+   (via v1 17907000 7239000)
+   (via v1 17780000 6604000)
+   (via v1 15875000 8890000)
+   )
+   (Net n$2715 
+   (wire (path S1 25400  4064000 13716000 4318000 13716000 4318000 14732000
+     7620000 14732000 7620000 14605000)
+    (connect (terminal pin u46-12) (terminal via))
+   )
+   (wire (path COMP16 25400  7620000 14605000 7366000 14605000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  9652000 5207000 9652000 6604000)
+    (connect (terminal wire) (terminal pin u38-8))
+   )
+   (wire (path COMP16 25400  7366000 14605000 7239000 14605000 7239000 12954001
+     7366000 12954001 7366000 12954000)
+    (connect (terminal wire) (terminal pin u39-9))
+   )
+   (wire (path COMP16 25400  8699500 14224000 8890000 14224000)
+    (connect (terminal wire) (terminal pin u36-1))
+   )
+   (wire (path COMP16 25400  8699500 14224000 8699500 14605000 7620000 14605000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  8699500 13843000 8699500 14224000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  9080500 7619999 9080500 7620000 8890000 7620000)
+    (connect (terminal wire) (terminal pin u38-3))
+   )
+   (wire (path COMP16 25400  8890000 14224000 8890000 13970000)
+    (connect (terminal pin u36-1) (terminal pin u36-2))
+   )
+   (wire (path COMP16 25400  9080500 7619999 9080500 10795000 8699500 10795000
+     8699500 13843000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  9652000 5207000 9398000 5207000 9398000 6657865
+     9080500 6657865 9080500 7619999)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  9652000 5207000 9652000 4572000 9906000 4572000)
+    (connect (terminal wire) (terminal pin u56-13))
+   )
+   (via v1 7620000 14605000)
+   )
+   (Net n$2729 
+   (wire (path S1 25400  2667000 8763000 1079500 8763000 1079500 8382001
+     1270000 8382001 1270000 8382000)
+    (connect (terminal via) (terminal pin r13-1))
+   )
+   (wire (path COMP16 25400  2540000 7366000 2667000 7366000 2667000 8255000)
+    (connect (terminal pin u48-3) (terminal wire))
+   )
+   (wire (path S1 25400  2667000 8763000 10922000 8763000 10922000 8636000
+     11176000 8636000)
+    (connect (terminal via) (terminal pin u34-19))
+   )
+   (wire (path COMP16 25400  2667000 8255000 2667000 8763000)
+    (connect (terminal wire) (terminal via))
+   )
+   (via v1 2667000 8763000)
+   )
+   (Net n$2782 
+   (wire (path COMP16 25400  14986000 10414000 14795500 10414000 14795500 14668500
+     15350441 14668500 15350441 14859000 18224500 14859000 18224500 14478000
+     18034000 14478000)
+    (connect (terminal pin u21-9) (terminal pin u8-3))
+   )
+   )
+   (Net n$2783 
+   (wire (path S1 25400  17145000 10287000 15748000 10287000 15748000 10160000
+     15494000 10160000)
+    (connect (terminal via) (terminal pin u17-6))
+   )
+   (wire (path COMP16 25400  17526000 10668000 17653000 10668000 17653000 10033000
+     17145000 10033000 17145000 10287000)
+    (connect (terminal pin u13-12) (terminal via))
+   )
+   (via v1 17145000 10287000)
+   )
+   (Net n$2784 
+   (wire (path S1 25400  17399000 11430000 17399000 11620500 15557500 11620500
+     15557500 11557000 14478000 11557000 14478000 11430000 14224000 11430000)
+    (connect (terminal via) (terminal pin u21-2))
+   )
+   (wire (path COMP16 25400  17526000 10414000 17399000 10414000 17399000 11430000)
+    (connect (terminal pin u13-11) (terminal via))
+   )
+   (via v1 17399000 11430000)
+   )
+   (Net n$2793 
+   (wire (path COMP16 25400  10414000 13462000 10414000 13335000 9900351 13335000
+     9900351 13589000 8763000 13589000 8763000 13335000 9080500 13335000
+     9080500 11430000 8890000 11430000 8890000 11176000)
+    (connect (terminal pin u32-5) (terminal pin u37-1))
+   )
+   )
+   (Net n$28 
+   (wire (path S1 25400  16637000 12065000 18295680 12065000 18295680 12192000
+     18796000 12192000)
+    (connect (terminal via) (terminal pin u9-23))
+   )
+   (wire (path COMP16 25400  16573500 7874000 16573500 12065000 16637000 12065000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  16573500 7874000 16573500 6985000 17907000 6985000
+     17907000 4318000 18034000 4318000)
+    (connect (terminal wire) (terminal pin u11-6))
+   )
+   (wire (path COMP16 25400  16256000 7874000 16573500 7874000)
+    (connect (terminal pin u18-13) (terminal wire))
+   )
+   (wire (path S1 25400  14224000 9144000 14478000 9144000 14478000 9017000
+     15684500 9017000 15684500 7874000 16256000 7874000)
+    (connect (terminal pin u22-2) (terminal pin u18-13))
+   )
+   (via v1 16637000 12065000)
+   )
+   (Net n$3181 
+   (wire (path S1 25400  4064000 7366000 3746500 7366000 3746500 7239000
+     2222500 7239000 2222500 7493000 1905000 7493000 1905000 7874000
+     1270000 7874000)
+    (connect (terminal pin u44-3) (terminal pin u51-1))
+   )
+   )
+   (Net n$3182 
+   (wire (path COMP16 25400  9652000 9906000 9842500 9906000 9842500 6858000
+     9652000 6858000)
+    (connect (terminal pin u37-9) (terminal pin u38-9))
+   )
+   (wire (path S1 25400  9652000 6858000 9362547 6858000 9362547 6223000
+     1714500 6223000 1714500 7493000 1524000 7493000 1524000 7620000
+     1270000 7620000)
+    (connect (terminal pin u38-9) (terminal pin u51-2))
+   )
+   )
+   (Net n$3222 
+   (wire (path S1 25400  2032000 7112000 1841500 7112000 1841500 7747000
+     1079500 7747000 1079500 8001000 3810000 8001000 3810000 7874000
+     4064000 7874000)
+    (connect (terminal pin u51-11) (terminal pin u44-1))
+   )
+   (wire (path S1 25400  4953000 11303000 12700000 11303000 12700000 11176000
+     12954000 11176000)
+    (connect (terminal via) (terminal pin u25-3))
+   )
+   (wire (path COMP16 25400  4064000 7874000 4064000 9086249 4919669 9086249
+     4919669 11303000 4953000 11303000)
+    (connect (terminal pin u44-1) (terminal via))
+   )
+   (wire (path COMP16 25400  14224000 14224000 14097000 14224000 14097000 13970000)
+    (connect (terminal pin u20-1) (terminal wire))
+   )
+   (wire (path COMP16 25400  14097000 13970000 13970000 13970000 13970000 13843000
+     13271500 13843000 13271500 11176000 12954000 11176000)
+    (connect (terminal wire) (terminal pin u25-3))
+   )
+   (wire (path COMP16 25400  14224000 13970000 14097000 13970000)
+    (connect (terminal pin u20-2) (terminal wire))
+   )
+   (via v1 4953000 11303000)
+   )
+   (Net n$3229 
+   (wire (path COMP16 25400  1778000 9144000 1778000 6477000 2222500 6477000
+     2222500 6858000 2032000 6858000)
+    (connect (terminal via) (terminal pin u51-10))
+   )
+   (wire (path S1 25400  5842000 9144000 1778000 9144000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  5842000 5969000 5842000 9144000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  20193000 5842000 19794808 5842000 19794808 6096000
+     10731500 6096000 10731500 6223000 10350500 6223000 10350500 6096000
+     6365205 6096000 6365205 5969000 5842000 5969000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  20066000 5334000 20193000 5334000 20193000 5842000)
+    (connect (terminal pin u7-19) (terminal via))
+   )
+   (wire (path S1 25400  20066000 5334000 20320000 5334000 20320000 5461000
+     21844000 5461000 21844000 5334000 22098000 5334000)
+    (connect (terminal pin u7-19) (terminal pin u3-19))
+   )
+   (via v1 1778000 9144000)
+   (via v1 5842000 9144000)
+   (via v1 5842000 5969000)
+   (via v1 20193000 5842000)
+   )
+   (Net n$3232 
+   (wire (path COMP16 25400  4064000 9652000 4445000 9652000 4445000 14224000
+     4572000 14224000)
+    (connect (terminal pin u47-8) (terminal pin u42-1))
+   )
+   (wire (path S1 25400  7366000 13462000 7556500 13462000 7556500 14097000
+     6858000 14097000 6858000 14224000 6604000 14224000)
+    (connect (terminal pin u39-11) (terminal pin u39-1))
+   )
+   (wire (path S1 25400  6604000 14224000 6350000 14224000 6350000 14351000
+     4826000 14351000 4826000 14224000 4572000 14224000)
+    (connect (terminal pin u39-1) (terminal pin u42-1))
+   )
+   (wire (path COMP16 25400  7747000 12192000 7683500 12192000 7683500 13462000
+     7366000 13462000)
+    (connect (terminal via) (terminal pin u39-11))
+   )
+   (wire (path S1 25400  10414000 12192000 7747000 12192000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  10414000 11430000 10414000 12192000)
+    (connect (terminal pin u33-1) (terminal via))
+   )
+   (via v1 7747000 12192000)
+   (via v1 10414000 12192000)
+   )
+   (Net n$3233 
+   (wire (path COMP16 25400  2413000 11811000 2413000 6350000 2032000 6350000)
+    (connect (terminal via) (terminal pin u51-8))
+   )
+   (wire (path S1 25400  7493000 11811000 2413000 11811000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  7366000 13208000 7493000 13208000 7493000 11811000)
+    (connect (terminal pin u39-10) (terminal via))
+   )
+   (via v1 2413000 11811000)
+   (via v1 7493000 11811000)
+   )
+   (Net n$3234 
+   (wire (path COMP16 25400  2032000 6604000 1905000 6604000 1905000 13081000
+     2222500 13081000 2222500 14414500 4699000 14414500 4699000 13716001
+     4572000 13716001 4572000 13716000)
+    (connect (terminal pin u51-9) (terminal pin u42-3))
+   )
+   )
+   (Net n$4099 
+   (wire (path COMP16 25400  15494000 11938000 15494000 12192000 15367000 12192000
+     15367000 13462000 15240000 13462000 15240000 13716000)
+    (connect (terminal pin r4-1) (terminal pin c8-2))
+   )
+   (wire (path S1 25400  11176000 14224000 11430000 14224000 11430000 14097000
+     15240000 14097000 15240000 13716000)
+    (connect (terminal pin u32-15) (terminal pin c8-2))
+   )
+   )
+   (Net n$4195 
+   (wire (path COMP16 25400  7366000 6604000 6858000 6604000 6858000 9906000)
+    (connect (terminal pin u40-10) (terminal pin r9-1))
+   )
+   (wire (path COMP16 25400  6604000 15748000 6477000 15748000 6477000 15367000
+     6921500 15367000 6921500 15938500 6286500 15938500 6286500 10477500
+     6858000 10477500 6858000 9906000)
+    (connect (terminal pin s1-1) (terminal pin r9-1))
+   )
+   )
+   (Net n$4196 
+   (wire (path COMP16 25400  6604000 15494000 6731000 15494000 6731000 15875000
+     6413500 15875000 6413500 10541000 7112000 10541000 7112000 9906000)
+    (connect (terminal pin s1-2) (terminal pin r8-1))
+   )
+   (wire (path COMP16 25400  7366000 7112000 7112000 7112000 7112000 9906000)
+    (connect (terminal pin u40-12) (terminal pin r8-1))
+   )
+   )
+   (Net n$4197 
+   (wire (path COMP16 25400  6604000 15240000 6477000 15240000 6477000 10858500
+     7239000 10858500 7239000 10160000 7366000 10160000 7366000 9906000)
+    (connect (terminal pin s1-3) (terminal pin r7-1))
+   )
+   (wire (path COMP16 25400  7366000 7366000 7239000 7366000 7239000 9652000
+     7366000 9652000 7366000 9906000)
+    (connect (terminal pin u40-13) (terminal pin r7-1))
+   )
+   )
+   (Net n$4198 
+   (wire (path COMP16 25400  6604000 14986000 6604000 14732000 7048500 14732000
+     7048500 11322699 7493000 11322699 7493000 10160000 7620000 10160000
+     7620000 9906000)
+    (connect (terminal pin s1-4) (terminal pin r6-1))
+   )
+   (wire (path COMP16 25400  7366000 7874000 7620000 7874000 7620000 9906000)
+    (connect (terminal pin u40-15) (terminal pin r6-1))
+   )
+   )
+   (Net n$4204 
+   (wire (path COMP16 25400  6477000 7239000 6477000 6858000 6604000 6858000)
+    (connect (terminal via) (terminal pin u40-6))
+   )
+   (wire (path S1 25400  5969000 7239000 6477000 7239000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  5969000 6477000 5969000 7239000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  2032000 7366000 2159000 7366000 2159000 6477000
+     5969000 6477000)
+    (connect (terminal pin u51-12) (terminal via))
+   )
+   (wire (path COMP16 25400  2286000 9398000 2286000 7366000 2032000 7366000)
+    (connect (terminal via) (terminal pin u51-12))
+   )
+   (wire (path S1 25400  3810000 9398000 3810000 9334500 2286000 9334500
+     2286000 9398000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  4064000 10668000 3746500 10668000 3746500 9398000
+     3810000 9398000)
+    (connect (terminal pin u47-12) (terminal via))
+   )
+   (via v1 6477000 7239000)
+   (via v1 5969000 7239000)
+   (via v1 5969000 6477000)
+   (via v1 2286000 9398000)
+   (via v1 3810000 9398000)
+   )
+   (Net n$4207 
+   (wire (path COMP16 25400  7874000 10668000 7874000 13716000 7366000 13716000)
+    (connect (terminal via) (terminal pin u39-12))
+   )
+   (wire (path S1 25400  7366000 13716000 7112000 13716000 7112000 13843000
+     4826000 13843000 4826000 13970000 4572000 13970000)
+    (connect (terminal pin u39-12) (terminal pin u42-2))
+   )
+   (wire (path COMP16 25400  7874000 8382000 7874000 10668000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  6477000 8382000 7874000 8382000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  6604000 7620000 6477000 7620000 6477000 8382000)
+    (connect (terminal pin u40-3) (terminal via))
+   )
+   (wire (path S1 25400  7874000 10668000 8890000 10668000)
+    (connect (terminal via) (terminal pin u37-3))
+   )
+   (via v1 7874000 8382000)
+   (via v1 6477000 8382000)
+   (via v1 7874000 10668000)
+   )
+   (Net n$4557 
+   (wire (path S1 25400  16510000 15494000 16510000 15811500 10985500 15811500
+     10985500 13716000 10414000 13716000)
+    (connect (terminal pin ds2-1) (terminal pin u32-4))
+   )
+   )
+   (Net n$4558 
+   (wire (path S1 25400  16764000 15494000 16764000 15367000 20828000 15367000
+     20828000 15240000 21082000 15240000)
+    (connect (terminal pin ds2-2) (terminal pin r2-1))
+   )
+   )
+   (Net n$4623 
+   (wire (path S1 25400  4953000 15367000 9652000 15367000 9652000 15494000)
+    (connect (terminal pin s2-5) (terminal pin r5-1))
+   )
+   (wire (path COMP16 25400  10414000 12954000 10541000 12954000 10541000 13589000
+     10160000 13589000 10160000 14986000)
+    (connect (terminal pin u32-7) (terminal pin c17-2))
+   )
+   (wire (path COMP16 25400  9652000 15494000 10160000 15494000 10160000 14986000)
+    (connect (terminal pin r5-1) (terminal pin c17-2))
+   )
+   (wire (path S1 25400  3556000 14224000 3556000 15176500 4699000 15176500
+     4699000 15367000 4953000 15367000)
+    (connect (terminal via) (terminal pin s2-5))
+   )
+   (wire (path COMP16 25400  3302000 7366000 3556000 7366000 3556000 14224000)
+    (connect (terminal pin u48-12) (terminal via))
+   )
+   (via v1 3556000 14224000)
+   )
+   (Net n$4627 
+   (wire (path S1 25400  11176000 13970000 11366500 13970000 11366500 13589000
+     15239999 13589000 15239999 13208000 15240000 13208000)
+    (connect (terminal pin u32-14) (terminal pin c8-1))
+   )
+   )
+   (Net n$4972 
+   (wire (path S1 25400  13716000 12700000 13462000 12700000 13462000 12573000
+     1651000 12573000 1651000 13081000)
+    (connect (terminal pin u24-8) (terminal via))
+   )
+   (wire (path COMP16 25400  1651000 13081000 1651000 14224000 2032000 14224000)
+    (connect (terminal via) (terminal pin u49-1))
+   )
+   (wire (path COMP16 25400  1524000 12700000 1651000 12700000 1651000 13081000)
+    (connect (terminal pin u52-8) (terminal via))
+   )
+   (via v1 1651000 13081000)
+   )
+   (Net n$4973 
+   (wire (path COMP16 25400  13716000 12954000 13843000 12954000 13843000 10922000
+     13716000 10922000)
+    (connect (terminal pin u24-9) (terminal pin u25-11))
+   )
+   )
+   (Net n$5175 
+   (wire (path COMP16 25400  12700000 14986000 12700000 15251909 12446000 15251909
+     12446000 15494000)
+    (connect (terminal pin rn1-2) (terminal pin ds10-2))
+   )
+   )
+   (Net n$5735 
+   (wire (path S1 25400  13208000 762000 14224000 762000)
+    (connect (terminal pin l1-1) (terminal pin j1-B32))
+   )
+   (wire (path COMP16 25400  14224000 762000 14224000 508000)
+    (connect (terminal pin j1-B32) (terminal pin j1-A32))
+   )
+   (wire (path COMP16 25400  14224000 1016000 14224000 762000)
+    (connect (terminal pin j1-C32) (terminal pin j1-B32))
+   )
+   )
+   (Net n$782 
+   (wire (path S1 25400  10414000 10414000 10858500 10414000 10858500 10795000
+     11557000 10795000)
+    (connect (terminal pin u33-5) (terminal via))
+   )
+   (wire (path COMP16 25400  11557000 10795000 11557000 9271000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11557000 10922000 11684000 10922000)
+    (connect (terminal wire) (terminal pin u29-4))
+   )
+   (wire (path COMP16 25400  12446000 9271000 14033500 9271000 14033500 8763000
+     14859000 8763000 14859000 7874000 14986000 7874000)
+    (connect (terminal via) (terminal pin u22-18))
+   )
+   (wire (path S1 25400  11557000 9271000 12446000 9271000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11557000 10922000 11557000 10795000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  11557000 10922000 11493500 10922000 11493500 13716000
+     11684000 13716000)
+    (connect (terminal wire) (terminal pin u28-4))
+   )
+   (via v1 11557000 10795000)
+   (via v1 12446000 9271000)
+   (via v1 11557000 9271000)
+   )
+   (Net op1 
+   (wire (path S1 25400  7112000 5334000 6858000 5334000 6858000 5207000
+     4572000 5207000 4572000 5334000 4318000 5334000)
+    (connect (terminal pin u41-19) (terminal pin u45-19))
+   )
+   (wire (path S1 25400  1524000 5334000 1778000 5334000 1778000 5207000
+     4064000 5207000 4064000 5334000 4318000 5334000)
+    (connect (terminal pin u54-19) (terminal pin u45-19))
+   )
+   (wire (path S1 25400  9525000 5334000 7112000 5334000)
+    (connect (terminal via) (terminal pin u41-19))
+   )
+   (wire (path COMP16 25400  9652000 7112000 9525000 7112000 9525000 5334000)
+    (connect (terminal pin u38-10) (terminal via))
+   )
+   (via v1 9525000 5334000)
+   )
+   (Net op2 
+   (wire (path S1 25400  16764000 5588000 15831794 5588000 15831794 5715000
+     12954000 5715000)
+    (connect (terminal pin u15-1) (terminal wire))
+   )
+   (wire (path S1 25400  11684000 5588000 11938000 5588000 11938000 5715000
+     12954000 5715000)
+    (connect (terminal pin u31-1) (terminal wire))
+   )
+   (wire (path COMP16 25400  10795000 11938000 10795000 7493000 11366500 7493000
+     11366500 5842000 11684000 5842000 11684000 5588000)
+    (connect (terminal via) (terminal pin u31-1))
+   )
+   (wire (path S1 25400  3937000 11938000 10795000 11938000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  4064000 13462000 3873500 13462000 3873500 11938000
+     3937000 11938000)
+    (connect (terminal pin u46-11) (terminal via))
+   )
+   (wire (path S1 25400  12954000 5715000 12954000 5588000)
+    (connect (terminal wire) (terminal pin u27-1))
+   )
+   (via v1 10795000 11938000)
+   (via v1 3937000 11938000)
+   )
+   (Net opD 
+   (wire (path COMP16 25400  5334000 9652000 5334000 8397717 4428136 8397717
+     4428136 6069160 3556000 6069160 3556000 5588000)
+    (connect (terminal pin u43-8) (terminal pin u45-1))
+   )
+   )
+   (Net sig11 
+   (wire (path COMP16 25400  8001000 11557000 8001000 635000 7366000 635000
+     7366000 508000)
+    (connect (terminal via) (terminal pin j2-A7))
+   )
+   (wire (path S1 25400  14224000 11176000 14097000 11176000 14097000 11557000
+     8001000 11557000)
+    (connect (terminal pin u21-3) (terminal via))
+   )
+   (via v1 8001000 11557000)
+   )
+   (Net sig12 
+   (wire (path S1 25400  18415000 1524000 19812000 1524000 19812000 1016000)
+    (connect (terminal via) (terminal pin j1-C10))
+   )
+   (wire (path COMP16 25400  18034000 5080000 18224500 5080000 18224500 1524000
+     18415000 1524000)
+    (connect (terminal pin u11-3) (terminal via))
+   )
+   (via v1 18415000 1524000)
+   )
+   (Net sig13 
+   (wire (path COMP16 25400  5715000 11430000 5715000 6477000 4953000 6477000
+     4953000 381000 6604000 381000 6604000 508000)
+    (connect (terminal via) (terminal pin j2-A10))
+   )
+   (wire (path S1 25400  3429000 11430000 5715000 11430000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  3302000 13716000 3429000 13716000 3429000 11430000)
+    (connect (terminal pin u46-3) (terminal via))
+   )
+   (via v1 5715000 11430000)
+   (via v1 3429000 11430000)
+   )
+   (Net sig14 
+   (wire (path S1 25400  7747000 9144000 12573000 9144000 12573000 9461500
+     13047390 9461500 13047390 9652000 14859000 9652000 14859000 10668000
+     14986000 10668000)
+    (connect (terminal via) (terminal pin u21-10))
+   )
+   (wire (path COMP16 25400  7112000 1016000 7112000 1571016 7747000 1571016
+     7747000 9144000)
+    (connect (terminal pin j2-C8) (terminal via))
+   )
+   (via v1 7747000 9144000)
+   )
+   (Net v 
+   (wire (path COMP16 25400  15240000 14224000 15113000 14224000 15113000 10922000
+     14986000 10922000)
+    (connect (terminal via) (terminal pin u21-11))
+   )
+   (wire (path S1 25400  20701000 14097000 19113500 14097000 19113500 13843000
+     17716500 13843000 17716500 14097000 15303500 14097000 15303500 14224000
+     15240000 14224000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  21082000 13970000 20701000 13970000 20701000 14097000)
+    (connect (terminal pin u1-4) (terminal via))
+   )
+   (wire (path COMP16 25400  8128000 9398000 8128000 1016000)
+    (connect (terminal via) (terminal pin j2-C4))
+   )
+   (wire (path S1 25400  14986000 10922000 14795500 10922000 14795500 9969500
+     12784060 9969500 12784060 9652000 11049000 9652000 11049000 9398000
+     8128000 9398000)
+    (connect (terminal pin u21-11) (terminal via))
+   )
+   (via v1 15240000 14224000)
+   (via v1 20701000 14097000)
+   (via v1 8128000 9398000)
+   )
+   (Net v[10] 
+   (wire (path S1 25400  7366000 6858000 7112000 6858000 7112000 6731000
+     6348729 6731000 6348729 6858000 5334000 6858000)
+    (connect (terminal pin u40-11) (terminal pin rn2-6))
+   )
+   (wire (path S1 25400  11938000 7239000 10033000 7239000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  10414000 7620000 10033000 7620000 10033000 7239000)
+    (connect (terminal pin u34-6) (terminal wire))
+   )
+   (wire (path S1 25400  11938000 7239000 12192000 7239000 12192000 7366000
+     12446000 7366000)
+    (connect (terminal via) (terminal pin u30-14))
+   )
+   (wire (path S1 25400  7620000 7239000 10033000 7239000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  7366000 6858000 7556500 6858000 7556500 7239000
+     7620000 7239000)
+    (connect (terminal pin u40-11) (terminal via))
+   )
+   (wire (path S1 25400  12065000 1143000 15240000 1143000 15240000 1016000)
+    (connect (terminal via) (terminal pin j1-C28))
+   )
+   (wire (path COMP16 25400  11937999 4572000 12065000 4572000 12065000 1143000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  11938000 7239000 11937999 7239000 11937999 4572000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  11937999 4572000 11684000 4572000)
+    (connect (terminal wire) (terminal pin u31-5))
+   )
+   (via v1 7620000 7239000)
+   (via v1 12065000 1143000)
+   (via v1 11938000 7239000)
+   )
+   (Net v[11] 
+   (wire (path S1 25400  5334000 7112000 5588000 7112000 5588000 7493000
+     7112000 7493000 7112000 7620000 7366000 7620000)
+    (connect (terminal pin rn2-5) (terminal pin u40-14))
+   )
+   (wire (path S1 25400  11176000 7747000 12573000 7747000 12573000 7112000
+     12446000 7112000)
+    (connect (terminal wire) (terminal pin u30-13))
+   )
+   (wire (path S1 25400  7366000 7620000 7620000 7620000 7620000 7747000
+     11176000 7747000)
+    (connect (terminal pin u40-14) (terminal wire))
+   )
+   (wire (path S1 25400  11176000 7747000 11176000 7620000)
+    (connect (terminal wire) (terminal pin u34-15))
+   )
+   (wire (path COMP16 25400  11176000 7620000 11430000 7620000 11430000 6193018
+     11811000 6193018 11811000 5334000 11684000 5334000)
+    (connect (terminal pin u34-15) (terminal pin u31-2))
+   )
+   (wire (path COMP16 25400  15494000 1270000 15494000 1016000)
+    (connect (terminal via) (terminal pin j1-C27))
+   )
+   (wire (path S1 25400  11938000 1524000 15430500 1524000 15430500 1270000
+     15494000 1270000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11684000 5334000 11557000 5334000 11557000 4445000
+     11874500 4445000 11874500 1524000 11938000 1524000)
+    (connect (terminal pin u31-2) (terminal via))
+   )
+   (via v1 15494000 1270000)
+   (via v1 11938000 1524000)
+   )
+   (Net v[14] 
+   (wire (path COMP16 25400  16129000 3937000 16129000 3429000 16383000 3429000
+     16383000 1066800 16256000 1066800 16256000 1016000)
+    (connect (terminal via) (terminal pin j1-C24))
+   )
+   (wire (path S1 25400  12319000 3937000 16129000 3937000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  12319000 4318000 12319000 3937000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  12319000 4318000 12446000 4318000)
+    (connect (terminal wire) (terminal pin u31-15))
+   )
+   (wire (path COMP16 25400  11684000 8128000 11557000 8128000 11557000 7493000
+     12128500 7493000 12128500 4318000 12319000 4318000)
+    (connect (terminal pin u30-4) (terminal wire))
+   )
+   (via v1 16129000 3937000)
+   (via v1 12319000 3937000)
+   )
+   (Net v[15] 
+   (wire (path COMP16 25400  12573000 3556000 12573000 254000 16383000 254000
+     16383000 889000 16510000 889000 16510000 1016000)
+    (connect (terminal wire) (terminal pin j1-C23))
+   )
+   (wire (path COMP16 25400  12573000 5334000 12573000 3556000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  12954000 5334000 12700000 5334000 12700000 5334001
+     12573000 5334001)
+    (connect (terminal pin u27-2) (terminal wire))
+   )
+   (wire (path COMP16 25400  12573000 5334001 12573000 5334000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (wire (path COMP16 25400  12446000 3556000 12573000 3556000)
+    (connect (terminal pin u31-12) (terminal wire))
+   )
+   (wire (path COMP16 25400  11684000 8382000 11874500 8382000 11874500 7556500
+     12255500 7556500 12255500 5948013 12573000 5948013 12573000 5334001)
+    (connect (terminal pin u30-3) (terminal wire))
+   )
+   )
+   (Net v[16] 
+   (wire (path COMP16 25400  12954000 4572000 13081000 4572000 13081000 6413500
+     12573000 6413500 12573000 7747000 13144500 7747000 13144500 8382000
+     13716000 8382000)
+    (connect (terminal pin u27-5) (terminal pin u26-18))
+   )
+   (wire (path COMP16 25400  12700000 1397000 12700000 4572000 12954000 4572000)
+    (connect (terminal via) (terminal pin u27-5))
+   )
+   (wire (path S1 25400  16764000 1397000 12700000 1397000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  16764000 1016000 16764000 1397000)
+    (connect (terminal pin j1-C22) (terminal via))
+   )
+   (via v1 12700000 1397000)
+   (via v1 16764000 1397000)
+   )
+   (Net v[17] 
+   (wire (path COMP16 25400  12954000 4318000 13271500 4318000 13271500 8001000
+     13716000 8001000 13716000 8128000)
+    (connect (terminal pin u27-6) (terminal pin u26-17))
+   )
+   (wire (path S1 25400  12827000 1016000 11874500 1016000 11874500 1397000
+     12444974 1397000 12444974 1270000 15367000 1270000 15367000 1143000
+     16383000 1143000 16383000 889000 17018000 889000 17018000 1016000)
+    (connect (terminal via) (terminal pin j1-C21))
+   )
+   (wire (path COMP16 25400  12954000 4318000 12827000 4318000 12827000 1016000)
+    (connect (terminal pin u27-6) (terminal via))
+   )
+   (via v1 12827000 1016000)
+   )
+   (Net v[18] 
+   (wire (path COMP16 25400  13335000 2794000 13398500 2794000 13398500 7493000
+     13716000 7493000 13716000 7366000)
+    (connect (terminal via) (terminal pin u26-14))
+   )
+   (wire (path S1 25400  13081000 2794000 13335000 2794000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  13081000 2794000 13081000 889000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17272000 2794000 17272000 1016000)
+    (connect (terminal via) (terminal pin j1-C20))
+   )
+   (wire (path S1 25400  16256000 2794000 17272000 2794000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  16129000 889000 16129000 2794000 16256000 2794000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  13081000 889000 16129000 889000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  13081000 3555999 13081000 2794000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  13081000 3555999 13081000 3556000 12954000 3556000)
+    (connect (terminal wire) (terminal pin u27-9))
+   )
+   (via v1 13335000 2794000)
+   (via v1 13081000 2794000)
+   (via v1 17272000 2794000)
+   (via v1 16256000 2794000)
+   (via v1 16129000 889000)
+   (via v1 13081000 889000)
+   )
+   (Net v[1] 
+   (wire (path COMP16 25400  11049000 4191000 11049000 3683000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  14478000 3302000 14859000 3302000 14859000 508000
+     14732000 508000)
+    (connect (terminal via) (terminal pin j1-A30))
+   )
+   (wire (path S1 25400  11557000 4191000 11557000 3683000 14478000 3683000
+     14478000 3302000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11049000 4191000 11557000 4191000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  11049000 4191000 11049000 5080000 11176000 5080000)
+    (connect (terminal wire) (terminal pin u35-18))
+   )
+   (wire (path S1 25400  6350000 3556000 6604000 3556000 6604000 3683000
+     8660851 3683000 8660851 3429000 10174987 3429000 10174987 3683000
+     11049000 3683000)
+    (connect (terminal pin u41-9) (terminal via))
+   )
+   (via v1 14478000 3302000)
+   (via v1 11557000 4191000)
+   (via v1 11049000 3683000)
+   )
+   (Net v[20] 
+   (wire (path COMP16 25400  13716000 5334000 13589000 5334000)
+    (connect (terminal pin u27-19) (terminal wire))
+   )
+   (wire (path S1 25400  12954000 1651000 12954000 1587500 17780000 1587500
+     17780000 1016000)
+    (connect (terminal via) (terminal pin j1-C18))
+   )
+   (wire (path COMP16 25400  13589000 5334000 13589000 571500 12954000 571500
+     12954000 1651000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path S1 25400  13589000 7239000 12954000 7239000 12954000 7112000)
+    (connect (terminal via) (terminal pin u26-8))
+   )
+   (wire (path COMP16 25400  13589000 5334000 13589000 7239000)
+    (connect (terminal wire) (terminal via))
+   )
+   (via v1 12954000 1651000)
+   (via v1 13589000 7239000)
+   )
+   (Net v[21] 
+   (wire (path COMP16 25400  13716000 4572000 13462000 4572000)
+    (connect (terminal pin u27-16) (terminal wire))
+   )
+   (wire (path COMP16 25400  13462000 4572000 13462000 7565699 13589000 7565699
+     13589000 8191500 13208000 8191500 13208000 7493000 12954000 7493000
+     12954000 7366000)
+    (connect (terminal wire) (terminal pin u26-7))
+   )
+   (wire (path COMP16 25400  18034000 1778000 18034000 1016000)
+    (connect (terminal via) (terminal pin j1-C17))
+   )
+   (wire (path S1 25400  13462000 1778000 18034000 1778000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  13462000 4572000 13462000 1778000)
+    (connect (terminal wire) (terminal via))
+   )
+   (via v1 18034000 1778000)
+   (via v1 13462000 1778000)
+   )
+   (Net v[22] 
+   (wire (path COMP16 25400  13208000 1778000 13208000 4191000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  18288000 1270000 18288000 1651000 13208000 1651000
+     13208000 1778000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  18288000 1016000 18288000 1270000)
+    (connect (terminal pin j1-C16) (terminal via))
+   )
+   (wire (path S1 25400  13462000 7874000 13462000 7810500 13144500 7810500
+     13144500 7747000 12827000 7747000 12827000 8128000 12954000 8128000)
+    (connect (terminal via) (terminal pin u26-4))
+   )
+   (wire (path COMP16 25400  13208000 4191000 13335000 4191000 13335000 7874000
+     13462000 7874000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  13208000 4191000 13208000 4318000 13716000 4318000)
+    (connect (terminal via) (terminal pin u27-15))
+   )
+   (via v1 13208000 1778000)
+   (via v1 18288000 1270000)
+   (via v1 13462000 7874000)
+   (via v1 13208000 4191000)
+   )
+   (Net v[23] 
+   (wire (path COMP16 25400  13843000 3556000 13716000 3556000)
+    (connect (terminal wire) (terminal pin u27-12))
+   )
+   (wire (path COMP16 25400  12954000 8382000 12954000 8509000 13843000 8509000
+     13843000 3556000)
+    (connect (terminal pin u26-3) (terminal wire))
+   )
+   (wire (path S1 25400  16129000 381000 16129000 635000 17399000 635000
+     17399000 889000 18542000 889000 18542000 1016000)
+    (connect (terminal via) (terminal pin j1-C15))
+   )
+   (wire (path COMP16 25400  13843000 3556000 13843000 381000 16129000 381000)
+    (connect (terminal wire) (terminal via))
+   )
+   (via v1 16129000 381000)
+   )
+   (Net v[3] 
+   (wire (path S1 25400  11176000 4064000 10922000 4064000 10922000 3937000
+     6604000 3937000 6604000 4064000 6350000 4064000)
+    (connect (terminal pin u35-14) (terminal pin u41-7))
+   )
+   (wire (path S1 25400  11557000 508000 11557000 381000 15240000 381000
+     15240000 508000)
+    (connect (terminal via) (terminal pin j1-A28))
+   )
+   (wire (path COMP16 25400  11176000 4064000 11557000 4064000 11557000 508000)
+    (connect (terminal pin u35-14) (terminal via))
+   )
+   (via v1 11557000 508000)
+   )
+   (Net v[4] 
+   (wire (path S1 25400  8382000 4191000 6853682 4191000 6853682 4318000
+     6350000 4318000)
+    (connect (terminal via) (terminal pin u41-6))
+   )
+   (wire (path COMP16 25400  8382000 5207000 8382000 4191000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  11430000 5207000 8382000 5207000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  11430000 4318000 11430000 5207000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  11176000 3810000 11430000 3810000 11430000 4318000)
+    (connect (terminal pin u35-13) (terminal via))
+   )
+   (wire (path S1 25400  11303000 635000 15494000 635000 15494000 508000)
+    (connect (terminal via) (terminal pin j1-A27))
+   )
+   (wire (path COMP16 25400  11176000 3810000 11303000 3810000 11303000 635000)
+    (connect (terminal pin u35-13) (terminal via))
+   )
+   (via v1 8382000 4191000)
+   (via v1 8382000 5207000)
+   (via v1 11430000 5207000)
+   (via v1 11430000 4318000)
+   (via v1 11303000 635000)
+   )
+   (Net v[5] 
+   (wire (path S1 25400  10414000 3810000 10160000 3810000 10160000 4445000
+     6921500 4445000 6921500 4572000 6350000 4572000)
+    (connect (terminal pin u35-8) (terminal pin u41-5))
+   )
+   (wire (path S1 25400  10287000 889000 10287000 948939 10731500 948939
+     10731500 317500 15748000 317500 15748000 508000)
+    (connect (terminal via) (terminal pin j1-A26))
+   )
+   (wire (path COMP16 25400  10414000 3810000 10287000 3810000 10287000 889000)
+    (connect (terminal pin u35-8) (terminal via))
+   )
+   (via v1 10287000 889000)
+   )
+   (Net v[6] 
+   (wire (path S1 25400  10541000 254000 16002000 254000 16002000 508000)
+    (connect (terminal via) (terminal pin j1-A25))
+   )
+   (wire (path COMP16 25400  10414000 4064000 10541000 4064000 10541000 254000)
+    (connect (terminal pin u35-7) (terminal via))
+   )
+   (wire (path S1 25400  6350000 4826000 6604000 4826000 6604000 4699000
+     10223500 4699000 10223500 4064000 10414000 4064000)
+    (connect (terminal pin u41-4) (terminal pin u35-7))
+   )
+   (via v1 10541000 254000)
+   )
+   (Net v[7] 
+   (wire (path S1 25400  10033000 254000 10033000 127000 16256000 127000
+     16256000 508000)
+    (connect (terminal via) (terminal pin j1-A24))
+   )
+   (wire (path COMP16 25400  10414000 4826000 10223500 4826000 10223500 1587500
+     10033000 1587500 10033000 254000)
+    (connect (terminal pin u35-4) (terminal via))
+   )
+   (wire (path S1 25400  6350000 5080000 6865345 5080000 6865345 4953000
+     10096500 4953000 10096500 4826000 10414000 4826000)
+    (connect (terminal pin u41-3) (terminal pin u35-4))
+   )
+   (via v1 10033000 254000)
+   )
+   (Net v[8] 
+   (wire (path COMP16 25400  14732000 1016000 14732000 2903048 13906500 2903048
+     13906500 8255000 12755631 8255000 12755631 8382000 12573000 8382000)
+    (connect (terminal pin j1-C30) (terminal wire))
+   )
+   (wire (path COMP16 25400  12319000 9017000 12573000 9017000 12573000 8382000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path S1 25400  6223000 9017000 12319000 9017000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  6350000 5334000 6223000 5334000 6223000 9017000)
+    (connect (terminal pin u41-2) (terminal via))
+   )
+   (wire (path COMP16 25400  12446000 8382000 12573000 8382000)
+    (connect (terminal pin u30-18) (terminal wire))
+   )
+   (via v1 12319000 9017000)
+   (via v1 6223000 9017000)
+   )
+   (Net vm[0] 
+   (wire (path S1 25400  14224000 5080000 14478000 5080000 14478000 5207000
+     15430500 5207000 15430500 5334000 16764000 5334000)
+    (connect (terminal pin u23-3) (terminal pin u15-2))
+   )
+   (wire (path S1 25400  17907000 381000 17907000 635000 18288000 635000
+     18288000 762000)
+    (connect (terminal via) (terminal pin j1-B16))
+   )
+   (wire (path COMP16 25400  16764000 5334000 16510000 5334000 16510000 2542541
+     16891000 2542541 16891000 381000 17907000 381000)
+    (connect (terminal pin u15-2) (terminal via))
+   )
+   (via v1 17907000 381000)
+   )
+   (Net vm[1] 
+   (wire (path COMP16 25400  18034000 762000 18034000 635000 17145000 635000
+     17145000 2603500 16637000 2603500 16637000 4572000 16764000 4572000)
+    (connect (terminal pin j1-B17) (terminal pin u15-5))
+   )
+   (wire (path S1 25400  14224000 4826000 14779292 4826000 14779292 4699000
+     16510000 4699000 16510000 4572000 16764000 4572000)
+    (connect (terminal pin u23-4) (terminal pin u15-5))
+   )
+   )
+   (Net vm[2] 
+   (wire (path COMP16 25400  16764000 4318000 17018000 4318000 17018000 4191000
+     17653000 4191000 17653000 762000 17780000 762000)
+    (connect (terminal pin u15-6) (terminal pin j1-B18))
+   )
+   (wire (path S1 25400  14224000 4064000 14859000 4064000 14859000 4445000
+     16510000 4445000 16510000 4318000 16764000 4318000)
+    (connect (terminal pin u23-7) (terminal pin u15-6))
+   )
+   )
+   (Net vm[3] 
+   (wire (path COMP16 25400  16764000 3556000 17399000 3556000 17399000 762000
+     17526000 762000)
+    (connect (terminal pin u15-9) (terminal pin j1-B19))
+   )
+   (wire (path S1 25400  14224000 3810000 14541500 3810000 14541500 3429000
+     16510000 3429000 16510000 3556000 16764000 3556000)
+    (connect (terminal pin u23-8) (terminal pin u15-9))
+   )
+   )
+   (Net vm[4] 
+   (wire (path COMP16 25400  16510000 508000 16637000 508000 16637000 1206500
+     16446500 1206500 16446500 3111500 16002000 3111500 16002000 3683000)
+    (connect (terminal pin j1-A23) (terminal via))
+   )
+   (wire (path S1 25400  16002000 3683000 15303500 3683000 15303500 3810000
+     14986000 3810000)
+    (connect (terminal via) (terminal pin u23-13))
+   )
+   (wire (path S1 25400  17526000 3556000 17272000 3556000 17272000 3683000
+     16002000 3683000)
+    (connect (terminal pin u15-12) (terminal via))
+   )
+   (via v1 16002000 3683000)
+   )
+   (Net vm[5] 
+   (wire (path S1 25400  14986000 4064000 15240000 4064000 15240000 4191000
+     17272000 4191000 17272000 4318000 17526000 4318000)
+    (connect (terminal pin u23-14) (terminal pin u15-15))
+   )
+   (wire (path COMP16 25400  18796000 2794000 18796000 1016000)
+    (connect (terminal via) (terminal pin j1-C14))
+   )
+   (wire (path S1 25400  17780000 2794000 18796000 2794000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  17526000 4318000 17716500 4318000 17716500 2794000
+     17780000 2794000)
+    (connect (terminal pin u15-15) (terminal via))
+   )
+   (via v1 18796000 2794000)
+   (via v1 17780000 2794000)
+   )
+   (Net vd[0] 
+   (wire (path COMP16 25400  889000 2286000 889000 5334000 762000 5334000)
+    (connect (terminal via) (terminal pin u54-2))
+   )
+   (wire (path S1 25400  20066000 2540000 20066000 2286000 889000 2286000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  19812000 3175000 20066000 3175000 20066000 2540000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  19812000 3175000 19542376 3175000 19542376 3556000
+     19304000 3556000)
+    (connect (terminal via) (terminal pin u7-9))
+   )
+   (wire (path S1 25400  20320000 3175000 19812000 3175000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  20320000 3175000 21971000 3175000 21971000 508000
+     22098000 508000)
+    (connect (terminal via) (terminal pin j1-A1))
+   )
+   (via v1 889000 2286000)
+   (via v1 20066000 2540000)
+   (via v1 19812000 3175000)
+   (via v1 20320000 3175000)
+   )
+   (Net vd[10] 
+   (wire (path COMP16 25400  21336000 4064000 21590000 4064000 21590000 1016000)
+    (connect (terminal pin u3-7) (terminal pin j1-C3))
+   )
+   (wire (path S1 25400  3556000 4826000 3365500 4826000 3365500 4191000
+     3873500 4191000 3873500 2921000 20022613 2921000 20022613 2730500
+     21590000 2730500 21590000 1016000)
+    (connect (terminal pin u45-4) (terminal pin j1-C3))
+   )
+   )
+   (Net vd[11] 
+   (wire (path S1 25400  21209000 3048000 8191500 3048000 8191500 3429000
+     4127500 3429000 4127500 4572000 3556000 4572000)
+    (connect (terminal via) (terminal pin u45-5))
+   )
+   (wire (path COMP16 25400  21209000 3048000 21336000 3048000 21336000 1016000)
+    (connect (terminal via) (terminal pin j1-C4))
+   )
+   (wire (path COMP16 25400  21209000 3048000 21209000 4318000 21336000 4318000)
+    (connect (terminal via) (terminal pin u3-6))
+   )
+   (via v1 21209000 3048000)
+   )
+   (Net vd[12] 
+   (wire (path S1 25400  7874000 3302000 7874000 3175000 4000500 3175000
+     4000500 4318000 3556000 4318000)
+    (connect (terminal via) (terminal pin u45-6))
+   )
+   (wire (path COMP16 25400  7874000 5080000 7874000 3302000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  8636000 5080000 7874000 5080000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  8636000 3302000 8636000 5080000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  21082000 4191000 19050000 4191000 19050000 3175000
+     8636000 3175000 8636000 3302000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  21082000 4191000 21082000 4572000 21336000 4572000)
+    (connect (terminal via) (terminal pin u3-5))
+   )
+   (wire (path COMP16 25400  21082000 3937000 21082000 4191000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  21082000 3937000 21082000 1016000)
+    (connect (terminal via) (terminal pin j1-C5))
+   )
+   (via v1 7874000 3302000)
+   (via v1 7874000 5080000)
+   (via v1 8636000 5080000)
+   (via v1 8636000 3302000)
+   (via v1 21082000 4191000)
+   (via v1 21082000 3937000)
+   )
+   (Net vd[13] 
+   (wire (path COMP16 25400  21336000 4826000 20828000 4826000 20828000 2286000)
+    (connect (terminal pin u3-4) (terminal via))
+   )
+   (wire (path COMP16 25400  20828000 2286000 20828000 1016000)
+    (connect (terminal via) (terminal pin j1-C6))
+   )
+   (wire (path S1 25400  3556000 4064000 3810000 4064000 3810000 2667000
+     20828000 2667000 20828000 2286000)
+    (connect (terminal pin u45-7) (terminal via))
+   )
+   (via v1 20828000 2286000)
+   )
+   (Net vd[14] 
+   (wire (path COMP16 25400  20574000 2413000 20574000 1016000)
+    (connect (terminal via) (terminal pin j1-C7))
+   )
+   (wire (path S1 25400  3556000 3810000 3746500 3810000 3746500 2603500
+     19939000 2603500 19939000 2413000 20574000 2413000)
+    (connect (terminal pin u45-8) (terminal via))
+   )
+   (wire (path COMP16 25400  20574000 2413000 20764500 2413000 20764500 5080000
+     21336000 5080000)
+    (connect (terminal via) (terminal pin u3-3))
+   )
+   (via v1 20574000 2413000)
+   )
+   (Net vd[15] 
+   (wire (path COMP16 25400  21336000 5334000 20637500 5334000 20637500 2843510
+     20447000 2843510 20447000 2286000)
+    (connect (terminal pin u3-2) (terminal via))
+   )
+   (wire (path COMP16 25400  20320000 1016000 20320000 1270000 20447000 1270000
+     20447000 2286000)
+    (connect (terminal pin j1-C8) (terminal via))
+   )
+   (wire (path S1 25400  3556000 3556000 3683000 3556000 3683000 2540000
+     19621500 2540000 19621500 2235199 20447000 2235199 20447000 2286000)
+    (connect (terminal pin u45-9) (terminal via))
+   )
+   (via v1 20447000 2286000)
+   )
+   (Net vd[1] 
+   (wire (path S1 25400  19304000 3810000 19177000 3810000 19177000 2984500)
+    (connect (terminal pin u7-8) (terminal wire))
+   )
+   (wire (path S1 25400  19177000 2984500 20747479 2984500 20747479 2794000
+     21717000 2794000 21717000 508000 21844000 508000)
+    (connect (terminal wire) (terminal pin j1-A2))
+   )
+   (wire (path S1 25400  7874000 3048000 7874000 2984500 19177000 2984500)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  7874000 2032000 7874000 3048000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  762000 5080000 571500 5080000 571500 1968500
+     7874000 1968500 7874000 2032000)
+    (connect (terminal pin u54-3) (terminal via))
+   )
+   (via v1 7874000 3048000)
+   (via v1 7874000 2032000)
+   )
+   (Net vd[2] 
+   (wire (path S1 25400  21717000 3683000 19939000 3683000 19939000 4064000
+     19304000 4064000)
+    (connect (terminal via) (terminal pin u7-7))
+   )
+   (wire (path COMP16 25400  21590000 508000 21717000 508000 21717000 3683000)
+    (connect (terminal pin j1-A3) (terminal via))
+   )
+   (wire (path S1 25400  8382000 3556000 8382000 3111500 19113500 3111500
+     19113500 4064000 19304000 4064000)
+    (connect (terminal via) (terminal pin u7-7))
+   )
+   (wire (path COMP16 25400  8382000 1905000 8382000 3556000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  762000 4826000 635000 4826000 635000 4445000
+     1079500 4445000 1079500 5461000 381000 5461000 381000 1905000
+     8382000 1905000)
+    (connect (terminal pin u54-4) (terminal via))
+   )
+   (via v1 21717000 3683000)
+   (via v1 8382000 3556000)
+   (via v1 8382000 1905000)
+   )
+   (Net vd[3] 
+   (wire (path COMP16 25400  18923000 889000 18923000 3046744 18669000 3046744
+     18669000 3937000 19113500 3937000)
+    (connect (terminal via) (terminal wire))
+   )
+   (wire (path COMP16 25400  19113500 3937000 19113500 4318000 19304000 4318000)
+    (connect (terminal wire) (terminal pin u7-6))
+   )
+   (wire (path S1 25400  21336000 127000 19431000 127000 19431000 889000
+     18923000 889000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  21336000 508000 21336000 127000)
+    (connect (terminal pin j1-A4) (terminal via))
+   )
+   (wire (path S1 25400  508000 5207000 889000 5207000 889000 4699000
+     762000 4699000 762000 4572000)
+    (connect (terminal via) (terminal pin u54-5))
+   )
+   (wire (path COMP16 25400  762000 2413000 762000 1651000 508000 1651000
+     508000 5207000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  19304000 2413000 762000 2413000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  19113500 2603500 19304000 2603500 19304000 2413000)
+    (connect (terminal wire) (terminal via))
+   )
+   (wire (path COMP16 25400  19113500 2603500 19113500 3937000)
+    (connect (terminal wire) (terminal wire))
+   )
+   (via v1 18923000 889000)
+   (via v1 21336000 127000)
+   (via v1 508000 5207000)
+   (via v1 762000 2413000)
+   (via v1 19304000 2413000)
+   )
+   (Net vd[4] 
+   (wire (path COMP16 25400  19177000 4699000 19304000 4699000 19304000 4572000)
+    (connect (terminal via) (terminal pin u7-5))
+   )
+   (wire (path S1 25400  20955000 4699000 19558000 4699000 19558000 4572000
+     19304000 4572000)
+    (connect (terminal via) (terminal pin u7-5))
+   )
+   (wire (path COMP16 25400  21082000 508000 20955000 508000 20955000 4699000)
+    (connect (terminal pin j1-A5) (terminal via))
+   )
+   (wire (path S1 25400  762000 4318000 1143000 4318000 1143000 5461000
+     17018000 5461000 17018000 5207000 19050000 5207000 19050000 4699000
+     19177000 4699000)
+    (connect (terminal pin u54-6) (terminal via))
+   )
+   (via v1 20955000 4699000)
+   (via v1 19177000 4699000)
+   )
+   (Net vd[5] 
+   (wire (path COMP16 25400  635000 5715000 635000 4064000 762000 4064000)
+    (connect (terminal via) (terminal pin u54-7))
+   )
+   (wire (path S1 25400  19304000 4826000 19113500 4826000 19113500 5842000
+     6032500 5842000 6032500 5715000 635000 5715000)
+    (connect (terminal pin u7-4) (terminal via))
+   )
+   (wire (path COMP16 25400  19304000 4826000 19494500 4826000 19494500 1841500
+     19685000 1841500 19685000 381000 20828000 381000 20828000 508000)
+    (connect (terminal pin u7-4) (terminal pin j1-A6))
+   )
+   (via v1 635000 5715000)
+   )
+   (Net vd[6] 
+   (wire (path S1 25400  19685000 2032000 20447000 2032000 20447000 508000
+     20574000 508000)
+    (connect (terminal via) (terminal pin j1-A7))
+   )
+   (wire (path COMP16 25400  19685000 2032000 19634200 2032000 19634200 5080000
+     19304000 5080000)
+    (connect (terminal via) (terminal pin u7-3))
+   )
+   (wire (path S1 25400  635000 1778000 10477500 1778000 10477500 2082801
+     19685000 2082801 19685000 2032000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  762000 3810000 635000 3810000 635000 1778000)
+    (connect (terminal pin u54-8) (terminal via))
+   )
+   (via v1 635000 1778000)
+   (via v1 19685000 2032000)
+   )
+   (Net vd[7] 
+   (wire (path S1 25400  2540000 3429000 1016000 3429000 1016000 3556000
+     762000 3556000)
+    (connect (terminal via) (terminal pin u54-9))
+   )
+   (wire (path COMP16 25400  2540000 1397000 2540000 3429000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  12319000 1651000 11730758 1651000 11730758 1587500
+     9461500 1587500 9461500 889000 2667000 889000 2667000 1333500
+     2540000 1333500 2540000 1397000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  16764000 254000 16764000 190500 12255500 190500
+     12255500 1651000 12319000 1651000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  20320000 508000 20320000 635000 19685000 635000
+     19685000 1397000 18669000 1397000 18669000 127000 16764000 127000
+     16764000 254000)
+    (connect (terminal pin j1-A8) (terminal via))
+   )
+   (wire (path COMP16 25400  19304000 5334000 19685000 5334000 19685000 2413000
+     19812000 2413000)
+    (connect (terminal pin u7-2) (terminal via))
+   )
+   (wire (path COMP16 25400  20320000 508000 20193000 508000 20193000 2413000
+     19812000 2413000)
+    (connect (terminal pin j1-A8) (terminal via))
+   )
+   (via v1 2540000 3429000)
+   (via v1 2540000 1397000)
+   (via v1 12319000 1651000)
+   (via v1 16764000 254000)
+   (via v1 19812000 2413000)
+   )
+   (Net vd[8] 
+   (wire (path COMP16 25400  3429000 2159000 3365500 2159000 3365500 5334000
+     3556000 5334000)
+    (connect (terminal via) (terminal pin u45-2))
+   )
+   (wire (path S1 25400  21463000 2413000 21272500 2413000 21272500 2159000
+     3429000 2159000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  21463000 2413000 21463000 2159000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  21336000 3556000 21463000 3556000 21463000 2413000)
+    (connect (terminal pin u3-9) (terminal via))
+   )
+   (wire (path COMP16 25400  21463000 2159000 21463000 381000 22288500 381000
+     22288500 1015999 22098000 1015999 22098000 1016000)
+    (connect (terminal via) (terminal pin j1-C1))
+   )
+   (via v1 3429000 2159000)
+   (via v1 21463000 2413000)
+   (via v1 21463000 2159000)
+   )
+   (Net vd[9] 
+   (wire (path COMP16 25400  21844000 3429000 21844000 1016000)
+    (connect (terminal via) (terminal pin j1-C2))
+   )
+   (wire (path S1 25400  21844000 3429000 21844000 3810000 21336000 3810000)
+    (connect (terminal via) (terminal pin u3-8))
+   )
+   (wire (path COMP16 25400  21844000 3429000 21844000 3810000 21653500 3810000
+     21653500 4699000 21209000 4699000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  6604000 5969000 19177000 5969000 19177000 5207000
+     21209000 5207000 21209000 4699000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path COMP16 25400  6604000 4953000 6604000 5969000)
+    (connect (terminal via) (terminal via))
+   )
+   (wire (path S1 25400  3556000 5080000 3810000 5080000 3810000 4953000
+     6604000 4953000)
+    (connect (terminal pin u45-3) (terminal via))
+   )
+   (via v1 21844000 3429000)
+   (via v1 6604000 5969000)
+   (via v1 6604000 4953000)
+   (via v1 21209000 4699000)
+   )
+  )
+ )

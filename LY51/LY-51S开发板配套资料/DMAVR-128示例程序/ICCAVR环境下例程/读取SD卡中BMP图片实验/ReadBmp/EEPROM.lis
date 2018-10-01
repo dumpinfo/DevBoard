@@ -1,0 +1,135 @@
+                        .module EEPROM.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\ReadBmp\EEPROM.C
+ 0000                   .dbfunc e eeprom_read_byte _eeprom_read_byte fI
+ 0000           ;       readtemp -> R10
+ 0000           ;           addr -> R16,R17
+                        .even
+ 0000           _eeprom_read_byte::
+ 0000 AA92              st -y,R10
+ 0002                   .dbline -1
+ 0002                   .dbline 32
+ 0002           ; //DMAVR-128的读写EEPROM示例程序，记录CPU启动的次数到EEPROM中
+ 0002           ; //在LED数码管上显示读出的数据,可用复位键刷新显示
+ 0002           ; //编译环境 ICCAVR 7.16A
+ 0002           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0002           ; //作者：阿迪 www.avrgcc.com
+ 0002           ; //日期：2010.01.14
+ 0002           ; //***********************************************************************
+ 0002           ; //                    包含文件
+ 0002           ; //***********************************************************************
+ 0002           ; 
+ 0002           ; #include <string.h>
+ 0002           ; #include <stdio.h>
+ 0002           ; #define        F_CPU  7372800                                                 // 单片机主频为7.3728MHz,用于延时子程序
+ 0002           ; //#include <delay.h>
+ 0002           ; #include <iom128v.h>
+ 0002           ; 
+ 0002           ; 
+ 0002           ; //***********************************************************************
+ 0002           ; //                    定义变量区
+ 0002           ; //***********************************************************************
+ 0002           ; 
+ 0002           ; #define uchar           unsigned char
+ 0002           ; #define uint            unsigned int
+ 0002           ; 
+ 0002           ; 
+ 0002           ; 
+ 0002           ; //***********************************************************************
+ 0002           ; //                EEPROM读取函数*/
+ 0002           ; //            addr：地址；number：长度；p_buff：读出数据存放指针
+ 0002           ; //***********************************************************************
+ 0002           ;  eeprom_read_byte(unsigned int addr) 
+ 0002           ; {
+ 0002           L2:
+ 0002                   .dbline 34
+ 0002           ;    unsigned char readtemp;
+ 0002           ;       while(EECR & (1 << EEWE));               //等待前面的写完成
+ 0002           L3:
+ 0002                   .dbline 34
+ 0002 E199              sbic 0x1c,1
+ 0004 FECF              rjmp L2
+ 0006           X0:
+ 0006                   .dbline 36
+ 0006           ; 
+ 0006           ;       EEARH = 0x00;                           //写高字节地址
+ 0006 2224              clr R2
+ 0008 2FBA              out 0x1f,R2
+ 000A                   .dbline 38
+ 000A           ;       
+ 000A           ;               EEARL = addr;                   //写地址低字节
+ 000A 0EBB              out 0x1e,R16
+ 000C                   .dbline 39
+ 000C           ;               EECR |= (1 << EERE);                    //读允许位置1
+ 000C E09A              sbi 0x1c,0
+ 000E                   .dbline 40
+ 000E           ;               readtemp = EEDR;                //读出EEDR中的数据
+ 000E ADB2              in R10,0x1d
+ 0010                   .dbline 41
+ 0010           ;    return readtemp;   
+ 0010 0A2D              mov R16,R10
+ 0012 1127              clr R17
+ 0014                   .dbline -2
+ 0014           L1:
+ 0014                   .dbline 0 ; func end
+ 0014 A990              ld R10,y+
+ 0016 0895              ret
+ 0018                   .dbsym r readtemp 10 c
+ 0018                   .dbsym r addr 16 i
+ 0018                   .dbend
+ 0018                   .dbfunc e eeprom_write_byte _eeprom_write_byte fV
+ 0018           ;         p_buff -> R18
+ 0018           ;           addr -> R16,R17
+                        .even
+ 0018           _eeprom_write_byte::
+ 0018                   .dbline -1
+ 0018                   .dbline 49
+ 0018           ; }
+ 0018           ; 
+ 0018           ; //***********************************************************************
+ 0018           ; //              EEPROM写入函数
+ 0018           ; //          addr：地址；number：长度；p_buff：写入数据存放指针
+ 0018           ; //***********************************************************************
+ 0018           ; void eeprom_write_byte(unsigned int addr, unsigned char p_buff) 
+ 0018           ; {
+ 0018                   .dbline 51
+ 0018           ; 
+ 0018           ;       EEARH = 0x00;
+ 0018 2224              clr R2
+ 001A 2FBA              out 0x1f,R2
+ 001C           L6:
+ 001C                   .dbline 54
+ 001C           ;       
+ 001C           ;       
+ 001C           ;               while(EECR & (1 << EEWE));       //等待前面的写完成
+ 001C           L7:
+ 001C                   .dbline 54
+ 001C E199              sbic 0x1c,1
+ 001E FECF              rjmp L6
+ 0020           X1:
+ 0020                   .dbline 55
+ 0020           ;               EEARL = addr;                 //写地址
+ 0020 0EBB              out 0x1e,R16
+ 0022                   .dbline 56
+ 0022           ;               EEDR = p_buff;               //写数据到EEDR
+ 0022 2DBB              out 0x1d,R18
+ 0024                   .dbline 57
+ 0024           ;               EECR |= (1 << EEMWE);            //主机写入允许位
+ 0024 E29A              sbi 0x1c,2
+ 0026                   .dbline 58
+ 0026           ;               EECR&=~(1<<EEWE);
+ 0026 E198              cbi 0x1c,1
+ 0028                   .dbline 59
+ 0028           ;               EECR |= (1 << EEWE);             //EEWE为1，执行写操作
+ 0028 E19A              sbi 0x1c,1
+ 002A                   .dbline -2
+ 002A           L5:
+ 002A                   .dbline 0 ; func end
+ 002A 0895              ret
+ 002C                   .dbsym r p_buff 18 c
+ 002C                   .dbsym r addr 16 i
+ 002C                   .dbend
+ 002C           ;               
+ 002C           ; }
+ 002C           ; 
+ 002C           ; 

@@ -1,0 +1,442 @@
+Archive member included because of file (symbol)
+
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o (exit)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o)
+                              Sound.o (__fixunssfsi)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o) (__subsf3)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mul_sf.o)
+                              Sound.o (__mulsf3)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_gt_sf.o)
+                              Sound.o (__gtsf2)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o) (__gesf2)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_lt_sf.o)
+                              Sound.o (__ltsf2)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_sf_to_si.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o) (__fixsfsi)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_thenan_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__thenan_sf)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__prologue_saves__)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__epilogue_restores__)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_pack_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__pack_f)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_unpack_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__unpack_f)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fpcmp_parts_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_gt_sf.o) (__fpcmp_parts_f)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+LOAD Sound.o
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000      0xea8
+ *(.vectors)
+ .vectors       0x00000000       0x8c f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+                0x0000008c                . = ALIGN (0x2)
+                0x0000008c                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x0000008c        0x0 linker stubs
+ *(.trampolines*)
+                0x0000008c                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x0000008c                __ctors_start = .
+ *(.ctors)
+                0x0000008c                __ctors_end = .
+                0x0000008c                __dtors_start = .
+ *(.dtors)
+                0x0000008c                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x0000008c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x0000008c                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x0000008c        0xc f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000098       0x1a f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x00000098                __do_copy_data
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000000b2        0x8 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ *(.init9)
+ *(.text)
+ .text          0x000000ba        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x000000ba                __vector_22
+                0x000000ba                __vector_28
+                0x000000ba                __vector_1
+                0x000000ba                __vector_32
+                0x000000ba                __vector_34
+                0x000000ba                __vector_24
+                0x000000ba                __vector_12
+                0x000000ba                __bad_interrupt
+                0x000000ba                __vector_6
+                0x000000ba                __vector_31
+                0x000000ba                __vector_3
+                0x000000ba                __vector_23
+                0x000000ba                __vector_30
+                0x000000ba                __vector_25
+                0x000000ba                __vector_11
+                0x000000ba                __vector_13
+                0x000000ba                __vector_17
+                0x000000ba                __vector_19
+                0x000000ba                __vector_7
+                0x000000ba                __vector_27
+                0x000000ba                __vector_5
+                0x000000ba                __vector_33
+                0x000000ba                __vector_4
+                0x000000ba                __vector_9
+                0x000000ba                __vector_2
+                0x000000ba                __vector_21
+                0x000000ba                __vector_15
+                0x000000ba                __vector_29
+                0x000000ba                __vector_8
+                0x000000ba                __vector_26
+                0x000000ba                __vector_14
+                0x000000ba                __vector_10
+                0x000000ba                __vector_16
+                0x000000ba                __vector_18
+                0x000000ba                __vector_20
+ .text          0x000000be      0x2c4 Sound.o
+                0x000000be                system_init
+                0x000000ec                left_shift
+                0x00000126                main
+ .text          0x00000382        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .text          0x00000382       0x58 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o)
+                0x00000382                __fixunssfsi
+ .text          0x000003da      0x354 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o)
+                0x00000672                __subsf3
+                0x000006d4                __addsf3
+ .text          0x0000072e      0x1f4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mul_sf.o)
+                0x0000072e                __mulsf3
+ .text          0x00000922       0x60 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_gt_sf.o)
+                0x00000922                __gtsf2
+ .text          0x00000982       0x60 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o)
+                0x00000982                __gesf2
+ .text          0x000009e2       0x60 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_lt_sf.o)
+                0x000009e2                __ltsf2
+ .text          0x00000a42       0xa8 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_sf_to_si.o)
+                0x00000a42                __fixsfsi
+ .text          0x00000aea        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_thenan_sf.o)
+ .text          0x00000aea        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+ .text          0x00000aea        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+ .text          0x00000aea      0x1aa f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_pack_sf.o)
+                0x00000aea                __pack_f
+ .text          0x00000c94       0xf0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_unpack_sf.o)
+                0x00000c94                __unpack_f
+ .text          0x00000d84       0xb2 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fpcmp_parts_sf.o)
+                0x00000d84                __fpcmp_parts_f
+                0x00000e36                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00000e36        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .text.libgcc   0x00000e36       0x38 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+                0x00000e36                __prologue_saves__
+ .text.libgcc   0x00000e6e       0x36 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+                0x00000e6e                __epilogue_restores__
+                0x00000ea4                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x00000ea4        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+                0x00000ea4                exit
+                0x00000ea4                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x00000ea4        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ *(.fini0)
+                0x00000ea8                _etext = .
+
+.data           0x00800100        0x8 load address 0x00000ea8
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ .data          0x00800100        0x0 Sound.o
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mul_sf.o)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_gt_sf.o)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_lt_sf.o)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_sf_to_si.o)
+ .data          0x00800100        0x8 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_thenan_sf.o)
+                0x00800100                __thenan_sf
+ .data          0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+ .data          0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+ .data          0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_pack_sf.o)
+ .data          0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_unpack_sf.o)
+ .data          0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fpcmp_parts_sf.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x00800108                . = ALIGN (0x2)
+                0x00800108                _edata = .
+                0x00800108                PROVIDE (__data_end, .)
+
+.bss            0x00800108        0x0
+                0x00800108                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ .bss           0x00800108        0x0 Sound.o
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mul_sf.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_gt_sf.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_lt_sf.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_sf_to_si.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_thenan_sf.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_pack_sf.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_unpack_sf.o)
+ .bss           0x00800108        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fpcmp_parts_sf.o)
+ *(.bss*)
+ *(COMMON)
+                0x00800108                PROVIDE (__bss_end, .)
+                0x00000ea8                __data_load_start = LOADADDR (.data)
+                0x00000eb0                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00800108        0x0
+                0x00800108                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00800108                PROVIDE (__noinit_end, .)
+                0x00800108                _end = .
+                0x00800108                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x20
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 Sound.o
+
+.debug_pubnames
+                0x00000000       0x3a
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0x3a Sound.o
+
+.debug_info     0x00000000      0x1ff
+ *(.debug_info)
+ .debug_info    0x00000000      0x1ff Sound.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x111
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x111 Sound.o
+
+.debug_line     0x00000000      0x260
+ *(.debug_line)
+ .debug_line    0x00000000      0x260 Sound.o
+
+.debug_frame    0x00000000       0x40
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x40 Sound.o
+
+.debug_str      0x00000000       0xe4
+ *(.debug_str)
+ .debug_str     0x00000000       0xe4 Sound.o
+                                0x123 (size before relaxing)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(Sound.elf elf32-avr)
+LOAD linker stubs

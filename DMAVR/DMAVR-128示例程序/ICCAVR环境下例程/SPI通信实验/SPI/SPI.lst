@@ -1,0 +1,385 @@
+__start:
+__text_start:
+      47 EFCF      LDI	R28,0xFF
+      48 E1D0      LDI	R29,0x10
+      49 BFCD      OUT	0x3D,R28
+      4A BFDE      OUT	0x3E,R29
+      4B 51CE      SUBI	R28,0x1E
+      4C 40D0      SBCI	R29,0
+      4D EA0A      LDI	R16,0xAA
+      4E 8308      STD	Y+0,R16
+      4F 2400      CLR	R0
+      50 E0E1      LDI	R30,1
+      51 E0F1      LDI	R31,1
+      52 E011      LDI	R17,1
+      53 30E5      CPI	R30,5
+      54 07F1      CPC	R31,R17
+      55 F011      BEQ	0x0058
+      56 9201      ST	R0,Z+
+      57 CFFB      RJMP	0x0053
+      58 8300      STD	Z+0,R16
+      59 E8EC      LDI	R30,0x8C
+      5A E0F0      LDI	R31,0
+      5B E0A0      LDI	R26,0
+      5C E0B1      LDI	R27,1
+      5D E010      LDI	R17,0
+      5E E000      LDI	R16,0
+      5F BF0B      OUT	0x3B,R16
+      60 38ED      CPI	R30,0x8D
+      61 07F1      CPC	R31,R17
+      62 F021      BEQ	0x0067
+      63 95C8      LPM
+      64 9631      ADIW	R30,1
+      65 920D      ST	R0,X+
+      66 CFF9      RJMP	0x0060
+      67 940E 00CD CALL	_main
+_exit:
+      69 CFFF      RJMP	_exit
+FILE: F:\PROGRA~1\iccavr\include\delay.h
+(0001) //********************************************************************
+(0002) /*函 数 名：delay_us
+(0003) 建立日期：2010年1月28日
+(0004) 编译环境：ICCAVR7.16A
+(0005) 函数作用：微秒级的延时程序
+(0006) 说    明：7.3728M晶振下
+(0007) ********************************************************************/
+(0008) void delay_1us(void)                 //1us延时函数，不能连续调用， 
+(0009) { 
+(0010)    asm("nop");                       //1时钟周期
+_delay_1us:
+      6A 0000      NOP
+(0011)    asm("nop");
+      6B 0000      NOP
+(0012)    asm("nop");
+      6C 0000      NOP
+(0013)    asm("nop");
+      6D 0000      NOP
+(0014)    asm("nop");                       //1T
+      6E 0000      NOP
+(0015)    asm("nop");
+      6F 0000      NOP
+      70 9508      RET
+(0016) 
+(0017) }
+(0018) void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+(0019) { 
+(0020)    
+(0021)    asm("nop");
+_delay_3us:
+      71 0000      NOP
+(0022)    asm("nop");
+      72 0000      NOP
+(0023)    asm("nop");                       
+      73 0000      NOP
+(0024)    asm("nop");
+      74 0000      NOP
+(0025)    asm("nop");
+      75 0000      NOP
+(0026)    asm("nop");
+      76 0000      NOP
+(0027)    asm("nop");                       
+      77 0000      NOP
+(0028)    asm("nop");
+      78 0000      NOP
+(0029)    asm("nop");
+      79 0000      NOP
+(0030)    asm("nop");
+      7A 0000      NOP
+(0031)    asm("nop");                       
+      7B 0000      NOP
+(0032)    asm("nop");
+      7C 0000      NOP
+(0033)    asm("nop");
+      7D 0000      NOP
+(0034)    asm("nop");
+      7E 0000      NOP
+(0035)    asm("nop");                       
+      7F 0000      NOP
+(0036)    asm("nop");
+      80 0000      NOP
+(0037)    asm("nop");
+      81 0000      NOP
+(0038)    asm("nop");
+      82 0000      NOP
+(0039)    asm("nop");
+      83 0000      NOP
+(0040)    asm("nop");
+      84 0000      NOP
+(0041)    asm("nop");                       
+      85 0000      NOP
+      86 9508      RET
+(0042) } 
+(0043) 
+(0044) void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+(0045) {
+(0046)    delay_3us();
+_delay_10us:
+      87 DFE9      RCALL	_delay_3us
+(0047)    delay_3us(); 
+      88 DFE8      RCALL	_delay_3us
+(0048)    delay_3us();  
+      89 CFE7      RJMP	_delay_3us
+(0049) }
+(0050)   
+(0051) void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+(0052) { 
+(0053)    delay_10us();
+_delay_50us:
+      8A DFFC      RCALL	_delay_10us
+(0054)    delay_10us(); 
+      8B DFFB      RCALL	_delay_10us
+(0055)    delay_10us();
+      8C DFFA      RCALL	_delay_10us
+(0056)    delay_10us();
+      8D CFF9      RJMP	_delay_10us
+(0057) }
+(0058) void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+(0059) {
+(0060)  delay_50us();
+_delay_100us:
+      8E DFFB      RCALL	_delay_50us
+(0061)  delay_50us();
+      8F CFFA      RJMP	_delay_50us
+_delay_n100us:
+  n100us               --> R20
+      90 934A      ST	R20,-Y
+      91 2F40      MOV	R20,R16
+(0062) }
+(0063) void delay_n100us(unsigned char n100us)
+(0064) {
+      92 C001      RJMP	0x0094
+(0065)  while(n100us--)                          
+(0066)  delay_100us();
+      93 DFFA      RCALL	_delay_100us
+      94 2E24      MOV	R2,R20
+      95 2433      CLR	R3
+      96 5041      SUBI	R20,1
+      97 2022      TST	R2
+      98 F7D1      BNE	0x0093
+      99 9149      LD	R20,Y+
+      9A 9508      RET
+(0067) }
+(0068) /*delay_n100us(2)        250us
+(0069) delay_n100us(3)          360us
+(0070) delay_n100us(4)          470us
+(0071) delay_n100us(5)          580us
+(0072) delay_n100us(6)          690us
+(0073) delay_n100us(7)       800us
+(0074) delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+(0075) 
+(0076) */
+(0077) void delay_1ms()
+(0078) {
+(0079)  delay_100us();
+_delay_1ms:
+      9B DFF2      RCALL	_delay_100us
+(0080)  delay_100us();
+      9C DFF1      RCALL	_delay_100us
+(0081)  delay_100us();
+      9D DFF0      RCALL	_delay_100us
+(0082)  delay_100us();
+      9E DFEF      RCALL	_delay_100us
+(0083)  delay_100us();
+      9F DFEE      RCALL	_delay_100us
+(0084)  delay_100us();
+      A0 DFED      RCALL	_delay_100us
+(0085)  delay_100us();
+      A1 DFEC      RCALL	_delay_100us
+(0086)  delay_100us();
+      A2 DFEB      RCALL	_delay_100us
+(0087)  delay_100us();
+      A3 DFEA      RCALL	_delay_100us
+(0088)  delay_100us();
+      A4 CFE9      RJMP	_delay_100us
+_delay_nms:
+  nms                  --> R20
+      A5 934A      ST	R20,-Y
+      A6 935A      ST	R21,-Y
+      A7 01A8      MOVW	R20,R16
+(0089) }
+(0090) /********************************************************************
+(0091) 函 数 名：Delay_ms
+(0092) 建立日期：2010年1月28日
+(0093) 修改日期：
+(0094) 函数作用：毫秒级的精确延时程序
+(0095) 说    明：
+(0096) ********************************************************************/
+(0097) void delay_nms(unsigned int nms)
+(0098) {
+      A8 C001      RJMP	0x00AA
+(0099)  while(nms--) 
+(0100)  delay_1ms();
+      A9 DFF1      RCALL	_delay_1ms
+      AA 011A      MOVW	R2,R20
+      AB 5041      SUBI	R20,1
+      AC 4050      SBCI	R21,0
+      AD 2022      TST	R2
+      AE F7D1      BNE	0x00A9
+      AF 2033      TST	R3
+      B0 F7C1      BNE	0x00A9
+      B1 9159      LD	R21,Y+
+      B2 9149      LD	R20,Y+
+      B3 9508      RET
+_delay_ns:
+  ns                   --> R20
+      B4 934A      ST	R20,-Y
+      B5 2F40      MOV	R20,R16
+(0101) }
+(0102) void delay_ns(unsigned char ns)
+(0103) {
+      B6 C003      RJMP	0x00BA
+(0104)  while(ns--) 
+(0105)  delay_nms(1000);
+      B7 EE08      LDI	R16,0xE8
+      B8 E013      LDI	R17,3
+      B9 DFEB      RCALL	_delay_nms
+      BA 2E24      MOV	R2,R20
+      BB 2433      CLR	R3
+      BC 5041      SUBI	R20,1
+      BD 2022      TST	R2
+      BE F7C1      BNE	0x00B7
+      BF 9149      LD	R20,Y+
+      C0 9508      RET
+FILE: E:\DMAVR-~3\SPI\SPI.C
+(0001) //DMAVR-128的SPI应用示例程序，采用SPI接口的DAC芯片TLC5615，连续进行电压转换
+(0002) //DAC为TI公司的10位串行电压型输出的DAC芯片TLC5615,SPI接口连接方式
+(0003) //驱通过SPI接口，动DAC芯片，使其完成000-FFC(TLC5615后两位的值一直为0)输出的转换
+(0004) //LED指示灯DS3对应从暗到亮，表示电压逐渐增大
+(0005) //编译环境 ICCAVR 7.16A
+(0006) //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+(0007) //作者：阿迪 www.avrgcc.com
+(0008) //日期：2010.01.14
+(0009) 
+(0010) //***********************************************************************
+(0011) //			包含文件
+(0012) //***********************************************************************
+(0013) 
+(0014) #include <string.h>
+(0015) #include <stdio.h>
+(0016) #include <delay.h>
+(0017) #include <iom128v.h>
+(0018) 
+(0019) //***********************************************************************
+(0020) //	定义变量区
+(0021) //***********************************************************************
+(0022) #define uchar unsigned char
+(0023) #define uint  unsigned int
+(0024) 
+(0025) #define cs0   PORTB &= ~(1 << PB0)          //片选信号置低
+(0026) #define cs1   PORTB |= (1 << PB0)           //片选信号置高
+(0027) 
+(0028) #define Data_IO	        PORTA                //数码管数据口
+(0029) #define Data_DDR        DDRA                 //数码管数据口方向寄存器
+(0030) #define D_LE0	        PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+(0031) #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+(0032) #define W_LE0	        PORTD &= ~(1 << PD5) //数码管位控制位为0
+(0033) #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+(0034) 
+(0035) uint da_data;
+(0036) uchar count=0;
+(0037) uint da_data2;
+(0038) //*************************************************************************
+(0039) //			初始化子程序
+(0040) //*************************************************************************
+(0041) void system_init()
+(0042) {
+(0043)  	 D_LE1;                             //关掉数码管，以免显示乱码                   
+_system_init:
+      C1 9A94      SBI	0x12,4
+(0044)      W_LE1;                     
+      C2 9A95      SBI	0x12,5
+(0045)      Data_IO=0xFF;                      //关数码管            
+      C3 EF8F      LDI	R24,0xFF
+      C4 BB8B      OUT	0x1B,R24
+(0046)      W_LE0; 
+      C5 9895      CBI	0x12,5
+(0047) 
+(0048) 	PORTB = 0x00;		         //电平设置
+      C6 2422      CLR	R2
+      C7 BA28      OUT	0x18,R2
+(0049) 	DDRB = 0xFF;		         //方向输出
+      C8 BB87      OUT	0x17,R24
+      C9 9508      RET
+(0050) 
+(0051) }
+(0052) void SPI_init()
+(0053) {
+(0054)   SPCR=(1<<SPE)|(1<<MSTR);              //主机方式，SPI模式为0，SCK频率为Fosc/4
+_SPI_init:
+      CA E580      LDI	R24,0x50
+      CB B98D      OUT	0x0D,R24
+      CC 9508      RET
+(0055)   
+(0056) }
+(0057) 
+(0058) 
+(0059) //*************************************************************************
+(0060) //			主程序
+(0061) //*************************************************************************
+(0062) 
+(0063) void main(void)
+(0064) { 
+(0065)   system_init();                               //系统IO口初始化
+_main:
+      CD DFF3      RCALL	_system_init
+(0066)   SPI_init();                                  //SPI初始化
+      CE DFFB      RCALL	_SPI_init
+      CF C03C      RJMP	0x010C
+(0067)   while(1)
+(0068)   {
+(0069)     for(da_data=0x0000;da_data<0x0ffc;da_data++)
+      D0 2422      CLR	R2
+      D1 2433      CLR	R3
+      D2 9230 0104 STS	da_data+1,R3
+      D4 9220 0103 STS	da_data,R2
+      D6 C02D      RJMP	0x0104
+(0070)     {
+(0071)       cs0;                                     //使能DAC
+      D7 98C0      CBI	0x18,0
+(0072)       da_data2=(da_data&0xff00);               //提取数据的高8位
+      D8 9180 0103 LDS	R24,da_data
+      DA 9190 0104 LDS	R25,da_data+1
+      DC 7080      ANDI	R24,0
+      DD 9390 0102 STS	da_data2+1,R25
+      DF 9380 0101 STS	da_data2,R24
+(0073)       da_data2>>=8;                            //高8位移到低8位，便于赋值
+      E1 011C      MOVW	R2,R24
+      E2 2C23      MOV	R2,R3
+      E3 2433      CLR	R3
+      E4 9230 0102 STS	da_data2+1,R3
+      E6 9220 0101 STS	da_data2,R2
+(0074)       SPDR=da_data2;                           //写数据的高8位到SPI数据寄存器
+      E8 B82F      OUT	0x0F,R2
+(0075)       SPDR=da_data&&0x00ff;                    //写数据的低8位到SPI数据寄存器
+      E9 9020 0103 LDS	R2,da_data
+      EB 9030 0104 LDS	R3,da_data+1
+      ED 2022      TST	R2
+      EE F411      BNE	0x00F1
+      EF 2033      TST	R3
+      F0 F019      BEQ	0x00F4
+      F1 E041      LDI	R20,1
+      F2 E050      LDI	R21,0
+      F3 C002      RJMP	0x00F6
+      F4 2744      CLR	R20
+      F5 2755      CLR	R21
+      F6 B94F      OUT	0x0F,R20
+(0076)       delay_nms(1);
+      F7 E001      LDI	R16,1
+      F8 E010      LDI	R17,0
+      F9 DFAB      RCALL	_delay_nms
+(0077)       cs1;                                    //关闭使能
+FILE: <library>
+      FA 9AC0      SBI	0x18,0
+      FB 9180 0103 LDS	R24,da_data
+      FD 9190 0104 LDS	R25,da_data+1
+      FF 9601      ADIW	R24,1
+     100 9390 0104 STS	da_data+1,R25
+     102 9380 0103 STS	da_data,R24
+     104 9180 0103 LDS	R24,da_data
+     106 9190 0104 LDS	R25,da_data+1
+     108 3F8C      CPI	R24,0xFC
+     109 E0EF      LDI	R30,0xF
+     10A 079E      CPC	R25,R30
+     10B F258      BCS	0x00D7
+     10C CFC3      RJMP	0x00D0
+     10D 9508      RET

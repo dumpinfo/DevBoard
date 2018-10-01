@@ -1,0 +1,3860 @@
+                        .module FAT.c
+                        .area data(ram, con, rel)
+ 0000           _FAT_ReadSector::
+ 0000                   .blkw 1
+                        .area idata
+ 0000 0200              .word PL_mmcRead
+                        .area data(ram, con, rel)
+ 0002                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0002                   .dbsym e FAT_ReadSector _FAT_ReadSector pfc
+ 0002           _FAT_WriteSector::
+ 0002                   .blkw 1
+                        .area idata
+ 0002 0000              .word PL_mmcWrite
+                        .area data(ram, con, rel)
+ 0004                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0004                   .dbsym e FAT_WriteSector _FAT_WriteSector pfc
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0000           L2:
+ 0000                   .blkb 2
+ 0002           L3:
+ 0002                   .blkb 2
+ 0004           L4:
+ 0004                   .blkb 2
+ 0006           L5:
+ 0006                   .blkb 2
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0000                   .dbfunc e SD_SizeDisplay _SD_SizeDisplay fV
+ 0000                   .dbsym s SizeG L5 i
+ 0000                   .dbsym s SizeS L4 i
+ 0000                   .dbsym s SizeB L3 i
+ 0000                   .dbsym s SizeQ L2 i
+ 0000           ;           Size -> y+4
+ 0000           ;       Capacity -> y+12
+                        .even
+ 0000           _SD_SizeDisplay::
+ 0000 0E940000          xcall push_arg4
+ 0004 0E940000          xcall push_gset2
+ 0008 2897              sbiw R28,8
+ 000A                   .dbline -1
+ 000A                   .dbline 37
+ 000A           ; //FAT文件系统驱动程序，对网络开源代码的更改           
+ 000A           ; //编译环境 ICCAVR 7.16A
+ 000A           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 000A           ; //忠兴电子元件店编辑
+ 000A           ; //日期：2010.01.14 
+ 000A           ; 
+ 000A           ; #include"FAT.h"
+ 000A           ; 
+ 000A           ; DWORD FirstDirClust;    //first directory cluster
+ 000A           ; DWORD FirstDataSector;        // The first sector number of data
+ 000A           ; WORD BytesPerSector;  // Bytes per sector
+ 000A           ; WORD FATsectors;              // The amount sector a FAT occupied
+ 000A           ; WORD SectorsPerClust; // Sector per cluster
+ 000A           ; DWORD FirstFATSector; // The first FAT sector
+ 000A           ; DWORD FirstDirSector; // The first Dir sector
+ 000A           ; DWORD RootDirSectors; // The sector number a Root dir occupied 
+ 000A           ; DWORD RootDirCount;           // The count of directory in root dir
+ 000A           ; BYTE FAT32_Enable;
+ 000A           ; 
+ 000A           ; BYTE (* FAT_ReadSector)(DWORD,BYTE *);
+ 000A           ; BYTE (* FAT_WriteSector)(DWORD,BYTE *);
+ 000A           ; void DisplayChar(unsigned char casc,unsigned char postion_x,unsigned char postion_y,unsigned int char_color);
+ 000A           ; void DisplayString(unsigned char *s,unsigned char x,unsigned char y,unsigned int s_color);
+ 000A           ; eeprom_read_byte(unsigned int addr);
+ 000A           ; void eeprom_write_byte(unsigned int addr, unsigned char p_buff);
+ 000A           ; 
+ 000A           ; //函数指针指向sd卡的读写函数
+ 000A           ; //function pointer to the sd card read & write single block
+ 000A           ; //wirte sector are not use in this player
+ 000A           ; BYTE (* FAT_ReadSector)(DWORD sector, BYTE * buffer)=mmcRead;//device read
+ 000A           ; BYTE (* FAT_WriteSector)(DWORD sector, BYTE * buffer)=mmcWrite;//device write
+ 000A           ; 
+ 000A           ; struct FileInfoStruct FileInfo;//temporarily buffer for file information
+ 000A           ; 
+ 000A           ; //读取SD卡容量并处理显示函数
+ 000A           ; void SD_SizeDisplay(DWORD Capacity)
+ 000A           ; {
+ 000A                   .dbline 40
+ 000A           ;       static  unsigned int SizeQ,SizeB,SizeS,SizeG;
+ 000A           ;       DWORD Size;
+ 000A           ;     DisplayString("SD Size:",0,8,0xf800);  //显示SD卡容量
+ 000A 80E0              ldi R24,63488
+ 000C 98EF              ldi R25,248
+ 000E 9B83              std y+3,R25
+ 0010 8A83              std y+2,R24
+ 0012 88E0              ldi R24,8
+ 0014 8883              std y+0,R24
+ 0016 2227              clr R18
+ 0018 00E0              ldi R16,<L6
+ 001A 10E0              ldi R17,>L6
+ 001C 0E940000          xcall _DisplayString
+ 0020                   .dbline 41
+ 0020           ;       Size=Capacity/1024/1024;
+ 0020 8AE0              ldi R24,10
+ 0022 90E0              ldi R25,0
+ 0024 FE01              movw R30,R28
+ 0026 2484              ldd R2,z+12
+ 0028 3584              ldd R3,z+13
+ 002A 4684              ldd R4,z+14
+ 002C 5784              ldd R5,z+15
+ 002E 8A93              st -y,R24
+ 0030 8101              movw R16,R2
+ 0032 9201              movw R18,R4
+ 0034 0E940000          xcall lsr32
+ 0038 8AE0              ldi R24,10
+ 003A 90E0              ldi R25,0
+ 003C 8A93              st -y,R24
+ 003E 0E940000          xcall lsr32
+ 0042 FE01              movw R30,R28
+ 0044 0483              std z+4,R16
+ 0046 1583              std z+5,R17
+ 0048 2683              std z+6,R18
+ 004A 3783              std z+7,R19
+ 004C                   .dbline 42
+ 004C           ;       SizeQ=Size/1000;
+ 004C 48EE              ldi R20,232
+ 004E 53E0              ldi R21,3
+ 0050 60E0              ldi R22,0
+ 0052 70E0              ldi R23,0
+ 0054 FE01              movw R30,R28
+ 0056 2480              ldd R2,z+4
+ 0058 3580              ldd R3,z+5
+ 005A 4680              ldd R4,z+6
+ 005C 5780              ldd R5,z+7
+ 005E 7A93              st -y,R23
+ 0060 6A93              st -y,R22
+ 0062 5A93              st -y,R21
+ 0064 4A93              st -y,R20
+ 0066 8101              movw R16,R2
+ 0068 9201              movw R18,R4
+ 006A 0E940000          xcall div32u
+ 006E 10930100          sts L2+1,R17
+ 0072 00930000          sts L2,R16
+ 0076                   .dbline 43
+ 0076           ;       SizeB=(Size%1000)/100;
+ 0076 48EE              ldi R20,232
+ 0078 53E0              ldi R21,3
+ 007A 60E0              ldi R22,0
+ 007C 70E0              ldi R23,0
+ 007E FE01              movw R30,R28
+ 0080 2480              ldd R2,z+4
+ 0082 3580              ldd R3,z+5
+ 0084 4680              ldd R4,z+6
+ 0086 5780              ldd R5,z+7
+ 0088 7A93              st -y,R23
+ 008A 6A93              st -y,R22
+ 008C 5A93              st -y,R21
+ 008E 4A93              st -y,R20
+ 0090 8101              movw R16,R2
+ 0092 9201              movw R18,R4
+ 0094 0E940000          xcall mod32u
+ 0098 44E6              ldi R20,100
+ 009A 50E0              ldi R21,0
+ 009C 60E0              ldi R22,0
+ 009E 70E0              ldi R23,0
+ 00A0 7A93              st -y,R23
+ 00A2 6A93              st -y,R22
+ 00A4 5A93              st -y,R21
+ 00A6 4A93              st -y,R20
+ 00A8 0E940000          xcall div32u
+ 00AC 10930300          sts L3+1,R17
+ 00B0 00930200          sts L3,R16
+ 00B4                   .dbline 44
+ 00B4           ;       SizeS=(Size%1000)%100/10;
+ 00B4 48EE              ldi R20,232
+ 00B6 53E0              ldi R21,3
+ 00B8 60E0              ldi R22,0
+ 00BA 70E0              ldi R23,0
+ 00BC FE01              movw R30,R28
+ 00BE 2480              ldd R2,z+4
+ 00C0 3580              ldd R3,z+5
+ 00C2 4680              ldd R4,z+6
+ 00C4 5780              ldd R5,z+7
+ 00C6 7A93              st -y,R23
+ 00C8 6A93              st -y,R22
+ 00CA 5A93              st -y,R21
+ 00CC 4A93              st -y,R20
+ 00CE 8101              movw R16,R2
+ 00D0 9201              movw R18,R4
+ 00D2 0E940000          xcall mod32u
+ 00D6 44E6              ldi R20,100
+ 00D8 50E0              ldi R21,0
+ 00DA 60E0              ldi R22,0
+ 00DC 70E0              ldi R23,0
+ 00DE 7A93              st -y,R23
+ 00E0 6A93              st -y,R22
+ 00E2 5A93              st -y,R21
+ 00E4 4A93              st -y,R20
+ 00E6 0E940000          xcall mod32u
+ 00EA 4AE0              ldi R20,10
+ 00EC 50E0              ldi R21,0
+ 00EE 60E0              ldi R22,0
+ 00F0 70E0              ldi R23,0
+ 00F2 7A93              st -y,R23
+ 00F4 6A93              st -y,R22
+ 00F6 5A93              st -y,R21
+ 00F8 4A93              st -y,R20
+ 00FA 0E940000          xcall div32u
+ 00FE 10930500          sts L4+1,R17
+ 0102 00930400          sts L4,R16
+ 0106                   .dbline 45
+ 0106           ;       SizeG=(Size%1000)%100%10;
+ 0106 48EE              ldi R20,232
+ 0108 53E0              ldi R21,3
+ 010A 60E0              ldi R22,0
+ 010C 70E0              ldi R23,0
+ 010E FE01              movw R30,R28
+ 0110 2480              ldd R2,z+4
+ 0112 3580              ldd R3,z+5
+ 0114 4680              ldd R4,z+6
+ 0116 5780              ldd R5,z+7
+ 0118 7A93              st -y,R23
+ 011A 6A93              st -y,R22
+ 011C 5A93              st -y,R21
+ 011E 4A93              st -y,R20
+ 0120 8101              movw R16,R2
+ 0122 9201              movw R18,R4
+ 0124 0E940000          xcall mod32u
+ 0128 44E6              ldi R20,100
+ 012A 50E0              ldi R21,0
+ 012C 60E0              ldi R22,0
+ 012E 70E0              ldi R23,0
+ 0130 7A93              st -y,R23
+ 0132 6A93              st -y,R22
+ 0134 5A93              st -y,R21
+ 0136 4A93              st -y,R20
+ 0138 0E940000          xcall mod32u
+ 013C 4AE0              ldi R20,10
+ 013E 50E0              ldi R21,0
+ 0140 60E0              ldi R22,0
+ 0142 70E0              ldi R23,0
+ 0144 7A93              st -y,R23
+ 0146 6A93              st -y,R22
+ 0148 5A93              st -y,R21
+ 014A 4A93              st -y,R20
+ 014C 0E940000          xcall mod32u
+ 0150 10930700          sts L5+1,R17
+ 0154 00930600          sts L5,R16
+ 0158                   .dbline 46
+ 0158           ;     DisplayChar(SizeQ+'0',8,8,0x0eee);
+ 0158 8EEE              ldi R24,3822
+ 015A 9EE0              ldi R25,14
+ 015C 9B83              std y+3,R25
+ 015E 8A83              std y+2,R24
+ 0160 88E0              ldi R24,8
+ 0162 8883              std y+0,R24
+ 0164 28E0              ldi R18,8
+ 0166 00910000          lds R16,L2
+ 016A 005D              subi R16,208  ; offset = 48
+ 016C 1F4F              sbci R17,255
+ 016E 0E940000          xcall _DisplayChar
+ 0172                   .dbline 47
+ 0172           ;       DisplayChar(SizeB+'0',9,8,0x0eee);
+ 0172 8EEE              ldi R24,3822
+ 0174 9EE0              ldi R25,14
+ 0176 9B83              std y+3,R25
+ 0178 8A83              std y+2,R24
+ 017A 88E0              ldi R24,8
+ 017C 8883              std y+0,R24
+ 017E 29E0              ldi R18,9
+ 0180 00910200          lds R16,L3
+ 0184 005D              subi R16,208  ; offset = 48
+ 0186 1F4F              sbci R17,255
+ 0188 0E940000          xcall _DisplayChar
+ 018C                   .dbline 48
+ 018C           ;       DisplayChar(SizeS+'0',10,8,0x0eee);
+ 018C 8EEE              ldi R24,3822
+ 018E 9EE0              ldi R25,14
+ 0190 9B83              std y+3,R25
+ 0192 8A83              std y+2,R24
+ 0194 88E0              ldi R24,8
+ 0196 8883              std y+0,R24
+ 0198 2AE0              ldi R18,10
+ 019A 00910400          lds R16,L4
+ 019E 005D              subi R16,208  ; offset = 48
+ 01A0 1F4F              sbci R17,255
+ 01A2 0E940000          xcall _DisplayChar
+ 01A6                   .dbline 49
+ 01A6           ;       DisplayChar(SizeG+'0',11,8,0x0eee);
+ 01A6 8EEE              ldi R24,3822
+ 01A8 9EE0              ldi R25,14
+ 01AA 9B83              std y+3,R25
+ 01AC 8A83              std y+2,R24
+ 01AE 88E0              ldi R24,8
+ 01B0 8883              std y+0,R24
+ 01B2 2BE0              ldi R18,11
+ 01B4 00910600          lds R16,L5
+ 01B8 005D              subi R16,208  ; offset = 48
+ 01BA 1F4F              sbci R17,255
+ 01BC 0E940000          xcall _DisplayChar
+ 01C0                   .dbline 50
+ 01C0           ;       DisplayString("MB",13,8,0xf800);                //显示SD卡容量
+ 01C0 80E0              ldi R24,63488
+ 01C2 98EF              ldi R25,248
+ 01C4 9B83              std y+3,R25
+ 01C6 8A83              std y+2,R24
+ 01C8 88E0              ldi R24,8
+ 01CA 8883              std y+0,R24
+ 01CC 2DE0              ldi R18,13
+ 01CE 00E0              ldi R16,<L7
+ 01D0 10E0              ldi R17,>L7
+ 01D2 0E940000          xcall _DisplayString
+ 01D6                   .dbline 51
+ 01D6           ;       DisplayString("BMP Num:",0,9,0xf800);   //BMP图片数量，最大显示99张，可以更改算法
+ 01D6 80E0              ldi R24,63488
+ 01D8 98EF              ldi R25,248
+ 01DA 9B83              std y+3,R25
+ 01DC 8A83              std y+2,R24
+ 01DE 89E0              ldi R24,9
+ 01E0 8883              std y+0,R24
+ 01E2 2227              clr R18
+ 01E4 00E0              ldi R16,<L8
+ 01E6 10E0              ldi R17,>L8
+ 01E8 0E940000          xcall _DisplayString
+ 01EC                   .dbline 52
+ 01EC           ;       DisplayString("Finding.",8,9,0xffff);   //BMP图片数量，最大显示99张，可以更改算法
+ 01EC 8FEF              ldi R24,65535
+ 01EE 9FEF              ldi R25,255
+ 01F0 9B83              std y+3,R25
+ 01F2 8A83              std y+2,R24
+ 01F4 89E0              ldi R24,9
+ 01F6 8883              std y+0,R24
+ 01F8 28E0              ldi R18,8
+ 01FA 00E0              ldi R16,<L9
+ 01FC 10E0              ldi R17,>L9
+ 01FE 0E940000          xcall _DisplayString
+ 0202                   .dbline -2
+ 0202           L1:
+ 0202 2896              adiw R28,8
+ 0204 0E940000          xcall pop_gset2
+ 0208 2496              adiw R28,4
+ 020A                   .dbline 0 ; func end
+ 020A 0895              ret
+ 020C                   .dbsym l Size 4 l
+ 020C                   .dbsym l Capacity 12 l
+ 020C                   .dbend
+ 020C                   .dbfunc e FAT_Init _FAT_Init fc
+ 020C                   .dbstruct 0 41 bpb710
+ 020C                   .dbfield 0 bpbBytesPerSec i
+ 020C                   .dbfield 2 bpbSecPerClust c
+ 020C                   .dbfield 3 bpbResSectors i
+ 020C                   .dbfield 5 bpbFATs c
+ 020C                   .dbfield 6 bpbRootDirEnts i
+ 020C                   .dbfield 8 bpbSectors i
+ 020C                   .dbfield 10 bpbMedia c
+ 020C                   .dbfield 11 bpbFATsecs i
+ 020C                   .dbfield 13 bpbSecPerTrack i
+ 020C                   .dbfield 15 bpbHeads i
+ 020C                   .dbfield 17 bpbHiddenSecs l
+ 020C                   .dbfield 21 bpbHugeSectors l
+ 020C                   .dbfield 25 bpbBigFATsecs l
+ 020C                   .dbfield 29 bpbExtFlags i
+ 020C                   .dbfield 31 bpbFSVers i
+ 020C                   .dbfield 33 bpbRootClust l
+ 020C                   .dbfield 37 bpbFSInfo i
+ 020C                   .dbfield 39 bpbBackup i
+ 020C                   .dbend
+ 020C                   .dbstruct 0 512 bootsector710
+ 020C                   .dbfield 0 bsJump A[3:3]c
+ 020C                   .dbfield 3 bsOemName A[8:8]c
+ 020C                   .dbfield 11 bsBPB A[53:53]c
+ 020C                   .dbfield 64 bsExt A[26:26]c
+ 020C                   .dbfield 90 bsBootCode A[418:418]c
+ 020C                   .dbfield 508 bsBootSectSig2 c
+ 020C                   .dbfield 509 bsBootSectSig3 c
+ 020C                   .dbfield 510 bsBootSectSig0 c
+ 020C                   .dbfield 511 bsBootSectSig1 c
+ 020C                   .dbend
+ 020C                   .dbstruct 0 16 partrecord
+ 020C                   .dbfield 0 prIsActive c
+ 020C                   .dbfield 1 prStartHead c
+ 020C                   .dbfield 2 prStartCylSect i
+ 020C                   .dbfield 4 prPartType c
+ 020C                   .dbfield 5 prEndHead c
+ 020C                   .dbfield 6 prEndCylSect i
+ 020C                   .dbfield 8 prStartLBA l
+ 020C                   .dbfield 12 prSize l
+ 020C                   .dbend
+ 020C           ;   CapacityDisp -> y+522
+ 020C           ;             pr -> R14,R15
+ 020C           ;       Capacity -> y+518
+ 020C           ;         buffer -> y+6
+ 020C           ;         hidsec -> y+2
+ 020C           ;             bs -> R12,R13
+ 020C           ;            bpb -> R10,R11
+                        .even
+ 020C           _FAT_Init::
+ 020C 0E940000          xcall push_gset5
+ 0210 EF97              sbiw R28,63
+ 0212 EF97              sbiw R28,63
+ 0214 EF97              sbiw R28,63
+ 0216 EF97              sbiw R28,63
+ 0218 EF97              sbiw R28,63
+ 021A EF97              sbiw R28,63
+ 021C EF97              sbiw R28,63
+ 021E EF97              sbiw R28,63
+ 0220 6697              sbiw R28,22  ; offset = 526
+ 0222                   .dbline -1
+ 0222                   .dbline 57
+ 0222           ; }
+ 0222           ; 
+ 0222           ; //FAT初始化，不含SD的初始化，用之前应先调用sd的初始化
+ 0222           ; unsigned char FAT_Init()//Initialize of FAT  need initialize SD first
+ 0222           ; {
+ 0222                   .dbline 58
+ 0222           ;       struct bootsector710 *bs  = 0;
+ 0222 CC24              clr R12
+ 0224 DD24              clr R13
+ 0226                   .dbline 59
+ 0226           ;       struct bpb710        *bpb = 0;
+ 0226 AA24              clr R10
+ 0228 BB24              clr R11
+ 022A                   .dbline 61
+ 022A           ; //    struct partsector    *ps  = 0;
+ 022A           ;       struct partrecord    *pr  = 0;
+ 022A EE24              clr R14
+ 022C FF24              clr R15
+ 022E                   .dbline 64
+ 022E           ; 
+ 022E           ;       BYTE buffer[512];
+ 022E           ;       DWORD hidsec=0;
+ 022E 40E0              ldi R20,0
+ 0230 50E0              ldi R21,0
+ 0232 60E0              ldi R22,0
+ 0234 70E0              ldi R23,0
+ 0236 FE01              movw R30,R28
+ 0238 4283              std z+2,R20
+ 023A 5383              std z+3,R21
+ 023C 6483              std z+4,R22
+ 023E 7583              std z+5,R23
+ 0240                   .dbline 68
+ 0240           ;       DWORD Capacity,CapacityDisp;
+ 0240           ; 
+ 0240           ; 
+ 0240           ;       Capacity = mmcCapacity();
+ 0240 0E940000          xcall _mmcCapacity
+ 0244 FE01              movw R30,R28
+ 0246 EA5F              subi R30,250  ; addi 518
+ 0248 FD4F              sbci R31,253
+ 024A 0083              std z+0,R16
+ 024C 1183              std z+1,R17
+ 024E 2283              std z+2,R18
+ 0250 3383              std z+3,R19
+ 0252                   .dbline 69
+ 0252           ;       SD_SizeDisplay(Capacity);
+ 0252 FE01              movw R30,R28
+ 0254 EA5F              subi R30,250  ; addi 518
+ 0256 FD4F              sbci R31,253
+ 0258 0081              ldd R16,z+0
+ 025A 1181              ldd R17,z+1
+ 025C 2281              ldd R18,z+2
+ 025E 3381              ldd R19,z+3
+ 0260 CFDE              xcall _SD_SizeDisplay
+ 0262                   .dbline 71
+ 0262           ; 
+ 0262           ;       if(Capacity<0xff)return 1;
+ 0262 4FEF              ldi R20,255
+ 0264 50E0              ldi R21,0
+ 0266 60E0              ldi R22,0
+ 0268 70E0              ldi R23,0
+ 026A FE01              movw R30,R28
+ 026C EA5F              subi R30,250  ; addi 518
+ 026E FD4F              sbci R31,253
+ 0270 2080              ldd R2,z+0
+ 0272 3180              ldd R3,z+1
+ 0274 4280              ldd R4,z+2
+ 0276 5380              ldd R5,z+3
+ 0278 2416              cp R2,R20
+ 027A 3506              cpc R3,R21
+ 027C 4606              cpc R4,R22
+ 027E 5706              cpc R5,R23
+ 0280 10F4              brsh L11
+ 0282                   .dbline 71
+ 0282 01E0              ldi R16,1
+ 0284 41C1              xjmp L10
+ 0286           L11:
+ 0286                   .dbline 74
+ 0286           ; 
+ 0286           ; 
+ 0286           ;       if(FAT_ReadSector(0,buffer))return 1;
+ 0286 CE01              movw R24,R28
+ 0288 0696              adiw R24,6
+ 028A 9983              std y+1,R25
+ 028C 8883              std y+0,R24
+ 028E 00E0              ldi R16,0
+ 0290 10E0              ldi R17,0
+ 0292 20E0              ldi R18,0
+ 0294 30E0              ldi R19,0
+ 0296 E0910000          lds R30,_FAT_ReadSector
+ 029A F0910100          lds R31,_FAT_ReadSector+1
+ 029E 0E940000          xcall xicall
+ 02A2 0023              tst R16
+ 02A4 11F0              breq L13
+ 02A6                   .dbline 74
+ 02A6 01E0              ldi R16,1
+ 02A8 2FC1              xjmp L10
+ 02AA           L13:
+ 02AA                   .dbline 75
+ 02AA           ;       bs = (struct bootsector710 *)buffer;            
+ 02AA CE01              movw R24,R28
+ 02AC 0696              adiw R24,6
+ 02AE 6C01              movw R12,R24
+ 02B0                   .dbline 76
+ 02B0           ;       pr = (struct partrecord *)((struct partsector *)buffer)->psPart;//first partition
+ 02B0 CE01              movw R24,R28
+ 02B2 8C53              subi R24,60  ; offset = 452
+ 02B4 9E4F              sbci R25,254
+ 02B6 7C01              movw R14,R24
+ 02B8                   .dbline 77
+ 02B8           ;       hidsec = pr->prStartLBA;//the hidden sectors
+ 02B8 FC01              movw R30,R24
+ 02BA 2084              ldd R2,z+8
+ 02BC 3184              ldd R3,z+9
+ 02BE 4284              ldd R4,z+10
+ 02C0 5384              ldd R5,z+11
+ 02C2 FE01              movw R30,R28
+ 02C4 2282              std z+2,R2
+ 02C6 3382              std z+3,R3
+ 02C8 4482              std z+4,R4
+ 02CA 5582              std z+5,R5
+ 02CC                   .dbline 78
+ 02CC           ;       if(hidsec >= Capacity/512)
+ 02CC 89E0              ldi R24,9
+ 02CE 90E0              ldi R25,0
+ 02D0 FE01              movw R30,R28
+ 02D2 EA5F              subi R30,250  ; addi 518
+ 02D4 FD4F              sbci R31,253
+ 02D6 2080              ldd R2,z+0
+ 02D8 3180              ldd R3,z+1
+ 02DA 4280              ldd R4,z+2
+ 02DC 5380              ldd R5,z+3
+ 02DE 8A93              st -y,R24
+ 02E0 8101              movw R16,R2
+ 02E2 9201              movw R18,R4
+ 02E4 0E940000          xcall lsr32
+ 02E8 FE01              movw R30,R28
+ 02EA 2280              ldd R2,z+2
+ 02EC 3380              ldd R3,z+3
+ 02EE 4480              ldd R4,z+4
+ 02F0 5580              ldd R5,z+5
+ 02F2 2016              cp R2,R16
+ 02F4 3106              cpc R3,R17
+ 02F6 4206              cpc R4,R18
+ 02F8 5306              cpc R5,R19
+ 02FA 50F0              brlo L16
+ 02FC                   .dbline 79
+ 02FC           ;       {
+ 02FC                   .dbline 80
+ 02FC           ;               hidsec = 0;
+ 02FC 40E0              ldi R20,0
+ 02FE 50E0              ldi R21,0
+ 0300 60E0              ldi R22,0
+ 0302 70E0              ldi R23,0
+ 0304 FE01              movw R30,R28
+ 0306 4283              std z+2,R20
+ 0308 5383              std z+3,R21
+ 030A 6483              std z+4,R22
+ 030C 7583              std z+5,R23
+ 030E                   .dbline 81
+ 030E           ;       }
+ 030E 3CC0              xjmp L17
+ 0310           L16:
+ 0310                   .dbline 83
+ 0310           ;       else 
+ 0310           ;       {
+ 0310                   .dbline 84
+ 0310           ;               if(FAT_ReadSector(pr->prStartLBA,buffer))return 1;//read the bpb sector
+ 0310 CE01              movw R24,R28
+ 0312 0696              adiw R24,6
+ 0314 9983              std y+1,R25
+ 0316 8883              std y+0,R24
+ 0318 F701              movw R30,R14
+ 031A 0085              ldd R16,z+8
+ 031C 1185              ldd R17,z+9
+ 031E 2285              ldd R18,z+10
+ 0320 3385              ldd R19,z+11
+ 0322 E0910000          lds R30,_FAT_ReadSector
+ 0326 F0910100          lds R31,_FAT_ReadSector+1
+ 032A 0E940000          xcall xicall
+ 032E 0023              tst R16
+ 0330 11F0              breq L18
+ 0332                   .dbline 84
+ 0332 01E0              ldi R16,1
+ 0334 E9C0              xjmp L10
+ 0336           L18:
+ 0336                   .dbline 85
+ 0336           ;               bs = (struct bootsector710 *)buffer;
+ 0336 CE01              movw R24,R28
+ 0338 0696              adiw R24,6
+ 033A 6C01              movw R12,R24
+ 033C                   .dbline 86
+ 033C           ;               if(bs->bsJump[0]!=0xE9 && bs->bsJump[0]!=0xEB)
+ 033C FC01              movw R30,R24
+ 033E 2080              ldd R2,z+0
+ 0340 3324              clr R3
+ 0342 822D              mov R24,R2
+ 0344 893E              cpi R24,233
+ 0346 01F1              breq L20
+ 0348 8B3E              cpi R24,235
+ 034A F1F0              breq L20
+ 034C                   .dbline 87
+ 034C           ;               {
+ 034C                   .dbline 88
+ 034C           ;                       hidsec = 0;
+ 034C 40E0              ldi R20,0
+ 034E 50E0              ldi R21,0
+ 0350 60E0              ldi R22,0
+ 0352 70E0              ldi R23,0
+ 0354 FE01              movw R30,R28
+ 0356 4283              std z+2,R20
+ 0358 5383              std z+3,R21
+ 035A 6483              std z+4,R22
+ 035C 7583              std z+5,R23
+ 035E                   .dbline 89
+ 035E           ;                       if(FAT_ReadSector(0,buffer))return 1;//read the bpb sector
+ 035E CE01              movw R24,R28
+ 0360 0696              adiw R24,6
+ 0362 9983              std y+1,R25
+ 0364 8883              std y+0,R24
+ 0366 00E0              ldi R16,0
+ 0368 10E0              ldi R17,0
+ 036A 20E0              ldi R18,0
+ 036C 30E0              ldi R19,0
+ 036E E0910000          lds R30,_FAT_ReadSector
+ 0372 F0910100          lds R31,_FAT_ReadSector+1
+ 0376 0E940000          xcall xicall
+ 037A 0023              tst R16
+ 037C 11F0              breq L22
+ 037E                   .dbline 89
+ 037E 01E0              ldi R16,1
+ 0380 C3C0              xjmp L10
+ 0382           L22:
+ 0382                   .dbline 90
+ 0382           ;                       bs = (struct bootsector710 *)buffer;    
+ 0382 CE01              movw R24,R28
+ 0384 0696              adiw R24,6
+ 0386 6C01              movw R12,R24
+ 0388                   .dbline 91
+ 0388           ;               }
+ 0388           L20:
+ 0388                   .dbline 92
+ 0388           ;       }
+ 0388           L17:
+ 0388                   .dbline 94
+ 0388           ; 
+ 0388           ;       if(bs->bsJump[0]!=0xE9 && bs->bsJump[0]!=0xEB)//对付没有bootsect的sd卡  //dead with the card which has no bootsect
+ 0388 F601              movw R30,R12
+ 038A 2080              ldd R2,z+0
+ 038C 3324              clr R3
+ 038E 822D              mov R24,R2
+ 0390 893E              cpi R24,233
+ 0392 21F0              breq L24
+ 0394 8B3E              cpi R24,235
+ 0396 11F0              breq L24
+ 0398                   .dbline 95
+ 0398           ;       {
+ 0398                   .dbline 96
+ 0398           ;               return 1;
+ 0398 01E0              ldi R16,1
+ 039A B6C0              xjmp L10
+ 039C           L24:
+ 039C                   .dbline 101
+ 039C           ;       }
+ 039C           ;       
+ 039C           ;       
+ 039C           ;       
+ 039C           ;       bpb = (struct bpb710 *)bs->bsBPB;
+ 039C C601              movw R24,R12
+ 039E 0B96              adiw R24,11
+ 03A0 5C01              movw R10,R24
+ 03A2                   .dbline 104
+ 03A2           ; 
+ 03A2           ;       
+ 03A2           ;       if(bpb->bpbFATsecs)                                             //判断文件系统类型，不支持FAT12,支持FAT16和FAT32
+ 03A2 FC01              movw R30,R24
+ 03A4 2384              ldd R2,z+11
+ 03A6 3484              ldd R3,z+12
+ 03A8 2220              tst R2
+ 03AA 11F4              brne X0
+ 03AC 3320              tst R3
+ 03AE B9F0              breq L26
+ 03B0           X0:
+ 03B0                   .dbline 105
+ 03B0           ;       {
+ 03B0                   .dbline 106
+ 03B0           ;               FAT32_Enable=0;                                         //FAT16
+ 03B0 2224              clr R2
+ 03B2 20921700          sts _FAT32_Enable,R2
+ 03B6                   .dbline 107
+ 03B6           ;               FATsectors              = bpb->bpbFATsecs;      //FAT占用的扇区数       
+ 03B6 F501              movw R30,R10
+ 03B8 2384              ldd R2,z+11
+ 03BA 3484              ldd R3,z+12
+ 03BC 30922B00          sts _FATsectors+1,R3
+ 03C0 20922A00          sts _FATsectors,R2
+ 03C4                   .dbline 108
+ 03C4           ;               FirstDirClust = 2;
+ 03C4 42E0              ldi R20,2
+ 03C6 50E0              ldi R21,0
+ 03C8 60E0              ldi R22,0
+ 03CA 70E0              ldi R23,0
+ 03CC 50933300          sts _FirstDirClust+1,R21
+ 03D0 40933200          sts _FirstDirClust,R20
+ 03D4 70933500          sts _FirstDirClust+2+1,R23
+ 03D8 60933400          sts _FirstDirClust+2,R22
+ 03DC                   .dbline 109
+ 03DC           ;       }
+ 03DC 17C0              xjmp L27
+ 03DE           L26:
+ 03DE                   .dbline 111
+ 03DE           ;       else
+ 03DE           ;       {
+ 03DE                   .dbline 112
+ 03DE           ;               FAT32_Enable=1;                                          //FAT32
+ 03DE 81E0              ldi R24,1
+ 03E0 80931700          sts _FAT32_Enable,R24
+ 03E4                   .dbline 113
+ 03E4           ;               FATsectors              = bpb->bpbBigFATsecs;//FAT占用的扇区数  //the sectors number occupied by one fat talbe
+ 03E4 F501              movw R30,R10
+ 03E6 218C              ldd R2,z+25
+ 03E8 328C              ldd R3,z+26
+ 03EA 30922B00          sts _FATsectors+1,R3
+ 03EE 20922A00          sts _FATsectors,R2
+ 03F2                   .dbline 114
+ 03F2           ;               FirstDirClust = bpb->bpbRootClust;
+ 03F2 F501              movw R30,R10
+ 03F4 21A0              ldd R2,z+33
+ 03F6 32A0              ldd R3,z+34
+ 03F8 43A0              ldd R4,z+35
+ 03FA 54A0              ldd R5,z+36
+ 03FC 30923300          sts _FirstDirClust+1,R3
+ 0400 20923200          sts _FirstDirClust,R2
+ 0404 50923500          sts _FirstDirClust+2+1,R5
+ 0408 40923400          sts _FirstDirClust+2,R4
+ 040C                   .dbline 115
+ 040C           ;       }
+ 040C           L27:
+ 040C                   .dbline 117
+ 040C           ; 
+ 040C           ;       BytesPerSector  = bpb->bpbBytesPerSec;  //每扇区字节数
+ 040C F501              movw R30,R10
+ 040E 2080              ldd R2,z+0
+ 0410 3180              ldd R3,z+1
+ 0412 30922D00          sts _BytesPerSector+1,R3
+ 0416 20922C00          sts _BytesPerSector,R2
+ 041A                   .dbline 119
+ 041A           ;       
+ 041A           ;       SectorsPerClust = (BYTE)bpb->bpbSecPerClust;//每簇扇区数
+ 041A 2280              ldd R2,z+2
+ 041C 3324              clr R3
+ 041E 30922900          sts _SectorsPerClust+1,R3
+ 0422 20922800          sts _SectorsPerClust,R2
+ 0426                   .dbline 121
+ 0426           ;       
+ 0426           ;       FirstFATSector  = bpb->bpbResSectors+hidsec;//第一个FAT表扇区
+ 0426 FE01              movw R30,R28
+ 0428 2280              ldd R2,z+2
+ 042A 3380              ldd R3,z+3
+ 042C 4480              ldd R4,z+4
+ 042E 5580              ldd R5,z+5
+ 0430 F501              movw R30,R10
+ 0432 6380              ldd R6,z+3
+ 0434 7480              ldd R7,z+4
+ 0436 8824              clr R8
+ 0438 9924              clr R9
+ 043A 620C              add R6,R2
+ 043C 731C              adc R7,R3
+ 043E 841C              adc R8,R4
+ 0440 951C              adc R9,R5
+ 0442 70922500          sts _FirstFATSector+1,R7
+ 0446 60922400          sts _FirstFATSector,R6
+ 044A 90922700          sts _FirstFATSector+2+1,R9
+ 044E 80922600          sts _FirstFATSector+2,R8
+ 0452                   .dbline 122
+ 0452           ;       RootDirCount    = bpb->bpbRootDirEnts;//根目录项数
+ 0452 F501              movw R30,R10
+ 0454 2680              ldd R2,z+6
+ 0456 3780              ldd R3,z+7
+ 0458 4424              clr R4
+ 045A 5524              clr R5
+ 045C 30921900          sts _RootDirCount+1,R3
+ 0460 20921800          sts _RootDirCount,R2
+ 0464 50921B00          sts _RootDirCount+2+1,R5
+ 0468 40921A00          sts _RootDirCount+2,R4
+ 046C                   .dbline 123
+ 046C           ;       RootDirSectors  = (RootDirCount*32)>>9;//根目录占用的扇区数
+ 046C 40E2              ldi R20,32
+ 046E 50E0              ldi R21,0
+ 0470 60E0              ldi R22,0
+ 0472 70E0              ldi R23,0
+ 0474 5A92              st -y,R5
+ 0476 4A92              st -y,R4
+ 0478 3A92              st -y,R3
+ 047A 2A92              st -y,R2
+ 047C 8A01              movw R16,R20
+ 047E 9B01              movw R18,R22
+ 0480 0E940000          xcall empy32u
+ 0484 89E0              ldi R24,9
+ 0486 90E0              ldi R25,0
+ 0488 8A93              st -y,R24
+ 048A 0E940000          xcall lsr32
+ 048E 10931D00          sts _RootDirSectors+1,R17
+ 0492 00931C00          sts _RootDirSectors,R16
+ 0496 30931F00          sts _RootDirSectors+2+1,R19
+ 049A 20931E00          sts _RootDirSectors+2,R18
+ 049E                   .dbline 124
+ 049E           ;       FirstDirSector  = FirstFATSector+bpb->bpbFATs*FATsectors;//第一个目录扇区
+ 049E 20912A00          lds R18,_FATsectors
+ 04A2 30912B00          lds R19,_FATsectors+1
+ 04A6 F501              movw R30,R10
+ 04A8 0581              ldd R16,z+5
+ 04AA 1127              clr R17
+ 04AC 0E940000          xcall empy16s
+ 04B0 1801              movw R2,R16
+ 04B2 4424              clr R4
+ 04B4 5524              clr R5
+ 04B6 80902600          lds R8,_FirstFATSector+2
+ 04BA 90902700          lds R9,_FirstFATSector+2+1
+ 04BE 60902400          lds R6,_FirstFATSector
+ 04C2 70902500          lds R7,_FirstFATSector+1
+ 04C6 620C              add R6,R2
+ 04C8 731C              adc R7,R3
+ 04CA 841C              adc R8,R4
+ 04CC 951C              adc R9,R5
+ 04CE 70922100          sts _FirstDirSector+1,R7
+ 04D2 60922000          sts _FirstDirSector,R6
+ 04D6 90922300          sts _FirstDirSector+2+1,R9
+ 04DA 80922200          sts _FirstDirSector+2,R8
+ 04DE                   .dbline 125
+ 04DE           ;       FirstDataSector = FirstDirSector+RootDirSectors;//第一个数据扇区
+ 04DE 40901E00          lds R4,_RootDirSectors+2
+ 04E2 50901F00          lds R5,_RootDirSectors+2+1
+ 04E6 20901C00          lds R2,_RootDirSectors
+ 04EA 30901D00          lds R3,_RootDirSectors+1
+ 04EE 620C              add R6,R2
+ 04F0 731C              adc R7,R3
+ 04F2 841C              adc R8,R4
+ 04F4 951C              adc R9,R5
+ 04F6 70922F00          sts _FirstDataSector+1,R7
+ 04FA 60922E00          sts _FirstDataSector,R6
+ 04FE 90923100          sts _FirstDataSector+2+1,R9
+ 0502 80923000          sts _FirstDataSector+2,R8
+ 0506                   .dbline 126
+ 0506           ;       return 0;
+ 0506 0027              clr R16
+ 0508                   .dbline -2
+ 0508           L10:
+ 0508 EF96              adiw R28,63
+ 050A EF96              adiw R28,63
+ 050C EF96              adiw R28,63
+ 050E EF96              adiw R28,63
+ 0510 EF96              adiw R28,63
+ 0512 EF96              adiw R28,63
+ 0514 EF96              adiw R28,63
+ 0516 EF96              adiw R28,63
+ 0518 6696              adiw R28,22  ; offset = 526
+ 051A 0E940000          xcall pop_gset5
+ 051E                   .dbline 0 ; func end
+ 051E 0895              ret
+ 0520                   .dbsym l CapacityDisp 522 l
+ 0520                   .dbsym r pr 14 pS[partrecord]
+ 0520                   .dbsym l Capacity 518 l
+ 0520                   .dbsym l buffer 6 A[512:512]c
+ 0520                   .dbsym l hidsec 2 l
+ 0520                   .dbsym r bs 12 pS[bootsector710]
+ 0520                   .dbsym r bpb 10 pS[bpb710]
+ 0520                   .dbend
+ 0520                   .dbfunc e FAT_LoadPartCluster _FAT_LoadPartCluster fc
+ 0520           ;         sector -> y+2
+ 0520           ;         buffer -> y+16
+ 0520           ;           part -> y+14
+ 0520           ;        cluster -> y+10
+                        .even
+ 0520           _FAT_LoadPartCluster::
+ 0520 0E940000          xcall push_arg4
+ 0524 0E940000          xcall push_gset2
+ 0528 2697              sbiw R28,6
+ 052A                   .dbline -1
+ 052A                   .dbline 132
+ 052A           ; }
+ 052A           ; 
+ 052A           ; //读一个簇中的一个扇区
+ 052A           ; //read one sector of one cluster, parameter part indicate which sector
+ 052A           ; unsigned char FAT_LoadPartCluster(unsigned long cluster,unsigned part,BYTE * buffer)
+ 052A           ; {
+ 052A                   .dbline 134
+ 052A           ;       DWORD sector;
+ 052A           ;       sector=FirstDataSector+(DWORD)(cluster-2)*(DWORD)SectorsPerClust;//calculate the actual sector number
+ 052A 42E0              ldi R20,2
+ 052C 50E0              ldi R21,0
+ 052E 60E0              ldi R22,0
+ 0530 70E0              ldi R23,0
+ 0532 FE01              movw R30,R28
+ 0534 2284              ldd R2,z+10
+ 0536 3384              ldd R3,z+11
+ 0538 4484              ldd R4,z+12
+ 053A 5584              ldd R5,z+13
+ 053C 241A              sub R2,R20
+ 053E 350A              sbc R3,R21
+ 0540 460A              sbc R4,R22
+ 0542 570A              sbc R5,R23
+ 0544 60902800          lds R6,_SectorsPerClust
+ 0548 70902900          lds R7,_SectorsPerClust+1
+ 054C 8824              clr R8
+ 054E 9924              clr R9
+ 0550 9A92              st -y,R9
+ 0552 8A92              st -y,R8
+ 0554 7A92              st -y,R7
+ 0556 6A92              st -y,R6
+ 0558 8101              movw R16,R2
+ 055A 9201              movw R18,R4
+ 055C 0E940000          xcall empy32u
+ 0560 40903000          lds R4,_FirstDataSector+2
+ 0564 50903100          lds R5,_FirstDataSector+2+1
+ 0568 20902E00          lds R2,_FirstDataSector
+ 056C 30902F00          lds R3,_FirstDataSector+1
+ 0570 200E              add R2,R16
+ 0572 311E              adc R3,R17
+ 0574 421E              adc R4,R18
+ 0576 531E              adc R5,R19
+ 0578 FE01              movw R30,R28
+ 057A 2282              std z+2,R2
+ 057C 3382              std z+3,R3
+ 057E 4482              std z+4,R4
+ 0580 5582              std z+5,R5
+ 0582                   .dbline 135
+ 0582           ;       if(FAT_ReadSector(sector+part,buffer))return 1;
+ 0582 0888              ldd R0,y+16
+ 0584 1988              ldd R1,y+17
+ 0586 1982              std y+1,R1
+ 0588 0882              std y+0,R0
+ 058A 2E84              ldd R2,y+14
+ 058C 3F84              ldd R3,y+15
+ 058E 4424              clr R4
+ 0590 5524              clr R5
+ 0592 FE01              movw R30,R28
+ 0594 6280              ldd R6,z+2
+ 0596 7380              ldd R7,z+3
+ 0598 8480              ldd R8,z+4
+ 059A 9580              ldd R9,z+5
+ 059C 620C              add R6,R2
+ 059E 731C              adc R7,R3
+ 05A0 841C              adc R8,R4
+ 05A2 951C              adc R9,R5
+ 05A4 8301              movw R16,R6
+ 05A6 9401              movw R18,R8
+ 05A8 E0910000          lds R30,_FAT_ReadSector
+ 05AC F0910100          lds R31,_FAT_ReadSector+1
+ 05B0 0E940000          xcall xicall
+ 05B4 0023              tst R16
+ 05B6 11F0              breq L29
+ 05B8                   .dbline 135
+ 05B8 01E0              ldi R16,1
+ 05BA 01C0              xjmp L28
+ 05BC           L29:
+ 05BC                   .dbline 136
+ 05BC           ;       else return 0;
+ 05BC 0027              clr R16
+ 05BE                   .dbline -2
+ 05BE           L28:
+ 05BE 2696              adiw R28,6
+ 05C0 0E940000          xcall pop_gset2
+ 05C4 2496              adiw R28,4
+ 05C6                   .dbline 0 ; func end
+ 05C6 0895              ret
+ 05C8                   .dbsym l sector 2 l
+ 05C8                   .dbsym l buffer 16 pc
+ 05C8                   .dbsym l part 14 i
+ 05C8                   .dbsym l cluster 10 l
+ 05C8                   .dbend
+ 05C8                   .dbfunc e FAT_NextCluster _FAT_NextCluster fl
+ 05C8           ;         buffer -> y+10
+ 05C8           ;         offset -> y+6
+ 05C8           ;         sector -> y+2
+ 05C8           ;        cluster -> y+526
+                        .even
+ 05C8           _FAT_NextCluster::
+ 05C8 0E940000          xcall push_arg4
+ 05CC 0E940000          xcall push_gset2
+ 05D0 EF97              sbiw R28,63
+ 05D2 EF97              sbiw R28,63
+ 05D4 EF97              sbiw R28,63
+ 05D6 EF97              sbiw R28,63
+ 05D8 EF97              sbiw R28,63
+ 05DA EF97              sbiw R28,63
+ 05DC EF97              sbiw R28,63
+ 05DE EF97              sbiw R28,63
+ 05E0 6297              sbiw R28,18  ; offset = 522
+ 05E2                   .dbline -1
+ 05E2                   .dbline 144
+ 05E2           ; }
+ 05E2           ; 
+ 05E2           ; 
+ 05E2           ; //读下一簇簇号
+ 05E2           ; //Return the cluster number of next cluster of file
+ 05E2           ; //Suitable for system which has limited RAM
+ 05E2           ; unsigned long FAT_NextCluster(unsigned long cluster)
+ 05E2           ; {
+ 05E2                   .dbline 148
+ 05E2           ;       BYTE buffer[512];
+ 05E2           ;       DWORD sector;
+ 05E2           ;       DWORD offset;
+ 05E2           ;       if(FAT32_Enable)offset = cluster/128;
+ 05E2 20901700          lds R2,_FAT32_Enable
+ 05E6 2220              tst R2
+ 05E8 A1F0              breq L32
+ 05EA                   .dbline 148
+ 05EA 87E0              ldi R24,7
+ 05EC 90E0              ldi R25,0
+ 05EE FE01              movw R30,R28
+ 05F0 E25F              subi R30,242  ; addi 526
+ 05F2 FD4F              sbci R31,253
+ 05F4 2080              ldd R2,z+0
+ 05F6 3180              ldd R3,z+1
+ 05F8 4280              ldd R4,z+2
+ 05FA 5380              ldd R5,z+3
+ 05FC 8A93              st -y,R24
+ 05FE 8101              movw R16,R2
+ 0600 9201              movw R18,R4
+ 0602 0E940000          xcall lsr32
+ 0606 FE01              movw R30,R28
+ 0608 0683              std z+6,R16
+ 060A 1783              std z+7,R17
+ 060C 2087              std z+8,R18
+ 060E 3187              std z+9,R19
+ 0610 13C0              xjmp L33
+ 0612           L32:
+ 0612                   .dbline 149
+ 0612           ;       else offset = cluster/256;
+ 0612 88E0              ldi R24,8
+ 0614 90E0              ldi R25,0
+ 0616 FE01              movw R30,R28
+ 0618 E25F              subi R30,242  ; addi 526
+ 061A FD4F              sbci R31,253
+ 061C 2080              ldd R2,z+0
+ 061E 3180              ldd R3,z+1
+ 0620 4280              ldd R4,z+2
+ 0622 5380              ldd R5,z+3
+ 0624 8A93              st -y,R24
+ 0626 8101              movw R16,R2
+ 0628 9201              movw R18,R4
+ 062A 0E940000          xcall lsr32
+ 062E FE01              movw R30,R28
+ 0630 0683              std z+6,R16
+ 0632 1783              std z+7,R17
+ 0634 2087              std z+8,R18
+ 0636 3187              std z+9,R19
+ 0638           L33:
+ 0638                   .dbline 150
+ 0638           ;       if(cluster<2)return 0x0ffffff8;
+ 0638 42E0              ldi R20,2
+ 063A 50E0              ldi R21,0
+ 063C 60E0              ldi R22,0
+ 063E 70E0              ldi R23,0
+ 0640 FE01              movw R30,R28
+ 0642 E25F              subi R30,242  ; addi 526
+ 0644 FD4F              sbci R31,253
+ 0646 2080              ldd R2,z+0
+ 0648 3180              ldd R3,z+1
+ 064A 4280              ldd R4,z+2
+ 064C 5380              ldd R5,z+3
+ 064E 2416              cp R2,R20
+ 0650 3506              cpc R3,R21
+ 0652 4606              cpc R4,R22
+ 0654 5706              cpc R5,R23
+ 0656 28F4              brsh L34
+ 0658                   .dbline 150
+ 0658 08EF              ldi R16,248
+ 065A 1FEF              ldi R17,255
+ 065C 2FEF              ldi R18,255
+ 065E 3FE0              ldi R19,15
+ 0660 9DC0              xjmp L31
+ 0662           L34:
+ 0662                   .dbline 151
+ 0662           ;       sector=FirstFATSector+offset;//calculate the actual sector
+ 0662 FE01              movw R30,R28
+ 0664 2680              ldd R2,z+6
+ 0666 3780              ldd R3,z+7
+ 0668 4084              ldd R4,z+8
+ 066A 5184              ldd R5,z+9
+ 066C 80902600          lds R8,_FirstFATSector+2
+ 0670 90902700          lds R9,_FirstFATSector+2+1
+ 0674 60902400          lds R6,_FirstFATSector
+ 0678 70902500          lds R7,_FirstFATSector+1
+ 067C 620C              add R6,R2
+ 067E 731C              adc R7,R3
+ 0680 841C              adc R8,R4
+ 0682 951C              adc R9,R5
+ 0684 FE01              movw R30,R28
+ 0686 6282              std z+2,R6
+ 0688 7382              std z+3,R7
+ 068A 8482              std z+4,R8
+ 068C 9582              std z+5,R9
+ 068E                   .dbline 152
+ 068E           ;       if(FAT_ReadSector(sector,buffer))return 0x0ffffff8;//read fat table / return 0xfff8 when error occured
+ 068E CE01              movw R24,R28
+ 0690 0A96              adiw R24,10
+ 0692 9983              std y+1,R25
+ 0694 8883              std y+0,R24
+ 0696 FE01              movw R30,R28
+ 0698 0281              ldd R16,z+2
+ 069A 1381              ldd R17,z+3
+ 069C 2481              ldd R18,z+4
+ 069E 3581              ldd R19,z+5
+ 06A0 E0910000          lds R30,_FAT_ReadSector
+ 06A4 F0910100          lds R31,_FAT_ReadSector+1
+ 06A8 0E940000          xcall xicall
+ 06AC 0023              tst R16
+ 06AE 29F0              breq L36
+ 06B0                   .dbline 152
+ 06B0 08EF              ldi R16,248
+ 06B2 1FEF              ldi R17,255
+ 06B4 2FEF              ldi R18,255
+ 06B6 3FE0              ldi R19,15
+ 06B8 71C0              xjmp L31
+ 06BA           L36:
+ 06BA                   .dbline 154
+ 06BA           ; 
+ 06BA           ;       if(FAT32_Enable)
+ 06BA 20901700          lds R2,_FAT32_Enable
+ 06BE 2220              tst R2
+ 06C0 09F4              brne X1
+ 06C2 34C0              xjmp L38
+ 06C4           X1:
+ 06C4                   .dbline 155
+ 06C4           ;       {
+ 06C4                   .dbline 156
+ 06C4           ;               offset=cluster%128;//find the position
+ 06C4 4FE7              ldi R20,127
+ 06C6 50E0              ldi R21,0
+ 06C8 60E0              ldi R22,0
+ 06CA 70E0              ldi R23,0
+ 06CC FE01              movw R30,R28
+ 06CE E25F              subi R30,242  ; addi 526
+ 06D0 FD4F              sbci R31,253
+ 06D2 2080              ldd R2,z+0
+ 06D4 3180              ldd R3,z+1
+ 06D6 4280              ldd R4,z+2
+ 06D8 5380              ldd R5,z+3
+ 06DA 2422              and R2,R20
+ 06DC 3522              and R3,R21
+ 06DE 4622              and R4,R22
+ 06E0 5722              and R5,R23
+ 06E2 FE01              movw R30,R28
+ 06E4 2682              std z+6,R2
+ 06E6 3782              std z+7,R3
+ 06E8 4086              std z+8,R4
+ 06EA 5186              std z+9,R5
+ 06EC                   .dbline 157
+ 06EC           ;               sector=((unsigned long *)buffer)[offset];       
+ 06EC FE01              movw R30,R28
+ 06EE 2680              ldd R2,z+6
+ 06F0 3780              ldd R3,z+7
+ 06F2 4084              ldd R4,z+8
+ 06F4 5184              ldd R5,z+9
+ 06F6 44E0              ldi R20,4
+ 06F8 50E0              ldi R21,0
+ 06FA 60E0              ldi R22,0
+ 06FC 70E0              ldi R23,0
+ 06FE 5A92              st -y,R5
+ 0700 4A92              st -y,R4
+ 0702 3A92              st -y,R3
+ 0704 2A92              st -y,R2
+ 0706 8A01              movw R16,R20
+ 0708 9B01              movw R18,R22
+ 070A 0E940000          xcall empy32u
+ 070E F801              movw R30,R16
+ 0710 CE01              movw R24,R28
+ 0712 0A96              adiw R24,10
+ 0714 E80F              add R30,R24
+ 0716 F91F              adc R31,R25
+ 0718 2080              ldd R2,z+0
+ 071A 3180              ldd R3,z+1
+ 071C 4280              ldd R4,z+2
+ 071E 5380              ldd R5,z+3
+ 0720 FE01              movw R30,R28
+ 0722 2282              std z+2,R2
+ 0724 3382              std z+3,R3
+ 0726 4482              std z+4,R4
+ 0728 5582              std z+5,R5
+ 072A                   .dbline 158
+ 072A           ;       }
+ 072A 33C0              xjmp L39
+ 072C           L38:
+ 072C                   .dbline 160
+ 072C           ;       else
+ 072C           ;       {
+ 072C                   .dbline 161
+ 072C           ;               offset=cluster%256;//find the position
+ 072C 4FEF              ldi R20,255
+ 072E 50E0              ldi R21,0
+ 0730 60E0              ldi R22,0
+ 0732 70E0              ldi R23,0
+ 0734 FE01              movw R30,R28
+ 0736 E25F              subi R30,242  ; addi 526
+ 0738 FD4F              sbci R31,253
+ 073A 2080              ldd R2,z+0
+ 073C 3180              ldd R3,z+1
+ 073E 4280              ldd R4,z+2
+ 0740 5380              ldd R5,z+3
+ 0742 2422              and R2,R20
+ 0744 3522              and R3,R21
+ 0746 4622              and R4,R22
+ 0748 5722              and R5,R23
+ 074A FE01              movw R30,R28
+ 074C 2682              std z+6,R2
+ 074E 3782              std z+7,R3
+ 0750 4086              std z+8,R4
+ 0752 5186              std z+9,R5
+ 0754                   .dbline 162
+ 0754           ;               sector=((unsigned int *)buffer)[offset];
+ 0754 FE01              movw R30,R28
+ 0756 2680              ldd R2,z+6
+ 0758 3780              ldd R3,z+7
+ 075A 4084              ldd R4,z+8
+ 075C 5184              ldd R5,z+9
+ 075E 42E0              ldi R20,2
+ 0760 50E0              ldi R21,0
+ 0762 60E0              ldi R22,0
+ 0764 70E0              ldi R23,0
+ 0766 5A92              st -y,R5
+ 0768 4A92              st -y,R4
+ 076A 3A92              st -y,R3
+ 076C 2A92              st -y,R2
+ 076E 8A01              movw R16,R20
+ 0770 9B01              movw R18,R22
+ 0772 0E940000          xcall empy32u
+ 0776 F801              movw R30,R16
+ 0778 CE01              movw R24,R28
+ 077A 0A96              adiw R24,10
+ 077C E80F              add R30,R24
+ 077E F91F              adc R31,R25
+ 0780 2080              ldd R2,z+0
+ 0782 3180              ldd R3,z+1
+ 0784 4424              clr R4
+ 0786 5524              clr R5
+ 0788 FE01              movw R30,R28
+ 078A 2282              std z+2,R2
+ 078C 3382              std z+3,R3
+ 078E 4482              std z+4,R4
+ 0790 5582              std z+5,R5
+ 0792                   .dbline 163
+ 0792           ;       }
+ 0792           L39:
+ 0792                   .dbline 164
+ 0792           ;       return (unsigned long)sector;//return the cluste number
+ 0792 FE01              movw R30,R28
+ 0794 0281              ldd R16,z+2
+ 0796 1381              ldd R17,z+3
+ 0798 2481              ldd R18,z+4
+ 079A 3581              ldd R19,z+5
+ 079C                   .dbline -2
+ 079C           L31:
+ 079C EF96              adiw R28,63
+ 079E EF96              adiw R28,63
+ 07A0 EF96              adiw R28,63
+ 07A2 EF96              adiw R28,63
+ 07A4 EF96              adiw R28,63
+ 07A6 EF96              adiw R28,63
+ 07A8 EF96              adiw R28,63
+ 07AA EF96              adiw R28,63
+ 07AC 6296              adiw R28,18  ; offset = 522
+ 07AE 0E940000          xcall pop_gset2
+ 07B2 2496              adiw R28,4
+ 07B4                   .dbline 0 ; func end
+ 07B4 0895              ret
+ 07B6                   .dbsym l buffer 10 A[512:512]c
+ 07B6                   .dbsym l offset 6 l
+ 07B6                   .dbsym l sector 2 l
+ 07B6                   .dbsym l cluster 526 l
+ 07B6                   .dbend
+ 07B6                   .dbfunc e CopyDirentruyItem _CopyDirentruyItem fV
+ 07B6                   .dbstruct 0 32 direntry
+ 07B6                   .dbfield 0 deName A[8:8]c
+ 07B6                   .dbfield 8 deExtension A[3:3]c
+ 07B6                   .dbfield 11 deAttributes c
+ 07B6                   .dbfield 12 deLowerCase c
+ 07B6                   .dbfield 13 deCHundredth c
+ 07B6                   .dbfield 14 deCTime A[2:2]c
+ 07B6                   .dbfield 16 deCDate A[2:2]c
+ 07B6                   .dbfield 18 deADate A[2:2]c
+ 07B6                   .dbfield 20 deHighClust i
+ 07B6                   .dbfield 22 deMTime A[2:2]c
+ 07B6                   .dbfield 24 deMDate A[2:2]c
+ 07B6                   .dbfield 26 deStartCluster i
+ 07B6                   .dbfield 28 deFileSize l
+ 07B6                   .dbend
+ 07B6           ;              i -> R20
+ 07B6           ;         Source -> R18,R19
+ 07B6           ;          Desti -> R16,R17
+                        .even
+ 07B6           _CopyDirentruyItem::
+ 07B6 0E940000          xcall push_gset1
+ 07BA                   .dbline -1
+ 07BA                   .dbline 304
+ 07BA           ; }
+ 07BA           ; 
+ 07BA           ; #if FIX_DIRECTORY
+ 07BA           ; //在给定目录下查找文件
+ 07BA           ; //Find a item in the directory which specify by the parameter "cluster"
+ 07BA           ; //Return the start cluster number
+ 07BA           ; unsigned int FAT_FindItem(unsigned long cluster, BYTE *name, struct FileInfoStruct *FileInfo)
+ 07BA           ; {
+ 07BA           ;       BYTE *buffer;
+ 07BA           ;       DWORD tempclust;
+ 07BA           ;       DWORD sector;
+ 07BA           ;       unsigned char cnt;
+ 07BA           ;       unsigned int offset;
+ 07BA           ;       unsigned char i;
+ 07BA           ;       struct direntry *item = 0;
+ 07BA           ;       if((cluster==0) && (FAT32_Enable == 0))// root directory
+ 07BA           ;       {
+ 07BA           ;               buffer=malloc(512);//apply memory
+ 07BA           ;               if(buffer==0)return 1;//if failed
+ 07BA           ;               for(cnt=0;cnt<RootDirSectors;cnt++)
+ 07BA           ;               {
+ 07BA           ;                       if(FAT_ReadSector(FirstDirSector+cnt,buffer)){free(buffer);return 1;}
+ 07BA           ;                       for(offset=0;offset<512;offset+=32)
+ 07BA           ;                       {
+ 07BA           ;                               item=(struct direntry *)(&buffer[offset]);
+ 07BA           ;                               if((item->deName[0] != 0x00) && (item->deName[0] != 0xe5) && (item->deAttributes != 0x0f))
+ 07BA           ;                               {
+ 07BA           ;                                       for(i=0;i<11;i++)
+ 07BA           ;                                       {
+ 07BA           ;                                               if(buffer[offset+i]!=name[i])break;
+ 07BA           ;                                       }
+ 07BA           ;                                       if(i==11)
+ 07BA           ;                                       {
+ 07BA           ;                                               //return the parameter of the item
+ 07BA           ;                                               FileInfo->StartCluster = item->deStartCluster + (((unsigned long)item->deHighClust)<<16);//don't care
+ 07BA           ;                                               FileInfo->Size         = item->deFileSize;
+ 07BA           ;                                               FileInfo->Attr         = item->deAttributes;
+ 07BA           ;                                               FileInfo->Sector       = FirstDirSector+cnt;
+ 07BA           ;                                               FileInfo->Offset       = offset;
+ 07BA           ;                                               free(buffer);
+ 07BA           ;                                               return 0;
+ 07BA           ;                                       }
+ 07BA           ;                               }
+ 07BA           ;                       }
+ 07BA           ;               }
+ 07BA           ;               free(buffer);//release
+ 07BA           ;       }
+ 07BA           ;       else//other folders
+ 07BA           ;       {
+ 07BA           ;               tempclust=cluster;
+ 07BA           ;               while(1)
+ 07BA           ;               {
+ 07BA           ;                       sector=FirstDataSector+(DWORD)(tempclust-2)*(DWORD)SectorsPerClust;//calculate the actual sector number
+ 07BA           ;                       buffer=malloc(512);//apply memory
+ 07BA           ;                       if(buffer==0)return 1;//if failed
+ 07BA           ;                       for(cnt=0;cnt<SectorsPerClust;cnt++)
+ 07BA           ;                       {
+ 07BA           ;                               if(FAT_ReadSector(sector+cnt,buffer)){free(buffer);return 1;}
+ 07BA           ;                               for(offset=0;offset<512;offset+=32)
+ 07BA           ;                               {
+ 07BA           ;                                       item=(struct direntry *)(&buffer[offset]);
+ 07BA           ;                                       if((item->deName[0] != 0x00) && (item->deName[0] != 0xe5) && (item->deAttributes != 0x0f))
+ 07BA           ;                                       {
+ 07BA           ;                                               for(i=0;i<11;i++)
+ 07BA           ;                                               {
+ 07BA           ;                                                       if(buffer[offset+i]!=name[i])break;
+ 07BA           ;                                               }
+ 07BA           ;                                               if(i==11)
+ 07BA           ;                                               {
+ 07BA           ;                                                       FileInfo->StartCluster = item->deStartCluster + (((unsigned long)item->deHighClust)<<16);//don't care
+ 07BA           ;                                                       FileInfo->Size         = item->deFileSize;
+ 07BA           ;                                                       FileInfo->Attr         = item->deAttributes;
+ 07BA           ;                                                       FileInfo->Sector       = sector+cnt;
+ 07BA           ;                                                       FileInfo->Offset       = offset;
+ 07BA           ;                                                       free(buffer);
+ 07BA           ;                                                       return 0;
+ 07BA           ;                                               }
+ 07BA           ;                                       }
+ 07BA           ;                               }
+ 07BA           ;                       }
+ 07BA           ;                       free(buffer);//release
+ 07BA           ;                       tempclust=FAT_NextCluster(tempclust);//next cluster
+ 07BA           ;                       if(tempclust == 0x0fffffff || tempclust == 0x0ffffff8 || (FAT32_Enable == 0 && tempclust == 0xffff))break;
+ 07BA           ;               }
+ 07BA           ;       }
+ 07BA           ;       return 1;
+ 07BA           ; }
+ 07BA           ; 
+ 07BA           ; // find a directory with the given path
+ 07BA           ; unsigned long FAT_OpenDir(BYTE * dir)
+ 07BA           ; {
+ 07BA           ;       BYTE name[11];
+ 07BA           ;       BYTE *p=dir;
+ 07BA           ;       BYTE deep=0;
+ 07BA           ;       BYTE i,j;
+ 07BA           ;       DWORD cluster=0;
+ 07BA           ;       if(FAT32_Enable)cluster = FirstDirClust;
+ 07BA           ;       if(*p != '\\')return 1;//invalid path
+ 07BA           ;       while(*p)
+ 07BA           ;       {
+ 07BA           ;               if(*p == '\\')
+ 07BA           ;               {
+ 07BA           ;                       deep++;
+ 07BA           ;               }
+ 07BA           ;               p++;
+ 07BA           ;       }
+ 07BA           ;       p=dir;
+ 07BA           ;       for(i=0;i<deep-1;i++)
+ 07BA           ;       {
+ 07BA           ;               p++;
+ 07BA           ;               for(j=0;j<11;j++)name[j]=0x20;
+ 07BA           ;               j=0;
+ 07BA           ;               while(*p != '\\')
+ 07BA           ;               {
+ 07BA           ;                       if((*p) >= 'a' && (*p) <= 'z')name[j] = (*p++)-0x20;
+ 07BA           ;                       else name[j] = *p++;
+ 07BA           ;                       j++;
+ 07BA           ;               }
+ 07BA           ;               if(FAT_FindItem(cluster,name, &FileInfo))return 1;//find the directory
+ 07BA           ;               cluster = FileInfo.StartCluster;
+ 07BA           ;       }
+ 07BA           ;       p++;
+ 07BA           ;       for(j=0;j<11;j++)name[j]=0x20;
+ 07BA           ;       j=0;
+ 07BA           ;       while(*p)
+ 07BA           ;       {
+ 07BA           ;               if(*p>='a' && *p<='z')name[j]=(*p++)-0x20;
+ 07BA           ;               else name[j]=*p++;
+ 07BA           ;               j++;
+ 07BA           ;       }
+ 07BA           ;       if(j == 0)return cluster;
+ 07BA           ;       if(FAT_FindItem(cluster,name, &FileInfo))return 1;//find the final directory
+ 07BA           ;       cluster = FileInfo.StartCluster;
+ 07BA           ;       return cluster;
+ 07BA           ; }
+ 07BA           ; #endif  
+ 07BA           ; 
+ 07BA           ; //复制记录项信息  //copy item
+ 07BA           ; void CopyDirentruyItem(struct direntry *Desti,struct direntry *Source)
+ 07BA           ; {
+ 07BA                   .dbline 306
+ 07BA 4427              clr R20
+ 07BC 0BC0              xjmp L44
+ 07BE           L41:
+ 07BE                   .dbline 306
+ 07BE E42F              mov R30,R20
+ 07C0 FF27              clr R31
+ 07C2 E20F              add R30,R18
+ 07C4 F31F              adc R31,R19
+ 07C6 2080              ldd R2,z+0
+ 07C8 E42F              mov R30,R20
+ 07CA FF27              clr R31
+ 07CC E00F              add R30,R16
+ 07CE F11F              adc R31,R17
+ 07D0 2082              std z+0,R2
+ 07D2           L42:
+ 07D2                   .dbline 306
+ 07D2 4395              inc R20
+ 07D4           L44:
+ 07D4                   .dbline 306
+ 07D4           ;       BYTE i;
+ 07D4           ;       for(i=0;i<8;i++)Desti->deName[i] = Source->deName[i];
+ 07D4 4830              cpi R20,8
+ 07D6 98F3              brlo L41
+ 07D8                   .dbline 307
+ 07D8 4427              clr R20
+ 07DA 0FC0              xjmp L48
+ 07DC           L45:
+ 07DC                   .dbline 307
+ 07DC C901              movw R24,R18
+ 07DE 0896              adiw R24,8
+ 07E0 E42F              mov R30,R20
+ 07E2 FF27              clr R31
+ 07E4 E80F              add R30,R24
+ 07E6 F91F              adc R31,R25
+ 07E8 2080              ldd R2,z+0
+ 07EA C801              movw R24,R16
+ 07EC 0896              adiw R24,8
+ 07EE E42F              mov R30,R20
+ 07F0 FF27              clr R31
+ 07F2 E80F              add R30,R24
+ 07F4 F91F              adc R31,R25
+ 07F6 2082              std z+0,R2
+ 07F8           L46:
+ 07F8                   .dbline 307
+ 07F8 4395              inc R20
+ 07FA           L48:
+ 07FA                   .dbline 307
+ 07FA           ;       for(i=0;i<3;i++)Desti->deExtension[i] = Source->deExtension[i];
+ 07FA 4330              cpi R20,3
+ 07FC 78F3              brlo L45
+ 07FE                   .dbline 308
+ 07FE           ;       Desti->deAttributes = Source->deAttributes;
+ 07FE F901              movw R30,R18
+ 0800 2384              ldd R2,z+11
+ 0802 F801              movw R30,R16
+ 0804 2386              std z+11,R2
+ 0806                   .dbline 309
+ 0806           ;       Desti->deLowerCase = Source->deLowerCase;
+ 0806 F901              movw R30,R18
+ 0808 2484              ldd R2,z+12
+ 080A F801              movw R30,R16
+ 080C 2486              std z+12,R2
+ 080E                   .dbline 310
+ 080E           ;       Desti->deCHundredth = Source->deCHundredth;
+ 080E F901              movw R30,R18
+ 0810 2584              ldd R2,z+13
+ 0812 F801              movw R30,R16
+ 0814 2586              std z+13,R2
+ 0816                   .dbline 311
+ 0816 4427              clr R20
+ 0818 0FC0              xjmp L52
+ 081A           L49:
+ 081A                   .dbline 311
+ 081A C901              movw R24,R18
+ 081C 0E96              adiw R24,14
+ 081E E42F              mov R30,R20
+ 0820 FF27              clr R31
+ 0822 E80F              add R30,R24
+ 0824 F91F              adc R31,R25
+ 0826 2080              ldd R2,z+0
+ 0828 C801              movw R24,R16
+ 082A 0E96              adiw R24,14
+ 082C E42F              mov R30,R20
+ 082E FF27              clr R31
+ 0830 E80F              add R30,R24
+ 0832 F91F              adc R31,R25
+ 0834 2082              std z+0,R2
+ 0836           L50:
+ 0836                   .dbline 311
+ 0836 4395              inc R20
+ 0838           L52:
+ 0838                   .dbline 311
+ 0838           ;       for(i=0;i<2;i++)Desti->deCTime[i] = Source->deCTime[i];
+ 0838 4230              cpi R20,2
+ 083A 78F3              brlo L49
+ 083C                   .dbline 312
+ 083C 4427              clr R20
+ 083E 0FC0              xjmp L56
+ 0840           L53:
+ 0840                   .dbline 312
+ 0840 C901              movw R24,R18
+ 0842 4096              adiw R24,16
+ 0844 E42F              mov R30,R20
+ 0846 FF27              clr R31
+ 0848 E80F              add R30,R24
+ 084A F91F              adc R31,R25
+ 084C 2080              ldd R2,z+0
+ 084E C801              movw R24,R16
+ 0850 4096              adiw R24,16
+ 0852 E42F              mov R30,R20
+ 0854 FF27              clr R31
+ 0856 E80F              add R30,R24
+ 0858 F91F              adc R31,R25
+ 085A 2082              std z+0,R2
+ 085C           L54:
+ 085C                   .dbline 312
+ 085C 4395              inc R20
+ 085E           L56:
+ 085E                   .dbline 312
+ 085E           ;       for(i=0;i<2;i++)Desti->deCDate[i] = Source->deCDate[i];
+ 085E 4230              cpi R20,2
+ 0860 78F3              brlo L53
+ 0862                   .dbline 313
+ 0862 4427              clr R20
+ 0864 0FC0              xjmp L60
+ 0866           L57:
+ 0866                   .dbline 313
+ 0866 C901              movw R24,R18
+ 0868 4296              adiw R24,18
+ 086A E42F              mov R30,R20
+ 086C FF27              clr R31
+ 086E E80F              add R30,R24
+ 0870 F91F              adc R31,R25
+ 0872 2080              ldd R2,z+0
+ 0874 C801              movw R24,R16
+ 0876 4296              adiw R24,18
+ 0878 E42F              mov R30,R20
+ 087A FF27              clr R31
+ 087C E80F              add R30,R24
+ 087E F91F              adc R31,R25
+ 0880 2082              std z+0,R2
+ 0882           L58:
+ 0882                   .dbline 313
+ 0882 4395              inc R20
+ 0884           L60:
+ 0884                   .dbline 313
+ 0884           ;       for(i=0;i<2;i++)Desti->deADate[i] = Source->deADate[i];
+ 0884 4230              cpi R20,2
+ 0886 78F3              brlo L57
+ 0888                   .dbline 314
+ 0888           ;       Desti->deHighClust = Source->deHighClust;
+ 0888 F901              movw R30,R18
+ 088A 2488              ldd R2,z+20
+ 088C 3588              ldd R3,z+21
+ 088E F801              movw R30,R16
+ 0890 358A              std z+21,R3
+ 0892 248A              std z+20,R2
+ 0894                   .dbline 315
+ 0894 4427              clr R20
+ 0896 0FC0              xjmp L64
+ 0898           L61:
+ 0898                   .dbline 315
+ 0898 C901              movw R24,R18
+ 089A 4696              adiw R24,22
+ 089C E42F              mov R30,R20
+ 089E FF27              clr R31
+ 08A0 E80F              add R30,R24
+ 08A2 F91F              adc R31,R25
+ 08A4 2080              ldd R2,z+0
+ 08A6 C801              movw R24,R16
+ 08A8 4696              adiw R24,22
+ 08AA E42F              mov R30,R20
+ 08AC FF27              clr R31
+ 08AE E80F              add R30,R24
+ 08B0 F91F              adc R31,R25
+ 08B2 2082              std z+0,R2
+ 08B4           L62:
+ 08B4                   .dbline 315
+ 08B4 4395              inc R20
+ 08B6           L64:
+ 08B6                   .dbline 315
+ 08B6           ;       for(i=0;i<2;i++)Desti->deMTime[i] = Source->deMTime[i];
+ 08B6 4230              cpi R20,2
+ 08B8 78F3              brlo L61
+ 08BA                   .dbline 316
+ 08BA 4427              clr R20
+ 08BC 0FC0              xjmp L68
+ 08BE           L65:
+ 08BE                   .dbline 316
+ 08BE C901              movw R24,R18
+ 08C0 4896              adiw R24,24
+ 08C2 E42F              mov R30,R20
+ 08C4 FF27              clr R31
+ 08C6 E80F              add R30,R24
+ 08C8 F91F              adc R31,R25
+ 08CA 2080              ldd R2,z+0
+ 08CC C801              movw R24,R16
+ 08CE 4896              adiw R24,24
+ 08D0 E42F              mov R30,R20
+ 08D2 FF27              clr R31
+ 08D4 E80F              add R30,R24
+ 08D6 F91F              adc R31,R25
+ 08D8 2082              std z+0,R2
+ 08DA           L66:
+ 08DA                   .dbline 316
+ 08DA 4395              inc R20
+ 08DC           L68:
+ 08DC                   .dbline 316
+ 08DC           ;       for(i=0;i<2;i++)Desti->deMDate[i] = Source->deMDate[i];
+ 08DC 4230              cpi R20,2
+ 08DE 78F3              brlo L65
+ 08E0                   .dbline 317
+ 08E0           ;       Desti->deStartCluster = Source->deStartCluster;
+ 08E0 F901              movw R30,R18
+ 08E2 228C              ldd R2,z+26
+ 08E4 338C              ldd R3,z+27
+ 08E6 F801              movw R30,R16
+ 08E8 338E              std z+27,R3
+ 08EA 228E              std z+26,R2
+ 08EC                   .dbline 318
+ 08EC           ;       Desti->deFileSize = Source->deFileSize;
+ 08EC F901              movw R30,R18
+ 08EE 248C              ldd R2,z+28
+ 08F0 358C              ldd R3,z+29
+ 08F2 468C              ldd R4,z+30
+ 08F4 578C              ldd R5,z+31
+ 08F6 F801              movw R30,R16
+ 08F8 248E              std z+28,R2
+ 08FA 358E              std z+29,R3
+ 08FC 468E              std z+30,R4
+ 08FE 578E              std z+31,R5
+ 0900                   .dbline -2
+ 0900           L40:
+ 0900 0E940000          xcall pop_gset1
+ 0904                   .dbline 0 ; func end
+ 0904 0895              ret
+ 0906                   .dbsym r i 20 c
+ 0906                   .dbsym r Source 18 pS[direntry]
+ 0906                   .dbsym r Desti 16 pS[direntry]
+ 0906                   .dbend
+ 0906                   .dbfunc e WriteFolderCluster _WriteFolderCluster fV
+ 0906           ;        cluster -> y+6
+ 0906           ;           addr -> R20,R21
+                        .even
+ 0906           _WriteFolderCluster::
+ 0906 3A93              st -y,r19
+ 0908 2A93              st -y,r18
+ 090A 0E940000          xcall push_gset1
+ 090E A801              movw R20,R16
+ 0910 2497              sbiw R28,4
+ 0912                   .dbline -1
+ 0912                   .dbline 399
+ 0912           ; }
+ 0912           ; 
+ 0912           ; 
+ 0912           ; #if FIX_DIRECTORY
+ 0912           ; 
+ 0912           ; BYTE Search(BYTE *dir,struct direntry *MusicInfo,WORD *Count,BYTE *type)//当COUNT为零时，有它带回这个目录下总共有多少图片
+ 0912           ; {                                                            //不为零时有MusicInfo带回第Count图片的详细文件信息
+ 0912           ;       BYTE *buffer;
+ 0912           ;       DWORD sector;
+ 0912           ;       DWORD cluster;
+ 0912           ;       DWORD tempclust;
+ 0912           ;       unsigned char cnt;
+ 0912           ;       unsigned int offset;
+ 0912           ;       unsigned int i=0;
+ 0912           ;       struct direntry *item = 0;
+ 0912           ;       cluster = FAT_OpenDir(dir);
+ 0912           ;       if(cluster == 1)return 1;
+ 0912           ;       if(cluster==0 && FAT32_Enable==0)// 根目录，FAT16文件系统
+ 0912           ;       {
+ 0912           ;               buffer=malloc(512);//动态分配内存512大小
+ 0912           ;               if(buffer==0)return 1;//动态分配失败
+ 0912           ;               for(cnt=0;cnt<RootDirSectors;cnt++)
+ 0912           ;               {
+ 0912           ;                       if(FAT_ReadSector(FirstDirSector+cnt,buffer)){free(buffer);return 1;}
+ 0912           ;                       for(offset=0;offset<512;offset+=32)
+ 0912           ;                       {
+ 0912           ;                               item=(struct direntry *)(&buffer[offset]);//pointer convert
+ 0912           ;                               //find a valid item and display it
+ 0912           ;                               if((item->deName[0] != '.') && (item->deName[0] != 0x00) && (item->deName[0] != 0xe5) && (item->deAttributes != 0x0f))
+ 0912           ;                               {
+ 0912           ;                                       if((item->deExtension[0] == 'b')&&(item->deExtension[1] == 'm')&&(item->deExtension[2] == 'p'))
+ 0912           ;                                       {
+ 0912           ;                                               CopyDirentruyItem(MusicInfo,item);
+ 0912           ;                                               *type=1;
+ 0912           ;                                               i++;
+ 0912           ;                                               if(i==*Count){free(buffer);return 0;}   
+ 0912           ;                                       }
+ 0912           ;                               }
+ 0912           ;                       }
+ 0912           ;               }
+ 0912           ;               free(buffer);//release
+ 0912           ;       }
+ 0912           ;       else//other folders
+ 0912           ;       {
+ 0912           ;               tempclust=cluster;
+ 0912           ;               while(1)
+ 0912           ;               {
+ 0912           ;                       sector=FirstDataSector+(DWORD)(tempclust-2)*(DWORD)SectorsPerClust;//calculate the actual sector number
+ 0912           ;                       buffer=malloc(512);//apply memory
+ 0912           ;                       if(buffer==0)return 1;//if failed
+ 0912           ;                       for(cnt=0;cnt<SectorsPerClust;cnt++)
+ 0912           ;                       {
+ 0912           ;                               if(FAT_ReadSector(sector+cnt,buffer)){free(buffer);return 1;}
+ 0912           ;                               for(offset=0;offset<512;offset+=32)
+ 0912           ;                               {
+ 0912           ;                                       item=(struct direntry *)(&buffer[offset]);
+ 0912           ;                                       if((item->deName[0] != '.') && (item->deName[0] != 0x00) && (item->deName[0] != 0xe5) && (item->deAttributes != 0x0f))
+ 0912           ;                                       {
+ 0912           ;                                               if((item->deExtension[0] == 'b')&&(item->deExtension[1] == 'm')&&(item->deExtension[2] == 'p'))
+ 0912           ;                                               {
+ 0912           ;                                                       CopyDirentruyItem(MusicInfo,item);
+ 0912           ;                                                       *type=1;
+ 0912           ;                                                       i++;
+ 0912           ;                                                       if(i==*Count){free(buffer);return 0;}   
+ 0912           ;                                               }       
+ 0912           ;                                       }
+ 0912           ;                               }
+ 0912           ;                       }
+ 0912           ;                       free(buffer);//release
+ 0912           ;                       tempclust=FAT_NextCluster(tempclust);//next cluster
+ 0912           ;                       if(tempclust == 0x0fffffff || tempclust == 0x0ffffff8 || (FAT32_Enable == 0 && tempclust == 0xffff))break;
+ 0912           ;               }
+ 0912           ;       }
+ 0912           ;       if(*Count==0)*Count=i;
+ 0912           ;       return 0;       
+ 0912           ; }
+ 0912           ; 
+ 0912           ; #else  
+ 0912           ; 
+ 0912           ; void WriteFolderCluster(WORD addr,DWORD cluster)
+ 0912           ; {
+ 0912                   .dbline 401
+ 0912           ; #if FAT_DEBUG
+ 0912           ;       printf("\r\nWrite EEPROM address:%d with value:%ld",addr,cluster);
+ 0912 FE01              movw R30,R28
+ 0914 2680              ldd R2,z+6
+ 0916 3780              ldd R3,z+7
+ 0918 4084              ldd R4,z+8
+ 091A 5184              ldd R5,z+9
+ 091C 2882              std y+0,R2
+ 091E 3982              std y+1,R3
+ 0920 4A82              std y+2,R4
+ 0922 5B82              std y+3,R5
+ 0924 9A01              movw R18,R20
+ 0926 00E0              ldi R16,<L70
+ 0928 10E0              ldi R17,>L70
+ 092A 0E940000          xcall _printf
+ 092E                   .dbline 403
+ 092E           ; #endif
+ 092E           ;       eeprom_write_byte(addr,cluster>>24);
+ 092E 88E1              ldi R24,24
+ 0930 90E0              ldi R25,0
+ 0932 FE01              movw R30,R28
+ 0934 2680              ldd R2,z+6
+ 0936 3780              ldd R3,z+7
+ 0938 4084              ldd R4,z+8
+ 093A 5184              ldd R5,z+9
+ 093C 8A93              st -y,R24
+ 093E 8101              movw R16,R2
+ 0940 9201              movw R18,R4
+ 0942 0E940000          xcall lsr32
+ 0946 202F              mov R18,R16
+ 0948 8A01              movw R16,R20
+ 094A 0E940000          xcall _eeprom_write_byte
+ 094E                   .dbline 404
+ 094E           ;       eeprom_write_byte(addr+1,cluster>>16);
+ 094E FE01              movw R30,R28
+ 0950 2680              ldd R2,z+6
+ 0952 3780              ldd R3,z+7
+ 0954 4084              ldd R4,z+8
+ 0956 5184              ldd R5,z+9
+ 0958 1201              movw R2,R4
+ 095A 4424              clr R4
+ 095C 5524              clr R5
+ 095E 222D              mov R18,R2
+ 0960 8A01              movw R16,R20
+ 0962 0F5F              subi R16,255  ; offset = 1
+ 0964 1F4F              sbci R17,255
+ 0966 0E940000          xcall _eeprom_write_byte
+ 096A                   .dbline 405
+ 096A           ;       eeprom_write_byte(addr+2,cluster>>8);
+ 096A 88E0              ldi R24,8
+ 096C 90E0              ldi R25,0
+ 096E FE01              movw R30,R28
+ 0970 2680              ldd R2,z+6
+ 0972 3780              ldd R3,z+7
+ 0974 4084              ldd R4,z+8
+ 0976 5184              ldd R5,z+9
+ 0978 8A93              st -y,R24
+ 097A 8101              movw R16,R2
+ 097C 9201              movw R18,R4
+ 097E 0E940000          xcall lsr32
+ 0982 202F              mov R18,R16
+ 0984 8A01              movw R16,R20
+ 0986 0E5F              subi R16,254  ; offset = 2
+ 0988 1F4F              sbci R17,255
+ 098A 0E940000          xcall _eeprom_write_byte
+ 098E                   .dbline 406
+ 098E           ;       eeprom_write_byte(addr+3,cluster>>0);
+ 098E FE01              movw R30,R28
+ 0990 2680              ldd R2,z+6
+ 0992 3780              ldd R3,z+7
+ 0994 4084              ldd R4,z+8
+ 0996 5184              ldd R5,z+9
+ 0998 222D              mov R18,R2
+ 099A 8A01              movw R16,R20
+ 099C 0D5F              subi R16,253  ; offset = 3
+ 099E 1F4F              sbci R17,255
+ 09A0 0E940000          xcall _eeprom_write_byte
+ 09A4                   .dbline -2
+ 09A4           L69:
+ 09A4 2496              adiw R28,4
+ 09A6 0E940000          xcall pop_gset1
+ 09AA 2296              adiw R28,2
+ 09AC                   .dbline 0 ; func end
+ 09AC 0895              ret
+ 09AE                   .dbsym l cluster 6 l
+ 09AE                   .dbsym r addr 20 i
+ 09AE                   .dbend
+ 09AE                   .dbfunc e GetFolderCluster _GetFolderCluster fl
+ 09AE           ;           temp -> y+4
+ 09AE           ;           addr -> R10,R11
+                        .even
+ 09AE           _GetFolderCluster::
+ 09AE 0E940000          xcall push_gset3
+ 09B2 5801              movw R10,R16
+ 09B4 2897              sbiw R28,8
+ 09B6                   .dbline -1
+ 09B6                   .dbline 410
+ 09B6           ; }
+ 09B6           ; 
+ 09B6           ; DWORD GetFolderCluster(WORD addr)
+ 09B6           ; {
+ 09B6                   .dbline 413
+ 09B6           ;       DWORD temp;
+ 09B6           ;       
+ 09B6           ;       temp = eeprom_read_byte(addr);
+ 09B6 8501              movw R16,R10
+ 09B8 0E940000          xcall _eeprom_read_byte
+ 09BC 1801              movw R2,R16
+ 09BE 4424              clr R4
+ 09C0 37FC              sbrc R3,7
+ 09C2 4094              com R4
+ 09C4 5524              clr R5
+ 09C6 47FC              sbrc R4,7
+ 09C8 5094              com R5
+ 09CA FE01              movw R30,R28
+ 09CC 2482              std z+4,R2
+ 09CE 3582              std z+5,R3
+ 09D0 4682              std z+6,R4
+ 09D2 5782              std z+7,R5
+ 09D4                   .dbline 414
+ 09D4           ;       temp <<= 8;
+ 09D4 88E0              ldi R24,8
+ 09D6 90E0              ldi R25,0
+ 09D8 FE01              movw R30,R28
+ 09DA 2480              ldd R2,z+4
+ 09DC 3580              ldd R3,z+5
+ 09DE 4680              ldd R4,z+6
+ 09E0 5780              ldd R5,z+7
+ 09E2 8A93              st -y,R24
+ 09E4 8101              movw R16,R2
+ 09E6 9201              movw R18,R4
+ 09E8 0E940000          xcall lsl32
+ 09EC FE01              movw R30,R28
+ 09EE 0483              std z+4,R16
+ 09F0 1583              std z+5,R17
+ 09F2 2683              std z+6,R18
+ 09F4 3783              std z+7,R19
+ 09F6                   .dbline 415
+ 09F6           ;       temp += eeprom_read_byte(addr+1);
+ 09F6 8501              movw R16,R10
+ 09F8 0F5F              subi R16,255  ; offset = 1
+ 09FA 1F4F              sbci R17,255
+ 09FC 0E940000          xcall _eeprom_read_byte
+ 0A00 1801              movw R2,R16
+ 0A02 4424              clr R4
+ 0A04 37FC              sbrc R3,7
+ 0A06 4094              com R4
+ 0A08 5524              clr R5
+ 0A0A 47FC              sbrc R4,7
+ 0A0C 5094              com R5
+ 0A0E FE01              movw R30,R28
+ 0A10 6480              ldd R6,z+4
+ 0A12 7580              ldd R7,z+5
+ 0A14 8680              ldd R8,z+6
+ 0A16 9780              ldd R9,z+7
+ 0A18 620C              add R6,R2
+ 0A1A 731C              adc R7,R3
+ 0A1C 841C              adc R8,R4
+ 0A1E 951C              adc R9,R5
+ 0A20 FE01              movw R30,R28
+ 0A22 6482              std z+4,R6
+ 0A24 7582              std z+5,R7
+ 0A26 8682              std z+6,R8
+ 0A28 9782              std z+7,R9
+ 0A2A                   .dbline 416
+ 0A2A           ;       temp <<= 8;
+ 0A2A 88E0              ldi R24,8
+ 0A2C 90E0              ldi R25,0
+ 0A2E FE01              movw R30,R28
+ 0A30 2480              ldd R2,z+4
+ 0A32 3580              ldd R3,z+5
+ 0A34 4680              ldd R4,z+6
+ 0A36 5780              ldd R5,z+7
+ 0A38 8A93              st -y,R24
+ 0A3A 8101              movw R16,R2
+ 0A3C 9201              movw R18,R4
+ 0A3E 0E940000          xcall lsl32
+ 0A42 FE01              movw R30,R28
+ 0A44 0483              std z+4,R16
+ 0A46 1583              std z+5,R17
+ 0A48 2683              std z+6,R18
+ 0A4A 3783              std z+7,R19
+ 0A4C                   .dbline 417
+ 0A4C           ;       temp += eeprom_read_byte(addr+2);
+ 0A4C 8501              movw R16,R10
+ 0A4E 0E5F              subi R16,254  ; offset = 2
+ 0A50 1F4F              sbci R17,255
+ 0A52 0E940000          xcall _eeprom_read_byte
+ 0A56 1801              movw R2,R16
+ 0A58 4424              clr R4
+ 0A5A 37FC              sbrc R3,7
+ 0A5C 4094              com R4
+ 0A5E 5524              clr R5
+ 0A60 47FC              sbrc R4,7
+ 0A62 5094              com R5
+ 0A64 FE01              movw R30,R28
+ 0A66 6480              ldd R6,z+4
+ 0A68 7580              ldd R7,z+5
+ 0A6A 8680              ldd R8,z+6
+ 0A6C 9780              ldd R9,z+7
+ 0A6E 620C              add R6,R2
+ 0A70 731C              adc R7,R3
+ 0A72 841C              adc R8,R4
+ 0A74 951C              adc R9,R5
+ 0A76 FE01              movw R30,R28
+ 0A78 6482              std z+4,R6
+ 0A7A 7582              std z+5,R7
+ 0A7C 8682              std z+6,R8
+ 0A7E 9782              std z+7,R9
+ 0A80                   .dbline 418
+ 0A80           ;       temp <<= 8;
+ 0A80 88E0              ldi R24,8
+ 0A82 90E0              ldi R25,0
+ 0A84 FE01              movw R30,R28
+ 0A86 2480              ldd R2,z+4
+ 0A88 3580              ldd R3,z+5
+ 0A8A 4680              ldd R4,z+6
+ 0A8C 5780              ldd R5,z+7
+ 0A8E 8A93              st -y,R24
+ 0A90 8101              movw R16,R2
+ 0A92 9201              movw R18,R4
+ 0A94 0E940000          xcall lsl32
+ 0A98 FE01              movw R30,R28
+ 0A9A 0483              std z+4,R16
+ 0A9C 1583              std z+5,R17
+ 0A9E 2683              std z+6,R18
+ 0AA0 3783              std z+7,R19
+ 0AA2                   .dbline 419
+ 0AA2           ;       temp += eeprom_read_byte(addr+3);
+ 0AA2 8501              movw R16,R10
+ 0AA4 0D5F              subi R16,253  ; offset = 3
+ 0AA6 1F4F              sbci R17,255
+ 0AA8 0E940000          xcall _eeprom_read_byte
+ 0AAC 1801              movw R2,R16
+ 0AAE 4424              clr R4
+ 0AB0 37FC              sbrc R3,7
+ 0AB2 4094              com R4
+ 0AB4 5524              clr R5
+ 0AB6 47FC              sbrc R4,7
+ 0AB8 5094              com R5
+ 0ABA FE01              movw R30,R28
+ 0ABC 6480              ldd R6,z+4
+ 0ABE 7580              ldd R7,z+5
+ 0AC0 8680              ldd R8,z+6
+ 0AC2 9780              ldd R9,z+7
+ 0AC4 620C              add R6,R2
+ 0AC6 731C              adc R7,R3
+ 0AC8 841C              adc R8,R4
+ 0ACA 951C              adc R9,R5
+ 0ACC FE01              movw R30,R28
+ 0ACE 6482              std z+4,R6
+ 0AD0 7582              std z+5,R7
+ 0AD2 8682              std z+6,R8
+ 0AD4 9782              std z+7,R9
+ 0AD6                   .dbline 421
+ 0AD6           ; #if FAT_DEBUG
+ 0AD6           ;       printf("\r\nRead EEPROM address: %d value is: %ld",addr,temp);
+ 0AD6 FE01              movw R30,R28
+ 0AD8 2480              ldd R2,z+4
+ 0ADA 3580              ldd R3,z+5
+ 0ADC 4680              ldd R4,z+6
+ 0ADE 5780              ldd R5,z+7
+ 0AE0 2882              std y+0,R2
+ 0AE2 3982              std y+1,R3
+ 0AE4 4A82              std y+2,R4
+ 0AE6 5B82              std y+3,R5
+ 0AE8 9501              movw R18,R10
+ 0AEA 00E0              ldi R16,<L72
+ 0AEC 10E0              ldi R17,>L72
+ 0AEE 0E940000          xcall _printf
+ 0AF2                   .dbline 423
+ 0AF2           ; #endif
+ 0AF2           ;       return temp;
+ 0AF2 FE01              movw R30,R28
+ 0AF4 0481              ldd R16,z+4
+ 0AF6 1581              ldd R17,z+5
+ 0AF8 2681              ldd R18,z+6
+ 0AFA 3781              ldd R19,z+7
+ 0AFC                   .dbline -2
+ 0AFC           L71:
+ 0AFC 2896              adiw R28,8
+ 0AFE 0E940000          xcall pop_gset3
+ 0B02                   .dbline 0 ; func end
+ 0B02 0895              ret
+ 0B04                   .dbsym l temp 4 l
+ 0B04                   .dbsym r addr 10 i
+ 0B04                   .dbend
+ 0B04                   .dbfunc e SearchFolder _SearchFolder fc
+ 0B04           ;      tempclust -> y+6
+ 0B04           ;         sector -> y+2
+ 0B04           ;            cnt -> R10
+ 0B04           ;         buffer -> R12,R13
+ 0B04           ;         offset -> R14,R15
+ 0B04           ;           item -> y+10
+ 0B04           ;           addr -> y+26
+ 0B04           ;        cluster -> y+22
+                        .even
+ 0B04           _SearchFolder::
+ 0B04 0E940000          xcall push_arg4
+ 0B08 0E940000          xcall push_gset5
+ 0B0C 2C97              sbiw R28,12
+ 0B0E                   .dbline -1
+ 0B0E                   .dbline 427
+ 0B0E           ; }
+ 0B0E           ; 
+ 0B0E           ; BYTE SearchFolder(DWORD cluster,WORD *addr)
+ 0B0E           ; {
+ 0B0E                   .dbline 438
+ 0B0E           ;       BYTE *buffer;
+ 0B0E           ;       //BYTE buff[3];
+ 0B0E           ;       DWORD sector;
+ 0B0E           ;       //DWORD cluster;
+ 0B0E           ;       DWORD tempclust;
+ 0B0E           ;       unsigned char cnt;
+ 0B0E           ;       unsigned int offset;
+ 0B0E           ;       //unsigned int i=0;
+ 0B0E           ;       //unsigned char j;//long name buffer offset;
+ 0B0E           ; //    unsigned char *p;//long name buffer pointer
+ 0B0E           ;       struct direntry *item = 0;
+ 0B0E 0024              clr R0
+ 0B10 1124              clr R1
+ 0B12 1B86              std y+11,R1
+ 0B14 0A86              std y+10,R0
+ 0B16                   .dbline 441
+ 0B16           ;       //struct winentry *we =0;
+ 0B16           ;       
+ 0B16           ;       if(cluster==0 && FAT32_Enable==0)// root directory
+ 0B16 40E0              ldi R20,0
+ 0B18 50E0              ldi R21,0
+ 0B1A 60E0              ldi R22,0
+ 0B1C 70E0              ldi R23,0
+ 0B1E FE01              movw R30,R28
+ 0B20 2688              ldd R2,z+22
+ 0B22 3788              ldd R3,z+23
+ 0B24 408C              ldd R4,z+24
+ 0B26 518C              ldd R5,z+25
+ 0B28 2416              cp R2,R20
+ 0B2A 3506              cpc R3,R21
+ 0B2C 4606              cpc R4,R22
+ 0B2E 5706              cpc R5,R23
+ 0B30 09F0              breq X4
+ 0B32 9EC0              xjmp L74
+ 0B34           X4:
+ 0B34 20901700          lds R2,_FAT32_Enable
+ 0B38 2220              tst R2
+ 0B3A 09F0              breq X5
+ 0B3C 99C0              xjmp L74
+ 0B3E           X5:
+ 0B3E                   .dbline 442
+ 0B3E           ;       {
+ 0B3E                   .dbline 444
+ 0B3E           ;               
+ 0B3E           ;               buffer=malloc(512);//apply memory
+ 0B3E 00E0              ldi R16,512
+ 0B40 12E0              ldi R17,2
+ 0B42 0E940000          xcall _malloc
+ 0B46 6801              movw R12,R16
+ 0B48                   .dbline 445
+ 0B48           ;               if(buffer==0) {printf("Apply Memory Failure");return 1;}//if failed
+ 0B48 0030              cpi R16,0
+ 0B4A 0107              cpc R16,R17
+ 0B4C 31F4              brne L76
+ 0B4E           X2:
+ 0B4E                   .dbline 445
+ 0B4E                   .dbline 445
+ 0B4E 00E0              ldi R16,<L78
+ 0B50 10E0              ldi R17,>L78
+ 0B52 0E940000          xcall _printf
+ 0B56                   .dbline 445
+ 0B56 01E0              ldi R16,1
+ 0B58 87C1              xjmp L73
+ 0B5A           L76:
+ 0B5A                   .dbline 446
+ 0B5A           ;               for(cnt=0;cnt<RootDirSectors;cnt++)
+ 0B5A AA24              clr R10
+ 0B5C 73C0              xjmp L82
+ 0B5E           L79:
+ 0B5E                   .dbline 447
+ 0B5E           ;               {
+ 0B5E                   .dbline 448
+ 0B5E           ;                       if(FAT_ReadSector(FirstDirSector+cnt,buffer)){free(buffer);return 1;}
+ 0B5E D982              std y+1,R13
+ 0B60 C882              std y+0,R12
+ 0B62 2A2C              mov R2,R10
+ 0B64 3324              clr R3
+ 0B66 4424              clr R4
+ 0B68 5524              clr R5
+ 0B6A 80902200          lds R8,_FirstDirSector+2
+ 0B6E 90902300          lds R9,_FirstDirSector+2+1
+ 0B72 60902000          lds R6,_FirstDirSector
+ 0B76 70902100          lds R7,_FirstDirSector+1
+ 0B7A 620C              add R6,R2
+ 0B7C 731C              adc R7,R3
+ 0B7E 841C              adc R8,R4
+ 0B80 951C              adc R9,R5
+ 0B82 8301              movw R16,R6
+ 0B84 9401              movw R18,R8
+ 0B86 E0910000          lds R30,_FAT_ReadSector
+ 0B8A F0910100          lds R31,_FAT_ReadSector+1
+ 0B8E 0E940000          xcall xicall
+ 0B92 0023              tst R16
+ 0B94 29F0              breq L83
+ 0B96                   .dbline 448
+ 0B96                   .dbline 448
+ 0B96 8601              movw R16,R12
+ 0B98 0E940000          xcall _free
+ 0B9C                   .dbline 448
+ 0B9C 01E0              ldi R16,1
+ 0B9E 64C1              xjmp L73
+ 0BA0           L83:
+ 0BA0                   .dbline 449
+ 0BA0           ;                       for(offset=0;offset<512;offset+=32)
+ 0BA0 EE24              clr R14
+ 0BA2 FF24              clr R15
+ 0BA4 48C0              xjmp L88
+ 0BA6           L85:
+ 0BA6                   .dbline 450
+ 0BA6           ;                       {
+ 0BA6                   .dbline 451
+ 0BA6           ;                               item=(struct direntry *)(&buffer[offset]);//pointer convert
+ 0BA6 1701              movw R2,R14
+ 0BA8 2C0C              add R2,R12
+ 0BAA 3D1C              adc R3,R13
+ 0BAC 3B86              std y+11,R3
+ 0BAE 2A86              std y+10,R2
+ 0BB0                   .dbline 453
+ 0BB0           ;                               //find a valid item and display it
+ 0BB0           ;                               if((item->deName[0] != '.') && (item->deName[0] != 0x00) && (item->deName[0] != 0xe5))
+ 0BB0 F101              movw R30,R2
+ 0BB2 2080              ldd R2,z+0
+ 0BB4 3324              clr R3
+ 0BB6 822D              mov R24,R2
+ 0BB8 8E32              cpi R24,46
+ 0BBA 09F4              brne X6
+ 0BBC 39C0              xjmp L89
+ 0BBE           X6:
+ 0BBE 8823              tst R24
+ 0BC0 09F4              brne X7
+ 0BC2 36C0              xjmp L89
+ 0BC4           X7:
+ 0BC4 853E              cpi R24,229
+ 0BC6 09F4              brne X8
+ 0BC8 33C0              xjmp L89
+ 0BCA           X8:
+ 0BCA                   .dbline 454
+ 0BCA           ;                               {
+ 0BCA                   .dbline 455
+ 0BCA           ;                                       if(item->deAttributes & ATTR_DIRECTORY )
+ 0BCA 2384              ldd R2,z+11
+ 0BCC 24FE              sbrs R2,4
+ 0BCE 30C0              rjmp L91
+ 0BD0                   .dbline 456
+ 0BD0           ;                                       {
+ 0BD0                   .dbline 458
+ 0BD0           ;                                               #if FAT_DEBUG
+ 0BD0           ;                                                       printf("\r\nFound a folder!");
+ 0BD0 00E0              ldi R16,<L93
+ 0BD2 10E0              ldi R17,>L93
+ 0BD4 0E940000          xcall _printf
+ 0BD8                   .dbline 460
+ 0BD8           ;                                               #endif
+ 0BD8           ;                                               if(*addr==RECORD_ADDR_END)return 0;
+ 0BD8 EA8D              ldd R30,y+26
+ 0BDA FB8D              ldd R31,y+27
+ 0BDC 8081              ldd R24,z+0
+ 0BDE 9181              ldd R25,z+1
+ 0BE0 8030              cpi R24,0
+ 0BE2 E2E0              ldi R30,2
+ 0BE4 9E07              cpc R25,R30
+ 0BE6 11F4              brne L94
+ 0BE8                   .dbline 460
+ 0BE8 0027              clr R16
+ 0BEA 3EC1              xjmp L73
+ 0BEC           L94:
+ 0BEC                   .dbline 462
+ 0BEC           ;                                               else
+ 0BEC           ;                                               {
+ 0BEC                   .dbline 463
+ 0BEC           ;                                                       WriteFolderCluster(*addr,item->deStartCluster+(((unsigned long)item->deHighClust)<<16));
+ 0BEC EA85              ldd R30,y+10
+ 0BEE FB85              ldd R31,y+11
+ 0BF0 2488              ldd R2,z+20
+ 0BF2 3588              ldd R3,z+21
+ 0BF4 4424              clr R4
+ 0BF6 5524              clr R5
+ 0BF8 2101              movw R4,R2
+ 0BFA 2224              clr R2
+ 0BFC 3324              clr R3
+ 0BFE EA85              ldd R30,y+10
+ 0C00 FB85              ldd R31,y+11
+ 0C02 628C              ldd R6,z+26
+ 0C04 738C              ldd R7,z+27
+ 0C06 8824              clr R8
+ 0C08 9924              clr R9
+ 0C0A 620C              add R6,R2
+ 0C0C 731C              adc R7,R3
+ 0C0E 841C              adc R8,R4
+ 0C10 951C              adc R9,R5
+ 0C12 8882              std y+0,R8
+ 0C14 9982              std y+1,R9
+ 0C16 9301              movw R18,R6
+ 0C18 EA8D              ldd R30,y+26
+ 0C1A FB8D              ldd R31,y+27
+ 0C1C 0081              ldd R16,z+0
+ 0C1E 1181              ldd R17,z+1
+ 0C20 72DE              xcall _WriteFolderCluster
+ 0C22                   .dbline 464
+ 0C22           ;                                                       *addr+=4;
+ 0C22 EA8D              ldd R30,y+26
+ 0C24 FB8D              ldd R31,y+27
+ 0C26 8081              ldd R24,z+0
+ 0C28 9181              ldd R25,z+1
+ 0C2A 0496              adiw R24,4
+ 0C2C 9183              std z+1,R25
+ 0C2E 8083              std z+0,R24
+ 0C30                   .dbline 465
+ 0C30           ;                                               }
+ 0C30                   .dbline 466
+ 0C30           ;                                       }
+ 0C30           L91:
+ 0C30                   .dbline 467
+ 0C30           ;                               }
+ 0C30           L89:
+ 0C30                   .dbline 468
+ 0C30           L86:
+ 0C30                   .dbline 449
+ 0C30 C701              movw R24,R14
+ 0C32 8096              adiw R24,32
+ 0C34 7C01              movw R14,R24
+ 0C36           L88:
+ 0C36                   .dbline 449
+ 0C36 C701              movw R24,R14
+ 0C38 8030              cpi R24,0
+ 0C3A E2E0              ldi R30,2
+ 0C3C 9E07              cpc R25,R30
+ 0C3E 08F4              brsh X9
+ 0C40 B2CF              xjmp L85
+ 0C42           X9:
+ 0C42                   .dbline 469
+ 0C42           L80:
+ 0C42                   .dbline 446
+ 0C42 A394              inc R10
+ 0C44           L82:
+ 0C44                   .dbline 446
+ 0C44 40901E00          lds R4,_RootDirSectors+2
+ 0C48 50901F00          lds R5,_RootDirSectors+2+1
+ 0C4C 20901C00          lds R2,_RootDirSectors
+ 0C50 30901D00          lds R3,_RootDirSectors+1
+ 0C54 6A2C              mov R6,R10
+ 0C56 7724              clr R7
+ 0C58 8824              clr R8
+ 0C5A 9924              clr R9
+ 0C5C 6214              cp R6,R2
+ 0C5E 7304              cpc R7,R3
+ 0C60 8404              cpc R8,R4
+ 0C62 9504              cpc R9,R5
+ 0C64 08F4              brsh X10
+ 0C66 7BCF              xjmp L79
+ 0C68           X10:
+ 0C68                   .dbline 470
+ 0C68           ;                       }
+ 0C68           ;               }
+ 0C68           ;               free(buffer);//release
+ 0C68 8601              movw R16,R12
+ 0C6A 0E940000          xcall _free
+ 0C6E                   .dbline 471
+ 0C6E           ;       }
+ 0C6E FBC0              xjmp L75
+ 0C70           L74:
+ 0C70                   .dbline 473
+ 0C70           ;       else//other folders
+ 0C70           ;       {
+ 0C70                   .dbline 474
+ 0C70           ;               tempclust=cluster;
+ 0C70 FE01              movw R30,R28
+ 0C72 2688              ldd R2,z+22
+ 0C74 3788              ldd R3,z+23
+ 0C76 408C              ldd R4,z+24
+ 0C78 518C              ldd R5,z+25
+ 0C7A FE01              movw R30,R28
+ 0C7C 2682              std z+6,R2
+ 0C7E 3782              std z+7,R3
+ 0C80 4086              std z+8,R4
+ 0C82 5186              std z+9,R5
+ 0C84 EFC0              xjmp L97
+ 0C86           L96:
+ 0C86                   .dbline 476
+ 0C86           ;               while(1)
+ 0C86           ;               {
+ 0C86                   .dbline 477
+ 0C86           ;                       sector=FirstDataSector+(DWORD)(tempclust-2)*(DWORD)SectorsPerClust;//calculate the actual sector number
+ 0C86 42E0              ldi R20,2
+ 0C88 50E0              ldi R21,0
+ 0C8A 60E0              ldi R22,0
+ 0C8C 70E0              ldi R23,0
+ 0C8E FE01              movw R30,R28
+ 0C90 2680              ldd R2,z+6
+ 0C92 3780              ldd R3,z+7
+ 0C94 4084              ldd R4,z+8
+ 0C96 5184              ldd R5,z+9
+ 0C98 241A              sub R2,R20
+ 0C9A 350A              sbc R3,R21
+ 0C9C 460A              sbc R4,R22
+ 0C9E 570A              sbc R5,R23
+ 0CA0 60902800          lds R6,_SectorsPerClust
+ 0CA4 70902900          lds R7,_SectorsPerClust+1
+ 0CA8 8824              clr R8
+ 0CAA 9924              clr R9
+ 0CAC 9A92              st -y,R9
+ 0CAE 8A92              st -y,R8
+ 0CB0 7A92              st -y,R7
+ 0CB2 6A92              st -y,R6
+ 0CB4 8101              movw R16,R2
+ 0CB6 9201              movw R18,R4
+ 0CB8 0E940000          xcall empy32u
+ 0CBC 40903000          lds R4,_FirstDataSector+2
+ 0CC0 50903100          lds R5,_FirstDataSector+2+1
+ 0CC4 20902E00          lds R2,_FirstDataSector
+ 0CC8 30902F00          lds R3,_FirstDataSector+1
+ 0CCC 200E              add R2,R16
+ 0CCE 311E              adc R3,R17
+ 0CD0 421E              adc R4,R18
+ 0CD2 531E              adc R5,R19
+ 0CD4 FE01              movw R30,R28
+ 0CD6 2282              std z+2,R2
+ 0CD8 3382              std z+3,R3
+ 0CDA 4482              std z+4,R4
+ 0CDC 5582              std z+5,R5
+ 0CDE                   .dbline 478
+ 0CDE           ;                       buffer=malloc(512);//apply memory
+ 0CDE 00E0              ldi R16,512
+ 0CE0 12E0              ldi R17,2
+ 0CE2 0E940000          xcall _malloc
+ 0CE6 6801              movw R12,R16
+ 0CE8                   .dbline 479
+ 0CE8           ;                       if(buffer==0)return 1;//if failed
+ 0CE8 0030              cpi R16,0
+ 0CEA 0107              cpc R16,R17
+ 0CEC 11F4              brne L99
+ 0CEE           X3:
+ 0CEE                   .dbline 479
+ 0CEE 01E0              ldi R16,1
+ 0CF0 BBC0              xjmp L73
+ 0CF2           L99:
+ 0CF2                   .dbline 480
+ 0CF2           ;                       for(cnt=0;cnt<SectorsPerClust;cnt++)
+ 0CF2 AA24              clr R10
+ 0CF4 70C0              xjmp L104
+ 0CF6           L101:
+ 0CF6                   .dbline 481
+ 0CF6           ;                       {
+ 0CF6                   .dbline 482
+ 0CF6           ;                               if(FAT_ReadSector(sector+cnt,buffer)){free(buffer);return 1;}
+ 0CF6 D982              std y+1,R13
+ 0CF8 C882              std y+0,R12
+ 0CFA 2A2C              mov R2,R10
+ 0CFC 3324              clr R3
+ 0CFE 4424              clr R4
+ 0D00 5524              clr R5
+ 0D02 FE01              movw R30,R28
+ 0D04 6280              ldd R6,z+2
+ 0D06 7380              ldd R7,z+3
+ 0D08 8480              ldd R8,z+4
+ 0D0A 9580              ldd R9,z+5
+ 0D0C 620C              add R6,R2
+ 0D0E 731C              adc R7,R3
+ 0D10 841C              adc R8,R4
+ 0D12 951C              adc R9,R5
+ 0D14 8301              movw R16,R6
+ 0D16 9401              movw R18,R8
+ 0D18 E0910000          lds R30,_FAT_ReadSector
+ 0D1C F0910100          lds R31,_FAT_ReadSector+1
+ 0D20 0E940000          xcall xicall
+ 0D24 0023              tst R16
+ 0D26 29F0              breq L105
+ 0D28                   .dbline 482
+ 0D28                   .dbline 482
+ 0D28 8601              movw R16,R12
+ 0D2A 0E940000          xcall _free
+ 0D2E                   .dbline 482
+ 0D2E 01E0              ldi R16,1
+ 0D30 9BC0              xjmp L73
+ 0D32           L105:
+ 0D32                   .dbline 483
+ 0D32           ;                               for(offset=0;offset<512;offset+=32)
+ 0D32 EE24              clr R14
+ 0D34 FF24              clr R15
+ 0D36 48C0              xjmp L110
+ 0D38           L107:
+ 0D38                   .dbline 484
+ 0D38           ;                               {
+ 0D38                   .dbline 485
+ 0D38           ;                                       item=(struct direntry *)(&buffer[offset]);
+ 0D38 1701              movw R2,R14
+ 0D3A 2C0C              add R2,R12
+ 0D3C 3D1C              adc R3,R13
+ 0D3E 3B86              std y+11,R3
+ 0D40 2A86              std y+10,R2
+ 0D42                   .dbline 486
+ 0D42           ;                                       if((item->deName[0] != '.') && (item->deName[0] != 0x00) && (item->deName[0] != 0xe5))
+ 0D42 F101              movw R30,R2
+ 0D44 2080              ldd R2,z+0
+ 0D46 3324              clr R3
+ 0D48 822D              mov R24,R2
+ 0D4A 8E32              cpi R24,46
+ 0D4C 09F4              brne X11
+ 0D4E 39C0              xjmp L111
+ 0D50           X11:
+ 0D50 8823              tst R24
+ 0D52 09F4              brne X12
+ 0D54 36C0              xjmp L111
+ 0D56           X12:
+ 0D56 853E              cpi R24,229
+ 0D58 09F4              brne X13
+ 0D5A 33C0              xjmp L111
+ 0D5C           X13:
+ 0D5C                   .dbline 487
+ 0D5C           ;                                       {                               
+ 0D5C                   .dbline 488
+ 0D5C           ;                                               if(item->deAttributes & ATTR_DIRECTORY )
+ 0D5C 2384              ldd R2,z+11
+ 0D5E 24FE              sbrs R2,4
+ 0D60 30C0              rjmp L113
+ 0D62                   .dbline 489
+ 0D62           ;                                               {
+ 0D62                   .dbline 491
+ 0D62           ;                                                       #if FAT_DEBUG
+ 0D62           ;                                                               printf("\r\nFound a folder!");
+ 0D62 00E0              ldi R16,<L93
+ 0D64 10E0              ldi R17,>L93
+ 0D66 0E940000          xcall _printf
+ 0D6A                   .dbline 493
+ 0D6A           ;                                                       #endif
+ 0D6A           ;                                                       if(*addr==RECORD_ADDR_END)return 0;
+ 0D6A EA8D              ldd R30,y+26
+ 0D6C FB8D              ldd R31,y+27
+ 0D6E 8081              ldd R24,z+0
+ 0D70 9181              ldd R25,z+1
+ 0D72 8030              cpi R24,0
+ 0D74 E2E0              ldi R30,2
+ 0D76 9E07              cpc R25,R30
+ 0D78 11F4              brne L115
+ 0D7A                   .dbline 493
+ 0D7A 0027              clr R16
+ 0D7C 75C0              xjmp L73
+ 0D7E           L115:
+ 0D7E                   .dbline 495
+ 0D7E           ;                                                       else
+ 0D7E           ;                                                       {
+ 0D7E                   .dbline 496
+ 0D7E           ;                                                               WriteFolderCluster(*addr,item->deStartCluster+(((unsigned long)item->deHighClust)<<16));
+ 0D7E EA85              ldd R30,y+10
+ 0D80 FB85              ldd R31,y+11
+ 0D82 2488              ldd R2,z+20
+ 0D84 3588              ldd R3,z+21
+ 0D86 4424              clr R4
+ 0D88 5524              clr R5
+ 0D8A 2101              movw R4,R2
+ 0D8C 2224              clr R2
+ 0D8E 3324              clr R3
+ 0D90 EA85              ldd R30,y+10
+ 0D92 FB85              ldd R31,y+11
+ 0D94 628C              ldd R6,z+26
+ 0D96 738C              ldd R7,z+27
+ 0D98 8824              clr R8
+ 0D9A 9924              clr R9
+ 0D9C 620C              add R6,R2
+ 0D9E 731C              adc R7,R3
+ 0DA0 841C              adc R8,R4
+ 0DA2 951C              adc R9,R5
+ 0DA4 8882              std y+0,R8
+ 0DA6 9982              std y+1,R9
+ 0DA8 9301              movw R18,R6
+ 0DAA EA8D              ldd R30,y+26
+ 0DAC FB8D              ldd R31,y+27
+ 0DAE 0081              ldd R16,z+0
+ 0DB0 1181              ldd R17,z+1
+ 0DB2 A9DD              xcall _WriteFolderCluster
+ 0DB4                   .dbline 497
+ 0DB4           ;                                                               *addr+=4;
+ 0DB4 EA8D              ldd R30,y+26
+ 0DB6 FB8D              ldd R31,y+27
+ 0DB8 8081              ldd R24,z+0
+ 0DBA 9181              ldd R25,z+1
+ 0DBC 0496              adiw R24,4
+ 0DBE 9183              std z+1,R25
+ 0DC0 8083              std z+0,R24
+ 0DC2                   .dbline 498
+ 0DC2           ;                                                       }
+ 0DC2                   .dbline 499
+ 0DC2           ;                                               }
+ 0DC2           L113:
+ 0DC2                   .dbline 500
+ 0DC2           ;                                       }
+ 0DC2           L111:
+ 0DC2                   .dbline 501
+ 0DC2           L108:
+ 0DC2                   .dbline 483
+ 0DC2 C701              movw R24,R14
+ 0DC4 8096              adiw R24,32
+ 0DC6 7C01              movw R14,R24
+ 0DC8           L110:
+ 0DC8                   .dbline 483
+ 0DC8 C701              movw R24,R14
+ 0DCA 8030              cpi R24,0
+ 0DCC E2E0              ldi R30,2
+ 0DCE 9E07              cpc R25,R30
+ 0DD0 08F4              brsh X14
+ 0DD2 B2CF              xjmp L107
+ 0DD4           X14:
+ 0DD4                   .dbline 502
+ 0DD4           L102:
+ 0DD4                   .dbline 480
+ 0DD4 A394              inc R10
+ 0DD6           L104:
+ 0DD6                   .dbline 480
+ 0DD6 20902800          lds R2,_SectorsPerClust
+ 0DDA 30902900          lds R3,_SectorsPerClust+1
+ 0DDE 4A2C              mov R4,R10
+ 0DE0 5524              clr R5
+ 0DE2 4214              cp R4,R2
+ 0DE4 5304              cpc R5,R3
+ 0DE6 08F4              brsh X15
+ 0DE8 86CF              xjmp L101
+ 0DEA           X15:
+ 0DEA                   .dbline 503
+ 0DEA           ;                               }
+ 0DEA           ;                       }
+ 0DEA           ;                       free(buffer);//release
+ 0DEA 8601              movw R16,R12
+ 0DEC 0E940000          xcall _free
+ 0DF0                   .dbline 504
+ 0DF0           ;                       tempclust=FAT_NextCluster(tempclust);//next cluster
+ 0DF0 FE01              movw R30,R28
+ 0DF2 0681              ldd R16,z+6
+ 0DF4 1781              ldd R17,z+7
+ 0DF6 2085              ldd R18,z+8
+ 0DF8 3185              ldd R19,z+9
+ 0DFA E6DB              xcall _FAT_NextCluster
+ 0DFC FE01              movw R30,R28
+ 0DFE 0683              std z+6,R16
+ 0E00 1783              std z+7,R17
+ 0E02 2087              std z+8,R18
+ 0E04 3187              std z+9,R19
+ 0E06                   .dbline 505
+ 0E06 4FEF              ldi R20,255
+ 0E08 5FEF              ldi R21,255
+ 0E0A 6FEF              ldi R22,255
+ 0E0C 7FE0              ldi R23,15
+ 0E0E FE01              movw R30,R28
+ 0E10 2680              ldd R2,z+6
+ 0E12 3780              ldd R3,z+7
+ 0E14 4084              ldd R4,z+8
+ 0E16 5184              ldd R5,z+9
+ 0E18 2416              cp R2,R20
+ 0E1A 3506              cpc R3,R21
+ 0E1C 4606              cpc R4,R22
+ 0E1E 5706              cpc R5,R23
+ 0E20 01F1              breq L120
+ 0E22 48EF              ldi R20,248
+ 0E24 5FEF              ldi R21,255
+ 0E26 6FEF              ldi R22,255
+ 0E28 7FE0              ldi R23,15
+ 0E2A FE01              movw R30,R28
+ 0E2C 2680              ldd R2,z+6
+ 0E2E 3780              ldd R3,z+7
+ 0E30 4084              ldd R4,z+8
+ 0E32 5184              ldd R5,z+9
+ 0E34 2416              cp R2,R20
+ 0E36 3506              cpc R3,R21
+ 0E38 4606              cpc R4,R22
+ 0E3A 5706              cpc R5,R23
+ 0E3C 91F0              breq L120
+ 0E3E 20901700          lds R2,_FAT32_Enable
+ 0E42 2220              tst R2
+ 0E44 79F4              brne L117
+ 0E46 4FEF              ldi R20,255
+ 0E48 5FEF              ldi R21,255
+ 0E4A 60E0              ldi R22,0
+ 0E4C 70E0              ldi R23,0
+ 0E4E FE01              movw R30,R28
+ 0E50 2680              ldd R2,z+6
+ 0E52 3780              ldd R3,z+7
+ 0E54 4084              ldd R4,z+8
+ 0E56 5184              ldd R5,z+9
+ 0E58 2416              cp R2,R20
+ 0E5A 3506              cpc R3,R21
+ 0E5C 4606              cpc R4,R22
+ 0E5E 5706              cpc R5,R23
+ 0E60 09F4              brne L117
+ 0E62           L120:
+ 0E62                   .dbline 505
+ 0E62           ;                       if(tempclust == 0x0fffffff || tempclust == 0x0ffffff8 || (FAT32_Enable == 0 && tempclust == 0xffff))break;
+ 0E62 01C0              xjmp L98
+ 0E64           L117:
+ 0E64                   .dbline 506
+ 0E64           L97:
+ 0E64                   .dbline 475
+ 0E64 10CF              xjmp L96
+ 0E66           L98:
+ 0E66                   .dbline 507
+ 0E66           ;               }
+ 0E66           ;       }
+ 0E66           L75:
+ 0E66                   .dbline 508
+ 0E66           ;       return 0;               
+ 0E66 0027              clr R16
+ 0E68                   .dbline -2
+ 0E68           L73:
+ 0E68 2C96              adiw R28,12
+ 0E6A 0E940000          xcall pop_gset5
+ 0E6E 2496              adiw R28,4
+ 0E70                   .dbline 0 ; func end
+ 0E70 0895              ret
+ 0E72                   .dbsym l tempclust 6 l
+ 0E72                   .dbsym l sector 2 l
+ 0E72                   .dbsym r cnt 10 c
+ 0E72                   .dbsym r buffer 12 pc
+ 0E72                   .dbsym r offset 14 i
+ 0E72                   .dbsym l item 10 pS[direntry]
+ 0E72                   .dbsym l addr 26 pi
+ 0E72                   .dbsym l cluster 22 l
+ 0E72                   .dbend
+ 0E72                   .dbfunc e SearchInit _SearchInit fc
+ 0E72           ;      temp_addr -> y+6
+ 0E72           ;        cluster -> y+2
+ 0E72           ;           addr -> R10,R11
+                        .even
+ 0E72           _SearchInit::
+ 0E72 0E940000          xcall push_gset3
+ 0E76 2897              sbiw R28,8
+ 0E78                   .dbline -1
+ 0E78                   .dbline 514
+ 0E78           ; }
+ 0E78           ; 
+ 0E78           ; 
+ 0E78           ; 
+ 0E78           ; BYTE SearchInit()
+ 0E78           ; {     
+ 0E78                   .dbline 515
+ 0E78           ;       WORD addr = RECORD_ADDR_START;
+ 0E78 AA24              clr R10
+ 0E7A BB24              clr R11
+ 0E7C                   .dbline 520
+ 0E7C           ;       WORD temp_addr;
+ 0E7C           ;       DWORD cluster;
+ 0E7C           ;       
+ 0E7C           ; #if FAT_DEBUG
+ 0E7C           ;       printf("\r\nSearchInit");
+ 0E7C 00E0              ldi R16,<L122
+ 0E7E 10E0              ldi R17,>L122
+ 0E80 0E940000          xcall _printf
+ 0E84                   .dbline 523
+ 0E84           ; #endif
+ 0E84           ; 
+ 0E84           ;       if(FAT32_Enable)
+ 0E84 20901700          lds R2,_FAT32_Enable
+ 0E88 2220              tst R2
+ 0E8A 71F0              breq L123
+ 0E8C                   .dbline 524
+ 0E8C           ;               WriteFolderCluster(addr,FirstDirClust);
+ 0E8C 40903400          lds R4,_FirstDirClust+2
+ 0E90 50903500          lds R5,_FirstDirClust+2+1
+ 0E94 20903200          lds R2,_FirstDirClust
+ 0E98 30903300          lds R3,_FirstDirClust+1
+ 0E9C 4882              std y+0,R4
+ 0E9E 5982              std y+1,R5
+ 0EA0 9101              movw R18,R2
+ 0EA2 8501              movw R16,R10
+ 0EA4 30DD              xcall _WriteFolderCluster
+ 0EA6 0AC0              xjmp L124
+ 0EA8           L123:
+ 0EA8                   .dbline 526
+ 0EA8           ;       else 
+ 0EA8           ;               WriteFolderCluster(RECORD_ADDR_START,0);
+ 0EA8 40E0              ldi R20,0
+ 0EAA 50E0              ldi R21,0
+ 0EAC 60E0              ldi R22,0
+ 0EAE 70E0              ldi R23,0
+ 0EB0 6883              std y+0,R22
+ 0EB2 7983              std y+1,R23
+ 0EB4 9A01              movw R18,R20
+ 0EB6 0027              clr R16
+ 0EB8 1127              clr R17
+ 0EBA 25DD              xcall _WriteFolderCluster
+ 0EBC           L124:
+ 0EBC                   .dbline 528
+ 0EBC           ;       
+ 0EBC           ;       addr += 4;
+ 0EBC C501              movw R24,R10
+ 0EBE 0496              adiw R24,4
+ 0EC0 5C01              movw R10,R24
+ 0EC2                   .dbline 530
+ 0EC2           ;       
+ 0EC2           ;       WriteFolderCluster(addr, 0xffffffff);
+ 0EC2 4FEF              ldi R20,255
+ 0EC4 5FEF              ldi R21,255
+ 0EC6 6FEF              ldi R22,255
+ 0EC8 7FEF              ldi R23,255
+ 0ECA 6883              std y+0,R22
+ 0ECC 7983              std y+1,R23
+ 0ECE 9A01              movw R18,R20
+ 0ED0 8C01              movw R16,R24
+ 0ED2 19DD              xcall _WriteFolderCluster
+ 0ED4                   .dbline 531
+ 0ED4           ;       temp_addr = addr;
+ 0ED4 BF82              std y+7,R11
+ 0ED6 AE82              std y+6,R10
+ 0ED8                   .dbline 532
+ 0ED8           ;       addr = RECORD_ADDR_START;
+ 0ED8 AA24              clr R10
+ 0EDA BB24              clr R11
+ 0EDC 5BC0              xjmp L126
+ 0EDE           L125:
+ 0EDE                   .dbline 534
+ 0EDE           ;       while(1)
+ 0EDE           ;       {
+ 0EDE                   .dbline 535
+ 0EDE           ;               cluster = GetFolderCluster(addr);
+ 0EDE 8501              movw R16,R10
+ 0EE0 66DD              xcall _GetFolderCluster
+ 0EE2 FE01              movw R30,R28
+ 0EE4 0283              std z+2,R16
+ 0EE6 1383              std z+3,R17
+ 0EE8 2483              std z+4,R18
+ 0EEA 3583              std z+5,R19
+ 0EEC                   .dbline 536
+ 0EEC           ;               if(cluster == 0xffffffff)return 0;
+ 0EEC 4FEF              ldi R20,255
+ 0EEE 5FEF              ldi R21,255
+ 0EF0 6FEF              ldi R22,255
+ 0EF2 7FEF              ldi R23,255
+ 0EF4 FE01              movw R30,R28
+ 0EF6 2280              ldd R2,z+2
+ 0EF8 3380              ldd R3,z+3
+ 0EFA 4480              ldd R4,z+4
+ 0EFC 5580              ldd R5,z+5
+ 0EFE 2416              cp R2,R20
+ 0F00 3506              cpc R3,R21
+ 0F02 4606              cpc R4,R22
+ 0F04 5706              cpc R5,R23
+ 0F06 11F4              brne L128
+ 0F08                   .dbline 536
+ 0F08 0027              clr R16
+ 0F0A 4AC0              xjmp L121
+ 0F0C           L128:
+ 0F0C                   .dbline 538
+ 0F0C           ;               else
+ 0F0C           ;               {
+ 0F0C                   .dbline 539
+ 0F0C           ;                       if(SearchFolder(cluster,&temp_addr))
+ 0F0C CE01              movw R24,R28
+ 0F0E 0696              adiw R24,6
+ 0F10 9983              std y+1,R25
+ 0F12 8883              std y+0,R24
+ 0F14 FE01              movw R30,R28
+ 0F16 0281              ldd R16,z+2
+ 0F18 1381              ldd R17,z+3
+ 0F1A 2481              ldd R18,z+4
+ 0F1C 3581              ldd R19,z+5
+ 0F1E F2DD              xcall _SearchFolder
+ 0F20 0023              tst R16
+ 0F22 21F0              breq L130
+ 0F24                   .dbline 540
+ 0F24           ;                       {
+ 0F24                   .dbline 542
+ 0F24           ;                               #if FAT_DEBUG
+ 0F24           ;                                       printf("\r\nERROR: search folder error");
+ 0F24 00E0              ldi R16,<L132
+ 0F26 10E0              ldi R17,>L132
+ 0F28 0E940000          xcall _printf
+ 0F2C                   .dbline 544
+ 0F2C           ;                               #endif
+ 0F2C           ;                       }
+ 0F2C           L130:
+ 0F2C                   .dbline 546
+ 0F2C           ;                       #if FAT_DEBUG
+ 0F2C           ;                               printf("\r\nSearch one folder, write the end flag if the the value is not the right value");
+ 0F2C 00E0              ldi R16,<L133
+ 0F2E 10E0              ldi R17,>L133
+ 0F30 0E940000          xcall _printf
+ 0F34                   .dbline 548
+ 0F34           ;                       #endif
+ 0F34           ;                       if(GetFolderCluster(temp_addr) != 0xffffffff)
+ 0F34 0E81              ldd R16,y+6
+ 0F36 1F81              ldd R17,y+7
+ 0F38 3ADD              xcall _GetFolderCluster
+ 0F3A 4FEF              ldi R20,255
+ 0F3C 5FEF              ldi R21,255
+ 0F3E 6FEF              ldi R22,255
+ 0F40 7FEF              ldi R23,255
+ 0F42 0417              cp R16,R20
+ 0F44 1507              cpc R17,R21
+ 0F46 2607              cpc R18,R22
+ 0F48 3707              cpc R19,R23
+ 0F4A 51F0              breq L134
+ 0F4C                   .dbline 549
+ 0F4C           ;                               WriteFolderCluster(temp_addr,0XFFFFFFFF);
+ 0F4C 4FEF              ldi R20,255
+ 0F4E 5FEF              ldi R21,255
+ 0F50 6FEF              ldi R22,255
+ 0F52 7FEF              ldi R23,255
+ 0F54 6883              std y+0,R22
+ 0F56 7983              std y+1,R23
+ 0F58 9A01              movw R18,R20
+ 0F5A 0E81              ldd R16,y+6
+ 0F5C 1F81              ldd R17,y+7
+ 0F5E D3DC              xcall _WriteFolderCluster
+ 0F60           L134:
+ 0F60                   .dbline 550
+ 0F60           ;                       if(temp_addr == RECORD_ADDR_END)
+ 0F60 8E81              ldd R24,y+6
+ 0F62 9F81              ldd R25,y+7
+ 0F64 8030              cpi R24,0
+ 0F66 E2E0              ldi R30,2
+ 0F68 9E07              cpc R25,R30
+ 0F6A 89F4              brne L136
+ 0F6C                   .dbline 551
+ 0F6C           ;                       {
+ 0F6C                   .dbline 553
+ 0F6C           ;                               #if FAT_DEBUG
+ 0F6C           ;                                       printf("\r\nWARNING: EEPROM is full, no more space!");
+ 0F6C 00E0              ldi R16,<L138
+ 0F6E 10E0              ldi R17,>L138
+ 0F70 0E940000          xcall _printf
+ 0F74                   .dbline 555
+ 0F74           ;                               #endif
+ 0F74           ;                               WriteFolderCluster(temp_addr - 4,0XFFFFFFFF);
+ 0F74 4FEF              ldi R20,255
+ 0F76 5FEF              ldi R21,255
+ 0F78 6FEF              ldi R22,255
+ 0F7A 7FEF              ldi R23,255
+ 0F7C 6883              std y+0,R22
+ 0F7E 7983              std y+1,R23
+ 0F80 9A01              movw R18,R20
+ 0F82 0E81              ldd R16,y+6
+ 0F84 1F81              ldd R17,y+7
+ 0F86 0450              subi R16,4
+ 0F88 1040              sbci R17,0
+ 0F8A BDDC              xcall _WriteFolderCluster
+ 0F8C                   .dbline 556
+ 0F8C           ;                               break;
+ 0F8C 04C0              xjmp L127
+ 0F8E           L136:
+ 0F8E                   .dbline 558
+ 0F8E                   .dbline 559
+ 0F8E C501              movw R24,R10
+ 0F90 0496              adiw R24,4
+ 0F92 5C01              movw R10,R24
+ 0F94                   .dbline 560
+ 0F94           L126:
+ 0F94                   .dbline 533
+ 0F94 A4CF              xjmp L125
+ 0F96           L127:
+ 0F96                   .dbline 562
+ 0F96           ;                       }
+ 0F96           ;               }
+ 0F96           ;               addr+=4;
+ 0F96           ;       }
+ 0F96           ;       #if FAT_DEBUG
+ 0F96           ;               printf("\r\nSearch Completed!");
+ 0F96 00E0              ldi R16,<L139
+ 0F98 10E0              ldi R17,>L139
+ 0F9A 0E940000          xcall _printf
+ 0F9E                   .dbline 564
+ 0F9E           ;       #endif
+ 0F9E           ; return 1;
+ 0F9E 01E0              ldi R16,1
+ 0FA0                   .dbline -2
+ 0FA0           L121:
+ 0FA0 2896              adiw R28,8
+ 0FA2 0E940000          xcall pop_gset3
+ 0FA6                   .dbline 0 ; func end
+ 0FA6 0895              ret
+ 0FA8                   .dbsym l temp_addr 6 i
+ 0FA8                   .dbsym l cluster 2 l
+ 0FA8                   .dbsym r addr 10 i
+ 0FA8                   .dbend
+ 0FA8                   .dbfunc e Search _Search fc
+ 0FA8           ;           addr -> y+21
+ 0FA8           ;        cluster -> y+13
+ 0FA8           ;      tempclust -> y+9
+ 0FA8           ;         sector -> y+5
+ 0FA8           ;            cnt -> R10
+ 0FA8           ;              i -> y+19
+ 0FA8           ;         buffer -> R12,R13
+ 0FA8           ;      file_type -> y+2
+ 0FA8           ;         offset -> R14,R15
+ 0FA8           ;           item -> y+17
+ 0FA8           ;           type -> y+37
+ 0FA8           ;          Count -> y+35
+ 0FA8           ;      MusicInfo -> y+33
+                        .even
+ 0FA8           _Search::
+ 0FA8 0E940000          xcall push_arg4
+ 0FAC 0E940000          xcall push_gset5
+ 0FB0 6797              sbiw R28,23
+ 0FB2                   .dbline -1
+ 0FB2                   .dbline 570
+ 0FB2           ; }
+ 0FB2           ; 
+ 0FB2           ; 
+ 0FB2           ; 
+ 0FB2           ; BYTE Search(/*BYTE *dirWORD *music_record_addr,*/struct direntry *MusicInfo,WORD *Count,BYTE *type)//当COUNT为零时，有它带回这个目录下总共有多少图片
+ 0FB2           ; {                                                            //不为零时有MusicInfo带回第Count图片的详细文件信息
+ 0FB2                   .dbline 577
+ 0FB2           ;       BYTE *buffer;
+ 0FB2           ;       DWORD sector;
+ 0FB2           ;       DWORD cluster;
+ 0FB2           ;       DWORD tempclust;
+ 0FB2           ;       unsigned char cnt;
+ 0FB2           ;       unsigned int offset;
+ 0FB2           ;       unsigned int i=0;
+ 0FB2 0024              clr R0
+ 0FB4 1124              clr R1
+ 0FB6 1C8A              std y+20,R1
+ 0FB8 0B8A              std y+19,R0
+ 0FBA                   .dbline 580
+ 0FBA           ;       //unsigned char j;//long name buffer offset;
+ 0FBA           ;       //unsigned char *p;//long name buffer pointer
+ 0FBA           ;       struct direntry *item = 0;
+ 0FBA 1A8A              std y+18,R1
+ 0FBC 098A              std y+17,R0
+ 0FBE                   .dbline 586
+ 0FBE           ;       //struct winentry *we =0;
+ 0FBE           ;       //cluster = FAT_OpenDir(dir);
+ 0FBE           ;       //if(cluster == 1)return 1;
+ 0FBE           ;       
+ 0FBE           ;       BYTE file_type[3] ;
+ 0FBE           ;       WORD addr =RECORD_ADDR_START;
+ 0FBE 1E8A              std y+22,R1
+ 0FC0 0D8A              std y+21,R0
+ 0FC2                   .dbline 588
+ 0FC2           ;       
+ 0FC2           ;       switch(*type)
+ 0FC2 EDA1              ldd R30,y+37
+ 0FC4 FEA1              ldd R31,y+38
+ 0FC6 A080              ldd R10,z+0
+ 0FC8 BB24              clr R11
+ 0FCA C501              movw R24,R10
+ 0FCC 8130              cpi R24,1
+ 0FCE E0E0              ldi R30,0
+ 0FD0 9E07              cpc R25,R30
+ 0FD2 29F0              breq L144
+ 0FD4 8230              cpi R24,2
+ 0FD6 E0E0              ldi R30,0
+ 0FD8 9E07              cpc R25,R30
+ 0FDA 41F0              breq L147
+ 0FDC C0C1              xjmp L151
+ 0FDE           X16:
+ 0FDE                   .dbline 589
+ 0FDE           ;         {
+ 0FDE           L144:
+ 0FDE                   .dbline 590
+ 0FDE           ;           case  1 : file_type[0] = 'B' ;
+ 0FDE 82E4              ldi R24,66
+ 0FE0 8A83              std y+2,R24
+ 0FE2                   .dbline 591
+ 0FE2           ;                   file_type[1] = 'M' ; 
+ 0FE2 8DE4              ldi R24,77
+ 0FE4 8B83              std y+3,R24
+ 0FE6                   .dbline 592
+ 0FE6           ;                                 file_type[2] = 'P' ;
+ 0FE6 80E5              ldi R24,80
+ 0FE8 8C83              std y+4,R24
+ 0FEA                   .dbline 594
+ 0FEA           ;                                 
+ 0FEA           ;                                 break ;
+ 0FEA B9C1              xjmp L151
+ 0FEC           L147:
+ 0FEC                   .dbline 596
+ 0FEC           ;                                 
+ 0FEC           ;               case  2 : file_type[0] = 'B' ;
+ 0FEC 82E4              ldi R24,66
+ 0FEE 8A83              std y+2,R24
+ 0FF0                   .dbline 597
+ 0FF0           ;                         file_type[1] = 'I' ;
+ 0FF0 89E4              ldi R24,73
+ 0FF2 8B83              std y+3,R24
+ 0FF4                   .dbline 598
+ 0FF4           ;                                 file_type[2] = 'N' ;
+ 0FF4 8EE4              ldi R24,78
+ 0FF6 8C83              std y+4,R24
+ 0FF8                   .dbline 600
+ 0FF8           ;                                 
+ 0FF8           ;                                 break;
+ 0FF8 B2C1              xjmp L151
+ 0FFA           L150:
+ 0FFA                   .dbline 608
+ 0FFA           ;                                 
+ 0FFA           ;         
+ 0FFA           ;         }
+ 0FFA           ;       
+ 0FFA           ;       
+ 0FFA           ;       
+ 0FFA           ;       while(1)
+ 0FFA           ;       {
+ 0FFA                   .dbline 609
+ 0FFA           ;               cluster = GetFolderCluster(addr);
+ 0FFA 0D89              ldd R16,y+21
+ 0FFC 1E89              ldd R17,y+22
+ 0FFE D7DC              xcall _GetFolderCluster
+ 1000 FE01              movw R30,R28
+ 1002 0587              std z+13,R16
+ 1004 1687              std z+14,R17
+ 1006 2787              std z+15,R18
+ 1008 308B              std z+16,R19
+ 100A                   .dbline 610
+ 100A           ;               addr += 4;
+ 100A 8D89              ldd R24,y+21
+ 100C 9E89              ldd R25,y+22
+ 100E 0496              adiw R24,4
+ 1010 9E8B              std y+22,R25
+ 1012 8D8B              std y+21,R24
+ 1014                   .dbline 611
+ 1014           ;               if(cluster == 0xffffffff) break;
+ 1014 4FEF              ldi R20,255
+ 1016 5FEF              ldi R21,255
+ 1018 6FEF              ldi R22,255
+ 101A 7FEF              ldi R23,255
+ 101C FE01              movw R30,R28
+ 101E 2584              ldd R2,z+13
+ 1020 3684              ldd R3,z+14
+ 1022 4784              ldd R4,z+15
+ 1024 5088              ldd R5,z+16
+ 1026 2416              cp R2,R20
+ 1028 3506              cpc R3,R21
+ 102A 4606              cpc R4,R22
+ 102C 5706              cpc R5,R23
+ 102E 09F4              brne L153
+ 1030                   .dbline 611
+ 1030 97C1              xjmp L152
+ 1032           L153:
+ 1032                   .dbline 614
+ 1032           ;               
+ 1032           ;               else
+ 1032           ;               {
+ 1032                   .dbline 616
+ 1032           ;                       //*music_record_addr = addr - 4;        /* record in which record found the right file */
+ 1032           ;                       if(cluster==0 && FAT32_Enable==0)// 根目录，FAT16文件系统
+ 1032 40E0              ldi R20,0
+ 1034 50E0              ldi R21,0
+ 1036 60E0              ldi R22,0
+ 1038 70E0              ldi R23,0
+ 103A FE01              movw R30,R28
+ 103C 2584              ldd R2,z+13
+ 103E 3684              ldd R3,z+14
+ 1040 4784              ldd R4,z+15
+ 1042 5088              ldd R5,z+16
+ 1044 2416              cp R2,R20
+ 1046 3506              cpc R3,R21
+ 1048 4606              cpc R4,R22
+ 104A 5706              cpc R5,R23
+ 104C 09F0              breq X20
+ 104E 93C0              xjmp L155
+ 1050           X20:
+ 1050 20901700          lds R2,_FAT32_Enable
+ 1054 2220              tst R2
+ 1056 09F0              breq X21
+ 1058 8EC0              xjmp L155
+ 105A           X21:
+ 105A                   .dbline 617
+ 105A           ;                       {
+ 105A                   .dbline 620
+ 105A           ;                       
+ 105A           ;                       
+ 105A           ;                               buffer=malloc(512);//动态分配空间512字节
+ 105A 00E0              ldi R16,512
+ 105C 12E0              ldi R17,2
+ 105E 0E940000          xcall _malloc
+ 1062 6801              movw R12,R16
+ 1064                   .dbline 621
+ 1064           ;                               if(buffer==0)return 1;//if failed
+ 1064 0030              cpi R16,0
+ 1066 0107              cpc R16,R17
+ 1068 11F4              brne L157
+ 106A           X17:
+ 106A                   .dbline 621
+ 106A 01E0              ldi R16,1
+ 106C 88C1              xjmp L140
+ 106E           L157:
+ 106E                   .dbline 624
+ 106E           ;                               
+ 106E           ;                               
+ 106E           ;                               for(cnt=0;cnt<RootDirSectors;cnt++)
+ 106E AA24              clr R10
+ 1070 6CC0              xjmp L162
+ 1072           L159:
+ 1072                   .dbline 625
+ 1072           ;                               {
+ 1072                   .dbline 626
+ 1072           ;                                       if(FAT_ReadSector(FirstDirSector+cnt,buffer)){free(buffer);return 1;}
+ 1072 D982              std y+1,R13
+ 1074 C882              std y+0,R12
+ 1076 2A2C              mov R2,R10
+ 1078 3324              clr R3
+ 107A 4424              clr R4
+ 107C 5524              clr R5
+ 107E 80902200          lds R8,_FirstDirSector+2
+ 1082 90902300          lds R9,_FirstDirSector+2+1
+ 1086 60902000          lds R6,_FirstDirSector
+ 108A 70902100          lds R7,_FirstDirSector+1
+ 108E 620C              add R6,R2
+ 1090 731C              adc R7,R3
+ 1092 841C              adc R8,R4
+ 1094 951C              adc R9,R5
+ 1096 8301              movw R16,R6
+ 1098 9401              movw R18,R8
+ 109A E0910000          lds R30,_FAT_ReadSector
+ 109E F0910100          lds R31,_FAT_ReadSector+1
+ 10A2 0E940000          xcall xicall
+ 10A6 0023              tst R16
+ 10A8 29F0              breq L163
+ 10AA                   .dbline 626
+ 10AA                   .dbline 626
+ 10AA 8601              movw R16,R12
+ 10AC 0E940000          xcall _free
+ 10B0                   .dbline 626
+ 10B0 01E0              ldi R16,1
+ 10B2 65C1              xjmp L140
+ 10B4           L163:
+ 10B4                   .dbline 627
+ 10B4           ;                                       for(offset=0;offset<512;offset+=32)
+ 10B4 EE24              clr R14
+ 10B6 FF24              clr R15
+ 10B8 41C0              xjmp L168
+ 10BA           L165:
+ 10BA                   .dbline 628
+ 10BA           ;                                       {
+ 10BA                   .dbline 629
+ 10BA           ;                                               item=(struct direntry *)(&buffer[offset]);//pointer convert
+ 10BA 1701              movw R2,R14
+ 10BC 2C0C              add R2,R12
+ 10BE 3D1C              adc R3,R13
+ 10C0 3A8A              std y+18,R3
+ 10C2 298A              std y+17,R2
+ 10C4                   .dbline 631
+ 10C4           ;                                               //find a valid item and display it
+ 10C4           ;                                               if((item->deName[0] != '.') && (item->deName[0] != 0x00) && (item->deName[0] != 0xe5) && (item->deAttributes != 0x0f))
+ 10C4 F101              movw R30,R2
+ 10C6 2080              ldd R2,z+0
+ 10C8 3324              clr R3
+ 10CA 822D              mov R24,R2
+ 10CC 8E32              cpi R24,46
+ 10CE 09F4              brne X22
+ 10D0 32C0              xjmp L169
+ 10D2           X22:
+ 10D2 8823              tst R24
+ 10D4 09F4              brne X23
+ 10D6 2FC0              xjmp L169
+ 10D8           X23:
+ 10D8 853E              cpi R24,229
+ 10DA 09F4              brne X24
+ 10DC 2CC0              xjmp L169
+ 10DE           X24:
+ 10DE 8385              ldd R24,z+11
+ 10E0 8F30              cpi R24,15
+ 10E2 49F1              breq L169
+ 10E4                   .dbline 632
+ 10E4           ;                                               {
+ 10E4                   .dbline 634
+ 10E4           ;                                               
+ 10E4           ;                                                       if((item->deExtension[0] == file_type[0])&&(item->deExtension[1] == file_type[1])&&(item->deExtension[2] == file_type[2]))
+ 10E4 2A80              ldd R2,y+2
+ 10E6 E989              ldd R30,y+17
+ 10E8 FA89              ldd R31,y+18
+ 10EA 3084              ldd R3,z+8
+ 10EC 3214              cp R3,R2
+ 10EE 19F5              brne L171
+ 10F0 2B80              ldd R2,y+3
+ 10F2 E989              ldd R30,y+17
+ 10F4 FA89              ldd R31,y+18
+ 10F6 3184              ldd R3,z+9
+ 10F8 3214              cp R3,R2
+ 10FA E9F4              brne L171
+ 10FC 2C80              ldd R2,y+4
+ 10FE E989              ldd R30,y+17
+ 1100 FA89              ldd R31,y+18
+ 1102 3284              ldd R3,z+10
+ 1104 3214              cp R3,R2
+ 1106 B9F4              brne L171
+ 1108                   .dbline 635
+ 1108           ;                                                       {
+ 1108                   .dbline 637
+ 1108           ;                                                               
+ 1108           ;                                                               CopyDirentruyItem(MusicInfo,item);
+ 1108 2989              ldd R18,y+17
+ 110A 3A89              ldd R19,y+18
+ 110C 09A1              ldd R16,y+33
+ 110E 1AA1              ldd R17,y+34
+ 1110 52DB              xcall _CopyDirentruyItem
+ 1112                   .dbline 639
+ 1112           ;                                                               
+ 1112           ;                                                               i++;
+ 1112 8B89              ldd R24,y+19
+ 1114 9C89              ldd R25,y+20
+ 1116 0196              adiw R24,1
+ 1118 9C8B              std y+20,R25
+ 111A 8B8B              std y+19,R24
+ 111C                   .dbline 640
+ 111C           ;                                                               if(i==*Count){free(buffer);return 0;}
+ 111C EBA1              ldd R30,y+35
+ 111E FCA1              ldd R31,y+36
+ 1120 2080              ldd R2,z+0
+ 1122 3180              ldd R3,z+1
+ 1124 0C01              movw R0,R24
+ 1126 8215              cp R24,R2
+ 1128 9305              cpc R25,R3
+ 112A 29F4              brne L175
+ 112C                   .dbline 640
+ 112C                   .dbline 640
+ 112C 8601              movw R16,R12
+ 112E 0E940000          xcall _free
+ 1132                   .dbline 640
+ 1132 0027              clr R16
+ 1134 24C1              xjmp L140
+ 1136           L175:
+ 1136                   .dbline 641
+ 1136           ;                                                       }                                                        
+ 1136           L171:
+ 1136                   .dbline 642
+ 1136           ;                                               }
+ 1136           L169:
+ 1136                   .dbline 643
+ 1136           L166:
+ 1136                   .dbline 627
+ 1136 C701              movw R24,R14
+ 1138 8096              adiw R24,32
+ 113A 7C01              movw R14,R24
+ 113C           L168:
+ 113C                   .dbline 627
+ 113C C701              movw R24,R14
+ 113E 8030              cpi R24,0
+ 1140 E2E0              ldi R30,2
+ 1142 9E07              cpc R25,R30
+ 1144 08F4              brsh X25
+ 1146 B9CF              xjmp L165
+ 1148           X25:
+ 1148                   .dbline 644
+ 1148           L160:
+ 1148                   .dbline 624
+ 1148 A394              inc R10
+ 114A           L162:
+ 114A                   .dbline 624
+ 114A 40901E00          lds R4,_RootDirSectors+2
+ 114E 50901F00          lds R5,_RootDirSectors+2+1
+ 1152 20901C00          lds R2,_RootDirSectors
+ 1156 30901D00          lds R3,_RootDirSectors+1
+ 115A 6A2C              mov R6,R10
+ 115C 7724              clr R7
+ 115E 8824              clr R8
+ 1160 9924              clr R9
+ 1162 6214              cp R6,R2
+ 1164 7304              cpc R7,R3
+ 1166 8404              cpc R8,R4
+ 1168 9504              cpc R9,R5
+ 116A 08F4              brsh X26
+ 116C 82CF              xjmp L159
+ 116E           X26:
+ 116E                   .dbline 645
+ 116E           ;                                       }
+ 116E           ;                               }
+ 116E           ;                               free(buffer);//release释放空间
+ 116E 8601              movw R16,R12
+ 1170 0E940000          xcall _free
+ 1174                   .dbline 646
+ 1174           ;                       }
+ 1174 F4C0              xjmp L156
+ 1176           L155:
+ 1176                   .dbline 648
+ 1176           ;                       else//other folders
+ 1176           ;                       {
+ 1176                   .dbline 649
+ 1176           ;                               tempclust=cluster;
+ 1176 FE01              movw R30,R28
+ 1178 2584              ldd R2,z+13
+ 117A 3684              ldd R3,z+14
+ 117C 4784              ldd R4,z+15
+ 117E 5088              ldd R5,z+16
+ 1180 FE01              movw R30,R28
+ 1182 2186              std z+9,R2
+ 1184 3286              std z+10,R3
+ 1186 4386              std z+11,R4
+ 1188 5486              std z+12,R5
+ 118A E8C0              xjmp L178
+ 118C           L177:
+ 118C                   .dbline 651
+ 118C           ;                               while(1)
+ 118C           ;                               {
+ 118C                   .dbline 652
+ 118C           ;                                       sector=FirstDataSector+(DWORD)(tempclust-2)*(DWORD)SectorsPerClust;//calculate the actual sector number
+ 118C 42E0              ldi R20,2
+ 118E 50E0              ldi R21,0
+ 1190 60E0              ldi R22,0
+ 1192 70E0              ldi R23,0
+ 1194 FE01              movw R30,R28
+ 1196 2184              ldd R2,z+9
+ 1198 3284              ldd R3,z+10
+ 119A 4384              ldd R4,z+11
+ 119C 5484              ldd R5,z+12
+ 119E 241A              sub R2,R20
+ 11A0 350A              sbc R3,R21
+ 11A2 460A              sbc R4,R22
+ 11A4 570A              sbc R5,R23
+ 11A6 60902800          lds R6,_SectorsPerClust
+ 11AA 70902900          lds R7,_SectorsPerClust+1
+ 11AE 8824              clr R8
+ 11B0 9924              clr R9
+ 11B2 9A92              st -y,R9
+ 11B4 8A92              st -y,R8
+ 11B6 7A92              st -y,R7
+ 11B8 6A92              st -y,R6
+ 11BA 8101              movw R16,R2
+ 11BC 9201              movw R18,R4
+ 11BE 0E940000          xcall empy32u
+ 11C2 40903000          lds R4,_FirstDataSector+2
+ 11C6 50903100          lds R5,_FirstDataSector+2+1
+ 11CA 20902E00          lds R2,_FirstDataSector
+ 11CE 30902F00          lds R3,_FirstDataSector+1
+ 11D2 200E              add R2,R16
+ 11D4 311E              adc R3,R17
+ 11D6 421E              adc R4,R18
+ 11D8 531E              adc R5,R19
+ 11DA FE01              movw R30,R28
+ 11DC 2582              std z+5,R2
+ 11DE 3682              std z+6,R3
+ 11E0 4782              std z+7,R4
+ 11E2 5086              std z+8,R5
+ 11E4                   .dbline 653
+ 11E4           ;                                       buffer=malloc(512);//apply memory
+ 11E4 00E0              ldi R16,512
+ 11E6 12E0              ldi R17,2
+ 11E8 0E940000          xcall _malloc
+ 11EC 6801              movw R12,R16
+ 11EE                   .dbline 654
+ 11EE           ;                                       if(buffer==0)return 1;//if failed
+ 11EE 0030              cpi R16,0
+ 11F0 0107              cpc R16,R17
+ 11F2 11F4              brne L180
+ 11F4           X18:
+ 11F4                   .dbline 654
+ 11F4 01E0              ldi R16,1
+ 11F6 C3C0              xjmp L140
+ 11F8           L180:
+ 11F8                   .dbline 655
+ 11F8           ;                                       for(cnt=0;cnt<SectorsPerClust;cnt++)
+ 11F8 AA24              clr R10
+ 11FA 69C0              xjmp L185
+ 11FC           L182:
+ 11FC                   .dbline 656
+ 11FC           ;                                       {
+ 11FC                   .dbline 657
+ 11FC           ;                                               if(FAT_ReadSector(sector+cnt,buffer)){free(buffer);return 1;}
+ 11FC D982              std y+1,R13
+ 11FE C882              std y+0,R12
+ 1200 2A2C              mov R2,R10
+ 1202 3324              clr R3
+ 1204 4424              clr R4
+ 1206 5524              clr R5
+ 1208 FE01              movw R30,R28
+ 120A 6580              ldd R6,z+5
+ 120C 7680              ldd R7,z+6
+ 120E 8780              ldd R8,z+7
+ 1210 9084              ldd R9,z+8
+ 1212 620C              add R6,R2
+ 1214 731C              adc R7,R3
+ 1216 841C              adc R8,R4
+ 1218 951C              adc R9,R5
+ 121A 8301              movw R16,R6
+ 121C 9401              movw R18,R8
+ 121E E0910000          lds R30,_FAT_ReadSector
+ 1222 F0910100          lds R31,_FAT_ReadSector+1
+ 1226 0E940000          xcall xicall
+ 122A 0023              tst R16
+ 122C 29F0              breq L186
+ 122E                   .dbline 657
+ 122E                   .dbline 657
+ 122E 8601              movw R16,R12
+ 1230 0E940000          xcall _free
+ 1234                   .dbline 657
+ 1234 01E0              ldi R16,1
+ 1236 A3C0              xjmp L140
+ 1238           L186:
+ 1238                   .dbline 658
+ 1238           ;                                               for(offset=0;offset<512;offset+=32)
+ 1238 EE24              clr R14
+ 123A FF24              clr R15
+ 123C 41C0              xjmp L191
+ 123E           L188:
+ 123E                   .dbline 659
+ 123E           ;                                               {
+ 123E                   .dbline 660
+ 123E           ;                                                       item=(struct direntry *)(&buffer[offset]);
+ 123E 1701              movw R2,R14
+ 1240 2C0C              add R2,R12
+ 1242 3D1C              adc R3,R13
+ 1244 3A8A              std y+18,R3
+ 1246 298A              std y+17,R2
+ 1248                   .dbline 661
+ 1248           ;                                                       if((item->deName[0] != '.') && (item->deName[0] != 0x00) && (item->deName[0] != 0xe5) && (item->deAttributes != 0x0f))
+ 1248 F101              movw R30,R2
+ 124A 2080              ldd R2,z+0
+ 124C 3324              clr R3
+ 124E 822D              mov R24,R2
+ 1250 8E32              cpi R24,46
+ 1252 09F4              brne X27
+ 1254 32C0              xjmp L192
+ 1256           X27:
+ 1256 8823              tst R24
+ 1258 09F4              brne X28
+ 125A 2FC0              xjmp L192
+ 125C           X28:
+ 125C 853E              cpi R24,229
+ 125E 09F4              brne X29
+ 1260 2CC0              xjmp L192
+ 1262           X29:
+ 1262 8385              ldd R24,z+11
+ 1264 8F30              cpi R24,15
+ 1266 49F1              breq L192
+ 1268                   .dbline 662
+ 1268           ;                                                       {               
+ 1268                   .dbline 664
+ 1268           ;                                               
+ 1268           ;                                                               if((item->deExtension[0] == file_type[0])&&(item->deExtension[1] == file_type[1])&&(item->deExtension[2] == file_type[2]))
+ 1268 2A80              ldd R2,y+2
+ 126A E989              ldd R30,y+17
+ 126C FA89              ldd R31,y+18
+ 126E 3084              ldd R3,z+8
+ 1270 3214              cp R3,R2
+ 1272 19F5              brne L194
+ 1274 2B80              ldd R2,y+3
+ 1276 E989              ldd R30,y+17
+ 1278 FA89              ldd R31,y+18
+ 127A 3184              ldd R3,z+9
+ 127C 3214              cp R3,R2
+ 127E E9F4              brne L194
+ 1280 2C80              ldd R2,y+4
+ 1282 E989              ldd R30,y+17
+ 1284 FA89              ldd R31,y+18
+ 1286 3284              ldd R3,z+10
+ 1288 3214              cp R3,R2
+ 128A B9F4              brne L194
+ 128C                   .dbline 665
+ 128C           ;                                                               {
+ 128C                   .dbline 667
+ 128C           ;                                                                   
+ 128C           ;                                                                       CopyDirentruyItem(MusicInfo,item);
+ 128C 2989              ldd R18,y+17
+ 128E 3A89              ldd R19,y+18
+ 1290 09A1              ldd R16,y+33
+ 1292 1AA1              ldd R17,y+34
+ 1294 90DA              xcall _CopyDirentruyItem
+ 1296                   .dbline 669
+ 1296           ;                                                                       
+ 1296           ;                                                                       i++;
+ 1296 8B89              ldd R24,y+19
+ 1298 9C89              ldd R25,y+20
+ 129A 0196              adiw R24,1
+ 129C 9C8B              std y+20,R25
+ 129E 8B8B              std y+19,R24
+ 12A0                   .dbline 670
+ 12A0           ;                                                                       if(i==*Count){free(buffer);return 0;}
+ 12A0 EBA1              ldd R30,y+35
+ 12A2 FCA1              ldd R31,y+36
+ 12A4 2080              ldd R2,z+0
+ 12A6 3180              ldd R3,z+1
+ 12A8 0C01              movw R0,R24
+ 12AA 8215              cp R24,R2
+ 12AC 9305              cpc R25,R3
+ 12AE 29F4              brne L198
+ 12B0                   .dbline 670
+ 12B0                   .dbline 670
+ 12B0 8601              movw R16,R12
+ 12B2 0E940000          xcall _free
+ 12B6                   .dbline 670
+ 12B6 0027              clr R16
+ 12B8 62C0              xjmp L140
+ 12BA           L198:
+ 12BA                   .dbline 671
+ 12BA           ;                                                               }
+ 12BA           L194:
+ 12BA                   .dbline 672
+ 12BA           ;                                                       }
+ 12BA           L192:
+ 12BA                   .dbline 673
+ 12BA           L189:
+ 12BA                   .dbline 658
+ 12BA C701              movw R24,R14
+ 12BC 8096              adiw R24,32
+ 12BE 7C01              movw R14,R24
+ 12C0           L191:
+ 12C0                   .dbline 658
+ 12C0 C701              movw R24,R14
+ 12C2 8030              cpi R24,0
+ 12C4 E2E0              ldi R30,2
+ 12C6 9E07              cpc R25,R30
+ 12C8 08F4              brsh X30
+ 12CA B9CF              xjmp L188
+ 12CC           X30:
+ 12CC                   .dbline 674
+ 12CC           L183:
+ 12CC                   .dbline 655
+ 12CC A394              inc R10
+ 12CE           L185:
+ 12CE                   .dbline 655
+ 12CE 20902800          lds R2,_SectorsPerClust
+ 12D2 30902900          lds R3,_SectorsPerClust+1
+ 12D6 4A2C              mov R4,R10
+ 12D8 5524              clr R5
+ 12DA 4214              cp R4,R2
+ 12DC 5304              cpc R5,R3
+ 12DE 08F4              brsh X31
+ 12E0 8DCF              xjmp L182
+ 12E2           X31:
+ 12E2                   .dbline 675
+ 12E2           ;                                               }
+ 12E2           ;                                       }
+ 12E2           ;                                       free(buffer);//release
+ 12E2 8601              movw R16,R12
+ 12E4 0E940000          xcall _free
+ 12E8                   .dbline 676
+ 12E8           ;                                       tempclust=FAT_NextCluster(tempclust);//next cluster
+ 12E8 FE01              movw R30,R28
+ 12EA 0185              ldd R16,z+9
+ 12EC 1285              ldd R17,z+10
+ 12EE 2385              ldd R18,z+11
+ 12F0 3485              ldd R19,z+12
+ 12F2 6AD9              xcall _FAT_NextCluster
+ 12F4 FE01              movw R30,R28
+ 12F6 0187              std z+9,R16
+ 12F8 1287              std z+10,R17
+ 12FA 2387              std z+11,R18
+ 12FC 3487              std z+12,R19
+ 12FE                   .dbline 677
+ 12FE 4FEF              ldi R20,255
+ 1300 5FEF              ldi R21,255
+ 1302 6FEF              ldi R22,255
+ 1304 7FE0              ldi R23,15
+ 1306 FE01              movw R30,R28
+ 1308 2184              ldd R2,z+9
+ 130A 3284              ldd R3,z+10
+ 130C 4384              ldd R4,z+11
+ 130E 5484              ldd R5,z+12
+ 1310 2416              cp R2,R20
+ 1312 3506              cpc R3,R21
+ 1314 4606              cpc R4,R22
+ 1316 5706              cpc R5,R23
+ 1318 01F1              breq L203
+ 131A 48EF              ldi R20,248
+ 131C 5FEF              ldi R21,255
+ 131E 6FEF              ldi R22,255
+ 1320 7FE0              ldi R23,15
+ 1322 FE01              movw R30,R28
+ 1324 2184              ldd R2,z+9
+ 1326 3284              ldd R3,z+10
+ 1328 4384              ldd R4,z+11
+ 132A 5484              ldd R5,z+12
+ 132C 2416              cp R2,R20
+ 132E 3506              cpc R3,R21
+ 1330 4606              cpc R4,R22
+ 1332 5706              cpc R5,R23
+ 1334 91F0              breq L203
+ 1336 20901700          lds R2,_FAT32_Enable
+ 133A 2220              tst R2
+ 133C 79F4              brne L200
+ 133E 4FEF              ldi R20,255
+ 1340 5FEF              ldi R21,255
+ 1342 60E0              ldi R22,0
+ 1344 70E0              ldi R23,0
+ 1346 FE01              movw R30,R28
+ 1348 2184              ldd R2,z+9
+ 134A 3284              ldd R3,z+10
+ 134C 4384              ldd R4,z+11
+ 134E 5484              ldd R5,z+12
+ 1350 2416              cp R2,R20
+ 1352 3506              cpc R3,R21
+ 1354 4606              cpc R4,R22
+ 1356 5706              cpc R5,R23
+ 1358 09F4              brne L200
+ 135A           L203:
+ 135A                   .dbline 677
+ 135A           ;                                       if(tempclust == 0x0fffffff || tempclust == 0x0ffffff8 || (FAT32_Enable == 0 && tempclust == 0xffff))break;
+ 135A 01C0              xjmp L179
+ 135C           L200:
+ 135C                   .dbline 678
+ 135C           L178:
+ 135C                   .dbline 650
+ 135C 17CF              xjmp L177
+ 135E           L179:
+ 135E                   .dbline 679
+ 135E           ;                               }
+ 135E           ;                       }
+ 135E           L156:
+ 135E                   .dbline 680
+ 135E                   .dbline 681
+ 135E           L151:
+ 135E                   .dbline 607
+ 135E 4DCE              xjmp L150
+ 1360           L152:
+ 1360                   .dbline 682
+ 1360           ;               }
+ 1360           ;       }
+ 1360           ;       if(*Count==0)*Count=i;
+ 1360 EBA1              ldd R30,y+35
+ 1362 FCA1              ldd R31,y+36
+ 1364 2080              ldd R2,z+0
+ 1366 3180              ldd R3,z+1
+ 1368 2220              tst R2
+ 136A 41F4              brne L204
+ 136C 3320              tst R3
+ 136E 31F4              brne L204
+ 1370           X19:
+ 1370                   .dbline 682
+ 1370 EBA1              ldd R30,y+35
+ 1372 FCA1              ldd R31,y+36
+ 1374 0B88              ldd R0,y+19
+ 1376 1C88              ldd R1,y+20
+ 1378 1182              std z+1,R1
+ 137A 0082              std z+0,R0
+ 137C           L204:
+ 137C                   .dbline 688
+ 137C           ;       /*
+ 137C           ;       GUI_sprintf_chartohex(130,300,*type,0xffff,0x0000) ;
+ 137C           ;       GUI_sprintf_chartohex(160,300,i,0xffff,0x0000) ;
+ 137C           ;       GUI_sprintf_chartohex(190,300,*Count,0xffff,0x0000) ;
+ 137C           ;       while(1) ;*/
+ 137C           ;       return 0;       
+ 137C 0027              clr R16
+ 137E                   .dbline -2
+ 137E           L140:
+ 137E 6796              adiw R28,23
+ 1380 0E940000          xcall pop_gset5
+ 1384 2496              adiw R28,4
+ 1386                   .dbline 0 ; func end
+ 1386 0895              ret
+ 1388                   .dbsym l addr 21 i
+ 1388                   .dbsym l cluster 13 l
+ 1388                   .dbsym l tempclust 9 l
+ 1388                   .dbsym l sector 5 l
+ 1388                   .dbsym r cnt 10 c
+ 1388                   .dbsym l i 19 i
+ 1388                   .dbsym r buffer 12 pc
+ 1388                   .dbsym l file_type 2 A[3:3]c
+ 1388                   .dbsym r offset 14 i
+ 1388                   .dbsym l item 17 pS[direntry]
+ 1388                   .dbsym l type 37 pc
+ 1388                   .dbsym l Count 35 pi
+ 1388                   .dbsym l MusicInfo 33 pS[direntry]
+ 1388                   .dbend
+                        .area bss(ram, con, rel)
+ 0008                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0008           _FileInfo::
+ 0008                   .blkb 15
+ 0017                   .dbstruct 0 15 FileInfoStruct
+ 0017                   .dbfield 0 StartCluster l
+ 0017                   .dbfield 4 Size l
+ 0017                   .dbfield 8 Attr c
+ 0017                   .dbfield 9 Sector l
+ 0017                   .dbfield 13 Offset i
+ 0017                   .dbend
+ 0017                   .dbsym e FileInfo _FileInfo S[FileInfoStruct]
+ 0017           _FAT32_Enable::
+ 0017                   .blkb 1
+ 0018                   .dbsym e FAT32_Enable _FAT32_Enable c
+ 0018           _RootDirCount::
+ 0018                   .blkb 4
+ 001C                   .dbsym e RootDirCount _RootDirCount l
+ 001C           _RootDirSectors::
+ 001C                   .blkb 4
+ 0020                   .dbsym e RootDirSectors _RootDirSectors l
+ 0020           _FirstDirSector::
+ 0020                   .blkb 4
+ 0024                   .dbsym e FirstDirSector _FirstDirSector l
+ 0024           _FirstFATSector::
+ 0024                   .blkb 4
+ 0028                   .dbsym e FirstFATSector _FirstFATSector l
+ 0028           _SectorsPerClust::
+ 0028                   .blkb 2
+ 002A                   .dbsym e SectorsPerClust _SectorsPerClust i
+ 002A           _FATsectors::
+ 002A                   .blkb 2
+ 002C                   .dbsym e FATsectors _FATsectors i
+ 002C           _BytesPerSector::
+ 002C                   .blkb 2
+ 002E                   .dbsym e BytesPerSector _BytesPerSector i
+ 002E           _FirstDataSector::
+ 002E                   .blkb 4
+ 0032                   .dbsym e FirstDataSector _FirstDataSector l
+ 0032           _FirstDirClust::
+ 0032                   .blkb 4
+ 0036                   .dbsym e FirstDirClust _FirstDirClust l
+                        .area data(ram, con, rel)
+ 0004                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0004           L139:
+ 0004                   .blkb 20
+                        .area idata
+ 0004 0D0A53656172636820436F6D706C6574  .byte 13,10,'S,'e,'a,'r,'c,'h,32,'C,'o,'m,'p,'l,'e,'t
+ 0014 65642100          .byte 'e,'d,33,0
+                        .area data(ram, con, rel)
+ 0018                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0018           L138:
+ 0018                   .blkb 42
+                        .area idata
+ 0018 0D0A5741524E494E473A20454550524F  .byte 13,10,'W,'A,'R,'N,'I,'N,'G,58,32,'E,'E,'P,'R,'O
+ 0028 4D2069732066756C6C2C206E6F206D6F  .byte 'M,32,'i,'s,32,'f,'u,'l,'l,44,32,'n,'o,32,'m,'o
+ 0038 72652073706163652100      .byte 'r,'e,32,'s,'p,'a,'c,'e,33,0
+                        .area data(ram, con, rel)
+ 0042                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0042           L133:
+ 0042                   .blkb 80
+                        .area idata
+ 0042 0D0A536561726368206F6E6520666F6C  .byte 13,10,'S,'e,'a,'r,'c,'h,32,'o,'n,'e,32,'f,'o,'l
+ 0052 6465722C207772697465207468652065  .byte 'd,'e,'r,44,32,'w,'r,'i,'t,'e,32,'t,'h,'e,32,'e
+ 0062 6E6420666C6167206966207468652074  .byte 'n,'d,32,'f,'l,'a,'g,32,'i,'f,32,'t,'h,'e,32,'t
+ 0072 68652076616C7565206973206E6F7420  .byte 'h,'e,32,'v,'a,'l,'u,'e,32,'i,'s,32,'n,'o,'t,32
+ 0082 7468652072696768742076616C756500  .byte 't,'h,'e,32,'r,'i,'g,'h,'t,32,'v,'a,'l,'u,'e,0
+                        .area data(ram, con, rel)
+ 0092                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0092           L132:
+ 0092                   .blkb 29
+                        .area idata
+ 0092 0D0A4552524F523A2073656172636820  .byte 13,10,'E,'R,'R,'O,'R,58,32,'s,'e,'a,'r,'c,'h,32
+ 00A2 666F6C646572206572726F7200        .byte 'f,'o,'l,'d,'e,'r,32,'e,'r,'r,'o,'r,0
+                        .area data(ram, con, rel)
+ 00AF                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 00AF           L122:
+ 00AF                   .blkb 13
+                        .area idata
+ 00AF 0D0A536561726368496E697400        .byte 13,10,'S,'e,'a,'r,'c,'h,'I,'n,'i,'t,0
+                        .area data(ram, con, rel)
+ 00BC                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 00BC           L93:
+ 00BC                   .blkb 18
+                        .area idata
+ 00BC 0D0A466F756E64206120666F6C646572  .byte 13,10,'F,'o,'u,'n,'d,32,'a,32,'f,'o,'l,'d,'e,'r
+ 00CC 2100              .byte 33,0
+                        .area data(ram, con, rel)
+ 00CE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 00CE           L78:
+ 00CE                   .blkb 21
+                        .area idata
+ 00CE 4170706C79204D656D6F727920466169  .byte 'A,'p,'p,'l,'y,32,'M,'e,'m,'o,'r,'y,32,'F,'a,'i
+ 00DE 6C75726500        .byte 'l,'u,'r,'e,0
+                        .area data(ram, con, rel)
+ 00E3                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 00E3           L72:
+ 00E3                   .blkb 40
+                        .area idata
+ 00E3 0D0A5265616420454550524F4D206164  .byte 13,10,'R,'e,'a,'d,32,'E,'E,'P,'R,'O,'M,32,'a,'d
+ 00F3 64726573733A2025642076616C756520  .byte 'd,'r,'e,'s,'s,58,32,37,'d,32,'v,'a,'l,'u,'e,32
+ 0103 69733A20256C6400  .byte 'i,'s,58,32,37,'l,'d,0
+                        .area data(ram, con, rel)
+ 010B                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 010B           L70:
+ 010B                   .blkb 41
+                        .area idata
+ 010B 0D0A577269746520454550524F4D2061  .byte 13,10,'W,'r,'i,'t,'e,32,'E,'E,'P,'R,'O,'M,32,'a
+ 011B 6464726573733A256420776974682076  .byte 'd,'d,'r,'e,'s,'s,58,37,'d,32,'w,'i,'t,'h,32,'v
+ 012B 616C75653A256C6400        .byte 'a,'l,'u,'e,58,37,'l,'d,0
+                        .area data(ram, con, rel)
+ 0134                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0134           L9:
+ 0134                   .blkb 9
+                        .area idata
+ 0134 46696E64696E672E00        .byte 'F,'i,'n,'d,'i,'n,'g,46,0
+                        .area data(ram, con, rel)
+ 013D                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 013D           L8:
+ 013D                   .blkb 9
+                        .area idata
+ 013D 424D50204E756D3A00        .byte 'B,'M,'P,32,'N,'u,'m,58,0
+                        .area data(ram, con, rel)
+ 0146                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0146           L7:
+ 0146                   .blkb 3
+                        .area idata
+ 0146 4D4200            .byte 'M,'B,0
+                        .area data(ram, con, rel)
+ 0149                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+ 0149           L6:
+ 0149                   .blkb 9
+                        .area idata
+ 0149 53442053697A653A00        .byte 'S,'D,32,'S,'i,'z,'e,58,0
+                        .area data(ram, con, rel)
+ 0152                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\FAT.c
+                        .area func_lit
+ 0000 0000      PL_mmcWrite:    .word `_mmcWrite
+ 0002 0000      PL_mmcRead:     .word `_mmcRead

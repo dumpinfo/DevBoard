@@ -1,0 +1,624 @@
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 1   
+
+
+C51 COMPILER V7.07, COMPILATION OF MODULE TFT_TEST
+OBJECT MODULE PLACED IN TFT_test.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE TFT_test.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          
+   2          #include "stc12c5410ad.h"
+   3          #include <intrins.h>
+   4          #include "ascii hex(8x16).h"
+   5          #include "GB2312.h"
+   6          
+   7          #define uchar unsigned char
+   8          #define uint unsigned int
+   9          
+  10          #define DATA P1
+  11          
+  12          sbit LCD_CS             = P3^7;
+  13          sbit LCD_RS             = P2^6;
+  14          sbit LCD_RD             = P2^0;
+  15          sbit LCD_WR             = P2^7;
+  16          sbit LCD_RST    = P2^1;
+  17          
+  18          
+  19          void MUC_Init();
+  20          void LCD_Init();
+  21          void LCD_WR_REG(uchar index);
+  22          void LCD_WR_CMD(uchar index,uint val);
+  23          
+  24          void LCD_WR_Data(uint val);
+  25          void LCD_test();
+  26          void LCD_clear(uint p);
+  27          
+  28          uint color[]={0xf800,0x07e0,0x001f,0xffe0,0x0000,0xffff,0x07ff,0xf81f};
+  29          
+  30          uchar postion_x,postion_y;
+  31          extern unsigned char code gImage_qqp[];
+  32          extern unsigned char code gImage_mmp[];
+  33          
+  34          void delay_us(uint t)
+  35          {
+  36   1              t*=2;
+  37   1              while(--t);
+  38   1      }
+  39          
+  40          void delay_ms(uint t)
+  41          {
+  42   1              uchar i,j;
+  43   1              while(--t)
+  44   1              {
+  45   2                      j=8;
+  46   2                      while(--j)
+  47   2                              while(--i);
+  48   2              }
+  49   1      }
+  50          
+  51          
+  52           
+  53          void MUC_Init()
+  54           {
+  55   1      //      P1M0 = 0x00;
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 2   
+
+  56   1      //      P1M1 = 0xFF;
+  57   1      //      P2M0 = 0x00;
+  58   1      //      P2M1 = 0xFF;
+  59   1      //      P3M0 = 0x00;
+  60   1      //      P3M1 = 0xFF;
+  61   1          P1=0xff;
+  62   1         P2=0xff;
+  63   1         P3=0xff;
+  64   1      }
+  65          
+  66          void LCD_WR_REG(uchar index)
+  67          {
+  68   1              LCD_RS = 0;
+  69   1              LCD_CS = 0;
+  70   1              DATA = 0x00;
+  71   1              LCD_WR = 0;
+  72   1              LCD_WR = 1;
+  73   1              DATA = index;
+  74   1              LCD_WR = 0;
+  75   1              LCD_WR = 1;
+  76   1              LCD_CS = 1;
+  77   1              LCD_RS = 0;
+  78   1      }
+  79          
+  80          void LCD_WR_CMD(uchar index,uint val)
+  81          {
+  82   1              LCD_RS = 0;
+  83   1              LCD_CS = 0;
+  84   1              DATA = 0x00;
+  85   1              LCD_WR = 0;
+  86   1              LCD_WR = 1;
+  87   1              DATA = index;
+  88   1              LCD_WR = 0;
+  89   1              LCD_WR = 1;
+  90   1              LCD_CS = 1;
+  91   1              LCD_RS = 0;
+  92   1      
+  93   1              LCD_RS = 1;
+  94   1              LCD_CS = 0;
+  95   1              DATA = (uchar)(val>>8);
+  96   1              LCD_WR = 0;
+  97   1              LCD_WR = 1;
+  98   1              LCD_CS = 1;
+  99   1              LCD_RS = 0;
+ 100   1              LCD_RS = 1;
+ 101   1              LCD_CS = 0;
+ 102   1              DATA = (uchar)val;
+ 103   1              LCD_WR = 0;
+ 104   1              LCD_WR = 1;
+ 105   1              LCD_CS = 1;
+ 106   1              LCD_RS = 0;
+ 107   1      }
+ 108          
+ 109          unsigned int LCD_RD_REG16(uchar index)
+ 110          {
+ 111   1              unsigned int pd;
+ 112   1      
+ 113   1              LCD_RS = 0;
+ 114   1              LCD_CS = 0;
+ 115   1              _nop_();
+ 116   1              _nop_();
+ 117   1      
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 3   
+
+ 118   1              DATA = 0x00;
+ 119   1              _nop_();
+ 120   1              _nop_();
+ 121   1      
+ 122   1              LCD_WR = 0;
+ 123   1              _nop_();
+ 124   1              _nop_();
+ 125   1      
+ 126   1              LCD_WR = 1;
+ 127   1              _nop_();
+ 128   1              _nop_();
+ 129   1      
+ 130   1              DATA = index;
+ 131   1              _nop_();
+ 132   1              _nop_();
+ 133   1      
+ 134   1              LCD_WR = 0;
+ 135   1              _nop_();
+ 136   1              _nop_();
+ 137   1      
+ 138   1              LCD_WR = 1;
+ 139   1              _nop_();
+ 140   1              _nop_();
+ 141   1      
+ 142   1              LCD_RS = 1;
+ 143   1              _nop_();
+ 144   1              _nop_();
+ 145   1      
+ 146   1              DATA = 0xFF;
+ 147   1              _nop_();
+ 148   1              _nop_();
+ 149   1      
+ 150   1              LCD_RD = 0;
+ 151   1              _nop_();
+ 152   1              _nop_();
+ 153   1              LCD_RD = 1;
+ 154   1              pd = DATA;
+ 155   1      
+ 156   1              _nop_();
+ 157   1              _nop_();
+ 158   1              DATA = 0xFF;
+ 159   1              LCD_RD = 0;
+ 160   1              _nop_();
+ 161   1              _nop_();
+ 162   1              LCD_RD = 1;
+ 163   1              pd = pd + DATA*256;
+ 164   1              LCD_CS = 1;
+ 165   1              LCD_RS = 0;
+ 166   1              return pd;
+ 167   1      }
+ 168          
+ 169          void LCD_WR_Data(uint val)
+ 170          {
+ 171   1              //LCD_RS = 1;
+ 172   1              //LCD_CS = 0;
+ 173   1              DATA = (uchar)(val>>8);
+ 174   1              LCD_WR = 0;
+ 175   1              LCD_WR = 1;
+ 176   1              //LCD_RS = 1;
+ 177   1              DATA = (uchar)val;
+ 178   1              LCD_WR = 0;
+ 179   1              LCD_WR = 1;
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 4   
+
+ 180   1              //LCD_CS = 1;
+ 181   1              //LCD_RS = 0;
+ 182   1      }
+ 183          
+ 184          sbit FLASH_RST=P0^3;
+ 185          sbit FLASH_CS=P0^2;
+ 186          
+ 187          void LCD_Init()
+ 188          {
+ 189   1              LCD_RST = 0;
+ 190   1              FLASH_RST=0;
+ 191   1              delay_ms(200);
+ 192   1              FLASH_RST=1;
+ 193   1              FLASH_CS=1;
+ 194   1              LCD_RST = 1;
+ 195   1              delay_ms(200);
+ 196   1      
+ 197   1          LCD_WR_CMD(0x00,0x0001);            //Start_osc
+ 198   1          delay_us(1000);
+ 199   1          LCD_WR_CMD(0x03,0x0030);
+ 200   1          //LCD_WR_CMD(0x03,0x0230);
+ 201   1          LCD_WR_CMD(0x01,0x011D);
+ 202   1          delay_us(100);
+ 203   1          LCD_WR_CMD(0x0a,0x0106); 
+ 204   1          delay_us(1);
+ 205   1      
+ 206   1      
+ 207   1          LCD_WR_CMD(0x08,0x0707);
+ 208   1          LCD_WR_CMD(0x0c,0x01);
+ 209   1          LCD_WR_CMD(0x02,0x0400);
+ 210   1          delay_us(1);
+ 211   1          LCD_WR_CMD(0x0a,0x0107); 
+ 212   1          delay_us(1);
+ 213   1      
+ 214   1          LCD_WR_CMD(0x12,0x0001); //VciOUT = 3V × 0.83 = 2.49V
+ 215   1          // only 100(=VCI), 000(.92 VCI),001(.83),010(.73VCI) is valid. other is inhibited
+ 216   1          delay_us(1);
+ 217   1          LCD_WR_CMD(0x0a,0x0101); 
+ 218   1          delay_us(1);
+ 219   1         
+ 220   1         // LCD_WR_CMD(0x13,0x404);
+ 221   1         // delay_us(1);LCD_WR_CMD(0x0a,0x0101); delay_us(1);
+ 222   1      
+ 223   1          LCD_WR_CMD(0x11,0x0505);//CAD = 0;
+ 224   1         // delay_us(1);LCD_WR_CMD(0x0a,0x0101); delay_us(1);
+ 225   1      
+ 226   1      
+ 227   1      
+ 228   1          LCD_WR_CMD(0x14,0x2c0f); // last 4 bit must be 1!!! vcomg = 1, 
+ 229   1          // VDV4-0 == 09-0e,10-12 // other is inhibited.!!! 
+ 230   1          delay_us(1);
+ 231   1          LCD_WR_CMD(0x0a,0x0102); 
+ 232   1          delay_us(1);
+ 233   1      
+ 234   1          LCD_WR_CMD(0x10,0x1a10);// if Vci > 3.0V, use 0x1a10.
+ 235   1          delay_us(1);
+ 236   1          LCD_WR_CMD(0x0a,0x0100); 
+ 237   1          delay_us(1);
+ 238   1      
+ 239   1          LCD_WR_CMD(0x13,0x0616); //////////!!!!!!!!!!!!! VERY IMPORTANT!!!
+ 240   1          //set VRH3-0 to fit REG1out= 3 to DDVDH-0.5
+ 241   1          delay_us(1);
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 5   
+
+ 242   1          LCD_WR_CMD(0x0a,0x0101); 
+ 243   1          delay_us(1000);
+ 244   1      
+ 245   1          LCD_WR_CMD(0x30,0x0003);
+ 246   1          LCD_WR_CMD(0x31,0x0404);
+ 247   1          LCD_WR_CMD(0x32,0x0303);
+ 248   1          LCD_WR_CMD(0x33,0x0406);
+ 249   1          LCD_WR_CMD(0x34,0x0404);
+ 250   1          LCD_WR_CMD(0x35,0x0303);
+ 251   1          LCD_WR_CMD(0x36,0x0407);
+ 252   1          LCD_WR_CMD(0x37,0x0604);
+ 253   1          LCD_WR_CMD(0x07,0x0037);
+ 254   1          delay_us(1);
+ 255   1          LCD_WR_CMD(0x0a,0x0100);
+ 256   1          delay_us(1000); 
+ 257   1          
+ 258   1          //*********** SAP, AP set****************   
+ 259   1          LCD_WR_CMD(0x10,0x1a10);//BT2-0 Ok,and...
+ 260   1          delay_us(1);
+ 261   1          LCD_WR_CMD(0x0a,0x0100); 
+ 262   1          delay_us(100);      
+ 263   1              //*********** PON  set********************
+ 264   1              LCD_WR_CMD(0x13,0x0616); //////////
+ 265   1          
+ 266   1          delay_us(1);
+ 267   1          LCD_WR_CMD(0x0a,0x0101); 
+ 268   1          delay_us(100);
+ 269   1          
+ 270   1          //***********Display ON set*****************
+ 271   1          LCD_WR_CMD(0x07,0x0037);
+ 272   1          delay_us(1);
+ 273   1          LCD_WR_CMD(0x0a,0x0100); 
+ 274   1          delay_us(100);   
+ 275   1      }
+ 276          
+ 277          
+ 278          
+ 279          void LCD_test()
+ 280          {
+ 281   1              uint temp,num;
+ 282   1              uchar n;
+ 283   1              //大屏显示彩条128X160
+ 284   1              LCD_WR_CMD(0x44,127*256+0);
+ 285   1              LCD_WR_CMD(0x45,239*256+80);
+ 286   1              LCD_WR_CMD(0x21,80*256+0);      
+ 287   1              LCD_WR_REG(0x22);
+ 288   1              LCD_CS = 0;
+ 289   1              LCD_RS = 1;
+ 290   1              for(n=0;n<8;n++)
+ 291   1              {
+ 292   2                  temp=color[n];
+ 293   2                      for(num=20*128;num>0;num--)
+ 294   2                        LCD_WR_Data(temp);
+ 295   2              }
+ 296   1              LCD_CS = 1;
+ 297   1              delay_ms(500);
+ 298   1              
+ 299   1              //小屏显示彩条96X64     
+ 300   1              LCD_WR_CMD(0x44,95*256+0);
+ 301   1              LCD_WR_CMD(0x45,79*256+16);
+ 302   1              LCD_WR_CMD(0x21,16*256+0);      
+ 303   1              LCD_WR_REG(0x22);
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 6   
+
+ 304   1              LCD_CS = 0;
+ 305   1              LCD_RS = 1;
+ 306   1              for(n=0;n<8;n++)
+ 307   1              {
+ 308   2                  temp=color[n];
+ 309   2                      for(num=8*96;num>0;num--)
+ 310   2                      {
+ 311   3                              LCD_WR_Data(temp);
+ 312   3                      }
+ 313   2              }
+ 314   1              LCD_CS = 1;
+ 315   1              delay_ms(500);
+ 316   1              //大屏显示纯色
+ 317   1              for(n=0;n<8;n++)
+ 318   1              {
+ 319   2                      LCD_WR_CMD(0x44,127*256+0);
+ 320   2                      LCD_WR_CMD(0x45,239*256+80);
+ 321   2                      LCD_WR_CMD(0x21,80*256+0);      
+ 322   2                      LCD_WR_REG(0x22);
+ 323   2                      LCD_CS = 0;
+ 324   2                      LCD_RS = 1;
+ 325   2                  temp=color[n];
+ 326   2                      for(num=160*128;num>0;num--)
+ 327   2                      {
+ 328   3                              LCD_WR_Data(temp);
+ 329   3                      }
+ 330   2                      //delay_ms(500);
+ 331   2              }
+ 332   1              LCD_CS = 1;
+ 333   1              
+ 334   1              //小屏显示纯色
+ 335   1      
+ 336   1              for(n=0;n<8;n++)
+ 337   1              {
+ 338   2                      LCD_WR_CMD(0x44,95*256+0);
+ 339   2                      LCD_WR_CMD(0x45,79*256+16);
+ 340   2                      LCD_WR_CMD(0x21,16*256+0);      
+ 341   2                      LCD_WR_REG(0x22);
+ 342   2                      LCD_CS = 0;
+ 343   2                      LCD_RS = 1;
+ 344   2                  temp=color[n];
+ 345   2                      for(num=64*96;num>0;num--)
+ 346   2                      {
+ 347   3                              LCD_WR_Data(temp);
+ 348   3                      }
+ 349   2                      //delay_ms(500);
+ 350   2              }
+ 351   1              LCD_CS = 1;
+ 352   1      }
+ 353          void LCD_MM()
+ 354          {
+ 355   1              uint num;
+ 356   1              unsigned int *p; 
+ 357   1              //显示小QQ图标
+ 358   1              LCD_WR_CMD(0x44,95*256+0);
+ 359   1              LCD_WR_CMD(0x45,79*256+16);
+ 360   1              LCD_WR_CMD(0x21,16*256+0);      
+ 361   1              LCD_WR_REG(0x22);
+ 362   1              LCD_CS = 0;
+ 363   1              LCD_RS = 1;
+ 364   1              p = gImage_mmp;
+*** WARNING C182 IN LINE 364 OF TFT_TEST.C: pointer to different objects
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 7   
+
+ 365   1              for(num=0;num<6144;num++)       //
+ 366   1              {               
+ 367   2                      LCD_WR_Data(*p++);
+ 368   2              }
+ 369   1              LCD_CS = 1;
+ 370   1      }
+ 371          void LCD_QQ()
+ 372          {
+ 373   1              uint temp,num;
+ 374   1              unsigned int *p; 
+ 375   1              uchar n,c,g;
+ 376   1              //显示小QQ图标
+ 377   1              for(g=0;g<4;g++)
+ 378   1              {
+ 379   2                      for(c=0;c<3;c++)
+ 380   2                      {
+ 381   3                              LCD_WR_CMD(0x44,(c*40+39)*256+c*40);
+ 382   3                              LCD_WR_CMD(0x45,(g*40+39+80)*256+(g*40+80));
+ 383   3                              LCD_WR_CMD(0x21,(g*40+80)*256+c*40);
+ 384   3                              LCD_WR_REG(0x22);
+ 385   3                              LCD_CS = 0;
+ 386   3                              LCD_RS = 1;
+ 387   3                              p = gImage_qqp;
+*** WARNING C182 IN LINE 387 OF TFT_TEST.C: pointer to different objects
+ 388   3                              for(num=0;num<1600;num++)       //
+ 389   3                              {               
+ 390   4                                      LCD_WR_Data(*p++);
+ 391   4                              }
+ 392   3                              //delay_ms(500);                
+ 393   3                      }
+ 394   2              }
+ 395   1      }
+*** WARNING C280 IN LINE 373 OF TFT_TEST.C: 'temp': unreferenced local variable
+*** WARNING C280 IN LINE 375 OF TFT_TEST.C: 'n': unreferenced local variable
+ 396          
+ 397          void LCD_clear(uint p)
+ 398          {
+ 399   1              uint num;
+ 400   1              
+ 401   1              LCD_WR_CMD(0x44,127*256+0);
+ 402   1              LCD_WR_CMD(0x45,239*256+80);
+ 403   1              LCD_WR_CMD(0x21,80*256+0);      
+ 404   1              LCD_WR_REG(0x22);
+ 405   1              LCD_CS = 0;
+ 406   1              LCD_RS = 1;
+ 407   1              for(num=160*128;num>0;num--)
+ 408   1              {
+ 409   2                      LCD_WR_Data(p);
+ 410   2              }
+ 411   1              LCD_WR_CMD(0x44,95*256+0);
+ 412   1              LCD_WR_CMD(0x45,79*256+16);
+ 413   1              LCD_WR_CMD(0x21,16*256+0);      
+ 414   1              LCD_WR_REG(0x22);
+ 415   1              LCD_CS = 0;
+ 416   1              LCD_RS = 1;
+ 417   1              for(num=64*96;num>0;num--)
+ 418   1              {
+ 419   2                      LCD_WR_Data(p);
+ 420   2              }
+ 421   1              LCD_CS = 1;
+ 422   1      }
+ 423          
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 8   
+
+ 424          
+ 425          //8X16点阵的字符显示函数
+ 426          //参数说明：
+ 427          //                casc:字符对应字模中的位置
+ 428          //         x:显示位置第几列,每行是240/8 ==30列
+ 429          //         y:显示位置第几行,整屏是320/16==20行
+ 430          
+ 431          void DisplayChar(uchar casc,uchar postion_x,uchar postion_y)
+ 432          {
+ 433   1              uchar cTemp;
+ 434   1              uchar i,j,b;
+ 435   1              uchar *p;
+ 436   1              
+ 437   1              LCD_WR_CMD(0x44,(postion_x*8+7)*256+(postion_x*8));     //x end point
+ 438   1              LCD_WR_CMD(0x45,(postion_y*16+15+80)*256+(postion_y*16+80));    //y end point
+ 439   1              LCD_WR_CMD(0x21,(postion_y*16+80)*256+(postion_x*8));   
+ 440   1              LCD_WR_REG(0x22);
+ 441   1              LCD_CS = 0;
+ 442   1              LCD_RS = 1;
+ 443   1              p=ascii;
+ 444   1              p+=casc*16;
+ 445   1              for(j=0;j<16;j++)
+ 446   1              {
+ 447   2                      b=*(p+j);
+ 448   2                      for(i=0;i<8;i++)
+ 449   2                      {
+ 450   3                              if(b&0x80)
+ 451   3                              {
+ 452   4                                      LCD_WR_Data(0xffff);
+ 453   4                              }
+ 454   3                              else
+ 455   3                              {
+ 456   4                                      LCD_WR_Data(0x0000);
+ 457   4                              }
+ 458   3                              b=b<<1;
+ 459   3                              
+ 460   3                      }       
+ 461   2              }
+ 462   1              LCD_CS = 1;
+ 463   1      }
+*** WARNING C280 IN LINE 433 OF TFT_TEST.C: 'cTemp': unreferenced local variable
+ 464          
+ 465          //16X16点阵的汉字显示函数
+ 466          //参数说明：
+ 467          //                gb:汉字对应字模中的位置
+ 468          //         x:显示位置第几列
+ 469          //         y:显示位置第几行
+ 470          void DisplayGB2312(uchar gb,uchar postion_x,uchar postion_y)
+ 471          {
+ 472   1              uchar cTemp;
+ 473   1              uchar i,j,b;
+ 474   1              uchar *p;
+ 475   1              
+ 476   1              LCD_WR_CMD(0x44,(postion_x*16+15)*256+(postion_x*16));  //x end point
+ 477   1              LCD_WR_CMD(0x45,(postion_y*16+15+80)*256+(postion_y*16+80));    //y end point
+ 478   1              LCD_WR_CMD(0x21,(postion_y*16+80)*256+(postion_x*16));  
+ 479   1              LCD_WR_REG(0x22);
+ 480   1              LCD_CS = 0;
+ 481   1              LCD_RS = 1;
+ 482   1              p=GB2312;
+*** WARNING C182 IN LINE 482 OF TFT_TEST.C: pointer to different objects
+ 483   1              p+=gb*32;
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 9   
+
+ 484   1              for(j=0;j<32;j++)
+ 485   1              {
+ 486   2                      b=*(p+j);
+ 487   2                      for(i=0;i<8;i++)
+ 488   2                      {
+ 489   3                              if(b&0x80)
+ 490   3                              {
+ 491   4                                      LCD_WR_Data(0xffff);
+ 492   4                              }
+ 493   3                              else
+ 494   3                              {
+ 495   4                                      LCD_WR_Data(0x0000);
+ 496   4                              }
+ 497   3                              b=b<<1;
+ 498   3                              
+ 499   3                      }       
+ 500   2              }
+ 501   1              LCD_CS = 1;
+ 502   1      }
+*** WARNING C280 IN LINE 472 OF TFT_TEST.C: 'cTemp': unreferenced local variable
+ 503          void DisplayString(uchar *s,uchar x,uchar y)//英文字符串显示.
+ 504          {
+ 505   1              while (*s) 
+ 506   1              { 
+ 507   2                      DisplayChar(*s,x,y);
+ 508   2                      if(++x>=16)
+ 509   2                      {
+ 510   3                              x=0;
+ 511   3                              if(++y>=10)
+ 512   3                              {
+ 513   4                                      y=0;
+ 514   4                              }
+ 515   3                      }
+ 516   2                      s++;
+ 517   2          }
+ 518   1      }
+ 519          
+ 520          
+ 521          void main(void)
+ 522          {
+ 523   1        uchar x=0;
+ 524   1        uchar y=0;
+ 525   1        uchar i;
+ 526   1        MUC_Init();
+ 527   1      
+ 528   1              while(1)
+ 529   1          {
+ 530   2                      LCD_Init();
+ 531   2                      //delay_ms(1000);
+ 532   2              LCD_test();
+ 533   2                      //delay_ms(2000);
+ 534   2                      LCD_clear(0);
+ 535   2                      LCD_QQ();
+ 536   2                      LCD_MM();
+ 537   2                      //delay_ms(2000);
+ 538   2                      LCD_clear(0);
+ 539   2                      //delay_ms(1000);
+ 540   2      
+ 541   2                      for(i=0;i<128;i++)
+ 542   2                      {
+ 543   3                              DisplayChar(i,x,y);
+ 544   3                              if(++x>=16)
+C51 COMPILER V7.07   TFT_TEST                                                              10/27/2009 00:53:08 PAGE 10  
+
+ 545   3                              {
+ 546   4                                      x=0;
+ 547   4                                      if(++y>=10)
+ 548   4                                      {
+ 549   5                                              y=0;
+ 550   5                                      }
+ 551   4                              }
+ 552   3                      }
+ 553   2                      //delay_ms(2000);
+ 554   2                      LCD_clear(0);
+ 555   2                      DisplayString("TX05D99 testing!",0,0);
+ 556   2                      //delay_ms(2000);
+ 557   2                      
+ 558   2                      LCD_clear(0);
+ 559   2                      for(i=0;i<6;i++)
+ 560   2                      {
+ 561   3                              DisplayGB2312(i,i,0);
+ 562   3                      }
+ 563   2                      delay_ms(2000);
+ 564   2              }
+ 565   1              {                               
+ 566   2      
+ 567   2      
+ 568   2                      DisplayString("2009",4,0);
+ 569   2                      DisplayString(  "05",10,0);
+ 570   2                      DisplayString(  "15",14,0);
+ 571   2                      DisplayString(  "14",18,0);
+ 572   2                      DisplayString(  "30",22,0);
+ 573   2                      DisplayString(  "22",26,0);
+ 574   2                      delay_ms(2000);
+ 575   2               }
+ 576   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1660    ----
+   CONSTANT SIZE    =   2277    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     18      38
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  7 WARNING(S),  0 ERROR(S)

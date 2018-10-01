@@ -1,0 +1,530 @@
+
+ADC.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000010  00800100  000002e2  00000376  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000002e2  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000008  00800110  00800110  00000386  2**0
+                  ALLOC
+  3 .debug_aranges 00000020  00000000  00000000  00000386  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 000000b5  00000000  00000000  000003a6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000003cb  00000000  00000000  0000045b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000019b  00000000  00000000  00000826  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000003b1  00000000  00000000  000009c1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000070  00000000  00000000  00000d74  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000015b  00000000  00000000  00000de4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000100  00000000  00000000  00000f3f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000048  00000000  00000000  0000103f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   8:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  10:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  14:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  18:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  1c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  20:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  24:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  28:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  2c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  30:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  34:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  38:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  3c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  40:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  44:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  48:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  4c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  50:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  54:	0c 94 00 01 	jmp	0x200	; 0x200 <__vector_21>
+  58:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  5c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  60:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  64:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  68:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  6c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  70:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  74:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  78:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  7c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  80:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  84:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  88:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	e2 ee       	ldi	r30, 0xE2	; 226
+  a0:	f2 e0       	ldi	r31, 0x02	; 2
+  a2:	00 e0       	ldi	r16, 0x00	; 0
+  a4:	0b bf       	out	0x3b, r16	; 59
+  a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+  a8:	07 90       	elpm	r0, Z+
+  aa:	0d 92       	st	X+, r0
+  ac:	a0 31       	cpi	r26, 0x10	; 16
+  ae:	b1 07       	cpc	r27, r17
+  b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+
+000000b2 <__do_clear_bss>:
+  b2:	11 e0       	ldi	r17, 0x01	; 1
+  b4:	a0 e1       	ldi	r26, 0x10	; 16
+  b6:	b1 e0       	ldi	r27, 0x01	; 1
+  b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
+
+000000ba <.do_clear_bss_loop>:
+  ba:	1d 92       	st	X+, r1
+
+000000bc <.do_clear_bss_start>:
+  bc:	a8 31       	cpi	r26, 0x18	; 24
+  be:	b1 07       	cpc	r27, r17
+  c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
+  c2:	0e 94 4d 01 	call	0x29a	; 0x29a <main>
+  c6:	0c 94 6f 01 	jmp	0x2de	; 0x2de <_exit>
+
+000000ca <__bad_interrupt>:
+  ca:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ce <system_init>:
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             //数据口为输出
+  ce:	8f ef       	ldi	r24, 0xFF	; 255
+  d0:	8b bb       	out	0x1b, r24	; 27
+    Data_DDR=0xFF;
+  d2:	8a bb       	out	0x1a, r24	; 26
+
+    PORTD=0xFF;               //74HC573的控制口，设置为输出
+  d4:	82 bb       	out	0x12, r24	; 18
+    DDRD=0xFF;
+  d6:	81 bb       	out	0x11, r24	; 17
+}
+  d8:	08 95       	ret
+
+000000da <Display_ADC>:
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             //数据口为输出
+  da:	8f ef       	ldi	r24, 0xFF	; 255
+  dc:	8b bb       	out	0x1b, r24	; 27
+    Data_DDR=0xFF;
+  de:	8a bb       	out	0x1a, r24	; 26
+
+    PORTD=0xFF;               //74HC573的控制口，设置为输出
+  e0:	82 bb       	out	0x12, r24	; 18
+    DDRD=0xFF;
+  e2:	81 bb       	out	0x11, r24	; 17
+  e4:	20 e0       	ldi	r18, 0x00	; 0
+  e6:	91 e0       	ldi	r25, 0x01	; 1
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  e8:	63 e3       	ldi	r22, 0x33	; 51
+  ea:	77 e0       	ldi	r23, 0x07	; 7
+	 uchar i,j;
+	 system_init();
+     j=0x01;                    //此数据用来控制位选
+ for(i=0;i<4;i++)               //用后4位数码管来显示
+  {
+     D_LE1;                     
+  ec:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                     
+  ee:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;                
+  f0:	89 2f       	mov	r24, r25
+  f2:	80 95       	com	r24
+  f4:	8b bb       	out	0x1b, r24	; 27
+     W_LE0;                      
+  f6:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+  f8:	99 0f       	add	r25, r25
+     Data_IO=0x00;           
+  fa:	1b ba       	out	0x1b, r1	; 27
+     D_LE0;                      
+  fc:	94 98       	cbi	0x12, 4	; 18
+  fe:	43 e3       	ldi	r20, 0x33	; 51
+ 100:	57 e0       	ldi	r21, 0x07	; 7
+ 102:	fb 01       	movw	r30, r22
+ 104:	31 97       	sbiw	r30, 0x01	; 1
+ 106:	f1 f7       	brne	.-4      	; 0x104 <Display_ADC+0x2a>
+void Display_ADC(uint data_q,uint data_b,uint data_s,uint data_g)
+{
+	 uchar i,j;
+	 system_init();
+     j=0x01;                    //此数据用来控制位选
+ for(i=0;i<4;i++)               //用后4位数码管来显示
+ 108:	2f 5f       	subi	r18, 0xFF	; 255
+ 10a:	24 30       	cpi	r18, 0x04	; 4
+ 10c:	79 f7       	brne	.-34     	; 0xec <Display_ADC+0x12>
+	 j=(j<<1);
+     Data_IO=0x00;           
+     D_LE0;                      
+     delay_ms(1);                
+  }
+     D_LE1;                    
+ 10e:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                    
+ 110:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;               
+ 112:	89 2f       	mov	r24, r25
+ 114:	80 95       	com	r24
+ 116:	8b bb       	out	0x1b, r24	; 27
+     W_LE0;                    
+ 118:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+ 11a:	99 0f       	add	r25, r25
+     Data_IO=table[A1];         
+ 11c:	e0 91 17 01 	lds	r30, 0x0117
+ 120:	f0 e0       	ldi	r31, 0x00	; 0
+ 122:	e0 50       	subi	r30, 0x00	; 0
+ 124:	ff 4f       	sbci	r31, 0xFF	; 255
+ 126:	80 81       	ld	r24, Z
+ 128:	8b bb       	out	0x1b, r24	; 27
+     D_LE0;                    
+ 12a:	94 98       	cbi	0x12, 4	; 18
+ 12c:	fa 01       	movw	r30, r20
+ 12e:	31 97       	sbiw	r30, 0x01	; 1
+ 130:	f1 f7       	brne	.-4      	; 0x12e <Display_ADC+0x54>
+     delay_ms(1);              
+
+     D_LE1;                     
+ 132:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                     
+ 134:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;                
+ 136:	89 2f       	mov	r24, r25
+ 138:	80 95       	com	r24
+ 13a:	8b bb       	out	0x1b, r24	; 27
+     W_LE0;                      
+ 13c:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+ 13e:	99 0f       	add	r25, r25
+     Data_IO=table[A2];            
+ 140:	e0 91 15 01 	lds	r30, 0x0115
+ 144:	f0 e0       	ldi	r31, 0x00	; 0
+ 146:	e0 50       	subi	r30, 0x00	; 0
+ 148:	ff 4f       	sbci	r31, 0xFF	; 255
+ 14a:	80 81       	ld	r24, Z
+ 14c:	8b bb       	out	0x1b, r24	; 27
+     D_LE0;                      
+ 14e:	94 98       	cbi	0x12, 4	; 18
+ 150:	fa 01       	movw	r30, r20
+ 152:	31 97       	sbiw	r30, 0x01	; 1
+ 154:	f1 f7       	brne	.-4      	; 0x152 <Display_ADC+0x78>
+     delay_ms(1);                
+
+	 D_LE1;                     
+ 156:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                     
+ 158:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;                
+ 15a:	89 2f       	mov	r24, r25
+ 15c:	80 95       	com	r24
+ 15e:	8b bb       	out	0x1b, r24	; 27
+     W_LE0;                      
+ 160:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+     Data_IO=table[A3];           
+ 162:	e0 91 11 01 	lds	r30, 0x0111
+ 166:	f0 e0       	ldi	r31, 0x00	; 0
+ 168:	e0 50       	subi	r30, 0x00	; 0
+ 16a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 16c:	80 81       	ld	r24, Z
+ 16e:	8b bb       	out	0x1b, r24	; 27
+     D_LE0;                      
+ 170:	94 98       	cbi	0x12, 4	; 18
+ 172:	fa 01       	movw	r30, r20
+ 174:	31 97       	sbiw	r30, 0x01	; 1
+ 176:	f1 f7       	brne	.-4      	; 0x174 <Display_ADC+0x9a>
+     delay_ms(1);   
+	 
+	  D_LE1;                    
+ 178:	94 9a       	sbi	0x12, 4	; 18
+     W_LE1;                    
+ 17a:	95 9a       	sbi	0x12, 5	; 18
+     Data_IO=~j;               
+ 17c:	99 0f       	add	r25, r25
+ 17e:	90 95       	com	r25
+ 180:	9b bb       	out	0x1b, r25	; 27
+     W_LE0;                    
+ 182:	95 98       	cbi	0x12, 5	; 18
+	 j=(j<<1);
+     Data_IO=table[A4];         
+ 184:	e0 91 14 01 	lds	r30, 0x0114
+ 188:	f0 e0       	ldi	r31, 0x00	; 0
+ 18a:	e0 50       	subi	r30, 0x00	; 0
+ 18c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 18e:	80 81       	ld	r24, Z
+ 190:	8b bb       	out	0x1b, r24	; 27
+     D_LE0;                    
+ 192:	94 98       	cbi	0x12, 4	; 18
+ 194:	ca 01       	movw	r24, r20
+ 196:	01 97       	sbiw	r24, 0x01	; 1
+ 198:	f1 f7       	brne	.-4      	; 0x196 <Display_ADC+0xbc>
+     delay_ms(1);             
+
+	 
+
+}
+ 19a:	08 95       	ret
+
+0000019c <adc_init>:
+
+void adc_init()
+{
+  ADMUX=0x40;                              //选择通道0，数据右对齐，AVCC为电压基准
+ 19c:	80 e4       	ldi	r24, 0x40	; 64
+ 19e:	87 b9       	out	0x07, r24	; 7
+  ADCSRA=0xF8;                             //adc使能，连续转换
+ 1a0:	88 ef       	ldi	r24, 0xF8	; 248
+ 1a2:	86 b9       	out	0x06, r24	; 6
+  SFIOR=0x00;                              //控制和状态寄存器初始化
+ 1a4:	10 bc       	out	0x20, r1	; 32
+}
+ 1a6:	08 95       	ret
+
+000001a8 <data_do>:
+
+//*************************************************************************
+//		数据处理函数
+//*************************************************************************
+ void data_do(uint temp_dh,uint temp_dl)
+ {
+ 1a8:	fb 01       	movw	r30, r22
+     uint temp_1,temp_2,temp_3;
+     temp_1=temp_dh*16*16;
+     temp_3=temp_1+temp_dl;
+ 1aa:	38 2f       	mov	r19, r24
+ 1ac:	20 e0       	ldi	r18, 0x00	; 0
+ 1ae:	e2 0f       	add	r30, r18
+ 1b0:	f3 1f       	adc	r31, r19
+     A1=temp_3/1000;                       //分出千，百，十，和个位
+ 1b2:	cf 01       	movw	r24, r30
+ 1b4:	68 ee       	ldi	r22, 0xE8	; 232
+ 1b6:	73 e0       	ldi	r23, 0x03	; 3
+ 1b8:	0e 94 5b 01 	call	0x2b6	; 0x2b6 <__udivmodhi4>
+ 1bc:	60 93 17 01 	sts	0x0117, r22
+     temp_1=temp_3%1000;
+ 1c0:	cf 01       	movw	r24, r30
+ 1c2:	68 ee       	ldi	r22, 0xE8	; 232
+ 1c4:	73 e0       	ldi	r23, 0x03	; 3
+ 1c6:	0e 94 5b 01 	call	0x2b6	; 0x2b6 <__udivmodhi4>
+ 1ca:	9c 01       	movw	r18, r24
+     A2=temp_1/100;
+ 1cc:	64 e6       	ldi	r22, 0x64	; 100
+ 1ce:	70 e0       	ldi	r23, 0x00	; 0
+ 1d0:	0e 94 5b 01 	call	0x2b6	; 0x2b6 <__udivmodhi4>
+ 1d4:	60 93 15 01 	sts	0x0115, r22
+     temp_2=temp_1%100;
+ 1d8:	c9 01       	movw	r24, r18
+ 1da:	64 e6       	ldi	r22, 0x64	; 100
+ 1dc:	70 e0       	ldi	r23, 0x00	; 0
+ 1de:	0e 94 5b 01 	call	0x2b6	; 0x2b6 <__udivmodhi4>
+ 1e2:	9c 01       	movw	r18, r24
+     A3=temp_2/10;
+ 1e4:	6a e0       	ldi	r22, 0x0A	; 10
+ 1e6:	70 e0       	ldi	r23, 0x00	; 0
+ 1e8:	0e 94 5b 01 	call	0x2b6	; 0x2b6 <__udivmodhi4>
+ 1ec:	60 93 11 01 	sts	0x0111, r22
+     A4=temp_2%10;
+ 1f0:	c9 01       	movw	r24, r18
+ 1f2:	6a e0       	ldi	r22, 0x0A	; 10
+ 1f4:	70 e0       	ldi	r23, 0x00	; 0
+ 1f6:	0e 94 5b 01 	call	0x2b6	; 0x2b6 <__udivmodhi4>
+ 1fa:	80 93 14 01 	sts	0x0114, r24
+}
+ 1fe:	08 95       	ret
+
+00000200 <__vector_21>:
+//*************************************************************************
+//		中断服务子程序
+//*************************************************************************
+
+SIGNAL(SIG_ADC)                           //ADC中断服务程序
+{
+ 200:	1f 92       	push	r1
+ 202:	0f 92       	push	r0
+ 204:	0f b6       	in	r0, 0x3f	; 63
+ 206:	0f 92       	push	r0
+ 208:	0b b6       	in	r0, 0x3b	; 59
+ 20a:	0f 92       	push	r0
+ 20c:	11 24       	eor	r1, r1
+ 20e:	2f 93       	push	r18
+ 210:	3f 93       	push	r19
+ 212:	4f 93       	push	r20
+ 214:	5f 93       	push	r21
+ 216:	6f 93       	push	r22
+ 218:	7f 93       	push	r23
+ 21a:	8f 93       	push	r24
+ 21c:	9f 93       	push	r25
+ 21e:	af 93       	push	r26
+ 220:	bf 93       	push	r27
+ 222:	ef 93       	push	r30
+ 224:	ff 93       	push	r31
+  adc_datal=ADCL;
+ 226:	64 b1       	in	r22, 0x04	; 4
+ 228:	60 93 16 01 	sts	0x0116, r22
+  adc_datah=ADCH;                         //读取adc数据寄存器的值，8位精度
+ 22c:	85 b1       	in	r24, 0x05	; 5
+ 22e:	80 93 12 01 	sts	0x0112, r24
+  data_do(adc_datah,adc_datal);           //数据处理，得到BCD码
+ 232:	90 e0       	ldi	r25, 0x00	; 0
+ 234:	70 e0       	ldi	r23, 0x00	; 0
+ 236:	0e 94 d4 00 	call	0x1a8	; 0x1a8 <data_do>
+  flag=0x01;                              //标志位置1
+ 23a:	81 e0       	ldi	r24, 0x01	; 1
+ 23c:	80 93 13 01 	sts	0x0113, r24
+ for(j=0;j<50;j++)
+ 240:	10 92 10 01 	sts	0x0110, r1
+ 244:	13 c0       	rjmp	.+38     	; 0x26c <__vector_21+0x6c>
+ {
+  Display_ADC(A1,A2,A3,A4);              //显示adc的数据
+ 246:	60 91 15 01 	lds	r22, 0x0115
+ 24a:	40 91 11 01 	lds	r20, 0x0111
+ 24e:	20 91 14 01 	lds	r18, 0x0114
+ 252:	80 91 17 01 	lds	r24, 0x0117
+ 256:	90 e0       	ldi	r25, 0x00	; 0
+ 258:	70 e0       	ldi	r23, 0x00	; 0
+ 25a:	50 e0       	ldi	r21, 0x00	; 0
+ 25c:	30 e0       	ldi	r19, 0x00	; 0
+ 25e:	0e 94 6d 00 	call	0xda	; 0xda <Display_ADC>
+{
+  adc_datal=ADCL;
+  adc_datah=ADCH;                         //读取adc数据寄存器的值，8位精度
+  data_do(adc_datah,adc_datal);           //数据处理，得到BCD码
+  flag=0x01;                              //标志位置1
+ for(j=0;j<50;j++)
+ 262:	80 91 10 01 	lds	r24, 0x0110
+ 266:	8f 5f       	subi	r24, 0xFF	; 255
+ 268:	80 93 10 01 	sts	0x0110, r24
+ 26c:	80 91 10 01 	lds	r24, 0x0110
+ 270:	82 33       	cpi	r24, 0x32	; 50
+ 272:	48 f3       	brcs	.-46     	; 0x246 <__vector_21+0x46>
+ {
+  Display_ADC(A1,A2,A3,A4);              //显示adc的数据
+ }
+}
+ 274:	ff 91       	pop	r31
+ 276:	ef 91       	pop	r30
+ 278:	bf 91       	pop	r27
+ 27a:	af 91       	pop	r26
+ 27c:	9f 91       	pop	r25
+ 27e:	8f 91       	pop	r24
+ 280:	7f 91       	pop	r23
+ 282:	6f 91       	pop	r22
+ 284:	5f 91       	pop	r21
+ 286:	4f 91       	pop	r20
+ 288:	3f 91       	pop	r19
+ 28a:	2f 91       	pop	r18
+ 28c:	0f 90       	pop	r0
+ 28e:	0b be       	out	0x3b, r0	; 59
+ 290:	0f 90       	pop	r0
+ 292:	0f be       	out	0x3f, r0	; 63
+ 294:	0f 90       	pop	r0
+ 296:	1f 90       	pop	r1
+ 298:	18 95       	reti
+
+0000029a <main>:
+//			IO端口初始化
+//***********************************************************************
+
+void system_init()
+{
+    Data_IO=0xFF;             //数据口为输出
+ 29a:	8f ef       	ldi	r24, 0xFF	; 255
+ 29c:	8b bb       	out	0x1b, r24	; 27
+    Data_DDR=0xFF;
+ 29e:	8a bb       	out	0x1a, r24	; 26
+
+    PORTD=0xFF;               //74HC573的控制口，设置为输出
+ 2a0:	82 bb       	out	0x12, r24	; 18
+    DDRD=0xFF;
+ 2a2:	81 bb       	out	0x11, r24	; 17
+
+}
+
+void adc_init()
+{
+  ADMUX=0x40;                              //选择通道0，数据右对齐，AVCC为电压基准
+ 2a4:	80 e4       	ldi	r24, 0x40	; 64
+ 2a6:	87 b9       	out	0x07, r24	; 7
+  ADCSRA=0xF8;                             //adc使能，连续转换
+ 2a8:	88 ef       	ldi	r24, 0xF8	; 248
+ 2aa:	86 b9       	out	0x06, r24	; 6
+  SFIOR=0x00;                              //控制和状态寄存器初始化
+ 2ac:	10 bc       	out	0x20, r1	; 32
+//*************************************************************************
+void main()
+{
+  system_init();                             //系统初始化
+  adc_init();                               //adc初始化配置
+  SREG|=0x80;                                //开启全局中断
+ 2ae:	8f b7       	in	r24, 0x3f	; 63
+ 2b0:	80 68       	ori	r24, 0x80	; 128
+ 2b2:	8f bf       	out	0x3f, r24	; 63
+ 2b4:	ff cf       	rjmp	.-2      	; 0x2b4 <main+0x1a>
+
+000002b6 <__udivmodhi4>:
+ 2b6:	aa 1b       	sub	r26, r26
+ 2b8:	bb 1b       	sub	r27, r27
+ 2ba:	51 e1       	ldi	r21, 0x11	; 17
+ 2bc:	07 c0       	rjmp	.+14     	; 0x2cc <__udivmodhi4_ep>
+
+000002be <__udivmodhi4_loop>:
+ 2be:	aa 1f       	adc	r26, r26
+ 2c0:	bb 1f       	adc	r27, r27
+ 2c2:	a6 17       	cp	r26, r22
+ 2c4:	b7 07       	cpc	r27, r23
+ 2c6:	10 f0       	brcs	.+4      	; 0x2cc <__udivmodhi4_ep>
+ 2c8:	a6 1b       	sub	r26, r22
+ 2ca:	b7 0b       	sbc	r27, r23
+
+000002cc <__udivmodhi4_ep>:
+ 2cc:	88 1f       	adc	r24, r24
+ 2ce:	99 1f       	adc	r25, r25
+ 2d0:	5a 95       	dec	r21
+ 2d2:	a9 f7       	brne	.-22     	; 0x2be <__udivmodhi4_loop>
+ 2d4:	80 95       	com	r24
+ 2d6:	90 95       	com	r25
+ 2d8:	bc 01       	movw	r22, r24
+ 2da:	cd 01       	movw	r24, r26
+ 2dc:	08 95       	ret
+
+000002de <_exit>:
+ 2de:	f8 94       	cli
+
+000002e0 <__stop_program>:
+ 2e0:	ff cf       	rjmp	.-2      	; 0x2e0 <__stop_program>

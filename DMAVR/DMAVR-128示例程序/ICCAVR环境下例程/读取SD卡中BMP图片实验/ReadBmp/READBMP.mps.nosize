@@ -1,0 +1,36 @@
+Map File Summary V3.2.3 for IccV7 AVR
+run at 2010-02-06 16:25:37
+on project "E:\DMAVR-M128 ICCAVR\ReadBmp\READBMP"
+
+Memory summary:
+
+flash size is 131072 bytes (128KB)
+flash used for
+- int vectors     = 140 (0x8C) bytes from 0x0000 to 0x008B = 70 (0x46) instruction words from 0x0000 to 0x0045
+- func pointers   = 6 (0x06) bytes from 0x008C to 0x0091
+- constants       = 3663 (0xE4F) bytes from 0x0092 to 0x0EE0
+- code            = 15726 (0x3D6E) bytes from 0x0EE2 to 0x4C4F = 7863 (0x1EB7) instruction words) from 0x0771 to 0x2627
++- user code      : 10904 (0x2A98) bytes from 0x0EE2 to 0x3979 = 5452 (0x154C) instruction words) from 0x0771 to 0x1CBC
++- <library>      : 4822 (0x12D6) bytes from 0x397A to 0x4C4F = 2411 (0x96B) instruction words) from 0x1CBD to 0x2627
+flash usage is 19536 bytes or 14.9%, leaving 111536 bytes (108KB) free
+
+sram size is 4096 bytes (4KB)
+sram used for
+- variables       = 1328 (0x530) bytes from 0x0100 to 0x062F
+- heap, s/w stack = 2738 (0xAB2) bytes from 0x0630 to 0x10E1
+- h/w stack       = 30 (0x1E) bytes from 0x10E2 to 0x10FF
+
+eeprom size is 4096 bytes (4KB)
+no eeprom area found
+
+Areas:
+
+FLASH area "func_lit" = 6 (0x06) bytes from 0x008C to 0x0091 = 3 function pointers
+FLASH area "lit" = 2421 (0x975) bytes from 0x0092 to 0x0A06
+FLASH area "idata" = 1242 (0x4DA) bytes from 0x0A07 to 0x0EE0
+FLASH area "text" = 15726 (0x3D6E) bytes from 0x0EE2 to 0x4C4F = 7863 (0x1EB7) instruction words from 0x0771 to 0x2627
+SRAM area "data" = 1242 (0x4DA) bytes from 0x0100 to 0x05D9
+SRAM area "bss" = 86 (0x56) bytes from 0x05DA to 0x062F
+FLASH area "vector" = 4 (0x04) bytes from 0x0000 to 0x0003 = 2 (0x02) instruction words from 0x0000 to 0x0001
+
+<eof>

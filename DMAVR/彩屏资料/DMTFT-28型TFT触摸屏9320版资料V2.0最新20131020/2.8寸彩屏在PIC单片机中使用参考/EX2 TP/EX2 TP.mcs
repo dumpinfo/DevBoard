@@ -1,0 +1,63 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=E:\Pic Code For TFT2.6\EX2 TP\main.obj
+Folder=Intermediary
+[File001]
+Location=E:\Pic Code For TFT2.6\EX2 TP\main.sdb
+Folder=Intermediary
+[File002]
+Location=E:\Pic Code For TFT2.6\EX2 TP\main.rlf
+Folder=Intermediary
+[File003]
+Location=E:\Pic Code For TFT2.6\EX2 TP\main.lst
+Folder=Intermediary
+[File004]
+Location=E:\Pic Code For TFT2.6\EX2 TP\NBCTFT.obj
+Folder=Intermediary
+[File005]
+Location=E:\Pic Code For TFT2.6\EX2 TP\NBCTFT.sdb
+Folder=Intermediary
+[File006]
+Location=E:\Pic Code For TFT2.6\EX2 TP\NBCTFT.rlf
+Folder=Intermediary
+[File007]
+Location=E:\Pic Code For TFT2.6\EX2 TP\NBCTFT.lst
+Folder=Intermediary
+[File008]
+Location=E:\Pic Code For TFT2.6\EX2 TP\TP.obj
+Folder=Intermediary
+[File009]
+Location=E:\Pic Code For TFT2.6\EX2 TP\TP.sdb
+Folder=Intermediary
+[File010]
+Location=E:\Pic Code For TFT2.6\EX2 TP\TP.rlf
+Folder=Intermediary
+[File011]
+Location=E:\Pic Code For TFT2.6\EX2 TP\TP.lst
+Folder=Intermediary
+[File012]
+Location=E:\Pic Code For TFT2.6\EX2 TP\EX2 TP.cof
+Folder=Output
+[File013]
+Location=E:\Pic Code For TFT2.6\EX2 TP\EX2 TP.hex
+Folder=Output
+[File014]
+Location=E:\Pic Code For TFT2.6\EX2 TP\EX2 TP.sym
+Folder=Output
+[File015]
+Location=E:\Pic Code For TFT2.6\EX2 TP\EX2 TP.map
+Folder=Output
+[File016]
+Location=E:\Pic Code For TFT2.6\EX2 TP\EX2 TP.hxl
+Folder=Output
+[File017]
+Location=E:\Pic Code For TFT2.6\EX2 TP\startup.lst
+Folder=Output
+[File018]
+Location=E:\Pic Code For TFT2.6\EX2 TP\startup.rlf
+Folder=Output
+[File019]
+Location=E:\Pic Code For TFT2.6\EX2 TP\startup.as
+Folder=Output

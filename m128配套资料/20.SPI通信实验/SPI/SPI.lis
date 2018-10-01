@@ -1,0 +1,494 @@
+                        .module SPI.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128的SPI应用示例程序，采用SPI接口的DAC芯片TLC5615，连续进行电压转换
+ 0000           ; //DAC为TI公司的10位串行电压型输出的DAC芯片TLC5615,SPI接口连接方式
+ 0000           ; //驱通过SPI接口，动DAC芯片，使其完成000-FFC(TLC5615后两位的值一直为0)输出的转换
+ 0000           ; //LED指示灯DS3对应从暗到亮，表示电压逐渐增大
+ 0000           ; //编译环境 ICCAVR 
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //忠兴电子元件店编辑
+ 0000           ; //日期：2010.01.14
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //    定义变量区
+ 0000                   .dbline 21
+ 0000           ; //***********************************************************************
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; #define uchar unsigned char
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; #define uint  unsigned int
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; 
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; #define cs0   PORTB &= ~(1 << PB0)          //片选信号置低
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; #define cs1   PORTB |= (1 << PB0)           //片选信号置高
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; 
+ 000E           ; #define Data_IO               PORTA                //数码管数据口
+ 000E           ; #define Data_DDR        DDRA                 //数码管数据口方向寄存器
+ 000E           ; #define D_LE0         PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+ 000E                   .dbline 32
+ 000E           ; #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+ 000E           ; #define W_LE0         PORTD &= ~(1 << PD5) //数码管位控制位为0
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; 
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ; uint da_data;
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; uchar count=0;
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; uint da_data2;
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ; //*************************************************************************
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ; //                    初始化子程序
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ; //*************************************************************************
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ; void system_init()
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; {
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;        D_LE1;                             //关掉数码管，以免显示乱码                   
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ;      W_LE1;                     
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ;      Data_IO=0xFF;                      //关数码管            
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ;      W_LE0; 
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ; 
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ;       PORTB = 0x00;                                   //电平设置
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ;       DDRB = 0xFF;                                    //方向输出
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ; 
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ; }
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ; void SPI_init()
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ; {
+ 003A           ;   SPCR=(1<<SPE)|(1<<MSTR);              //主机方式，SPI模式为0，SCK频率为Fosc/4
+ 003A           ;   
+ 003A           ; }
+ 003A                   .dbline 57
+ 003A           ; 
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ; 
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ; //*************************************************************************
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ; //                    主程序
+ 0042           ; //*************************************************************************
+ 0042           ; 
+ 0042           ; void main(void)
+ 0042                   .dbline 64
+ 0042           ; { 
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ;   system_init();                               //系统IO口初始化
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ;   SPI_init();                                  //SPI初始化
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ;   while(1)
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;   {
+ 004C           ;     for(da_data=0x0000;da_data<0x0ffc;da_data++)
+ 004C           ;     {
+ 004C                   .dbline 71
+ 004C           ;       cs0;                                     //使能DAC
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ;       da_data2=(da_data&0xff00);               //提取数据的高8位
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ;       da_data2>>=8;                            //高8位移到低8位，便于赋值
+ 0058           ;       SPDR=da_data2;                           //写数据的高8位到SPI数据寄存器
+ 0058           ;       SPDR=da_data&&0x00ff;                    //写数据的低8位到SPI数据寄存器
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ;       delay_nms(1);
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ;       cs1;                                    //关闭使能
+ 006C           ;     }
+ 006C           ;   }
+ 006C           ; }
+ 006C           ; }
+ 006C           ; }
+ 006C           ; }
+ 006C           ; }
+ 006C           ; }
+ 006C           ; }
+ 006C           ; }
+ 006C           ; }
+ 006C           ; }
+ 006C                   .dbline 90
+ 006C           ; }
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ; }
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ; }
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ; }
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ; }
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ; }
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ; }
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ; }
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ; }
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ; }
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; }
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; }
+ 00A6           ; }
+ 00A6           ; }
+ 00A6           ; }
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; }
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000           _count::
+ 0000                   .blkb 1
+                        .area idata
+ 0000 00                .byte 0
+                        .area data(ram, con, rel)
+ 0001                   .dbfile C:/icc/include/delay.h
+ 0001                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\22.SPI通信实验\SPI\SPI.C
+ 0001                   .dbsym e count _count c
+                        .area text(rom, con, rel)
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\22.SPI通信实验\SPI\SPI.C
+ 00BE                   .dbfunc e system_init _system_init fV
+                        .even
+ 00BE           _system_init::
+ 00BE                   .dbline -1
+ 00BE                   .dbline 42
+ 00BE                   .dbline 43
+ 00BE 949A              sbi 0x12,4
+ 00C0                   .dbline 44
+ 00C0 959A              sbi 0x12,5
+ 00C2                   .dbline 45
+ 00C2 8FEF              ldi R24,255
+ 00C4 8BBB              out 0x1b,R24
+ 00C6                   .dbline 46
+ 00C6 9598              cbi 0x12,5
+ 00C8                   .dbline 48
+ 00C8 2224              clr R2
+ 00CA 28BA              out 0x18,R2
+ 00CC                   .dbline 49
+ 00CC 87BB              out 0x17,R24
+ 00CE                   .dbline -2
+ 00CE           L19:
+ 00CE                   .dbline 0 ; func end
+ 00CE 0895              ret
+ 00D0                   .dbend
+ 00D0                   .dbfunc e SPI_init _SPI_init fV
+                        .even
+ 00D0           _SPI_init::
+ 00D0                   .dbline -1
+ 00D0                   .dbline 53
+ 00D0                   .dbline 54
+ 00D0 80E5              ldi R24,80
+ 00D2 8DB9              out 0xd,R24
+ 00D4                   .dbline -2
+ 00D4           L20:
+ 00D4                   .dbline 0 ; func end
+ 00D4 0895              ret
+ 00D6                   .dbend
+ 00D6                   .dbfunc e main _main fV
+                        .even
+ 00D6           _main::
+ 00D6                   .dbline -1
+ 00D6                   .dbline 64
+ 00D6                   .dbline 65
+ 00D6 F3DF              xcall _system_init
+ 00D8                   .dbline 66
+ 00D8 FBDF              xcall _SPI_init
+ 00DA 3CC0              xjmp L23
+ 00DC           L22:
+ 00DC                   .dbline 68
+ 00DC                   .dbline 69
+ 00DC 2224              clr R2
+ 00DE 3324              clr R3
+ 00E0 30920300          sts _da_data+1,R3
+ 00E4 20920200          sts _da_data,R2
+ 00E8 2DC0              xjmp L28
+ 00EA           L25:
+ 00EA                   .dbline 70
+ 00EA                   .dbline 71
+ 00EA C098              cbi 0x18,0
+ 00EC                   .dbline 72
+ 00EC 80910200          lds R24,_da_data
+ 00F0 90910300          lds R25,_da_data+1
+ 00F4 8070              andi R24,0
+ 00F6 90930100          sts _da_data2+1,R25
+ 00FA 80930000          sts _da_data2,R24
+ 00FE                   .dbline 73
+ 00FE 1C01              movw R2,R24
+ 0100 232C              mov R2,R3
+ 0102 3324              clr R3
+ 0104 30920100          sts _da_data2+1,R3
+ 0108 20920000          sts _da_data2,R2
+ 010C                   .dbline 74
+ 010C 2FB8              out 0xf,R2
+ 010E                   .dbline 75
+ 010E 20900200          lds R2,_da_data
+ 0112 30900300          lds R3,_da_data+1
+ 0116 2220              tst R2
+ 0118 11F4              brne X1
+ 011A 3320              tst R3
+ 011C 19F0              breq L29
+ 011E           X1:
+ 011E 41E0              ldi R20,1
+ 0120 50E0              ldi R21,0
+ 0122 02C0              xjmp L30
+ 0124           L29:
+ 0124 4427              clr R20
+ 0126 5527              clr R21
+ 0128           L30:
+ 0128 4FB9              out 0xf,R20
+ 012A                   .dbline 76
+ 012A 01E0              ldi R16,1
+ 012C 10E0              ldi R17,0
+ 012E A9DF              xcall _delay_nms
+ 0130                   .dbline 77
+ 0130 C09A              sbi 0x18,0
+ 0132                   .dbline 78
+ 0132           L26:
+ 0132                   .dbline 69
+ 0132 80910200          lds R24,_da_data
+ 0136 90910300          lds R25,_da_data+1
+ 013A 0196              adiw R24,1
+ 013C 90930300          sts _da_data+1,R25
+ 0140 80930200          sts _da_data,R24
+ 0144           L28:
+ 0144                   .dbline 69
+ 0144 80910200          lds R24,_da_data
+ 0148 90910300          lds R25,_da_data+1
+ 014C 8C3F              cpi R24,252
+ 014E EFE0              ldi R30,15
+ 0150 9E07              cpc R25,R30
+ 0152 58F2              brlo L25
+ 0154                   .dbline 79
+ 0154           L23:
+ 0154                   .dbline 67
+ 0154 C3CF              xjmp L22
+ 0156           X2:
+ 0156                   .dbline -2
+ 0156           L21:
+ 0156                   .dbline 0 ; func end
+ 0156 0895              ret
+ 0158                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\22.SPI通信实验\SPI\SPI.C
+ 0000           _da_data2::
+ 0000                   .blkb 2
+ 0002                   .dbsym e da_data2 _da_data2 i
+ 0002           _da_data::
+ 0002                   .blkb 2
+ 0004                   .dbsym e da_data _da_data i

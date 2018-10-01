@@ -1,0 +1,238 @@
+XL
+H 3 areas 11 global symbols
+M LEDSHOW.C
+S push_gset1 Ref0000
+S push_gset2 Ref0000
+S pop_gset1 Ref0000
+S pop_gset2 Ref0000
+A text size 114 flags 0
+dbfile C:/icc/include/delay.h
+dbfunc e delay_1us 0 fV
+dbline FFFFFFFF 0
+dbline 14 0
+dbline 15 0
+dbline 16 2
+dbline 17 4
+dbline 18 6
+dbline 19 8
+dbline 1A A
+dbline FFFFFFFE C
+dbline 0 C
+dbfunc e delay_3us E fV
+dbline FFFFFFFF E
+dbline 1E E
+dbline 20 E
+dbline 21 10
+dbline 22 12
+dbline 23 14
+dbline 24 16
+dbline 25 18
+dbline 26 1A
+dbline 27 1C
+dbline 28 1E
+dbline 29 20
+dbline 2A 22
+dbline 2B 24
+dbline 2C 26
+dbline 2D 28
+dbline 2E 2A
+dbline 2F 2C
+dbline 30 2E
+dbline 31 30
+dbline 32 32
+dbline 33 34
+dbline 34 36
+dbline FFFFFFFE 38
+dbline 0 38
+dbfunc e delay_10us 3A fV
+dbline FFFFFFFF 3A
+dbline 38 3A
+dbline 39 3A
+dbline 3A 3C
+dbline 3B 3E
+dbline FFFFFFFE 40
+dbline 0 40
+dbfunc e delay_50us 42 fV
+dbline FFFFFFFF 42
+dbline 3F 42
+dbline 40 42
+dbline 41 44
+dbline 42 46
+dbline 43 48
+dbline FFFFFFFE 4A
+dbline 0 4A
+dbfunc e delay_100us 4C fV
+dbline FFFFFFFF 4C
+dbline 46 4C
+dbline 47 4C
+dbline 48 4E
+dbline FFFFFFFE 50
+dbline 0 50
+dbfunc e delay_n100us 52 fV
+dbsym r n100us 14 c
+dbline FFFFFFFF 58
+dbline 4B 58
+dbline 4D 5A
+dbline 4C 5C
+dbline FFFFFFFE 66
+dbline 0 6A
+dbfunc e delay_1ms 6C fV
+dbline FFFFFFFF 6C
+dbline 59 6C
+dbline 5A 6C
+dbline 5B 6E
+dbline 5C 70
+dbline 5D 72
+dbline 5E 74
+dbline 5F 76
+dbline 60 78
+dbline 61 7A
+dbline 62 7C
+dbline 63 7E
+dbline FFFFFFFE 80
+dbline 0 80
+dbfunc e delay_nms 82 fV
+dbsym r nms 14 i
+dbline FFFFFFFF 88
+dbline 6D 88
+dbline 6F 8A
+dbline 6E 8C
+dbline FFFFFFFE 9A
+dbline 0 9E
+dbfunc e delay_ns A0 fV
+dbsym r ns 14 c
+dbline FFFFFFFF A6
+dbline 72 A6
+dbline 74 A8
+dbline 73 AE
+dbline FFFFFFFE B8
+dbline 0 BC
+dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\9.八位数码管显示实验\LEDSHOW\LEDSHOW.C
+dbfunc e System_Init BE fV
+dbline FFFFFFFF BE
+dbline 32 BE
+dbline 33 BE
+dbline 34 C2
+dbline 36 C4
+dbline 37 C6
+dbline 39 C8
+dbline 3A CA
+dbline FFFFFFFE CC
+dbline 0 CC
+dbfunc e Write_LED CE fV
+dbsym r j 14 c
+dbsym r i 16 c
+dbline FFFFFFFF D2
+dbline 42 D2
+dbline 44 D2
+dbline 45 D4
+dbline 46 D8
+dbline 47 D8
+dbline 48 DA
+dbline 49 DC
+dbline 4A E2
+dbline 4B E4
+dbline 4C E6
+dbline 4D F6
+dbline 4E F8
+dbline 50 FE
+dbline 45 FE
+dbline 45 100
+dbline FFFFFFFE 104
+dbline 0 108
+dbfunc e main 10A fV
+dbline FFFFFFFF 10A
+dbline 58 10A
+dbline 5A 10A
+dbline 5D 10E
+dbline 5E 10E
+dbline 5F 110
+dbline 5C 110
+dbline FFFFFFFE 112
+dbline 0 112
+S _main Def010A
+S _delay_10us Def003A
+S _delay_50us Def0042
+S _delay_nms Def0082
+S _delay_100us Def004C
+S _Write_LED Def00CE
+S _delay_ns Def00A0
+S _delay_n100us Def0052
+S _System_Init Def00BE
+S _delay_1ms Def006C
+S _delay_1us Def0000
+S _delay_3us Def000E
+A data size 10 flags 20
+dbfile C:/icc/include/delay.h
+dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\9.八位数码管显示实验\LEDSHOW\LEDSHOW.C
+dbsym e table 0 A[16:16]c
+S _table Def0000
+A idata size 10 flags 0
+T 00 00 00 00 00 00 00 00 00 00 00 00 00 00 08 95
+R 00 00 00 00
+T 0E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 1C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 2A 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 38 00 08 95
+R 00 00 00 00
+T 3A 00 E9 DF E8 DF E7 DF 08 95
+R 00 00 00 00
+T 42 00 FB DF FA DF F9 DF F8 DF 08 95
+R 00 00 00 00
+T 4C 00 FA DF F9 DF 08 95
+R 00 00 00 00
+T 52 00 0E 94 00 00 40 2F 01 C0 F8 DF 24 2E 33 24
+R 00 00 00 00 12 04 00 00
+T 60 00 41 50 22 20 D1 F7 0E 94 00 00 08 95
+R 00 00 00 00 12 0A 02 00
+T 6C 00 EF DF EE DF ED DF EC DF EB DF EA DF E9 DF
+R 00 00 00 00
+T 7A 00 E8 DF E7 DF E6 DF 08 95
+R 00 00 00 00
+T 82 00 0E 94 00 00 A8 01 01 C0 F0 DF 1A 01 41 50
+R 00 00 00 00 12 04 00 00
+T 90 00 50 40 22 20 D1 F7 33 20 C1 F7 0E 94 00 00
+R 00 00 00 00 12 0E 02 00
+T 9E 00 08 95
+R 00 00 00 00
+T A0 00 0E 94 00 00 40 2F 03 C0 08 EE 13 E0 EA DF
+R 00 00 00 00 12 04 00 00
+T AE 00 24 2E 33 24 41 50 22 20 C1 F7 0E 94 00 00
+R 00 00 00 00 12 0E 02 00
+T BC 00 08 95
+R 00 00 00 00
+T 00 00 3F 06
+R 00 00 02 00
+T 02 00 5B 4F
+R 00 00 02 00
+T 04 00 66 6D
+R 00 00 02 00
+T 06 00 7D 07
+R 00 00 02 00
+T 08 00 7F 6F
+R 00 00 02 00
+T 0A 00 77 7C
+R 00 00 02 00
+T 0C 00 39 5E
+R 00 00 02 00
+T 0E 00 79 71
+R 00 00 02 00
+T BE 00 8F EF 8B BB 8A BB 82 BB 81 BB 88 BB 87 BB
+R 00 00 00 00
+T CC 00 08 95
+R 00 00 00 00
+T CE 00 0E 94 00 00 41 E0 66 27 14 C0 94 9A 95 9A
+R 00 00 00 00 12 04 01 00
+T DC 00 24 2E 20 94 2B BA 95 98 44 0F 80 E0 90 E0
+R 00 00 00 00 20 0C 01 00 00 00 40 0E 01 00 00 00
+T EA 00 E6 2F FF 27 E8 0F F9 1F 20 80 2B BA 94 98
+R 00 00 00 00
+T F8 00 01 E0 10 E0 C2 DF 63 95 68 30 50 F3 0E 94
+R 00 00 00 00
+T 06 01 00 00 08 95
+R 00 00 00 00 12 02 03 00
+T 0A 01 D9 DF 01 C0 DF DF FE CF 08 95
+R 00 00 00 00

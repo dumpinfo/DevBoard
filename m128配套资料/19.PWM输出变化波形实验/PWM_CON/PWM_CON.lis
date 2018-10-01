@@ -1,0 +1,815 @@
+                        .module PWM_CON.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA16的定时器实现快速PWM输出示例程序，定时器0溢出中断的方式
+ 0000           ; //输出PWM波形驱动发光二极管，亮度由暗到灭，呈闪烁状态
+ 0000           ; //样值采取正弦波公式，示例如下
+ 0000           ; //正弦波采样值计算公式
+ 0000           ; //                    f(x)=128+127*sin(2*3.1415*x/127) x=[0....127]
+ 0000           ; //PWM输出也可通过控制LED发光来直观的看到效果，亮度持续的变化
+ 0000           ; //可以通过选跳线帽选择是通过LED直接查看还是通过滤波器查看实际波形
+ 0000           ; //编译环境 ICCAVR 7.16A
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //忠兴电子元件店编辑
+ 0000           ; //日期：2010.06.14
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000                   .dbline 21
+ 0000           ; 
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; //***********************************************************************
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; //                    定义变量区
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; //***********************************************************************
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; #define f_count         254                              //0CR0寄存器初始值
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; #define timer_clk       0x07
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; 
+ 000E           ; #define uchar           unsigned char
+ 000E           ; #define uint            unsigned int
+ 000E           ; 
+ 000E                   .dbline 32
+ 000E           ; #define Data_IO               PORTA                //数码管数据口
+ 000E           ; #define Data_DDR        DDRA                 //数码管数据口方向寄存器
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; #define D_LE0         PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ; #define W_LE0         PORTD &= ~(1 << PD5) //数码管位控制位为0
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; 
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ; uchar auc_SinParam[128] = {
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ; 128,134,140,147,153,159,165,171,177,182,188,193,198,204,208,213,
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ; 218,222,226,230,233,237,240,242,245,247,249,251,252,253,254,254,
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ; 254,254,253,252,251,250,248,246,244,241,238,235,232,228,224,220,
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; 215,211,206,201,196,191,185,179,174,168,162,156,150,144,137,131,
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ; 125,119,112,106,100,94,88,82,77,71,65,60,55,50,45,41,
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ; 36,32,28,24,21,18,15,12,10,8,6,5,4,3,2,2,
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ; 2,2,3,4,5,7,9,11,14,16,19,23,26,30,34,38,
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ; 43,48,52,57,63,68,74,79,85,91,97,103,109,116,122,128};        // 128点正弦波样本值
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ; 
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ; uchar x_SW = 8,X_LUT = 0;
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ; 
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ; //*************************************************************************
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ; //                    初始化子程序
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ; //*************************************************************************
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ; void system_init()                                   //IO口初始化
+ 003A           ; {
+ 003A           ;   
+ 003A           ;   PORTB=0xff;                                       //PB设置为输出
+ 003A                   .dbline 57
+ 003A           ;   DDRB=0xff;                                        //上拉电阻无效
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;   
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;   D_LE1;                                                      //关掉数码管，以免显示乱码                   
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ;   W_LE1;                     
+ 0042           ;   Data_IO=0xFF;                                               //关数码管            
+ 0042           ;   W_LE0; 
+ 0042           ; }
+ 0042                   .dbline 64
+ 0042           ; 
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ; void timer0_init()                                 //定时器初始化
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ; {
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ;   TCCR0=0x68|timer_clk;                            //快读PWM模式，OC0输出，分频
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;   OCR0=128;                                        //OCR0比较匹配寄存器值
+ 004C           ;   TIFR=0x01;                                       //清中断标志位
+ 004C           ;   TIMSK=0x01;                                      //使能定时器0溢出中断
+ 004C                   .dbline 71
+ 004C           ; }
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ; 
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ; 
+ 0058           ; //*************************************************************************
+ 0058           ; //            定时器0中断服务子程序
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ; //*************************************************************************
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ; 
+ 006C           ; #pragma interrupt_handler  TIMER0_ISR:17
+ 006C           ; void TIMER0_ISR()             
+ 006C           ; {
+ 006C           ;     X_LUT += x_SW;                                                     // 新样点指针
+ 006C           ;       if (X_LUT > 127) X_LUT -= 128;                   // 样点指针调整
+ 006C           ;       OCR0 =auc_SinParam[X_LUT];                                       // 取样点指针到比较匹配寄存器
+ 006C           ; }
+ 006C           ; 
+ 006C           ; //*************************************************************************
+ 006C           ; //            主程序
+ 006C           ; //*************************************************************************
+ 006C           ; 
+ 006C                   .dbline 90
+ 006C           ; void main(void)
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ; {
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ;   system_init();                               //系统初始化.PB3输出PWM波形
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ;   timer0_init();                               //定时器0初始化，完成PWM相关配置
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ;   SREG|=0x80;                                  //开启全局中断
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ;   while(1)
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ;   {
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ;   }
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ; }
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ; }
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; }
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; }
+ 00A6           ; }
+ 00A6           ; }
+ 00A6           ; }
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; }
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000           _auc_SinParam::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 8086              .byte 128,134
+                        .area data(ram, con, rel)
+ 0002                   .dbfile C:/icc/include/delay.h
+ 0002                   .blkb 2
+                        .area idata
+ 0002 8C93              .byte 140,147
+                        .area data(ram, con, rel)
+ 0004                   .dbfile C:/icc/include/delay.h
+ 0004                   .blkb 2
+                        .area idata
+ 0004 999F              .byte 153,159
+                        .area data(ram, con, rel)
+ 0006                   .dbfile C:/icc/include/delay.h
+ 0006                   .blkb 2
+                        .area idata
+ 0006 A5AB              .byte 165,171
+                        .area data(ram, con, rel)
+ 0008                   .dbfile C:/icc/include/delay.h
+ 0008                   .blkb 2
+                        .area idata
+ 0008 B1B6              .byte 177,182
+                        .area data(ram, con, rel)
+ 000A                   .dbfile C:/icc/include/delay.h
+ 000A                   .blkb 2
+                        .area idata
+ 000A BCC1              .byte 188,193
+                        .area data(ram, con, rel)
+ 000C                   .dbfile C:/icc/include/delay.h
+ 000C                   .blkb 2
+                        .area idata
+ 000C C6CC              .byte 198,204
+                        .area data(ram, con, rel)
+ 000E                   .dbfile C:/icc/include/delay.h
+ 000E                   .blkb 2
+                        .area idata
+ 000E D0D5              .byte 208,213
+                        .area data(ram, con, rel)
+ 0010                   .dbfile C:/icc/include/delay.h
+ 0010                   .blkb 2
+                        .area idata
+ 0010 DADE              .byte 218,222
+                        .area data(ram, con, rel)
+ 0012                   .dbfile C:/icc/include/delay.h
+ 0012                   .blkb 2
+                        .area idata
+ 0012 E2E6              .byte 226,230
+                        .area data(ram, con, rel)
+ 0014                   .dbfile C:/icc/include/delay.h
+ 0014                   .blkb 2
+                        .area idata
+ 0014 E9ED              .byte 233,237
+                        .area data(ram, con, rel)
+ 0016                   .dbfile C:/icc/include/delay.h
+ 0016                   .blkb 2
+                        .area idata
+ 0016 F0F2              .byte 240,242
+                        .area data(ram, con, rel)
+ 0018                   .dbfile C:/icc/include/delay.h
+ 0018                   .blkb 2
+                        .area idata
+ 0018 F5F7              .byte 245,247
+                        .area data(ram, con, rel)
+ 001A                   .dbfile C:/icc/include/delay.h
+ 001A                   .blkb 2
+                        .area idata
+ 001A F9FB              .byte 249,251
+                        .area data(ram, con, rel)
+ 001C                   .dbfile C:/icc/include/delay.h
+ 001C                   .blkb 2
+                        .area idata
+ 001C FCFD              .byte 252,253
+                        .area data(ram, con, rel)
+ 001E                   .dbfile C:/icc/include/delay.h
+ 001E                   .blkb 2
+                        .area idata
+ 001E FEFE              .byte 254,254
+                        .area data(ram, con, rel)
+ 0020                   .dbfile C:/icc/include/delay.h
+ 0020                   .blkb 2
+                        .area idata
+ 0020 FEFE              .byte 254,254
+                        .area data(ram, con, rel)
+ 0022                   .dbfile C:/icc/include/delay.h
+ 0022                   .blkb 2
+                        .area idata
+ 0022 FDFC              .byte 253,252
+                        .area data(ram, con, rel)
+ 0024                   .dbfile C:/icc/include/delay.h
+ 0024                   .blkb 2
+                        .area idata
+ 0024 FBFA              .byte 251,250
+                        .area data(ram, con, rel)
+ 0026                   .dbfile C:/icc/include/delay.h
+ 0026                   .blkb 2
+                        .area idata
+ 0026 F8F6              .byte 248,246
+                        .area data(ram, con, rel)
+ 0028                   .dbfile C:/icc/include/delay.h
+ 0028                   .blkb 2
+                        .area idata
+ 0028 F4F1              .byte 244,241
+                        .area data(ram, con, rel)
+ 002A                   .dbfile C:/icc/include/delay.h
+ 002A                   .blkb 2
+                        .area idata
+ 002A EEEB              .byte 238,235
+                        .area data(ram, con, rel)
+ 002C                   .dbfile C:/icc/include/delay.h
+ 002C                   .blkb 2
+                        .area idata
+ 002C E8E4              .byte 232,228
+                        .area data(ram, con, rel)
+ 002E                   .dbfile C:/icc/include/delay.h
+ 002E                   .blkb 2
+                        .area idata
+ 002E E0DC              .byte 224,220
+                        .area data(ram, con, rel)
+ 0030                   .dbfile C:/icc/include/delay.h
+ 0030                   .blkb 2
+                        .area idata
+ 0030 D7D3              .byte 215,211
+                        .area data(ram, con, rel)
+ 0032                   .dbfile C:/icc/include/delay.h
+ 0032                   .blkb 2
+                        .area idata
+ 0032 CEC9              .byte 206,201
+                        .area data(ram, con, rel)
+ 0034                   .dbfile C:/icc/include/delay.h
+ 0034                   .blkb 2
+                        .area idata
+ 0034 C4BF              .byte 196,191
+                        .area data(ram, con, rel)
+ 0036                   .dbfile C:/icc/include/delay.h
+ 0036                   .blkb 2
+                        .area idata
+ 0036 B9B3              .byte 185,179
+                        .area data(ram, con, rel)
+ 0038                   .dbfile C:/icc/include/delay.h
+ 0038                   .blkb 2
+                        .area idata
+ 0038 AEA8              .byte 174,168
+                        .area data(ram, con, rel)
+ 003A                   .dbfile C:/icc/include/delay.h
+ 003A                   .blkb 2
+                        .area idata
+ 003A A29C              .byte 162,156
+                        .area data(ram, con, rel)
+ 003C                   .dbfile C:/icc/include/delay.h
+ 003C                   .blkb 2
+                        .area idata
+ 003C 9690              .byte 150,144
+                        .area data(ram, con, rel)
+ 003E                   .dbfile C:/icc/include/delay.h
+ 003E                   .blkb 2
+                        .area idata
+ 003E 8983              .byte 137,131
+                        .area data(ram, con, rel)
+ 0040                   .dbfile C:/icc/include/delay.h
+ 0040                   .blkb 2
+                        .area idata
+ 0040 7D77              .byte 125,'w
+                        .area data(ram, con, rel)
+ 0042                   .dbfile C:/icc/include/delay.h
+ 0042                   .blkb 2
+                        .area idata
+ 0042 706A              .byte 'p,'j
+                        .area data(ram, con, rel)
+ 0044                   .dbfile C:/icc/include/delay.h
+ 0044                   .blkb 2
+                        .area idata
+ 0044 645E              .byte 'd,94
+                        .area data(ram, con, rel)
+ 0046                   .dbfile C:/icc/include/delay.h
+ 0046                   .blkb 2
+                        .area idata
+ 0046 5852              .byte 'X,'R
+                        .area data(ram, con, rel)
+ 0048                   .dbfile C:/icc/include/delay.h
+ 0048                   .blkb 2
+                        .area idata
+ 0048 4D47              .byte 'M,'G
+                        .area data(ram, con, rel)
+ 004A                   .dbfile C:/icc/include/delay.h
+ 004A                   .blkb 2
+                        .area idata
+ 004A 413C              .byte 'A,60
+                        .area data(ram, con, rel)
+ 004C                   .dbfile C:/icc/include/delay.h
+ 004C                   .blkb 2
+                        .area idata
+ 004C 3732              .byte 55,50
+                        .area data(ram, con, rel)
+ 004E                   .dbfile C:/icc/include/delay.h
+ 004E                   .blkb 2
+                        .area idata
+ 004E 2D29              .byte 45,41
+                        .area data(ram, con, rel)
+ 0050                   .dbfile C:/icc/include/delay.h
+ 0050                   .blkb 2
+                        .area idata
+ 0050 2420              .byte 36,32
+                        .area data(ram, con, rel)
+ 0052                   .dbfile C:/icc/include/delay.h
+ 0052                   .blkb 2
+                        .area idata
+ 0052 1C18              .byte 28,24
+                        .area data(ram, con, rel)
+ 0054                   .dbfile C:/icc/include/delay.h
+ 0054                   .blkb 2
+                        .area idata
+ 0054 1512              .byte 21,18
+                        .area data(ram, con, rel)
+ 0056                   .dbfile C:/icc/include/delay.h
+ 0056                   .blkb 2
+                        .area idata
+ 0056 0F0C              .byte 15,12
+                        .area data(ram, con, rel)
+ 0058                   .dbfile C:/icc/include/delay.h
+ 0058                   .blkb 2
+                        .area idata
+ 0058 0A08              .byte 10,8
+                        .area data(ram, con, rel)
+ 005A                   .dbfile C:/icc/include/delay.h
+ 005A                   .blkb 2
+                        .area idata
+ 005A 0605              .byte 6,5
+                        .area data(ram, con, rel)
+ 005C                   .dbfile C:/icc/include/delay.h
+ 005C                   .blkb 2
+                        .area idata
+ 005C 0403              .byte 4,3
+                        .area data(ram, con, rel)
+ 005E                   .dbfile C:/icc/include/delay.h
+ 005E                   .blkb 2
+                        .area idata
+ 005E 0202              .byte 2,2
+                        .area data(ram, con, rel)
+ 0060                   .dbfile C:/icc/include/delay.h
+ 0060                   .blkb 2
+                        .area idata
+ 0060 0202              .byte 2,2
+                        .area data(ram, con, rel)
+ 0062                   .dbfile C:/icc/include/delay.h
+ 0062                   .blkb 2
+                        .area idata
+ 0062 0304              .byte 3,4
+                        .area data(ram, con, rel)
+ 0064                   .dbfile C:/icc/include/delay.h
+ 0064                   .blkb 2
+                        .area idata
+ 0064 0507              .byte 5,7
+                        .area data(ram, con, rel)
+ 0066                   .dbfile C:/icc/include/delay.h
+ 0066                   .blkb 2
+                        .area idata
+ 0066 090B              .byte 9,11
+                        .area data(ram, con, rel)
+ 0068                   .dbfile C:/icc/include/delay.h
+ 0068                   .blkb 2
+                        .area idata
+ 0068 0E10              .byte 14,16
+                        .area data(ram, con, rel)
+ 006A                   .dbfile C:/icc/include/delay.h
+ 006A                   .blkb 2
+                        .area idata
+ 006A 1317              .byte 19,23
+                        .area data(ram, con, rel)
+ 006C                   .dbfile C:/icc/include/delay.h
+ 006C                   .blkb 2
+                        .area idata
+ 006C 1A1E              .byte 26,30
+                        .area data(ram, con, rel)
+ 006E                   .dbfile C:/icc/include/delay.h
+ 006E                   .blkb 2
+                        .area idata
+ 006E 2226              .byte 34,38
+                        .area data(ram, con, rel)
+ 0070                   .dbfile C:/icc/include/delay.h
+ 0070                   .blkb 2
+                        .area idata
+ 0070 2B30              .byte 43,48
+                        .area data(ram, con, rel)
+ 0072                   .dbfile C:/icc/include/delay.h
+ 0072                   .blkb 2
+                        .area idata
+ 0072 3439              .byte 52,57
+                        .area data(ram, con, rel)
+ 0074                   .dbfile C:/icc/include/delay.h
+ 0074                   .blkb 2
+                        .area idata
+ 0074 3F44              .byte 63,'D
+                        .area data(ram, con, rel)
+ 0076                   .dbfile C:/icc/include/delay.h
+ 0076                   .blkb 2
+                        .area idata
+ 0076 4A4F              .byte 'J,'O
+                        .area data(ram, con, rel)
+ 0078                   .dbfile C:/icc/include/delay.h
+ 0078                   .blkb 2
+                        .area idata
+ 0078 555B              .byte 'U,91
+                        .area data(ram, con, rel)
+ 007A                   .dbfile C:/icc/include/delay.h
+ 007A                   .blkb 2
+                        .area idata
+ 007A 6167              .byte 'a,'g
+                        .area data(ram, con, rel)
+ 007C                   .dbfile C:/icc/include/delay.h
+ 007C                   .blkb 2
+                        .area idata
+ 007C 6D74              .byte 'm,'t
+                        .area data(ram, con, rel)
+ 007E                   .dbfile C:/icc/include/delay.h
+ 007E                   .blkb 2
+                        .area idata
+ 007E 7A80              .byte 'z,128
+                        .area data(ram, con, rel)
+ 0080                   .dbfile C:/icc/include/delay.h
+ 0080                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\21.PWM输出变化波形实验\PWM_CON\PWM_CON.C
+ 0080                   .dbsym e auc_SinParam _auc_SinParam A[128:128]c
+ 0080           _x_SW::
+ 0080                   .blkb 1
+                        .area idata
+ 0080 08                .byte 8
+                        .area data(ram, con, rel)
+ 0081                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\21.PWM输出变化波形实验\PWM_CON\PWM_CON.C
+ 0081                   .dbsym e x_SW _x_SW c
+ 0081           _X_LUT::
+ 0081                   .blkb 1
+                        .area idata
+ 0081 00                .byte 0
+                        .area data(ram, con, rel)
+ 0082                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\21.PWM输出变化波形实验\PWM_CON\PWM_CON.C
+ 0082                   .dbsym e X_LUT _X_LUT c
+                        .area text(rom, con, rel)
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\21.PWM输出变化波形实验\PWM_CON\PWM_CON.C
+ 00BE                   .dbfunc e system_init _system_init fV
+                        .even
+ 00BE           _system_init::
+ 00BE                   .dbline -1
+ 00BE                   .dbline 54
+ 00BE                   .dbline 56
+ 00BE 8FEF              ldi R24,255
+ 00C0 88BB              out 0x18,R24
+ 00C2                   .dbline 57
+ 00C2 87BB              out 0x17,R24
+ 00C4                   .dbline 59
+ 00C4 949A              sbi 0x12,4
+ 00C6                   .dbline 60
+ 00C6 959A              sbi 0x12,5
+ 00C8                   .dbline 61
+ 00C8 8BBB              out 0x1b,R24
+ 00CA                   .dbline 62
+ 00CA 9598              cbi 0x12,5
+ 00CC                   .dbline -2
+ 00CC           L19:
+ 00CC                   .dbline 0 ; func end
+ 00CC 0895              ret
+ 00CE                   .dbend
+ 00CE                   .dbfunc e timer0_init _timer0_init fV
+                        .even
+ 00CE           _timer0_init::
+ 00CE                   .dbline -1
+ 00CE                   .dbline 66
+ 00CE                   .dbline 67
+ 00CE 8FE6              ldi R24,111
+ 00D0 83BF              out 0x33,R24
+ 00D2                   .dbline 68
+ 00D2 80E8              ldi R24,128
+ 00D4 81BF              out 0x31,R24
+ 00D6                   .dbline 69
+ 00D6 81E0              ldi R24,1
+ 00D8 86BF              out 0x36,R24
+ 00DA                   .dbline 70
+ 00DA 87BF              out 0x37,R24
+ 00DC                   .dbline -2
+ 00DC           L20:
+ 00DC                   .dbline 0 ; func end
+ 00DC 0895              ret
+ 00DE                   .dbend
+                        .area vector(rom, abs)
+                        .org 64
+ 0040 0C946F00          jmp _TIMER0_ISR
+                        .area text(rom, con, rel)
+ 00DE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\21.PWM输出变化波形实验\PWM_CON\PWM_CON.C
+ 00DE                   .dbfunc e TIMER0_ISR _TIMER0_ISR fV
+                        .even
+ 00DE           _TIMER0_ISR::
+ 00DE 2A92              st -y,R2
+ 00E0 3A92              st -y,R3
+ 00E2 8A93              st -y,R24
+ 00E4 9A93              st -y,R25
+ 00E6 EA93              st -y,R30
+ 00E8 FA93              st -y,R31
+ 00EA 2FB6              in R2,0x3f
+ 00EC 2A92              st -y,R2
+ 00EE                   .dbline -1
+ 00EE                   .dbline 80
+ 00EE                   .dbline 81
+ 00EE 20908000          lds R2,_x_SW
+ 00F2 30908100          lds R3,_X_LUT
+ 00F6 320C              add R3,R2
+ 00F8 30928100          sts _X_LUT,R3
+ 00FC                   .dbline 82
+ 00FC 8FE7              ldi R24,127
+ 00FE 8315              cp R24,R3
+ 0100 20F4              brsh L22
+ 0102                   .dbline 82
+ 0102 832D              mov R24,R3
+ 0104 8058              subi R24,128
+ 0106 80938100          sts _X_LUT,R24
+ 010A           L22:
+ 010A                   .dbline 83
+ 010A 80E0              ldi R24,<_auc_SinParam
+ 010C 90E0              ldi R25,>_auc_SinParam
+ 010E E0918100          lds R30,_X_LUT
+ 0112 FF27              clr R31
+ 0114 E80F              add R30,R24
+ 0116 F91F              adc R31,R25
+ 0118 2080              ldd R2,z+0
+ 011A 21BE              out 0x31,R2
+ 011C                   .dbline -2
+ 011C           L21:
+ 011C 2990              ld R2,y+
+ 011E 2FBE              out 0x3f,R2
+ 0120 F991              ld R31,y+
+ 0122 E991              ld R30,y+
+ 0124 9991              ld R25,y+
+ 0126 8991              ld R24,y+
+ 0128 3990              ld R3,y+
+ 012A 2990              ld R2,y+
+ 012C                   .dbline 0 ; func end
+ 012C 1895              reti
+ 012E                   .dbend
+ 012E                   .dbfunc e main _main fV
+                        .even
+ 012E           _main::
+ 012E                   .dbline -1
+ 012E                   .dbline 91
+ 012E                   .dbline 92
+ 012E C7DF              xcall _system_init
+ 0130                   .dbline 93
+ 0130 CEDF              xcall _timer0_init
+ 0132                   .dbline 94
+ 0132 7894              bset 7
+ 0134           L25:
+ 0134                   .dbline 96
+ 0134                   .dbline 97
+ 0134           L26:
+ 0134                   .dbline 95
+ 0134 FFCF              xjmp L25
+ 0136           X1:
+ 0136                   .dbline -2
+ 0136           L24:
+ 0136                   .dbline 0 ; func end
+ 0136 0895              ret
+ 0138                   .dbend

@@ -1,0 +1,531 @@
+__text_start:
+__start:
+      4E EFCF      LDI	R28,0xFF
+      4F E1D0      LDI	R29,0x10
+      50 BFCD      OUT	0x3D,R28
+      51 BFDE      OUT	0x3E,R29
+      52 51CE      SUBI	R28,0x1E
+      53 40D0      SBCI	R29,0
+      54 EA0A      LDI	R16,0xAA
+      55 8308      STD	Y+0,R16
+      56 2400      CLR	R0
+      57 E1E0      LDI	R30,0x10
+      58 E0F1      LDI	R31,1
+      59 E011      LDI	R17,1
+      5A 31E1      CPI	R30,0x11
+      5B 07F1      CPC	R31,R17
+      5C F011      BEQ	0x005F
+      5D 9201      ST	R0,Z+
+      5E CFFB      RJMP	0x005A
+      5F 8300      STD	Z+0,R16
+      60 E8EC      LDI	R30,0x8C
+      61 E0F0      LDI	R31,0
+      62 E0A0      LDI	R26,0
+      63 E0B1      LDI	R27,1
+      64 E010      LDI	R17,0
+      65 E000      LDI	R16,0
+      66 BF0B      OUT	0x3B,R16
+      67 39EC      CPI	R30,0x9C
+      68 07F1      CPC	R31,R17
+      69 F021      BEQ	0x006E
+      6A 95C8      LPM
+      6B 9631      ADIW	R30,1
+      6C 920D      ST	R0,X+
+      6D CFF9      RJMP	0x0067
+      6E 940E 011A CALL	_main
+_exit:
+      70 CFFF      RJMP	_exit
+FILE: F:\PROGRA~1\iccavr\include\delay.h
+(0001) //********************************************************************
+(0002) /*函 数 名：delay_us
+(0003) 建立日期：2010年1月28日
+(0004) 编译环境：ICCAVR7.16A
+(0005) 函数作用：微秒级的延时程序
+(0006) 说    明：7.3728M晶振下
+(0007) ********************************************************************/
+(0008) void delay_1us(void)                 //1us延时函数，不能连续调用， 
+(0009) { 
+(0010)    asm("nop");                       //1时钟周期
+_delay_1us:
+      71 0000      NOP
+(0011)    asm("nop");
+      72 0000      NOP
+(0012)    asm("nop");
+      73 0000      NOP
+(0013)    asm("nop");
+      74 0000      NOP
+(0014)    asm("nop");                       //1T
+      75 0000      NOP
+(0015)    asm("nop");
+      76 0000      NOP
+      77 9508      RET
+(0016) 
+(0017) }
+(0018) void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+(0019) { 
+(0020)    
+(0021)    asm("nop");
+_delay_3us:
+      78 0000      NOP
+(0022)    asm("nop");
+      79 0000      NOP
+(0023)    asm("nop");                       
+      7A 0000      NOP
+(0024)    asm("nop");
+      7B 0000      NOP
+(0025)    asm("nop");
+      7C 0000      NOP
+(0026)    asm("nop");
+      7D 0000      NOP
+(0027)    asm("nop");                       
+      7E 0000      NOP
+(0028)    asm("nop");
+      7F 0000      NOP
+(0029)    asm("nop");
+      80 0000      NOP
+(0030)    asm("nop");
+      81 0000      NOP
+(0031)    asm("nop");                       
+      82 0000      NOP
+(0032)    asm("nop");
+      83 0000      NOP
+(0033)    asm("nop");
+      84 0000      NOP
+(0034)    asm("nop");
+      85 0000      NOP
+(0035)    asm("nop");                       
+      86 0000      NOP
+(0036)    asm("nop");
+      87 0000      NOP
+(0037)    asm("nop");
+      88 0000      NOP
+(0038)    asm("nop");
+      89 0000      NOP
+(0039)    asm("nop");
+      8A 0000      NOP
+(0040)    asm("nop");
+      8B 0000      NOP
+(0041)    asm("nop");                       
+      8C 0000      NOP
+      8D 9508      RET
+(0042) } 
+(0043) 
+(0044) void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+(0045) {
+(0046)    delay_3us();
+_delay_10us:
+      8E DFE9      RCALL	_delay_3us
+(0047)    delay_3us(); 
+      8F DFE8      RCALL	_delay_3us
+(0048)    delay_3us();  
+      90 CFE7      RJMP	_delay_3us
+(0049) }
+(0050)   
+(0051) void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+(0052) { 
+(0053)    delay_10us();
+_delay_50us:
+      91 DFFC      RCALL	_delay_10us
+(0054)    delay_10us(); 
+      92 DFFB      RCALL	_delay_10us
+(0055)    delay_10us();
+      93 DFFA      RCALL	_delay_10us
+(0056)    delay_10us();
+      94 CFF9      RJMP	_delay_10us
+(0057) }
+(0058) void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+(0059) {
+(0060)  delay_50us();
+_delay_100us:
+      95 DFFB      RCALL	_delay_50us
+(0061)  delay_50us();
+      96 CFFA      RJMP	_delay_50us
+_delay_n100us:
+  n100us               --> R20
+      97 934A      ST	R20,-Y
+      98 2F40      MOV	R20,R16
+(0062) }
+(0063) void delay_n100us(unsigned char n100us)
+(0064) {
+      99 C001      RJMP	0x009B
+(0065)  while(n100us--)                          
+(0066)  delay_100us();
+      9A DFFA      RCALL	_delay_100us
+      9B 2E24      MOV	R2,R20
+      9C 2433      CLR	R3
+      9D 5041      SUBI	R20,1
+      9E 2022      TST	R2
+      9F F7D1      BNE	0x009A
+      A0 9149      LD	R20,Y+
+      A1 9508      RET
+(0067) }
+(0068) /*delay_n100us(2)        250us
+(0069) delay_n100us(3)          360us
+(0070) delay_n100us(4)          470us
+(0071) delay_n100us(5)          580us
+(0072) delay_n100us(6)          690us
+(0073) delay_n100us(7)       800us
+(0074) delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+(0075) 
+(0076) */
+(0077) void delay_1ms()
+(0078) {
+(0079)  delay_100us();
+_delay_1ms:
+      A2 DFF2      RCALL	_delay_100us
+(0080)  delay_100us();
+      A3 DFF1      RCALL	_delay_100us
+(0081)  delay_100us();
+      A4 DFF0      RCALL	_delay_100us
+(0082)  delay_100us();
+      A5 DFEF      RCALL	_delay_100us
+(0083)  delay_100us();
+      A6 DFEE      RCALL	_delay_100us
+(0084)  delay_100us();
+      A7 DFED      RCALL	_delay_100us
+(0085)  delay_100us();
+      A8 DFEC      RCALL	_delay_100us
+(0086)  delay_100us();
+      A9 DFEB      RCALL	_delay_100us
+(0087)  delay_100us();
+      AA DFEA      RCALL	_delay_100us
+(0088)  delay_100us();
+      AB CFE9      RJMP	_delay_100us
+_delay_nms:
+  nms                  --> R20
+      AC 934A      ST	R20,-Y
+      AD 935A      ST	R21,-Y
+      AE 01A8      MOVW	R20,R16
+(0089) }
+(0090) /********************************************************************
+(0091) 函 数 名：Delay_ms
+(0092) 建立日期：2010年1月28日
+(0093) 修改日期：
+(0094) 函数作用：毫秒级的精确延时程序
+(0095) 说    明：
+(0096) ********************************************************************/
+(0097) void delay_nms(unsigned int nms)
+(0098) {
+      AF C001      RJMP	0x00B1
+(0099)  while(nms--) 
+(0100)  delay_1ms();
+      B0 DFF1      RCALL	_delay_1ms
+      B1 011A      MOVW	R2,R20
+      B2 5041      SUBI	R20,1
+      B3 4050      SBCI	R21,0
+      B4 2022      TST	R2
+      B5 F7D1      BNE	0x00B0
+      B6 2033      TST	R3
+      B7 F7C1      BNE	0x00B0
+      B8 9159      LD	R21,Y+
+      B9 9149      LD	R20,Y+
+      BA 9508      RET
+_delay_ns:
+  ns                   --> R20
+      BB 934A      ST	R20,-Y
+      BC 2F40      MOV	R20,R16
+(0101) }
+(0102) void delay_ns(unsigned char ns)
+(0103) {
+      BD C003      RJMP	0x00C1
+(0104)  while(ns--) 
+(0105)  delay_nms(1000);
+      BE EE08      LDI	R16,0xE8
+      BF E013      LDI	R17,3
+      C0 DFEB      RCALL	_delay_nms
+      C1 2E24      MOV	R2,R20
+      C2 2433      CLR	R3
+      C3 5041      SUBI	R20,1
+      C4 2022      TST	R2
+      C5 F7C1      BNE	0x00BE
+      C6 9149      LD	R20,Y+
+      C7 9508      RET
+FILE: E:\DMAVR-~3\2KEY\2KEY.C
+(0001) //DMAVR-128的2位独立键盘控制程序，显示键值1和2
+(0002) //编译环境 ICCAVR 7.16A
+(0003) //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+(0004) //作者：阿迪 www.avrgcc.com
+(0005) //日期：2010.01.14
+(0006) //***********************************************************************
+(0007) //			包含文件
+(0008) //***********************************************************************
+(0009) 
+(0010) #include <string.h>
+(0011) #include <stdio.h>
+(0012) #include <delay.h>
+(0013) #include <iom128v.h>
+(0014) 
+(0015) #define uchar           unsigned char
+(0016) #define uint            unsigned int
+(0017) 
+(0018) #define key_io          PORTC               //独立键盘与PC4和PC5连接
+(0019) #define key_ior         PINC                //读取IO口值为PINC的值
+(0020) #define Data_IO	        PORTA                //数据口
+(0021) #define Data_DDR        DDRA                 //数据口方向寄存器
+(0022) #define D_LE0	        PORTD &= ~(1 << PD4) //数码管段控制位为0
+(0023) #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1
+(0024) #define W_LE0	        PORTD &= ~(1 << PD5) //数码管位控制位为0
+(0025) #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+(0026) 
+(0027) 
+(0028) //***********************************************************************
+(0029) //			共阴数码管显示的断码表
+(0030) //***********************************************************************
+(0031) 
+(0032) uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,
+(0033) 	  		   0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+(0034) uchar key;
+(0035) 
+(0036) //***********************************************************************
+(0037) //			IO端口初始化
+(0038) //***********************************************************************
+(0039) 
+(0040) void System_Init()
+(0041) {
+(0042)     Data_IO=0xFF;             //数据口为输出
+_System_Init:
+      C8 EF8F      LDI	R24,0xFF
+      C9 BB8B      OUT	0x1B,R24
+(0043)     Data_DDR=0xFF;
+      CA BB8A      OUT	0x1A,R24
+(0044) 
+(0045)     PORTD=0xFF;               //74HC573的控制口，设置为输出
+      CB BB82      OUT	0x12,R24
+(0046)     DDRD=0xFF;
+      CC BB81      OUT	0x11,R24
+(0047) 	
+(0048) 	PORTB=0xFF;
+      CD BB88      OUT	0x18,R24
+(0049) 	DDRB=0xFF; 				  //关闭发光二极管
+      CE BB87      OUT	0x17,R24
+      CF 9508      RET
+_Display_Key:
+  j                    --> R22
+  i                    --> R20
+  num                  --> R10
+      D0 940E 0147 CALL	push_xgsetF00C
+      D2 2EA0      MOV	R10,R16
+(0050) }
+(0051) 
+(0052) //*************************************************************************
+(0053) //			74HC573控制数码管动态扫描显示函数
+(0054) //*************************************************************************
+(0055) 
+(0056) void Display_Key(uchar num)
+(0057) {
+(0058)  uchar i,j;
+(0059)  System_Init();
+      D3 DFF4      RCALL	_System_Init
+(0060)  j=0x01;                    //此数据用来控制位选
+      D4 E061      LDI	R22,1
+(0061)   for(i=0;i<8;i++)
+      D5 2744      CLR	R20
+      D6 C013      RJMP	0x00EA
+(0062)   {
+(0063)     D_LE1;                    //控制数码管段数据的74HC573的LE管脚置高
+      D7 9A94      SBI	0x12,4
+(0064)     W_LE1;                    //控制数码管位的74HC573的LE管脚置高
+      D8 9A95      SBI	0x12,5
+(0065)     Data_IO=0x00;               //设置要显示的位，也就是哪一个数码管亮，这里是八个一起显示
+      D9 2422      CLR	R2
+      DA BA2B      OUT	0x1B,R2
+(0066)     W_LE0;                    //锁存位数据，下面送上段数据以后，就显示出来了
+      DB 9895      CBI	0x12,5
+(0067) 	j=(j<<1);
+      DC 0F66      LSL	R22
+(0068)     Data_IO=table[num];         //送要显示的数据，就是段数据，如显示0送的是0x3f
+      DD E080      LDI	R24,0
+      DE E091      LDI	R25,1
+      DF 2DEA      MOV	R30,R10
+      E0 27FF      CLR	R31
+      E1 0FE8      ADD	R30,R24
+      E2 1FF9      ADC	R31,R25
+      E3 8020      LDD	R2,Z+0
+      E4 BA2B      OUT	0x1B,R2
+(0069)     D_LE0;                    //锁存段数据，数码管亮一个时间片刻
+      E5 9894      CBI	0x12,4
+(0070)     delay_nms(1);              //显示一个时间片刻，会影响亮度和闪烁性
+      E6 E001      LDI	R16,1
+      E7 E010      LDI	R17,0
+      E8 DFC3      RCALL	_delay_nms
+      E9 9543      INC	R20
+      EA 3048      CPI	R20,0x8
+      EB F358      BCS	0x00D7
+      EC 940C 014E JMP	pop_xgsetF00C
+_KeyboardScan:
+  key_check            --> R10
+  statevalue           --> R20
+  key_checkin          --> R20
+      EE 940E 013D CALL	push_xgset300C
+(0071) 
+(0072)   }
+(0073) 
+(0074) }
+(0075) 
+(0076) //**********************************************************************
+(0077) //	键盘扫描子程序，采用逐键扫描的方式
+(0078) //**********************************************************************
+(0079) 
+(0080) uchar KeyboardScan() 
+(0081) {
+(0082)   uchar statevalue,key_checkin,key_check;
+(0083)   key_io=0xf0;                    //在IO口由输出方式变为输入方式时要延迟一个周期
+      F0 EF80      LDI	R24,0xF0
+      F1 BB85      OUT	0x15,R24
+(0084)   key_io=0xf0;                    //采取写两次的方法延时
+      F2 BB85      OUT	0x15,R24
+(0085)   key_checkin=key_ior;            //读取IO口状态，判断是否有键按下
+      F3 B343      IN	R20,0x13
+(0086)   if(key_checkin!=0xf0)           //IO口值发生变化则表示有键按下
+      F4 3F40      CPI	R20,0xF0
+      F5 F0F1      BEQ	0x0114
+(0087)   {
+(0088)     delay_nms(20);                 //键盘消抖，延时20MS
+      F6 E104      LDI	R16,0x14
+      F7 E010      LDI	R17,0
+      F8 DFB3      RCALL	_delay_nms
+(0089)     key_checkin=key_ior;
+      F9 B343      IN	R20,0x13
+(0090)     if(key_checkin!=0xf0)
+      FA 3F40      CPI	R20,0xF0
+      FB F0E1      BEQ	0x0118
+(0091)     {
+(0092)      
+(0093)      key_check=key_ior;
+      FC B2A3      IN	R10,0x13
+(0094)      switch (key_check)
+      FD 2D4A      MOV	R20,R10
+      FE 2755      CLR	R21
+      FF 3D40      CPI	R20,0xD0
+     100 E0E0      LDI	R30,0
+     101 075E      CPC	R21,R30
+     102 F049      BEQ	0x010C
+     103 3D40      CPI	R20,0xD0
+     104 E0E0      LDI	R30,0
+     105 075E      CPC	R21,R30
+     106 F08C      BLT	0x0118
+     107 3E40      CPI	R20,0xE0
+     108 E0E0      LDI	R30,0
+     109 075E      CPC	R21,R30
+     10A F029      BEQ	0x0110
+     10B C00C      RJMP	0x0118
+(0095)      {
+(0096)      case 0xd0:key=2;break;
+     10C E082      LDI	R24,2
+     10D 9380 0110 STS	key,R24
+     10F C008      RJMP	0x0118
+(0097)      case 0xe0:key=1;break;
+     110 E081      LDI	R24,1
+     111 9380 0110 STS	key,R24
+(0098)      }
+(0099)           
+(0100)     }
+(0101)   }
+     113 C004      RJMP	0x0118
+(0102)   else
+(0103)   {
+(0104)   statevalue=0xff;                      //无按键时返回值
+     114 EF4F      LDI	R20,0xFF
+(0105)   key=statevalue;
+     115 9340 0110 STS	key,R20
+(0106)   return(key);
+     117 2F04      MOV	R16,R20
+     118 940C 0142 JMP	pop_xgset300C
+(0107)   }
+(0108) }
+(0109) 
+(0110) //*************************************************************************
+(0111) //			主程序
+(0112) //*************************************************************************
+(0113) 
+(0114) void main()
+(0115) 
+(0116) {         
+(0117)      
+(0118) 	  uint key_store;
+(0119) 	  DDRC=0x0f;                        //PC口上拉电阻使能
+_main:
+  key_store            --> R20
+     11A E08F      LDI	R24,0xF
+     11B BB84      OUT	0x14,R24
+(0120)       PORTC=0xf0;                       //PC高四位输入低四位输出
+     11C EF80      LDI	R24,0xF0
+     11D BB85      OUT	0x15,R24
+     11E C01C      RJMP	0x013B
+(0121) 
+(0122) 
+(0123) while(1)
+(0124)   {
+(0125) 
+(0126)  KeyboardScan();                         //键盘扫描，看是否有按键按下
+     11F DFCE      RCALL	_KeyboardScan
+(0127)     if(key!=0xff)                        //如果有按键按下，则显示该按键键值0~15
+     120 9180 0110 LDS	R24,key
+     122 3F8F      CPI	R24,0xFF
+     123 F0A9      BEQ	0x0139
+(0128)       {
+(0129) 	      { switch(key)
+     124 2F68      MOV	R22,R24
+     125 2777      CLR	R23
+     126 3061      CPI	R22,1
+     127 E0E0      LDI	R30,0
+     128 077E      CPC	R23,R30
+     129 F029      BEQ	0x012F
+     12A 3062      CPI	R22,2
+     12B E0E0      LDI	R30,0
+     12C 077E      CPC	R23,R30
+     12D F031      BEQ	0x0134
+     12E C00C      RJMP	0x013B
+(0130) 		   { case 1: Display_Key(0x01);key_store=0x01;break;   //给不同的键赋键值
+     12F E001      LDI	R16,1
+     130 DF9F      RCALL	_Display_Key
+     131 E041      LDI	R20,1
+     132 E050      LDI	R21,0
+     133 C007      RJMP	0x013B
+(0131) 		     case 2: Display_Key(0x02);key_store=0x02;break;
+     134 E002      LDI	R16,2
+     135 DF9A      RCALL	_Display_Key
+     136 E042      LDI	R20,2
+     137 E050      LDI	R21,0
+(0132)            }
+(0133) 
+(0134)           }
+(0135) 	
+(0136)        }
+     138 C002      RJMP	0x013B
+(0137)      else
+(0138) 	 {
+(0139) 	 Display_Key(key_store);              //没有按键的时候显示上次的键值
+FILE: <library>
+     139 2F04      MOV	R16,R20
+     13A DF95      RCALL	_Display_Key
+     13B CFE3      RJMP	0x011F
+     13C 9508      RET
+push_xgset300C:
+     13D 935A      ST	R21,-Y
+     13E 934A      ST	R20,-Y
+     13F 92BA      ST	R11,-Y
+     140 92AA      ST	R10,-Y
+     141 9508      RET
+pop_xgset300C:
+     142 90A9      LD	R10,Y+
+     143 90B9      LD	R11,Y+
+     144 9149      LD	R20,Y+
+     145 9159      LD	R21,Y+
+     146 9508      RET
+push_xgsetF00C:
+     147 937A      ST	R23,-Y
+     148 936A      ST	R22,-Y
+     149 935A      ST	R21,-Y
+     14A 934A      ST	R20,-Y
+     14B 92BA      ST	R11,-Y
+     14C 92AA      ST	R10,-Y
+     14D 9508      RET
+pop_xgsetF00C:
+     14E 90A9      LD	R10,Y+
+     14F 90B9      LD	R11,Y+
+     150 9149      LD	R20,Y+
+     151 9159      LD	R21,Y+
+     152 9169      LD	R22,Y+
+     153 9179      LD	R23,Y+
+     154 9508      RET

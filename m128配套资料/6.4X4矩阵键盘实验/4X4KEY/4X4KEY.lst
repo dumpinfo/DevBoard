@@ -1,0 +1,871 @@
+__start:
+__text_start:
+    005E EFCF      LDI	R28,0xFF
+    005F E1D0      LDI	R29,0x10
+    0060 BFCD      OUT	0x3D,R28
+    0061 BFDE      OUT	0x3E,R29
+    0062 51CE      SUBI	R28,0x1E
+    0063 40D0      SBCI	R29,0
+    0064 EA0A      LDI	R16,0xAA
+    0065 8308      STD	Y+0,R16
+    0066 2400      CLR	R0
+    0067 E1E0      LDI	R30,0x10
+    0068 E0F1      LDI	R31,1
+    0069 E011      LDI	R17,1
+    006A 31E1      CPI	R30,0x11
+    006B 07F1      CPC	R31,R17
+    006C F011      BEQ	0x006F
+    006D 9201      ST	R0,Z+
+    006E CFFB      RJMP	0x006A
+    006F 8300      STD	Z+0,R16
+    0070 EAEC      LDI	R30,0xAC
+    0071 E0F0      LDI	R31,0
+    0072 E0A0      LDI	R26,0
+    0073 E0B1      LDI	R27,1
+    0074 E010      LDI	R17,0
+    0075 3BEC      CPI	R30,0xBC
+    0076 07F1      CPC	R31,R17
+    0077 F021      BEQ	0x007C
+    0078 95C8      LPM
+    0079 9631      ADIW	R30,1
+    007A 920D      ST	R0,X+
+    007B CFF9      RJMP	0x0075
+    007C 940E01DC  CALL	_main
+_exit:
+    007E CFFF      RJMP	_exit
+FILE: C:\icc\include\delay.h
+(0001) //********************************************************************
+(0002) /*º¯ Êý Ãû£ºdelay_us
+(0003) ½¨Á¢ÈÕÆÚ£º2010Äê1ÔÂ28ÈÕ
+(0004) ±àÒë»·¾³£ºICCAVR7.16A
+(0005) º¯Êý×÷ÓÃ£ºÎ¢Ãë¼¶µÄÑÓÊ±³ÌÐò
+(0006) Ëµ    Ã÷£º7.3728M¾§ÕñÏÂ
+(0007) ********************************************************************/
+(0008) void delay_1us(void);
+(0009) void delay_3us(void);
+(0010) void delay_10us(void);
+(0011) void delay_50us(void);
+(0012) void delay_100us(void);
+(0013) void delay_n100us(unsigned char n100us);
+(0014) void delay_1ms(void);
+(0015) void delay_nms(unsigned int nms);
+(0016) void delay_ns(unsigned char ns);
+(0017) 
+(0018) 
+(0019) void delay_1us(void)                 //1usÑÓÊ±º¯Êý£¬²»ÄÜÁ¬Ðøµ÷ÓÃ£¬ 
+(0020) { 
+(0021)    asm("nop");                       //1Ê±ÖÓÖÜÆÚ
+_delay_1us:
+    007F 0000      NOP
+(0022)    asm("nop");
+    0080 0000      NOP
+(0023)    asm("nop");
+    0081 0000      NOP
+(0024)    asm("nop");
+    0082 0000      NOP
+(0025)    asm("nop");                       //1T
+    0083 0000      NOP
+(0026)    asm("nop");
+    0084 0000      NOP
+    0085 9508      RET
+(0027) 
+(0028) }
+(0029) void delay_3us(void)                 //3usÑÓÊ±º¯Êý,,¿ÉÖØ¸´µ÷ÓÃ²»Ó°Ïì¾«¶È
+(0030) { 
+(0031)    
+(0032)    asm("nop");
+_delay_3us:
+    0086 0000      NOP
+(0033)    asm("nop");
+    0087 0000      NOP
+(0034)    asm("nop");                       
+    0088 0000      NOP
+(0035)    asm("nop");
+    0089 0000      NOP
+(0036)    asm("nop");
+    008A 0000      NOP
+(0037)    asm("nop");
+    008B 0000      NOP
+(0038)    asm("nop");                       
+    008C 0000      NOP
+(0039)    asm("nop");
+    008D 0000      NOP
+(0040)    asm("nop");
+    008E 0000      NOP
+(0041)    asm("nop");
+    008F 0000      NOP
+(0042)    asm("nop");                       
+    0090 0000      NOP
+(0043)    asm("nop");
+    0091 0000      NOP
+(0044)    asm("nop");
+    0092 0000      NOP
+(0045)    asm("nop");
+    0093 0000      NOP
+(0046)    asm("nop");                       
+    0094 0000      NOP
+(0047)    asm("nop");
+    0095 0000      NOP
+(0048)    asm("nop");
+    0096 0000      NOP
+(0049)    asm("nop");
+    0097 0000      NOP
+(0050)    asm("nop");
+    0098 0000      NOP
+(0051)    asm("nop");
+    0099 0000      NOP
+(0052)    asm("nop");                       
+    009A 0000      NOP
+    009B 9508      RET
+(0053) } 
+(0054) 
+(0055) void delay_10us(void)                 //10usÑÓÊ±º¯Êý,,¿ÉÖØ¸´µ÷ÓÃ²»Ó°Ïì¾«¶È
+(0056) {
+(0057)    delay_3us();
+_delay_10us:
+    009C DFE9      RCALL	_delay_3us
+(0058)    delay_3us(); 
+    009D DFE8      RCALL	_delay_3us
+(0059)    delay_3us();  
+    009E DFE7      RCALL	_delay_3us
+    009F 9508      RET
+(0060) }
+(0061)   
+(0062) void delay_50us(void)                 //48usÑÓÊ±º¯Êý,,¿ÉÖØ¸´µ÷ÓÃ²»Ó°Ïì¾«¶È
+(0063) { 
+(0064)    delay_10us();
+_delay_50us:
+    00A0 DFFB      RCALL	_delay_10us
+(0065)    delay_10us(); 
+    00A1 DFFA      RCALL	_delay_10us
+(0066)    delay_10us();
+    00A2 DFF9      RCALL	_delay_10us
+(0067)    delay_10us();
+    00A3 DFF8      RCALL	_delay_10us
+    00A4 9508      RET
+(0068) }
+(0069) void delay_100us(void)     //exactly 98usÑÓÊ±º¯Êý,,¿ÉÖØ¸´µ÷ÓÃ²»Ó°Ïì¾«¶È
+(0070) {
+(0071)  delay_50us();
+_delay_100us:
+    00A5 DFFA      RCALL	_delay_50us
+(0072)  delay_50us();
+    00A6 DFF9      RCALL	_delay_50us
+    00A7 9508      RET
+_delay_n100us:
+  n100us               --> R20
+    00A8 940E0276  CALL	push_gset1
+    00AA 2F40      MOV	R20,R16
+(0073) }
+(0074) void delay_n100us(unsigned char n100us)
+(0075) {
+    00AB C001      RJMP	0x00AD
+(0076)  while(n100us--)                          
+(0077)  delay_100us();
+    00AC DFF8      RCALL	_delay_100us
+    00AD 2E24      MOV	R2,R20
+    00AE 2433      CLR	R3
+    00AF 5041      SUBI	R20,1
+    00B0 2022      TST	R2
+    00B1 F7D1      BNE	0x00AC
+    00B2 940E0279  CALL	pop_gset1
+    00B4 9508      RET
+(0078) }
+(0079) /*delay_n100us(2)        250us
+(0080) delay_n100us(3)          360us
+(0081) delay_n100us(4)          470us
+(0082) delay_n100us(5)          580us
+(0083) delay_n100us(6)          690us
+(0084) delay_n100us(7)       800us
+(0085) delay_n100us(8)          900us              Ö÷ÒªÊÇÓÉÓÚº¯ÊýÉùÃ÷¼°while,,,´ó¸Å6us
+(0086) 
+(0087) */
+(0088) void delay_1ms()
+(0089) {
+(0090)  delay_100us();
+_delay_1ms:
+    00B5 DFEF      RCALL	_delay_100us
+(0091)  delay_100us();
+    00B6 DFEE      RCALL	_delay_100us
+(0092)  delay_100us();
+    00B7 DFED      RCALL	_delay_100us
+(0093)  delay_100us();
+    00B8 DFEC      RCALL	_delay_100us
+(0094)  delay_100us();
+    00B9 DFEB      RCALL	_delay_100us
+(0095)  delay_100us();
+    00BA DFEA      RCALL	_delay_100us
+(0096)  delay_100us();
+    00BB DFE9      RCALL	_delay_100us
+(0097)  delay_100us();
+    00BC DFE8      RCALL	_delay_100us
+(0098)  delay_100us();
+    00BD DFE7      RCALL	_delay_100us
+(0099)  delay_100us();
+    00BE DFE6      RCALL	_delay_100us
+    00BF 9508      RET
+_delay_nms:
+  nms                  --> R20
+    00C0 940E0276  CALL	push_gset1
+    00C2 01A8      MOVW	R20,R16
+(0100) }
+(0101) /********************************************************************
+(0102) º¯ Êý Ãû£ºDelay_ms
+(0103) ½¨Á¢ÈÕÆÚ£º2010Äê1ÔÂ28ÈÕ
+(0104) ÐÞ¸ÄÈÕÆÚ£º
+(0105) º¯Êý×÷ÓÃ£ººÁÃë¼¶µÄ¾«È·ÑÓÊ±³ÌÐò
+(0106) Ëµ    Ã÷£º
+(0107) ********************************************************************/
+(0108) void delay_nms(unsigned int nms)
+(0109) {
+    00C3 C001      RJMP	0x00C5
+(0110)  while(nms--) 
+(0111)  delay_1ms();
+    00C4 DFF0      RCALL	_delay_1ms
+    00C5 011A      MOVW	R2,R20
+    00C6 5041      SUBI	R20,1
+    00C7 4050      SBCI	R21,0
+    00C8 2022      TST	R2
+    00C9 F7D1      BNE	0x00C4
+    00CA 2033      TST	R3
+    00CB F7C1      BNE	0x00C4
+    00CC 940E0279  CALL	pop_gset1
+    00CE 9508      RET
+_delay_ns:
+  ns                   --> R20
+    00CF 940E0276  CALL	push_gset1
+    00D1 2F40      MOV	R20,R16
+(0112) }
+(0113) void delay_ns(unsigned char ns)
+(0114) {
+    00D2 C003      RJMP	0x00D6
+(0115)  while(ns--) 
+(0116)  delay_nms(1000);
+    00D3 EE08      LDI	R16,0xE8
+    00D4 E013      LDI	R17,3
+    00D5 DFEA      RCALL	_delay_nms
+    00D6 2E24      MOV	R2,R20
+    00D7 2433      CLR	R3
+    00D8 5041      SUBI	R20,1
+    00D9 2022      TST	R2
+    00DA F7C1      BNE	0x00D3
+    00DB 940E0279  CALL	pop_gset1
+    00DD 9508      RET
+FILE: E:\ATMEGA128¿ª·¢°å\ÎÒµÄATMEGA128×îÐ¡ÏµÍ³°å\M128_ZZX_1ÅäÌ××ÊÁÏ\7.4X4¾ØÕó¼üÅÌÊµÑé\4X4KEY\4X4KEY.C
+(0001) //ATMEGA128µÄ4X4Î»¾ØÕó¼üÅÌ¿ØÖÆ³ÌÐò£¬ÏÔÊ¾¼üÖµ
+(0002) //±àÒë»·¾³ ICCAVR 7.16A
+(0003) //ÏµÍ³Ê±ÖÓ7.3728MHZ£¬ÉèÖÃÈÛË¿Î»ÎªÍâ²¿¸ßÆµÊ¯Ó¢¾§ÌåÕñµ
+(0004) //ÖÒÐËµç×ÓÔª¼þµê±à¼­
+(0005) //ÈÕÆÚ£º2010.05.24
+(0006) //***********************************************************************
+(0007) //			°üº¬ÎÄ¼þ
+(0008) //***********************************************************************
+(0009) 
+(0010) #include <string.h>
+(0011) #include <stdio.h>
+(0012) #include <delay.h>
+(0013) #include <iom128v.h>
+(0014) 
+(0015) 
+(0016) #define uchar           unsigned char
+(0017) #define uint            unsigned int
+(0018) 
+(0019) #define key_io          PORTC               //¶ÀÁ¢¼üÅÌÓëPC4ºÍPC5Á¬½Ó
+(0020) #define key_ior         PINC                //¶ÁÈ¡IO¿ÚÖµÎªPINCµÄÖµ
+(0021) #define Data_IO	        PORTA                //ÊýÂë¹ÜÊý¾Ý¿Ú
+(0022) #define Data_DDR        DDRA                 //ÊýÂë¹ÜÊý¾Ý¿Ú·½Ïò¼Ä´æÆ÷
+(0023) #define D_LE0	        PORTD &= ~(1 << PD4) //ÊýÂë¹Ü¶Î¿ØÖÆÎ»Îª0£¬Ëø´æ¶Ë¿ÚÊý¾Ý
+(0024) #define D_LE1           PORTD |= (1 << PD4)  //ÊýÂë¹Ü¶Î¿ØÖÆÎ»Îª1£¬Ëø´æÆ÷Êä³öÓë¶Ë¿ÚÒ»ÖÂ
+(0025) #define W_LE0	        PORTD &= ~(1 << PD5) //ÊýÂë¹ÜÎ»¿ØÖÆÎ»Îª0
+(0026) #define W_LE1           PORTD |= (1 << PD5)  //ÊýÂë¹ÜÎ»¿ØÖÆÎ»Îª1
+(0027) 
+(0028) 
+(0029) //***********************************************************************
+(0030) //			¹²ÒõÊýÂë¹ÜÏÔÊ¾µÄ¶ÏÂë±í0¡«F
+(0031) //***********************************************************************
+(0032) 
+(0033) uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,
+(0034) 	           0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+(0035) uchar key;
+(0036) 
+(0037) //***********************************************************************
+(0038) //			IO¶Ë¿Ú³õÊ¼»¯
+(0039) //***********************************************************************
+(0040) 
+(0041) void System_Init()
+(0042) {
+(0043)     Data_IO=0xFF;             //Êý¾Ý¿ÚÎªÊä³ö
+_System_Init:
+    00DE EF8F      LDI	R24,0xFF
+    00DF BB8B      OUT	0x1B,R24
+(0044)     Data_DDR=0xFF;
+    00E0 BB8A      OUT	0x1A,R24
+(0045) 
+(0046)     PORTD=0xFF;               //74HC573µÄ¿ØÖÆ¿Ú£¬ÉèÖÃÎªÊä³ö
+    00E1 BB82      OUT	0x12,R24
+(0047)     DDRD=0xFF;
+    00E2 BB81      OUT	0x11,R24
+(0048) 
+(0049)     PORTB=0xFF;		     //¹Ø±Õ·¢¹â¶þ¼«¹Ü
+    00E3 BB88      OUT	0x18,R24
+(0050)     DDRB=0xFF;
+    00E4 BB87      OUT	0x17,R24
+    00E5 9508      RET
+_Display_Key:
+  j                    --> R20
+  i                    --> R22
+  num                  --> R10
+    00E6 940E0272  CALL	push_gset3
+    00E8 2EA0      MOV	R10,R16
+(0051) }
+(0052) 
+(0053) //*************************************************************************
+(0054) //			74HC573¿ØÖÆÊýÂë¹Ü¶¯Ì¬É¨ÃèÏÔÊ¾º¯Êý
+(0055) //*************************************************************************
+(0056) 
+(0057) void Display_Key(uchar num)
+(0058) {
+(0059) 	 uchar i,j;
+(0060) 	 System_Init();
+    00E9 DFF4      RCALL	_System_Init
+(0061)    j=0x01;                    //´ËÊý¾ÝÓÃÀ´¿ØÖÆÎ»Ñ¡
+    00EA E041      LDI	R20,1
+(0062)   for(i=0;i<8;i++)
+    00EB 2766      CLR	R22
+    00EC C013      RJMP	0x0100
+(0063)   {
+(0064)     D_LE1;                    //¿ØÖÆÊýÂë¹Ü¶ÎÊý¾ÝµÄ74HC573µÄLE¹Ü½ÅÖÃ¸ß
+    00ED 9A94      SBI	0x12,4
+(0065)     W_LE1;                    //¿ØÖÆÊýÂë¹ÜÎ»µÄ74HC573µÄLE¹Ü½ÅÖÃ¸ß
+    00EE 9A95      SBI	0x12,5
+(0066)     Data_IO=0x00;               //ÉèÖÃÒªÏÔÊ¾µÄÎ»£¬Ò²¾ÍÊÇÄÄÒ»¸öÊýÂë¹ÜÁÁ£¬ÕâÀïÊÇ°Ë¸öÒ»ÆðÏÔÊ¾
+    00EF 2422      CLR	R2
+    00F0 BA2B      OUT	0x1B,R2
+(0067)     W_LE0;                    //Ëø´æÎ»Êý¾Ý£¬ÏÂÃæËÍÉÏ¶ÎÊý¾ÝÒÔºó£¬¾ÍÏÔÊ¾³öÀ´ÁË
+    00F1 9895      CBI	0x12,5
+(0068) 	j=(j<<1);
+    00F2 0F44      LSL	R20
+(0069)     Data_IO=table[num];         //ËÍÒªÏÔÊ¾µÄÊý¾Ý£¬¾ÍÊÇ¶ÎÊý¾Ý£¬ÈçÏÔÊ¾0ËÍµÄÊÇ0x3f
+    00F3 E080      LDI	R24,0
+    00F4 E091      LDI	R25,1
+    00F5 2DEA      MOV	R30,R10
+    00F6 27FF      CLR	R31
+    00F7 0FE8      ADD	R30,R24
+    00F8 1FF9      ADC	R31,R25
+    00F9 8020      LDD	R2,Z+0
+    00FA BA2B      OUT	0x1B,R2
+(0070)     D_LE0;                    //Ëø´æ¶ÎÊý¾Ý£¬ÊýÂë¹ÜÁÁÒ»¸öÊ±¼äÆ¬¿Ì
+    00FB 9894      CBI	0x12,4
+(0071)     delay_nms(1);              //ÏÔÊ¾Ò»¸öÊ±¼äÆ¬¿Ì£¬»áÓ°ÏìÁÁ¶ÈºÍÉÁË¸ÐÔ
+    00FC E001      LDI	R16,1
+    00FD E010      LDI	R17,0
+    00FE DFC1      RCALL	_delay_nms
+    00FF 9563      INC	R22
+    0100 3068      CPI	R22,0x8
+    0101 F358      BCS	0x00ED
+    0102 940E026B  CALL	pop_gset3
+    0104 9508      RET
+_keyboardscan:
+  statevalue           --> R20
+  key_check            --> R20
+  key_checkin          --> R20
+    0105 940E0274  CALL	push_gset2
+(0072) 
+(0073)   }
+(0074) 
+(0075) }
+(0076) 
+(0077) //**********************************************************************
+(0078) //	¼üÅÌÉ¨Ãè×Ó³ÌÐò£¬²ÉÓÃÖð¼üÉ¨ÃèµÄ·½Ê½
+(0079) //**********************************************************************
+(0080) uchar keyboardscan(void) 
+(0081) {
+(0082)   uchar statevalue,key_checkin,key_check;
+(0083)   key_io=0xf0;                    //ÔÚIO¿ÚÓÉÊä³ö·½Ê½±äÎªÊäÈë·½Ê½Ê±ÒªÑÓ³ÙÒ»¸öÖÜÆÚ
+    0107 EF80      LDI	R24,0xF0
+    0108 BB85      OUT	0x15,R24
+(0084)   key_io=0xf0;                    //²ÉÈ¡Ð´Á½´ÎµÄ·½·¨ÑÓÊ±
+    0109 BB85      OUT	0x15,R24
+(0085)   key_checkin=key_ior;            //¶ÁÈ¡IO¿Ú×´Ì¬£¬ÅÐ¶ÏÊÇ·ñÓÐ¼ü°´ÏÂ
+    010A B343      IN	R20,0x13
+(0086)   if(key_checkin!=0xf0)           //IO¿ÚÖµ·¢Éú±ä»¯Ôò±íÊ¾ÓÐ¼ü°´ÏÂ
+    010B 3F40      CPI	R20,0xF0
+    010C F409      BNE	0x010E
+    010D C0C7      RJMP	0x01D5
+(0087)   {
+(0088)     delay_nms(20);                 //¼üÅÌÏû¶¶£¬ÑÓÊ±20MS
+    010E E104      LDI	R16,0x14
+    010F E010      LDI	R17,0
+    0110 DFAF      RCALL	_delay_nms
+(0089)     key_checkin=key_ior;
+    0111 B343      IN	R20,0x13
+(0090)     if(key_checkin!=0xf0)
+    0112 3F40      CPI	R20,0xF0
+    0113 F409      BNE	0x0115
+    0114 C0C4      RJMP	0x01D9
+(0091)     {
+(0092)      key_io=0xfe;                 //ÖðÐÐÉ¨Ãè¿ªÊ¼
+    0115 EF8E      LDI	R24,0xFE
+    0116 BB85      OUT	0x15,R24
+(0093)      key_io=0xfe;                 //Ð´Á½´ÎÑÓÊ±£¬ÏÂÍ¬
+    0117 BB85      OUT	0x15,R24
+(0094)      key_check=key_ior;
+    0118 B343      IN	R20,0x13
+(0095)      switch (key_check)           //¸ù¾Ý¶Áµ½µÄIO¿ÚÖµÅÐ¶Ï°´¼üµÄ°´ÏÂÇé¿ö
+    0119 2F64      MOV	R22,R20
+    011A 2777      CLR	R23
+    011B 3B6E      CPI	R22,0xBE
+    011C E0E0      LDI	R30,0
+    011D 077E      CPC	R23,R30
+    011E F0F9      BEQ	0x013E
+    011F EB8E      LDI	R24,0xBE
+    0120 E090      LDI	R25,0
+    0121 1786      CP	R24,R22
+    0122 0797      CPC	R25,R23
+    0123 F02C      BLT	0x0129
+    0124 376E      CPI	R22,0x7E
+    0125 E0E0      LDI	R30,0
+    0126 077E      CPC	R23,R30
+    0127 F0D1      BEQ	0x0142
+    0128 C01C      RJMP	0x0145
+    0129 3D6E      CPI	R22,0xDE
+    012A E0E0      LDI	R30,0
+    012B 077E      CPC	R23,R30
+    012C F069      BEQ	0x013A
+    012D 3D6E      CPI	R22,0xDE
+    012E E0E0      LDI	R30,0
+    012F 077E      CPC	R23,R30
+    0130 F0A4      BLT	0x0145
+    0131 3E6E      CPI	R22,0xEE
+    0132 E0E0      LDI	R30,0
+    0133 077E      CPC	R23,R30
+    0134 F009      BEQ	0x0136
+    0135 C00F      RJMP	0x0145
+(0096)      {
+(0097)      case 0xee:key=15;break;
+    0136 E08F      LDI	R24,0xF
+    0137 93800110  STS	key,R24
+    0139 C00B      RJMP	0x0145
+(0098)      case 0xde:key=11;break;
+    013A E08B      LDI	R24,0xB
+    013B 93800110  STS	key,R24
+    013D C007      RJMP	0x0145
+(0099)      case 0xbe:key=8;break;
+    013E E088      LDI	R24,0x8
+    013F 93800110  STS	key,R24
+    0141 C003      RJMP	0x0145
+(0100)      case 0x7e:key=4;break;
+    0142 E084      LDI	R24,4
+    0143 93800110  STS	key,R24
+(0101)      }
+(0102)      
+(0103)      key_io=0xfd;
+    0145 EF8D      LDI	R24,0xFD
+    0146 BB85      OUT	0x15,R24
+(0104)      key_io=0xfd;
+    0147 BB85      OUT	0x15,R24
+(0105)      key_check=key_ior;
+    0148 B343      IN	R20,0x13
+(0106)      switch (key_check)
+    0149 2F64      MOV	R22,R20
+    014A 2777      CLR	R23
+    014B 3B6D      CPI	R22,0xBD
+    014C E0E0      LDI	R30,0
+    014D 077E      CPC	R23,R30
+    014E F0F9      BEQ	0x016E
+    014F EB8D      LDI	R24,0xBD
+    0150 E090      LDI	R25,0
+    0151 1786      CP	R24,R22
+    0152 0797      CPC	R25,R23
+    0153 F02C      BLT	0x0159
+    0154 376D      CPI	R22,0x7D
+    0155 E0E0      LDI	R30,0
+    0156 077E      CPC	R23,R30
+    0157 F0D1      BEQ	0x0172
+    0158 C01C      RJMP	0x0175
+    0159 3D6D      CPI	R22,0xDD
+    015A E0E0      LDI	R30,0
+    015B 077E      CPC	R23,R30
+    015C F069      BEQ	0x016A
+    015D 3D6D      CPI	R22,0xDD
+    015E E0E0      LDI	R30,0
+    015F 077E      CPC	R23,R30
+    0160 F0A4      BLT	0x0175
+    0161 3E6D      CPI	R22,0xED
+    0162 E0E0      LDI	R30,0
+    0163 077E      CPC	R23,R30
+    0164 F009      BEQ	0x0166
+    0165 C00F      RJMP	0x0175
+(0107)      {
+(0108)      case 0xed:key=14;break;
+    0166 E08E      LDI	R24,0xE
+    0167 93800110  STS	key,R24
+    0169 C00B      RJMP	0x0175
+(0109)      case 0xdd:key=10;break;
+    016A E08A      LDI	R24,0xA
+    016B 93800110  STS	key,R24
+    016D C007      RJMP	0x0175
+(0110)      case 0xbd:key=7;break;
+    016E E087      LDI	R24,7
+    016F 93800110  STS	key,R24
+    0171 C003      RJMP	0x0175
+(0111)      case 0x7d:key=3;break;
+    0172 E083      LDI	R24,3
+    0173 93800110  STS	key,R24
+(0112)      }
+(0113)      
+(0114)      key_io=0xfb;
+    0175 EF8B      LDI	R24,0xFB
+    0176 BB85      OUT	0x15,R24
+(0115)      key_io=0xfb;
+    0177 BB85      OUT	0x15,R24
+(0116)      key_check=key_ior;
+    0178 B343      IN	R20,0x13
+(0117)      switch (key_check)
+    0179 2F64      MOV	R22,R20
+    017A 2777      CLR	R23
+    017B 3B6B      CPI	R22,0xBB
+    017C E0E0      LDI	R30,0
+    017D 077E      CPC	R23,R30
+    017E F0F9      BEQ	0x019E
+    017F EB8B      LDI	R24,0xBB
+    0180 E090      LDI	R25,0
+    0181 1786      CP	R24,R22
+    0182 0797      CPC	R25,R23
+    0183 F02C      BLT	0x0189
+    0184 376B      CPI	R22,0x7B
+    0185 E0E0      LDI	R30,0
+    0186 077E      CPC	R23,R30
+    0187 F0D1      BEQ	0x01A2
+    0188 C01C      RJMP	0x01A5
+    0189 3D6B      CPI	R22,0xDB
+    018A E0E0      LDI	R30,0
+    018B 077E      CPC	R23,R30
+    018C F069      BEQ	0x019A
+    018D 3D6B      CPI	R22,0xDB
+    018E E0E0      LDI	R30,0
+    018F 077E      CPC	R23,R30
+    0190 F0A4      BLT	0x01A5
+    0191 3E6B      CPI	R22,0xEB
+    0192 E0E0      LDI	R30,0
+    0193 077E      CPC	R23,R30
+    0194 F009      BEQ	0x0196
+    0195 C00F      RJMP	0x01A5
+(0118)      {
+(0119)      case 0xeb:key=13;break;
+    0196 E08D      LDI	R24,0xD
+    0197 93800110  STS	key,R24
+    0199 C00B      RJMP	0x01A5
+(0120)      case 0xdb:key=0;break;
+    019A 2422      CLR	R2
+    019B 92200110  STS	key,R2
+    019D C007      RJMP	0x01A5
+(0121)      case 0xbb:key=6;break;
+    019E E086      LDI	R24,6
+    019F 93800110  STS	key,R24
+    01A1 C003      RJMP	0x01A5
+(0122)      case 0x7b:key=2;break;
+    01A2 E082      LDI	R24,2
+    01A3 93800110  STS	key,R24
+(0123)      }
+(0124)      
+(0125)       key_io=0xf7;
+    01A5 EF87      LDI	R24,0xF7
+    01A6 BB85      OUT	0x15,R24
+(0126)       key_io=0xf7;
+    01A7 BB85      OUT	0x15,R24
+(0127)       key_check=key_ior;
+    01A8 B343      IN	R20,0x13
+(0128)      switch (key_check)
+    01A9 2755      CLR	R21
+    01AA 3B47      CPI	R20,0xB7
+    01AB E0E0      LDI	R30,0
+    01AC 075E      CPC	R21,R30
+    01AD F0F9      BEQ	0x01CD
+    01AE EB87      LDI	R24,0xB7
+    01AF E090      LDI	R25,0
+    01B0 1784      CP	R24,R20
+    01B1 0795      CPC	R25,R21
+    01B2 F02C      BLT	0x01B8
+    01B3 3747      CPI	R20,0x77
+    01B4 E0E0      LDI	R30,0
+    01B5 075E      CPC	R21,R30
+    01B6 F0D1      BEQ	0x01D1
+    01B7 C021      RJMP	0x01D9
+    01B8 3D47      CPI	R20,0xD7
+    01B9 E0E0      LDI	R30,0
+    01BA 075E      CPC	R21,R30
+    01BB F069      BEQ	0x01C9
+    01BC 3D47      CPI	R20,0xD7
+    01BD E0E0      LDI	R30,0
+    01BE 075E      CPC	R21,R30
+    01BF F0CC      BLT	0x01D9
+    01C0 3E47      CPI	R20,0xE7
+    01C1 E0E0      LDI	R30,0
+    01C2 075E      CPC	R21,R30
+    01C3 F009      BEQ	0x01C5
+    01C4 C014      RJMP	0x01D9
+(0129)      {
+(0130)      case 0xe7:key=12;break;
+    01C5 E08C      LDI	R24,0xC
+    01C6 93800110  STS	key,R24
+    01C8 C010      RJMP	0x01D9
+(0131)      case 0xd7:key=9;break;
+    01C9 E089      LDI	R24,0x9
+    01CA 93800110  STS	key,R24
+    01CC C00C      RJMP	0x01D9
+(0132)      case 0xb7:key=5;break;
+    01CD E085      LDI	R24,5
+    01CE 93800110  STS	key,R24
+    01D0 C008      RJMP	0x01D9
+(0133)      case 0x77:key=1;break;
+    01D1 E081      LDI	R24,1
+    01D2 93800110  STS	key,R24
+(0134)      }
+(0135)      
+(0136)     }
+(0137)   }
+    01D4 C004      RJMP	0x01D9
+(0138)   else
+(0139)   {
+(0140)   statevalue=0xff;                      //ÎÞ°´¼üÊ±·µ»ØÖµ
+    01D5 EF4F      LDI	R20,0xFF
+(0141)   key=statevalue;
+    01D6 93400110  STS	key,R20
+(0142)   return(key);
+    01D8 2F04      MOV	R16,R20
+    01D9 940E0268  CALL	pop_gset2
+    01DB 9508      RET
+(0143)   }
+(0144) }
+(0145) 
+(0146) //*************************************************************************
+(0147) //			Ö÷³ÌÐò
+(0148) //*************************************************************************
+(0149) 
+(0150) void main()
+(0151) 
+(0152) {         
+(0153) 	  uint key_store=0x01;
+_main:
+  key_store            --> R20
+    01DC E041      LDI	R20,1
+    01DD E050      LDI	R21,0
+(0154) 	  DDRC=0x0f;                        //PC¿ÚÉÏÀ­µç×èÊ¹ÄÜ
+    01DE E08F      LDI	R24,0xF
+    01DF BB84      OUT	0x14,R24
+(0155)       PORTC=0xf0;                       //PC¸ßËÄÎ»ÊäÈëµÍËÄÎ»Êä³ö
+    01E0 EF80      LDI	R24,0xF0
+    01E1 BB85      OUT	0x15,R24
+    01E2 C073      RJMP	0x0256
+(0156) 
+(0157) 
+(0158) while(1)
+(0159)   {
+(0160) 
+(0161)   keyboardscan();                         //¼üÅÌÉ¨Ãè£¬¿´ÊÇ·ñÓÐ°´¼ü°´ÏÂ
+    01E3 DF21      RCALL	_keyboardscan
+(0162)     if(key!=0xff)                        //Èç¹ûÓÐ°´¼ü°´ÏÂ£¬ÔòÏÔÊ¾¸Ã°´¼ü¼üÖµ0~15
+    01E4 91800110  LDS	R24,key
+    01E6 3F8F      CPI	R24,0xFF
+    01E7 F409      BNE	0x01E9
+    01E8 C06B      RJMP	0x0254
+(0163)       {
+(0164) 	      { switch(key)
+    01E9 2F68      MOV	R22,R24
+    01EA 2777      CLR	R23
+    01EB 3060      CPI	R22,0
+    01EC E0E0      LDI	R30,0
+    01ED 077E      CPC	R23,R30
+    01EE F40C      BGE	0x01F0
+    01EF C066      RJMP	0x0256
+    01F0 E08F      LDI	R24,0xF
+    01F1 E090      LDI	R25,0
+    01F2 1786      CP	R24,R22
+    01F3 0797      CPC	R25,R23
+    01F4 F40C      BGE	0x01F6
+    01F5 C060      RJMP	0x0256
+    01F6 E002      LDI	R16,2
+    01F7 E010      LDI	R17,0
+    01F8 019B      MOVW	R18,R22
+    01F9 940E0258  CALL	empy16s
+    01FB 01F8      MOVW	R30,R16
+    01FC E88C      LDI	R24,0x8C
+    01FD E090      LDI	R25,0
+    01FE 0FE8      ADD	R30,R24
+    01FF 1FF9      ADC	R31,R25
+    0200 9005      LPM	R0,Z+
+    0201 9014      LPM	R1,0(Z)
+    0202 01F0      MOVW	R30,R0
+    0203 9409      IJMP
+(0165) 		   {  
+(0166) 		     case 1: Display_Key(0x01);key_store=0x01;break;   //¸ù¾Ý¼üÖµÏÔÊ¾µ½ÊýÂë¹ÜÉÏ
+    0204 E001      LDI	R16,1
+    0205 DEE0      RCALL	_Display_Key
+    0206 E041      LDI	R20,1
+    0207 E050      LDI	R21,0
+    0208 C04D      RJMP	0x0256
+(0167) 		     case 2: Display_Key(0x02);key_store=0x02;break;
+    0209 E002      LDI	R16,2
+    020A DEDB      RCALL	_Display_Key
+    020B E042      LDI	R20,2
+    020C E050      LDI	R21,0
+    020D C048      RJMP	0x0256
+(0168) 		     case 3: Display_Key(0x03);key_store=0x03;break;
+    020E E003      LDI	R16,3
+    020F DED6      RCALL	_Display_Key
+    0210 E043      LDI	R20,3
+    0211 E050      LDI	R21,0
+    0212 C043      RJMP	0x0256
+(0169) 		     case 4: Display_Key(0x04);key_store=0x04;break;
+    0213 E004      LDI	R16,4
+    0214 DED1      RCALL	_Display_Key
+    0215 E044      LDI	R20,4
+    0216 E050      LDI	R21,0
+    0217 C03E      RJMP	0x0256
+(0170) 		     case 5: Display_Key(0x05);key_store=0x05;break;
+    0218 E005      LDI	R16,5
+    0219 DECC      RCALL	_Display_Key
+    021A E045      LDI	R20,5
+    021B E050      LDI	R21,0
+    021C C039      RJMP	0x0256
+(0171) 		     case 6: Display_Key(0x06);key_store=0x06;break;
+    021D E006      LDI	R16,6
+    021E DEC7      RCALL	_Display_Key
+    021F E046      LDI	R20,6
+    0220 E050      LDI	R21,0
+    0221 C034      RJMP	0x0256
+(0172) 		     case 7: Display_Key(0x07);key_store=0x07;break;
+    0222 E007      LDI	R16,7
+    0223 DEC2      RCALL	_Display_Key
+    0224 E047      LDI	R20,7
+    0225 E050      LDI	R21,0
+    0226 C02F      RJMP	0x0256
+(0173) 		     case 8: Display_Key(0x08);key_store=0x08;break;
+    0227 E008      LDI	R16,0x8
+    0228 DEBD      RCALL	_Display_Key
+    0229 E048      LDI	R20,0x8
+    022A E050      LDI	R21,0
+    022B C02A      RJMP	0x0256
+(0174) 		     case 9: Display_Key(0x09);key_store=0x09;break;
+    022C E009      LDI	R16,0x9
+    022D DEB8      RCALL	_Display_Key
+    022E E049      LDI	R20,0x9
+    022F E050      LDI	R21,0
+    0230 C025      RJMP	0x0256
+(0175) 		     case 0: Display_Key(0x00);key_store=0x00;break;
+    0231 2700      CLR	R16
+    0232 DEB3      RCALL	_Display_Key
+    0233 2744      CLR	R20
+    0234 2755      CLR	R21
+    0235 C020      RJMP	0x0256
+(0176) 		     case 10: Display_Key(0x0a);key_store=0x0a;break;
+    0236 E00A      LDI	R16,0xA
+    0237 DEAE      RCALL	_Display_Key
+    0238 E04A      LDI	R20,0xA
+    0239 E050      LDI	R21,0
+    023A C01B      RJMP	0x0256
+(0177) 		     case 11: Display_Key(0x0b);key_store=0x0b;break;
+    023B E00B      LDI	R16,0xB
+    023C DEA9      RCALL	_Display_Key
+    023D E04B      LDI	R20,0xB
+    023E E050      LDI	R21,0
+    023F C016      RJMP	0x0256
+(0178) 		     case 12: Display_Key(0x0c);key_store=0x0c;break;
+    0240 E00C      LDI	R16,0xC
+    0241 DEA4      RCALL	_Display_Key
+    0242 E04C      LDI	R20,0xC
+    0243 E050      LDI	R21,0
+    0244 C011      RJMP	0x0256
+(0179) 		     case 13: Display_Key(0x0d);key_store=0x0d;break;
+    0245 E00D      LDI	R16,0xD
+    0246 DE9F      RCALL	_Display_Key
+    0247 E04D      LDI	R20,0xD
+    0248 E050      LDI	R21,0
+    0249 C00C      RJMP	0x0256
+(0180) 	         case 14: Display_Key(0x0e);key_store=0x0e;break;
+    024A E00E      LDI	R16,0xE
+    024B DE9A      RCALL	_Display_Key
+    024C E04E      LDI	R20,0xE
+    024D E050      LDI	R21,0
+    024E C007      RJMP	0x0256
+(0181)              case 15: Display_Key(0x0f);key_store=0x0f;break;
+    024F E00F      LDI	R16,0xF
+    0250 DE95      RCALL	_Display_Key
+    0251 E04F      LDI	R20,0xF
+    0252 E050      LDI	R21,0
+(0182)            }
+(0183) 
+(0184)           }
+(0185) 	
+(0186)        }
+    0253 C002      RJMP	0x0256
+(0187)   else
+(0188) 	 {
+(0189) 	 Display_Key(key_store);              //Ã»ÓÐ°´¼üµÄÊ±ºòÏÔÊ¾ÉÏ´ÎµÄ¼üÖµ
+FILE: <library>
+    0254 2F04      MOV	R16,R20
+    0255 DE90      RCALL	_Display_Key
+    0256 CF8C      RJMP	0x01E3
+    0257 9508      RET
+empy16s:
+    0258 920A      ST	R0,-Y
+    0259 921A      ST	R1,-Y
+    025A 938A      ST	R24,-Y
+    025B 939A      ST	R25,-Y
+    025C 9F02      MUL	R16,R18
+    025D 01C0      MOVW	R24,R0
+    025E 9F12      MUL	R17,R18
+    025F 0D90      ADD	R25,R0
+    0260 9F03      MUL	R16,R19
+    0261 0D90      ADD	R25,R0
+    0262 018C      MOVW	R16,R24
+    0263 9199      LD	R25,Y+
+    0264 9189      LD	R24,Y+
+    0265 9019      LD	R1,Y+
+    0266 9009      LD	R0,Y+
+    0267 9508      RET
+pop_gset2:
+    0268 E0E2      LDI	R30,2
+    0269 940C027A  JMP	pop
+pop_gset3:
+    026B E0E4      LDI	R30,4
+    026C 940C027A  JMP	pop
+push_gset5:
+    026E 92FA      ST	R15,-Y
+    026F 92EA      ST	R14,-Y
+push_gset4:
+    0270 92DA      ST	R13,-Y
+    0271 92CA      ST	R12,-Y
+push_gset3:
+    0272 92BA      ST	R11,-Y
+    0273 92AA      ST	R10,-Y
+push_gset2:
+    0274 937A      ST	R23,-Y
+    0275 936A      ST	R22,-Y
+push_gset1:
+    0276 935A      ST	R21,-Y
+    0277 934A      ST	R20,-Y
+    0278 9508      RET
+pop_gset1:
+    0279 E0E1      LDI	R30,1
+pop:
+    027A 9149      LD	R20,Y+
+    027B 9159      LD	R21,Y+
+    027C FDE0      SBRC	R30,0
+    027D 9508      RET
+    027E 9169      LD	R22,Y+
+    027F 9179      LD	R23,Y+
+    0280 FDE1      SBRC	R30,1
+    0281 9508      RET
+    0282 90A9      LD	R10,Y+
+    0283 90B9      LD	R11,Y+
+    0284 FDE2      SBRC	R30,2
+    0285 9508      RET
+    0286 90C9      LD	R12,Y+
+    0287 90D9      LD	R13,Y+
+    0288 FDE3      SBRC	R30,3
+    0289 9508      RET
+    028A 90E9      LD	R14,Y+
+    028B 90F9      LD	R15,Y+
+    028C 9508      RET

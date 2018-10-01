@@ -1,0 +1,258 @@
+XL
+H 3 areas 10 global symbols
+M main.c
+S __textmode Ref0000
+S _printf Ref0000
+A text size 13C flags 0
+dbfile E:\DMAVR-~3\USART\main.c
+dbfile F:\PROGRA~1\iccavr\include\delay.h
+dbfunc e delay_1us 0 fV
+dbline FFFFFFFF 0
+dbline 14 0
+dbline 15 0
+dbline 16 2
+dbline 17 4
+dbline 18 6
+dbline 19 8
+dbline 1A A
+dbline FFFFFFFE C
+dbline 0 C
+dbfunc e delay_3us E fV
+dbline FFFFFFFF E
+dbline 1E E
+dbline 20 E
+dbline 21 10
+dbline 22 12
+dbline 23 14
+dbline 24 16
+dbline 25 18
+dbline 26 1A
+dbline 27 1C
+dbline 28 1E
+dbline 29 20
+dbline 2A 22
+dbline 2B 24
+dbline 2C 26
+dbline 2D 28
+dbline 2E 2A
+dbline 2F 2C
+dbline 30 2E
+dbline 31 30
+dbline 32 32
+dbline 33 34
+dbline 34 36
+dbline FFFFFFFE 38
+dbline 0 38
+dbfunc e delay_10us 3A fV
+dbline FFFFFFFF 3A
+dbline 38 3A
+dbline 39 3A
+dbline 3A 3C
+dbline 3B 3E
+dbline FFFFFFFE 3E
+dbline 0 3E
+dbfunc e delay_50us 40 fV
+dbline FFFFFFFF 40
+dbline 3F 40
+dbline 40 40
+dbline 41 42
+dbline 42 44
+dbline 43 46
+dbline FFFFFFFE 46
+dbline 0 46
+dbfunc e delay_100us 48 fV
+dbline FFFFFFFF 48
+dbline 46 48
+dbline 47 48
+dbline 48 4A
+dbline FFFFFFFE 4A
+dbline 0 4A
+dbfunc e delay_n100us 4C fV
+dbsym r n100us 14 c
+dbline FFFFFFFF 50
+dbline 4B 50
+dbline 4D 52
+dbline 4C 54
+dbline FFFFFFFE 5E
+dbline 0 5E
+dbfunc e delay_1ms 62 fV
+dbline FFFFFFFF 62
+dbline 59 62
+dbline 5A 62
+dbline 5B 64
+dbline 5C 66
+dbline 5D 68
+dbline 5E 6A
+dbline 5F 6C
+dbline 60 6E
+dbline 61 70
+dbline 62 72
+dbline 63 74
+dbline FFFFFFFE 74
+dbline 0 74
+dbfunc e delay_nms 76 fV
+dbsym r nms 14 i
+dbline FFFFFFFF 7C
+dbline 6D 7C
+dbline 6F 7E
+dbline 6E 80
+dbline FFFFFFFE 8E
+dbline 0 8E
+dbfunc e delay_ns 94 fV
+dbsym r ns 14 c
+dbline FFFFFFFF 98
+dbline 72 98
+dbline 74 9A
+dbline 73 A0
+dbline FFFFFFFE AA
+dbline 0 AA
+dbfile E:\DMAVR-~3\USART\main.c
+dbfunc e putchar AE fI
+dbsym r c 14 c
+dbline FFFFFFFF B2
+dbline 26 B2
+dbline 27 B2
+dbline 28 C6
+dbline 2A CA
+dbline 29 CA
+dbline 2B D2
+dbline 2C D6
+dbline FFFFFFFE DA
+dbline 0 DA
+dbfunc e getchar DE fI
+dbline FFFFFFFF DE
+dbline 33 DE
+dbline 35 DE
+dbline 34 DE
+dbline 36 E6
+dbline FFFFFFFE EC
+dbline 0 EC
+dbfunc e UART_Init EE fV
+dbline FFFFFFFF EE
+dbline 3D EE
+dbline 3F EE
+dbline 40 F4
+dbline 41 FA
+dbline FFFFFFFE 100
+dbline 0 100
+dbfunc e LED_Off 102 fV
+dbline FFFFFFFF 102
+dbline 49 102
+dbline 4A 102
+dbline 4B 106
+dbline 4C 108
+dbline 4D 10A
+dbline 4E 10C
+dbline 4F 10E
+dbline FFFFFFFE 110
+dbline 0 110
+dbfunc e main 112 fV
+dbsym r a A c
+dbline FFFFFFFF 112
+dbline 57 112
+dbline 5A 112
+dbline 5B 114
+dbline 5D 118
+dbline 5E 118
+dbline 5F 120
+dbline 60 128
+dbline 61 12C
+dbline 62 138
+dbline 5C 138
+dbline FFFFFFFE 13A
+dbline 0 13A
+S _main Def0112
+S _delay_10us Def003A
+S _delay_50us Def0040
+S _delay_nms Def0076
+S _delay_100us Def0048
+S _UART_Init Def00EE
+S _getchar$device_specific$ Def00DE
+S _LED_Off Def0102
+S _delay_ns Def0094
+S _putchar$device_specific$ Def00AE
+S _delay_n100us Def004C
+S _delay_1ms Def0062
+S _delay_1us Def0000
+S _delay_3us Def000E
+A data size 4A flags 20
+dbfile E:\DMAVR-~3\USART\main.c
+A idata size 4A flags 0
+T 00 00 00 00 00 00 00 00 00 00 00 00 00 00 08 95
+R 00 00 00 00
+T 0E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 1C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 2A 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 38 00 08 95
+R 00 00 00 00
+T 3A 00 E9 DF E8 DF E7 CF
+R 00 00 00 00
+T 40 00 FC DF FB DF FA DF F9 CF
+R 00 00 00 00
+T 48 00 FB DF FA CF
+R 00 00 00 00
+T 4C 00 4A 93 40 2F 01 C0 FA DF 24 2E 33 24 41 50
+R 00 00 00 00
+T 5A 00 22 20 D1 F7 49 91 08 95
+R 00 00 00 00
+T 62 00 F2 DF F1 DF F0 DF EF DF EE DF ED DF EC DF
+R 00 00 00 00
+T 70 00 EB DF EA DF E9 CF
+R 00 00 00 00
+T 76 00 4A 93 5A 93 A8 01 01 C0 F1 DF 1A 01 41 50
+R 00 00 00 00
+T 84 00 50 40 22 20 D1 F7 33 20 C1 F7 59 91 49 91
+R 00 00 00 00
+T 92 00 08 95
+R 00 00 00 00
+T 94 00 4A 93 40 2F 03 C0 08 EE 13 E0 EB DF 24 2E
+R 00 00 00 00
+T A2 00 33 24 41 50 22 20 C1 F7 49 91 08 95
+R 00 00 00 00
+T AE 00 4A 93 40 2F 20 90 00 00 30 90 01 00 22 20
+R 00 00 00 00 02 08 00 00 02 0C 00 00
+T BC 00 11 F4 33 20 21 F0 4A 30 11 F4 0D E0 F2 DF
+R 00 00 00 00
+T CA 00 20 90 9B 00 25 FE FC CF 40 93 9C 00 04 2F
+R 00 00 00 00
+T D8 00 11 27 49 91 08 95
+R 00 00 00 00
+T DE 00 20 90 9B 00 27 FE FC CF 00 91 9C 00 11 27
+R 00 00 00 00
+T EC 00 08 95
+R 00 00 00 00
+T EE 00 88 E1 80 93 9A 00 22 24 20 92 98 00 8F E2
+R 00 00 00 00
+T FC 00 80 93 99 00 08 95
+R 00 00 00 00
+T 02 01 8F EF 82 BB 81 BB 94 9A 95 9A 8B BB 95 98
+R 00 00 00 00
+T 10 01 08 95
+R 00 00 00 00
+T 12 01 ED DF F6 DF 10 C0 00 E0 10 E0
+R 00 00 00 00 20 08 01 00 32 00 40 0A 01 00 32 00
+T 1C 01 0E 94 00 00 00 E0
+R 00 00 00 00 12 04 01 00 20 06 01 00 15 00
+T 22 01 10 E0 0E 94 00 00 DA DF A0 2E 2A 2D 33 27
+R 00 00 00 00 40 02 01 00 15 00 12 06 01 00
+T 30 01 00 E0 10 E0
+R 00 00 00 00 20 02 01 00 00 00 40 04 01 00 00 00
+T 34 01 0E 94 00 00 EF CF 08 95
+R 00 00 00 00 12 04 01 00
+T 00 00 BD D3 CA D5 B5 BD B5 C4 D7 D6 B7 FB CA C7
+R 00 00 02 00
+T 0E 00 A3 BA 25 63 0D 0A 00
+R 00 00 02 00
+T 15 00 C7 EB CD A8 B9 FD B4 AE BF DA B5 F7 CA D4
+R 00 00 02 00
+T 23 00 D6 FA CA D6 B7 A2 CB CD D7 D6 B7 FB 0D 0A
+R 00 00 02 00
+T 31 00 00
+R 00 00 02 00
+T 32 00 44 4D 41 56 52 2D 31 32 38 B4 AE BF DA CD
+R 00 00 02 00
+T 40 00 A8 D0 C5 CA B5 D1 E9 0D 0A 00
+R 00 00 02 00

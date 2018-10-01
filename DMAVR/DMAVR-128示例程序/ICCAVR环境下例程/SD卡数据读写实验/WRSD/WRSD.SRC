@@ -1,0 +1,7 @@
+[Files]
+main.c
+spi.c
+uart.c
+mmc.c
+[Headers]
+[Documents]

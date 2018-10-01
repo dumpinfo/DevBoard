@@ -1,0 +1,4 @@
+1、先运行setup71.exe，安装过程中选择Use a locally installed Licence key的方式
+2、选择Browse For Key File指定MAXIM_LICENCE.lxk文件
+2、运行patch.exe，安装到安装的根目录Proteus 7 Professional
+3、patch.exe安装后点exit，只有重启后才可运行

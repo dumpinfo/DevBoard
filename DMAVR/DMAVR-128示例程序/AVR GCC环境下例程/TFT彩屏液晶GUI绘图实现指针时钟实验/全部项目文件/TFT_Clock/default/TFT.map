@@ -1,0 +1,688 @@
+Archive member included because of file (symbol)
+
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o (exit)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                              main.o (__do_clear_bss)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o)
+                              main.o (__fixunssfsi)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o) (__subsf3)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mul_sf.o)
+                              main.o (__mulsf3)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_div_sf.o)
+                              main.o (__divsf3)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o) (__gesf2)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_si_to_sf.o)
+                              main.o (__floatsisf)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_sf_to_si.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o) (__fixsfsi)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_thenan_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__thenan_sf)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__prologue_saves__)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__epilogue_restores__)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clzsi2.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_si_to_sf.o) (__clzsi2)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_pack_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__pack_f)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_unpack_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o) (__unpack_f)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fpcmp_parts_sf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o) (__fpcmp_parts_f)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clz.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clzsi2.o) (__clz_tab)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(cos.o)
+                              main.o (cos)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_rempio2.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(cos.o) (__fp_rempio2)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(cos.o) (__fp_sinus)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_split3.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_rempio2.o) (__fp_splitA)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(sin.o)
+                              main.o (sin)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o) (__addsf3x)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_inf.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o) (__fp_inf)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_mpack.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_rempio2.o) (__fp_mpack_finite)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_nan.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_rempio2.o) (__fp_nan)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powsodd.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o) (__fp_powsodd)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscA.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o) (__fp_pscA)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscB.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o) (__fp_pscB)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_round.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o) (__fp_round)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_zero.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o) (__fp_zero)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powser.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powsodd.o) (__fp_powser)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(mulsf3x.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powser.o) (__mulsf3x)
+
+Allocating common symbols
+Common symbol       size              file
+
+postion_y           0x1               main.o
+time_h              0x1               main.o
+week                0x1               main.o
+data_yearg          0x1               main.o
+data_yearq          0x1               main.o
+data_years          0x1               main.o
+sxi                 0x1               main.o
+time_min            0x1               main.o
+mxi                 0x1               main.o
+syi                 0x1               main.o
+data_yearb          0x1               main.o
+data_monthg         0x1               main.o
+data_days           0x1               main.o
+myi                 0x1               main.o
+data_dayg           0x1               main.o
+hyi                 0x1               main.o
+time_sec            0x1               main.o
+time_hour           0x1               main.o
+postion_x           0x1               main.o
+data_months         0x1               main.o
+hxi                 0x1               main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+LOAD main.o
+LOAD DS1302.o
+LOAD TFT.o
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x24c8
+ *(.vectors)
+ .vectors       0x00000000       0x8c f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ .progmem.gcc_fplib
+                0x0000008c       0x1e f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o)
+ *(.progmem*)
+                0x000000aa                . = ALIGN (0x2)
+                0x000000aa                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x000000aa        0x0 linker stubs
+ *(.trampolines*)
+                0x000000aa                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x000000aa                __ctors_start = .
+ *(.ctors)
+                0x000000aa                __ctors_end = .
+                0x000000aa                __dtors_start = .
+ *(.dtors)
+                0x000000aa                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x000000aa        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x000000aa                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x000000aa        0xc f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x000000b6       0x1a f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x000000b6                __do_copy_data
+ .init4         0x000000d0       0x10 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                0x000000d0                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000000e0        0x8 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ *(.init9)
+ *(.text)
+ .text          0x000000e8        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x000000e8                __vector_22
+                0x000000e8                __vector_28
+                0x000000e8                __vector_1
+                0x000000e8                __vector_32
+                0x000000e8                __vector_34
+                0x000000e8                __vector_24
+                0x000000e8                __vector_12
+                0x000000e8                __bad_interrupt
+                0x000000e8                __vector_6
+                0x000000e8                __vector_31
+                0x000000e8                __vector_3
+                0x000000e8                __vector_23
+                0x000000e8                __vector_30
+                0x000000e8                __vector_25
+                0x000000e8                __vector_11
+                0x000000e8                __vector_13
+                0x000000e8                __vector_17
+                0x000000e8                __vector_19
+                0x000000e8                __vector_7
+                0x000000e8                __vector_27
+                0x000000e8                __vector_5
+                0x000000e8                __vector_33
+                0x000000e8                __vector_4
+                0x000000e8                __vector_9
+                0x000000e8                __vector_2
+                0x000000e8                __vector_21
+                0x000000e8                __vector_15
+                0x000000e8                __vector_29
+                0x000000e8                __vector_8
+                0x000000e8                __vector_26
+                0x000000e8                __vector_14
+                0x000000e8                __vector_10
+                0x000000e8                __vector_16
+                0x000000e8                __vector_18
+                0x000000e8                __vector_20
+ .text          0x000000ec      0x754 main.o
+                0x000003b6                main
+                0x0000029a                GUIclock
+                0x000001be                DisplayData
+                0x000000ec                TimeGet
+ .text          0x00000840      0x14e DS1302.o
+                0x00000984                ds1302_init
+                0x000008d0                ds1302_write_time
+                0x00000840                ds1302_write_byte
+                0x0000093a                ds1302_read_time
+                0x00000890                ds1302_read_byte
+ .text          0x0000098e      0xaf2 TFT.o
+                0x00000cd6                LCD_clear
+                0x00000b62                LCD_WR_DataP
+                0x000009c0                LCD_WR_REG
+                0x000009fa                LCD_RD_REG16
+                0x0000133c                plotC
+                0x00000aba                LCD_WR_CMD
+                0x00000dc8                DisplayChar
+                0x000013d6                GUIcircle
+                0x00001044                DisplayString
+                0x0000098e                McuInit
+                0x000012f4                GUIfull
+                0x00000b76                LCD_Init
+                0x0000119e                GUIline
+                0x00000f04                DisplayGB2312
+                0x00000b40                LCD_WR_Data
+                0x0000109a                GUIback
+                0x0000111e                GUIpoint
+ .text          0x00001480        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .text          0x00001480        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ .text          0x00001480       0x58 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o)
+                0x00001480                __fixunssfsi
+ .text          0x000014d8      0x354 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o)
+                0x00001770                __subsf3
+                0x000017d2                __addsf3
+ .text          0x0000182c      0x1f4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mul_sf.o)
+                0x0000182c                __mulsf3
+ .text          0x00001a20      0x158 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_div_sf.o)
+                0x00001a20                __divsf3
+ .text          0x00001b78       0x60 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o)
+                0x00001b78                __gesf2
+ .text          0x00001bd8       0xbc f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_si_to_sf.o)
+                0x00001bd8                __floatsisf
+ .text          0x00001c94       0xa8 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_sf_to_si.o)
+                0x00001c94                __fixsfsi
+ .text          0x00001d3c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_thenan_sf.o)
+ .text          0x00001d3c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+ .text          0x00001d3c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+ .text          0x00001d3c       0x9e f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clzsi2.o)
+                0x00001d3c                __clzsi2
+ .text          0x00001dda      0x1aa f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_pack_sf.o)
+                0x00001dda                __pack_f
+ .text          0x00001f84       0xf0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_unpack_sf.o)
+                0x00001f84                __unpack_f
+ .text          0x00002074       0xb2 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fpcmp_parts_sf.o)
+                0x00002074                __fpcmp_parts_f
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clz.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(cos.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_rempio2.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_split3.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(sin.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_inf.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_mpack.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_nan.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powsodd.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscA.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscB.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_round.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_zero.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powser.o)
+ .text          0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(mulsf3x.o)
+                0x00002126                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .text.libgcc   0x00002126        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00002126       0x38 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+                0x00002126                __prologue_saves__
+ .text.libgcc   0x0000215e       0x36 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+                0x0000215e                __epilogue_restores__
+ .text.fplib    0x00002194        0x6 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(cos.o)
+                0x00002194                cos
+ .text.fplib    0x0000219a       0x50 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_rempio2.o)
+                0x0000219c                __fp_rempio2
+ .text.fplib    0x000021ea       0x22 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o)
+                0x000021ea                __fp_sinus
+ .text.fplib    0x0000220c       0x44 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_split3.o)
+                0x0000220c                __fp_split3
+                0x0000221c                __fp_splitA
+ .text.fplib    0x00002250        0xc f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(sin.o)
+                0x00002250                sin
+ .text.fplib    0x0000225c       0xc0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o)
+                0x00002276                __addsf3x
+ .text.fplib    0x0000231c        0xc f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_inf.o)
+                0x0000231c                __fp_inf
+ .text.fplib    0x00002328       0x1c f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_mpack.o)
+                0x0000232c                __fp_mpack_finite
+                0x00002328                __fp_mpack
+ .text.fplib    0x00002344        0x6 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_nan.o)
+                0x00002344                __fp_nan
+ .text.fplib    0x0000234a       0x22 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powsodd.o)
+                0x0000234a                __fp_powsodd
+ .text.fplib    0x0000236c        0xe f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscA.o)
+                0x0000236c                __fp_pscA
+ .text.fplib    0x0000237a        0xe f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscB.o)
+                0x0000237a                __fp_pscB
+ .text.fplib    0x00002388       0x22 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_round.o)
+                0x00002388                __fp_round
+ .text.fplib    0x000023aa        0xe f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_zero.o)
+                0x000023aa                __fp_zero
+                0x000023ac                __fp_szero
+ .text.fplib    0x000023b8       0x4a f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powser.o)
+                0x000023b8                __fp_powser
+ .text.fplib    0x00002402       0xc2 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(mulsf3x.o)
+                0x0000241a                __mulsf3_pse
+                0x00002416                __mulsf3x
+                0x000024c4                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x000024c4        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+                0x000024c4                exit
+                0x000024c4                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x000024c4        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ *(.fini0)
+                0x000024c8                _etext = .
+
+.data           0x00800100      0xbf0 load address 0x000024c8
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ .data          0x00800100        0x0 main.o
+ .data          0x00800100        0x8 DS1302.o
+                0x00800100                time_buf
+ .data          0x00800108      0xae0 TFT.o
+                0x00800108                ascii
+                0x00800908                GB2312
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o)
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o)
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mul_sf.o)
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_div_sf.o)
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o)
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_si_to_sf.o)
+ .data          0x00800be8        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_sf_to_si.o)
+ .data          0x00800be8        0x8 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_thenan_sf.o)
+                0x00800be8                __thenan_sf
+ .data          0x00800bf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+ .data          0x00800bf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+ .data          0x00800bf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clzsi2.o)
+ .data          0x00800bf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_pack_sf.o)
+ .data          0x00800bf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_unpack_sf.o)
+ .data          0x00800bf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fpcmp_parts_sf.o)
+ .data          0x00800bf0      0x100 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clz.o)
+                0x00800bf0                __clz_tab
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(cos.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_rempio2.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_split3.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(sin.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_inf.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_mpack.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_nan.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powsodd.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscA.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscB.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_round.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_zero.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powser.o)
+ .data          0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(mulsf3x.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x00800cf0                . = ALIGN (0x2)
+                0x00800cf0                _edata = .
+                0x00800cf0                PROVIDE (__data_end, .)
+
+.bss            0x00800cf0       0x15
+                0x00800cf0                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ .bss           0x00800cf0        0x0 main.o
+ .bss           0x00800cf0        0x0 DS1302.o
+ .bss           0x00800cf0        0x0 TFT.o
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fixunssfsi.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_addsub_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_mul_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_div_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_ge_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_si_to_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_sf_to_si.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_thenan_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_prologue.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_epilogue.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clzsi2.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_pack_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_unpack_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_fpcmp_parts_sf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clz.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(cos.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_rempio2.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_sinus.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_split3.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(sin.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(addsf3x.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_inf.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_mpack.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_nan.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powsodd.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscA.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_pscB.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_round.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_zero.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(fp_powser.o)
+ .bss           0x00800cf0        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a(mulsf3x.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x00800cf0       0x15 main.o
+                0x00800cf0                postion_y
+                0x00800cf1                time_h
+                0x00800cf2                week
+                0x00800cf3                data_yearg
+                0x00800cf4                data_yearq
+                0x00800cf5                data_years
+                0x00800cf6                sxi
+                0x00800cf7                time_min
+                0x00800cf8                mxi
+                0x00800cf9                syi
+                0x00800cfa                data_yearb
+                0x00800cfb                data_monthg
+                0x00800cfc                data_days
+                0x00800cfd                myi
+                0x00800cfe                data_dayg
+                0x00800cff                hyi
+                0x00800d00                time_sec
+                0x00800d01                time_hour
+                0x00800d02                postion_x
+                0x00800d03                data_months
+                0x00800d04                hxi
+                0x00800d05                PROVIDE (__bss_end, .)
+                0x000024c8                __data_load_start = LOADADDR (.data)
+                0x000030b8                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00800d05        0x0
+                0x00800d05                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00800d05                PROVIDE (__noinit_end, .)
+                0x00800d05                _end = .
+                0x00800d05                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x60
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 main.o
+ .debug_aranges
+                0x00000020       0x20 DS1302.o
+ .debug_aranges
+                0x00000040       0x20 TFT.o
+
+.debug_pubnames
+                0x00000000      0x2e4
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000      0x144 main.o
+ .debug_pubnames
+                0x00000144       0x85 DS1302.o
+ .debug_pubnames
+                0x000001c9      0x11b TFT.o
+
+.debug_info     0x00000000     0x111b
+ *(.debug_info)
+ .debug_info    0x00000000      0x36c main.o
+ .debug_info    0x0000036c      0x14c DS1302.o
+ .debug_info    0x000004b8      0xc63 TFT.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x481
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x13e main.o
+ .debug_abbrev  0x0000013e       0xe6 DS1302.o
+ .debug_abbrev  0x00000224      0x25d TFT.o
+
+.debug_line     0x00000000     0x133d
+ *(.debug_line)
+ .debug_line    0x00000000      0x468 main.o
+ .debug_line    0x00000468      0x2c0 DS1302.o
+ .debug_line    0x00000728      0xc15 TFT.o
+
+.debug_frame    0x00000000      0x1d0
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x50 main.o
+ .debug_frame   0x00000050       0x60 DS1302.o
+ .debug_frame   0x000000b0      0x120 TFT.o
+
+.debug_str      0x00000000      0x347
+ *(.debug_str)
+ .debug_str     0x00000000      0x187 main.o
+                                0x1c0 (size before relaxing)
+ .debug_str     0x00000187       0x68 DS1302.o
+                                0x125 (size before relaxing)
+ .debug_str     0x000001ef      0x158 TFT.o
+                                0x26f (size before relaxing)
+
+.debug_loc      0x00000000      0xc06
+ *(.debug_loc)
+ .debug_loc     0x00000000       0x98 main.o
+ .debug_loc     0x00000098       0x57 DS1302.o
+ .debug_loc     0x000000ef      0xb17 TFT.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(TFT.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000       0x78
+ .debug_ranges  0x00000000       0x48 main.o
+ .debug_ranges  0x00000048       0x30 TFT.o

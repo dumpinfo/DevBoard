@@ -1,0 +1,1 @@
+spi.o: C:/icc/include/DM_spi.h C:/icc/include/libtypes.h C:/icc/include/string.h C:/icc/include/_const.h C:/icc/include/stdio.h C:/icc/include/stdarg.h C:/icc/include/_const.h C:/icc/include/iom128v.h

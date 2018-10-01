@@ -1,0 +1,2379 @@
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\TFTclock\main.c
+ 0000                   .dbfile F:\PROGRA~1\iccavr\include\delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //********************************************************************
+ 0000           ; /*函 数 名：delay_us
+ 0000           ; 建立日期：2010年1月28日
+ 0000           ; 编译环境：ICCAVR7.16A
+ 0000           ; 函数作用：微秒级的延时程序
+ 0000           ; 说    明：7.3728M晶振下
+ 0000           ; ********************************************************************/
+ 0000           ; void delay_1us(void);
+ 0000           ; void delay_3us(void);
+ 0000           ; void delay_10us(void);
+ 0000           ; void delay_50us(void);
+ 0000           ; void delay_100us(void);
+ 0000           ; void delay_n100us(unsigned char n100us);
+ 0000           ; void delay_1ms(void);
+ 0000           ; void delay_nms(unsigned int nms);
+ 0000           ; void delay_ns(unsigned char ns);
+ 0000           ; 
+ 0000           ; 
+ 0000           ; void delay_1us(void)                 //1us延时函数，不能连续调用， 
+ 0000           ; { 
+ 0000                   .dbline 21
+ 0000           ;    asm("nop");                       //1时钟周期
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ;    asm("nop");
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ;    asm("nop");
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ;    asm("nop");
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ;    asm("nop");                       //1T
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ;    asm("nop");
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; 
+ 000E           ; }
+ 000E           ; void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+ 000E           ; { 
+ 000E                   .dbline 32
+ 000E           ;    
+ 000E           ;    asm("nop");
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ;    asm("nop");
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ;    asm("nop");                       
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ;    asm("nop");
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ;    asm("nop");
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ;    asm("nop");
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ;    asm("nop");                       
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ;    asm("nop");
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ;    asm("nop");
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ;    asm("nop");
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ;    asm("nop");                       
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;    asm("nop");
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ;    asm("nop");
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ;    asm("nop");
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ;    asm("nop");                       
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ;    asm("nop");
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ;    asm("nop");
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ;    asm("nop");
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ;    asm("nop");
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ;    asm("nop");
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ;    asm("nop");                       
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ; } 
+ 003A           ; 
+ 003A           ; void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+ 003A           ; {
+ 003A                   .dbline 57
+ 003A           ;    delay_3us();
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;    delay_3us(); 
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;    delay_3us();  
+ 003E                   .dbline -2
+ 003E           L3:
+ 003E                   .dbline 0 ; func end
+ 003E E7CF              xjmp _delay_3us
+ 0040                   .dbend
+ 0040                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0040           _delay_50us::
+ 0040                   .dbline -1
+ 0040                   .dbline 63
+ 0040           ; }
+ 0040           ;   
+ 0040           ; void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+ 0040           ; { 
+ 0040                   .dbline 64
+ 0040           ;    delay_10us();
+ 0040 FCDF              xcall _delay_10us
+ 0042                   .dbline 65
+ 0042           ;    delay_10us(); 
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 66
+ 0044           ;    delay_10us();
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 67
+ 0046           ;    delay_10us();
+ 0046                   .dbline -2
+ 0046           L4:
+ 0046                   .dbline 0 ; func end
+ 0046 F9CF              xjmp _delay_10us
+ 0048                   .dbend
+ 0048                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 0048           _delay_100us::
+ 0048                   .dbline -1
+ 0048                   .dbline 70
+ 0048           ; }
+ 0048           ; void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+ 0048           ; {
+ 0048                   .dbline 71
+ 0048           ;  delay_50us();
+ 0048 FBDF              xcall _delay_50us
+ 004A                   .dbline 72
+ 004A           ;  delay_50us();
+ 004A                   .dbline -2
+ 004A           L5:
+ 004A                   .dbline 0 ; func end
+ 004A FACF              xjmp _delay_50us
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_n100us _delay_n100us fV
+ 004C           ;         n100us -> R20
+                        .even
+ 004C           _delay_n100us::
+ 004C 4A93              st -y,R20
+ 004E 402F              mov R20,R16
+ 0050                   .dbline -1
+ 0050                   .dbline 75
+ 0050           ; }
+ 0050           ; void delay_n100us(unsigned char n100us)
+ 0050           ; {
+ 0050 01C0              xjmp L8
+ 0052           L7:
+ 0052                   .dbline 77
+ 0052           ;  while(n100us--)                          
+ 0052           ;  delay_100us();
+ 0052 FADF              xcall _delay_100us
+ 0054           L8:
+ 0054                   .dbline 76
+ 0054 242E              mov R2,R20
+ 0056 3324              clr R3
+ 0058 4150              subi R20,1
+ 005A 2220              tst R2
+ 005C D1F7              brne L7
+ 005E           X0:
+ 005E                   .dbline -2
+ 005E           L6:
+ 005E                   .dbline 0 ; func end
+ 005E 4991              ld R20,y+
+ 0060 0895              ret
+ 0062                   .dbsym r n100us 20 c
+ 0062                   .dbend
+ 0062                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 0062           _delay_1ms::
+ 0062                   .dbline -1
+ 0062                   .dbline 89
+ 0062           ; }
+ 0062           ; /*delay_n100us(2)        250us
+ 0062           ; delay_n100us(3)          360us
+ 0062           ; delay_n100us(4)          470us
+ 0062           ; delay_n100us(5)          580us
+ 0062           ; delay_n100us(6)          690us
+ 0062           ; delay_n100us(7)       800us
+ 0062           ; delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+ 0062           ; 
+ 0062           ; */
+ 0062           ; void delay_1ms()
+ 0062           ; {
+ 0062                   .dbline 90
+ 0062           ;  delay_100us();
+ 0062 F2DF              xcall _delay_100us
+ 0064                   .dbline 91
+ 0064           ;  delay_100us();
+ 0064 F1DF              xcall _delay_100us
+ 0066                   .dbline 92
+ 0066           ;  delay_100us();
+ 0066 F0DF              xcall _delay_100us
+ 0068                   .dbline 93
+ 0068           ;  delay_100us();
+ 0068 EFDF              xcall _delay_100us
+ 006A                   .dbline 94
+ 006A           ;  delay_100us();
+ 006A EEDF              xcall _delay_100us
+ 006C                   .dbline 95
+ 006C           ;  delay_100us();
+ 006C EDDF              xcall _delay_100us
+ 006E                   .dbline 96
+ 006E           ;  delay_100us();
+ 006E ECDF              xcall _delay_100us
+ 0070                   .dbline 97
+ 0070           ;  delay_100us();
+ 0070 EBDF              xcall _delay_100us
+ 0072                   .dbline 98
+ 0072           ;  delay_100us();
+ 0072 EADF              xcall _delay_100us
+ 0074                   .dbline 99
+ 0074           ;  delay_100us();
+ 0074                   .dbline -2
+ 0074           L10:
+ 0074                   .dbline 0 ; func end
+ 0074 E9CF              xjmp _delay_100us
+ 0076                   .dbend
+ 0076                   .dbfunc e delay_nms _delay_nms fV
+ 0076           ;            nms -> R20,R21
+                        .even
+ 0076           _delay_nms::
+ 0076 4A93              st -y,R20
+ 0078 5A93              st -y,R21
+ 007A A801              movw R20,R16
+ 007C                   .dbline -1
+ 007C                   .dbline 109
+ 007C           ; }
+ 007C           ; /********************************************************************
+ 007C           ; 函 数 名：Delay_ms
+ 007C           ; 建立日期：2010年1月28日
+ 007C           ; 修改日期：
+ 007C           ; 函数作用：毫秒级的精确延时程序
+ 007C           ; 说    明：
+ 007C           ; ********************************************************************/
+ 007C           ; void delay_nms(unsigned int nms)
+ 007C           ; {
+ 007C 01C0              xjmp L13
+ 007E           L12:
+ 007E                   .dbline 111
+ 007E           ;  while(nms--) 
+ 007E           ;  delay_1ms();
+ 007E F1DF              xcall _delay_1ms
+ 0080           L13:
+ 0080                   .dbline 110
+ 0080 1A01              movw R2,R20
+ 0082 4150              subi R20,1
+ 0084 5040              sbci R21,0
+ 0086 2220              tst R2
+ 0088 D1F7              brne L12
+ 008A 3320              tst R3
+ 008C C1F7              brne L12
+ 008E           X1:
+ 008E                   .dbline -2
+ 008E           L11:
+ 008E                   .dbline 0 ; func end
+ 008E 5991              ld R21,y+
+ 0090 4991              ld R20,y+
+ 0092 0895              ret
+ 0094                   .dbsym r nms 20 i
+ 0094                   .dbend
+ 0094                   .dbfunc e delay_ns _delay_ns fV
+ 0094           ;             ns -> R20
+                        .even
+ 0094           _delay_ns::
+ 0094 4A93              st -y,R20
+ 0096 402F              mov R20,R16
+ 0098                   .dbline -1
+ 0098                   .dbline 114
+ 0098           ; }
+ 0098           ; void delay_ns(unsigned char ns)
+ 0098           ; {
+ 0098 03C0              xjmp L17
+ 009A           L16:
+ 009A                   .dbline 116
+ 009A           ;  while(ns--) 
+ 009A           ;  delay_nms(1000);
+ 009A 08EE              ldi R16,1000
+ 009C 13E0              ldi R17,3
+ 009E EBDF              xcall _delay_nms
+ 00A0           L17:
+ 00A0                   .dbline 115
+ 00A0 242E              mov R2,R20
+ 00A2 3324              clr R3
+ 00A4 4150              subi R20,1
+ 00A6 2220              tst R2
+ 00A8 C1F7              brne L16
+ 00AA           X2:
+ 00AA                   .dbline -2
+ 00AA           L15:
+ 00AA                   .dbline 0 ; func end
+ 00AA 4991              ld R20,y+
+ 00AC 0895              ret
+ 00AE                   .dbsym r ns 20 c
+ 00AE                   .dbend
+ 00AE                   .dbfile E:\DMAVR-~3\TFTclock\main.c
+ 00AE                   .dbfunc e GUIclock _GUIclock fV
+                        .even
+ 00AE           _GUIclock::
+ 00AE 2697              sbiw R28,6
+ 00B0                   .dbline -1
+ 00B0                   .dbline 17
+ 00B0           ; //DMAVR-128的基于TFT彩屏液晶和DS1302时钟芯片的指针式日历时钟程序
+ 00B0           ; //指针相关坐标根据三角函数换算，所以应包含math.h头文件
+ 00B0           ; //初始设置为12小时制，下午时间
+ 00B0           ; //编译环境 AVR Studio 4.17/AVR GCC
+ 00B0           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 00B0           ; //作者：阿迪 www.avrgcc.com
+ 00B0           ; //日期：2010.01.28
+ 00B0           ; 
+ 00B0           ; 
+ 00B0           ; #include <TFTclock_main.h>
+ 00B0           ;      
+ 00B0           ;        
+ 00B0           ; //***********************************************************************
+ 00B0           ; //         绘制时钟界面
+ 00B0           ; //***********************************************************************                             
+ 00B0           ; void GUIclock()
+ 00B0           ;  {
+ 00B0                   .dbline 18
+ 00B0           ;       GUIcircle(64,64,60,0x00ff);
+ 00B0 8FEF              ldi R24,255
+ 00B2 90E0              ldi R25,0
+ 00B4 9B83              std y+3,R25
+ 00B6 8A83              std y+2,R24
+ 00B8 8CE3              ldi R24,60
+ 00BA 8883              std y+0,R24
+ 00BC 20E4              ldi R18,64
+ 00BE 00E4              ldi R16,64
+ 00C0 0E940000          xcall _GUIcircle
+ 00C4                   .dbline 19
+ 00C4           ;       GUIfull(61,60,67,67,0xf800);    //时钟中心
+ 00C4 80E0              ldi R24,63488
+ 00C6 98EF              ldi R25,248
+ 00C8 9D83              std y+5,R25
+ 00CA 8C83              std y+4,R24
+ 00CC 83E4              ldi R24,67
+ 00CE 8A83              std y+2,R24
+ 00D0 8883              std y+0,R24
+ 00D2 2CE3              ldi R18,60
+ 00D4 0DE3              ldi R16,61
+ 00D6 0E940000          xcall _GUIfull
+ 00DA                   .dbline 20
+ 00DA           ;       GUIline(64,5,64,10,0x700);              //12点钟方向
+ 00DA 80E0              ldi R24,1792
+ 00DC 97E0              ldi R25,7
+ 00DE 9D83              std y+5,R25
+ 00E0 8C83              std y+4,R24
+ 00E2 8AE0              ldi R24,10
+ 00E4 8A83              std y+2,R24
+ 00E6 80E4              ldi R24,64
+ 00E8 8883              std y+0,R24
+ 00EA 25E0              ldi R18,5
+ 00EC 00E4              ldi R16,64
+ 00EE 0E940000          xcall _GUIline
+ 00F2                   .dbline 21
+ 00F2           ;       GUIline(63,5,63,10,0x700);              //12点钟方向
+ 00F2 80E0              ldi R24,1792
+ 00F4 97E0              ldi R25,7
+ 00F6 9D83              std y+5,R25
+ 00F8 8C83              std y+4,R24
+ 00FA 8AE0              ldi R24,10
+ 00FC 8A83              std y+2,R24
+ 00FE 8FE3              ldi R24,63
+ 0100 8883              std y+0,R24
+ 0102 25E0              ldi R18,5
+ 0104 0FE3              ldi R16,63
+ 0106 0E940000          xcall _GUIline
+ 010A                   .dbline 22
+ 010A           ;       GUIline(65,5,65,10,0x700);              //12点钟方向
+ 010A 80E0              ldi R24,1792
+ 010C 97E0              ldi R25,7
+ 010E 9D83              std y+5,R25
+ 0110 8C83              std y+4,R24
+ 0112 8AE0              ldi R24,10
+ 0114 8A83              std y+2,R24
+ 0116 81E4              ldi R24,65
+ 0118 8883              std y+0,R24
+ 011A 25E0              ldi R18,5
+ 011C 01E4              ldi R16,65
+ 011E 0E940000          xcall _GUIline
+ 0122                   .dbline 23
+ 0122           ;       GUIline(95,12,92,15,0x700);     //1点钟方向
+ 0122 80E0              ldi R24,1792
+ 0124 97E0              ldi R25,7
+ 0126 9D83              std y+5,R25
+ 0128 8C83              std y+4,R24
+ 012A 8FE0              ldi R24,15
+ 012C 8A83              std y+2,R24
+ 012E 8CE5              ldi R24,92
+ 0130 8883              std y+0,R24
+ 0132 2CE0              ldi R18,12
+ 0134 0FE5              ldi R16,95
+ 0136 0E940000          xcall _GUIline
+ 013A                   .dbline 24
+ 013A           ;       GUIline(116,34,113,37,0x700);   //2点钟方向
+ 013A 80E0              ldi R24,1792
+ 013C 97E0              ldi R25,7
+ 013E 9D83              std y+5,R25
+ 0140 8C83              std y+4,R24
+ 0142 85E2              ldi R24,37
+ 0144 8A83              std y+2,R24
+ 0146 81E7              ldi R24,113
+ 0148 8883              std y+0,R24
+ 014A 22E2              ldi R18,34
+ 014C 04E7              ldi R16,116
+ 014E 0E940000          xcall _GUIline
+ 0152                   .dbline 25
+ 0152           ;       GUIline(123,64,118,64,0x700);   //3点钟方向
+ 0152 80E0              ldi R24,1792
+ 0154 97E0              ldi R25,7
+ 0156 9D83              std y+5,R25
+ 0158 8C83              std y+4,R24
+ 015A 80E4              ldi R24,64
+ 015C 8A83              std y+2,R24
+ 015E 86E7              ldi R24,118
+ 0160 8883              std y+0,R24
+ 0162 20E4              ldi R18,64
+ 0164 0BE7              ldi R16,123
+ 0166 0E940000          xcall _GUIline
+ 016A                   .dbline 26
+ 016A           ;       GUIline(123,63,118,63,0x700);   //3点钟方向
+ 016A 80E0              ldi R24,1792
+ 016C 97E0              ldi R25,7
+ 016E 9D83              std y+5,R25
+ 0170 8C83              std y+4,R24
+ 0172 8FE3              ldi R24,63
+ 0174 8A83              std y+2,R24
+ 0176 86E7              ldi R24,118
+ 0178 8883              std y+0,R24
+ 017A 2FE3              ldi R18,63
+ 017C 0BE7              ldi R16,123
+ 017E 0E940000          xcall _GUIline
+ 0182                   .dbline 27
+ 0182           ;       GUIline(123,65,118,65,0x700);   //3点钟方向
+ 0182 80E0              ldi R24,1792
+ 0184 97E0              ldi R25,7
+ 0186 9D83              std y+5,R25
+ 0188 8C83              std y+4,R24
+ 018A 81E4              ldi R24,65
+ 018C 8A83              std y+2,R24
+ 018E 86E7              ldi R24,118
+ 0190 8883              std y+0,R24
+ 0192 21E4              ldi R18,65
+ 0194 0BE7              ldi R16,123
+ 0196 0E940000          xcall _GUIline
+ 019A                   .dbline 28
+ 019A           ;     GUIline(116,94,113,91,0x700);     //4点钟方向
+ 019A 80E0              ldi R24,1792
+ 019C 97E0              ldi R25,7
+ 019E 9D83              std y+5,R25
+ 01A0 8C83              std y+4,R24
+ 01A2 8BE5              ldi R24,91
+ 01A4 8A83              std y+2,R24
+ 01A6 81E7              ldi R24,113
+ 01A8 8883              std y+0,R24
+ 01AA 2EE5              ldi R18,94
+ 01AC 04E7              ldi R16,116
+ 01AE 0E940000          xcall _GUIline
+ 01B2                   .dbline 29
+ 01B2           ;       GUIline(95,116,92,113,0x700);   //5点钟方向
+ 01B2 80E0              ldi R24,1792
+ 01B4 97E0              ldi R25,7
+ 01B6 9D83              std y+5,R25
+ 01B8 8C83              std y+4,R24
+ 01BA 81E7              ldi R24,113
+ 01BC 8A83              std y+2,R24
+ 01BE 8CE5              ldi R24,92
+ 01C0 8883              std y+0,R24
+ 01C2 24E7              ldi R18,116
+ 01C4 0FE5              ldi R16,95
+ 01C6 0E940000          xcall _GUIline
+ 01CA                   .dbline 30
+ 01CA           ;     GUIline(64,123,64,118,0x700);     //6点钟方向
+ 01CA 80E0              ldi R24,1792
+ 01CC 97E0              ldi R25,7
+ 01CE 9D83              std y+5,R25
+ 01D0 8C83              std y+4,R24
+ 01D2 86E7              ldi R24,118
+ 01D4 8A83              std y+2,R24
+ 01D6 80E4              ldi R24,64
+ 01D8 8883              std y+0,R24
+ 01DA 2BE7              ldi R18,123
+ 01DC 00E4              ldi R16,64
+ 01DE 0E940000          xcall _GUIline
+ 01E2                   .dbline 31
+ 01E2           ;       GUIline(63,123,63,118,0x700);   //6点钟方向
+ 01E2 80E0              ldi R24,1792
+ 01E4 97E0              ldi R25,7
+ 01E6 9D83              std y+5,R25
+ 01E8 8C83              std y+4,R24
+ 01EA 86E7              ldi R24,118
+ 01EC 8A83              std y+2,R24
+ 01EE 8FE3              ldi R24,63
+ 01F0 8883              std y+0,R24
+ 01F2 2BE7              ldi R18,123
+ 01F4 0FE3              ldi R16,63
+ 01F6 0E940000          xcall _GUIline
+ 01FA                   .dbline 32
+ 01FA           ;       GUIline(65,123,65,118,0x700);   //6点钟方向
+ 01FA 80E0              ldi R24,1792
+ 01FC 97E0              ldi R25,7
+ 01FE 9D83              std y+5,R25
+ 0200 8C83              std y+4,R24
+ 0202 86E7              ldi R24,118
+ 0204 8A83              std y+2,R24
+ 0206 81E4              ldi R24,65
+ 0208 8883              std y+0,R24
+ 020A 2BE7              ldi R18,123
+ 020C 01E4              ldi R16,65
+ 020E 0E940000          xcall _GUIline
+ 0212                   .dbline 33
+ 0212           ;       GUIline(34,116,37,113,0x700);   //7点钟方向
+ 0212 80E0              ldi R24,1792
+ 0214 97E0              ldi R25,7
+ 0216 9D83              std y+5,R25
+ 0218 8C83              std y+4,R24
+ 021A 81E7              ldi R24,113
+ 021C 8A83              std y+2,R24
+ 021E 85E2              ldi R24,37
+ 0220 8883              std y+0,R24
+ 0222 24E7              ldi R18,116
+ 0224 02E2              ldi R16,34
+ 0226 0E940000          xcall _GUIline
+ 022A                   .dbline 34
+ 022A           ;       GUIline(12,93,15,90,0x700);     //8点钟方向             
+ 022A 80E0              ldi R24,1792
+ 022C 97E0              ldi R25,7
+ 022E 9D83              std y+5,R25
+ 0230 8C83              std y+4,R24
+ 0232 8AE5              ldi R24,90
+ 0234 8A83              std y+2,R24
+ 0236 8FE0              ldi R24,15
+ 0238 8883              std y+0,R24
+ 023A 2DE5              ldi R18,93
+ 023C 0CE0              ldi R16,12
+ 023E 0E940000          xcall _GUIline
+ 0242                   .dbline 35
+ 0242           ;       GUIline(5,64,10,64,0x700);      //9点钟方向
+ 0242 80E0              ldi R24,1792
+ 0244 97E0              ldi R25,7
+ 0246 9D83              std y+5,R25
+ 0248 8C83              std y+4,R24
+ 024A 80E4              ldi R24,64
+ 024C 8A83              std y+2,R24
+ 024E 8AE0              ldi R24,10
+ 0250 8883              std y+0,R24
+ 0252 20E4              ldi R18,64
+ 0254 05E0              ldi R16,5
+ 0256 0E940000          xcall _GUIline
+ 025A                   .dbline 36
+ 025A           ;       GUIline(5,63,10,63,0x700);      //9点钟方向
+ 025A 80E0              ldi R24,1792
+ 025C 97E0              ldi R25,7
+ 025E 9D83              std y+5,R25
+ 0260 8C83              std y+4,R24
+ 0262 8FE3              ldi R24,63
+ 0264 8A83              std y+2,R24
+ 0266 8AE0              ldi R24,10
+ 0268 8883              std y+0,R24
+ 026A 2FE3              ldi R18,63
+ 026C 05E0              ldi R16,5
+ 026E 0E940000          xcall _GUIline
+ 0272                   .dbline 37
+ 0272           ;       GUIline(5,65,10,65,0x700);      //9点钟方向
+ 0272 80E0              ldi R24,1792
+ 0274 97E0              ldi R25,7
+ 0276 9D83              std y+5,R25
+ 0278 8C83              std y+4,R24
+ 027A 81E4              ldi R24,65
+ 027C 8A83              std y+2,R24
+ 027E 8AE0              ldi R24,10
+ 0280 8883              std y+0,R24
+ 0282 21E4              ldi R18,65
+ 0284 05E0              ldi R16,5
+ 0286 0E940000          xcall _GUIline
+ 028A                   .dbline 38
+ 028A           ;       GUIline(12,34,15,37,0x700);     //10点钟方向
+ 028A 80E0              ldi R24,1792
+ 028C 97E0              ldi R25,7
+ 028E 9D83              std y+5,R25
+ 0290 8C83              std y+4,R24
+ 0292 85E2              ldi R24,37
+ 0294 8A83              std y+2,R24
+ 0296 8FE0              ldi R24,15
+ 0298 8883              std y+0,R24
+ 029A 22E2              ldi R18,34
+ 029C 0CE0              ldi R16,12
+ 029E 0E940000          xcall _GUIline
+ 02A2                   .dbline 39
+ 02A2           ;       GUIline(34,12,37,15,0x700);     //11点钟方向
+ 02A2 80E0              ldi R24,1792
+ 02A4 97E0              ldi R25,7
+ 02A6 9D83              std y+5,R25
+ 02A8 8C83              std y+4,R24
+ 02AA 8FE0              ldi R24,15
+ 02AC 8A83              std y+2,R24
+ 02AE 85E2              ldi R24,37
+ 02B0 8883              std y+0,R24
+ 02B2 2CE0              ldi R18,12
+ 02B4 02E2              ldi R16,34
+ 02B6 0E940000          xcall _GUIline
+ 02BA                   .dbline -2
+ 02BA           L19:
+ 02BA                   .dbline 0 ; func end
+ 02BA 2696              adiw R28,6
+ 02BC 0895              ret
+ 02BE                   .dbend
+ 02BE                   .dbfunc e TimeGet _TimeGet fV
+                        .even
+ 02BE           _TimeGet::
+ 02BE                   .dbline -1
+ 02BE                   .dbline 47
+ 02BE           ; 
+ 02BE           ;  } 
+ 02BE           ; 
+ 02BE           ; //***********************************************************************
+ 02BE           ; //         从DS1302中读取时钟数据并处理
+ 02BE           ; //***********************************************************************
+ 02BE           ; void TimeGet()
+ 02BE           ;  {
+ 02BE                   .dbline 48
+ 02BE           ;     time_hour=((time_buf[4]&0x1F) >> 4)*10+(time_buf[4] & 0x0F);      //小时
+ 02BE 80910400          lds R24,_time_buf+4
+ 02C2 8F71              andi R24,31
+ 02C4 8295              swap R24
+ 02C6 8F70              andi R24,#0x0F
+ 02C8 9AE0              ldi R25,10
+ 02CA 989F              mul R25,R24
+ 02CC 80910400          lds R24,_time_buf+4
+ 02D0 8F70              andi R24,15
+ 02D2 202C              mov R2,R0
+ 02D4 280E              add R2,R24
+ 02D6 20920C00          sts _time_hour,R2
+ 02DA                   .dbline 49
+ 02DA           ;       time_h=(time_buf[4] >> 4)&0x02;                                                                 //判断是上午还是下午
+ 02DA 80910400          lds R24,_time_buf+4
+ 02DE 8295              swap R24
+ 02E0 8F70              andi R24,#0x0F
+ 02E2 8270              andi R24,2
+ 02E4 80930000          sts _time_h,R24
+ 02E8                   .dbline 50
+ 02E8           ;       time_min=(time_buf[5] >> 4)*10+(time_buf[5] & 0x0F);                    //分钟
+ 02E8 80910500          lds R24,_time_buf+5
+ 02EC 8295              swap R24
+ 02EE 8F70              andi R24,#0x0F
+ 02F0 989F              mul R25,R24
+ 02F2 80910500          lds R24,_time_buf+5
+ 02F6 8F70              andi R24,15
+ 02F8 202C              mov R2,R0
+ 02FA 280E              add R2,R24
+ 02FC 20920B00          sts _time_min,R2
+ 0300                   .dbline 51
+ 0300           ;       time_sec=(time_buf[6] >> 4)*10+(time_buf[6] & 0x0F);                    //秒
+ 0300 80910600          lds R24,_time_buf+6
+ 0304 8295              swap R24
+ 0306 8F70              andi R24,#0x0F
+ 0308 989F              mul R25,R24
+ 030A 80910600          lds R24,_time_buf+6
+ 030E 8F70              andi R24,15
+ 0310 202C              mov R2,R0
+ 0312 280E              add R2,R24
+ 0314 20920A00          sts _time_sec,R2
+ 0318                   .dbline 52
+ 0318           ;       data_yearq=(time_buf[0] >> 4);                  //年数据的千位
+ 0318 80910000          lds R24,_time_buf
+ 031C 8295              swap R24
+ 031E 8F70              andi R24,#0x0F
+ 0320 80930900          sts _data_yearq,R24
+ 0324                   .dbline 53
+ 0324           ;       data_yearb=(time_buf[0] & 0x0F);                //年数据的百位
+ 0324 80910000          lds R24,_time_buf
+ 0328 8F70              andi R24,15
+ 032A 80930800          sts _data_yearb,R24
+ 032E                   .dbline 54
+ 032E           ;       data_years=(time_buf[1] >> 4);                  //年数据的十位
+ 032E 80910100          lds R24,_time_buf+1
+ 0332 8295              swap R24
+ 0334 8F70              andi R24,#0x0F
+ 0336 80930700          sts _data_years,R24
+ 033A                   .dbline 55
+ 033A           ;       data_yearg=(time_buf[1] & 0x0F);            //年数据的个位
+ 033A 80910100          lds R24,_time_buf+1
+ 033E 8F70              andi R24,15
+ 0340 80930600          sts _data_yearg,R24
+ 0344                   .dbline 56
+ 0344           ;       data_months=(time_buf[2] >> 4);             //月数据的十位
+ 0344 80910200          lds R24,_time_buf+2
+ 0348 8295              swap R24
+ 034A 8F70              andi R24,#0x0F
+ 034C 80930500          sts _data_months,R24
+ 0350                   .dbline 57
+ 0350           ;       data_monthg=(time_buf[2] & 0x0F);                       //月数据的个位
+ 0350 80910200          lds R24,_time_buf+2
+ 0354 8F70              andi R24,15
+ 0356 80930400          sts _data_monthg,R24
+ 035A                   .dbline 58
+ 035A           ;       data_days=(time_buf[3] >> 4);                           //日数据的十位
+ 035A 80910300          lds R24,_time_buf+3
+ 035E 8295              swap R24
+ 0360 8F70              andi R24,#0x0F
+ 0362 80930300          sts _data_days,R24
+ 0366                   .dbline 59
+ 0366           ;       data_dayg=(time_buf[3] & 0x0F);                         //日数据的个位
+ 0366 80910300          lds R24,_time_buf+3
+ 036A 8F70              andi R24,15
+ 036C 80930200          sts _data_dayg,R24
+ 0370                   .dbline 60
+ 0370           ;       week=(time_buf[7] & 0x0F);                                      //星期数据
+ 0370 80910700          lds R24,_time_buf+7
+ 0374 8F70              andi R24,15
+ 0376 80930100          sts _week,R24
+ 037A                   .dbline -2
+ 037A           L20:
+ 037A                   .dbline 0 ; func end
+ 037A 0895              ret
+ 037C                   .dbend
+ 037C                   .dbfunc e DisplayData _DisplayData fV
+                        .even
+ 037C           _DisplayData::
+ 037C 2497              sbiw R28,4
+ 037E                   .dbline -1
+ 037E                   .dbline 67
+ 037E           ;  }
+ 037E           ; 
+ 037E           ; //***********************************************************************
+ 037E           ; //         显示日期和星期
+ 037E           ; //***********************************************************************
+ 037E           ; void DisplayData()
+ 037E           ;  {
+ 037E                   .dbline 68
+ 037E           ;     DisplayChar(data_yearq+'0',0,9,0x0eee);
+ 037E 8EEE              ldi R24,3822
+ 0380 9EE0              ldi R25,14
+ 0382 9B83              std y+3,R25
+ 0384 8A83              std y+2,R24
+ 0386 89E0              ldi R24,9
+ 0388 8883              std y+0,R24
+ 038A 2227              clr R18
+ 038C 00910900          lds R16,_data_yearq
+ 0390 005D              subi R16,208    ; addi 48
+ 0392 0E940000          xcall _DisplayChar
+ 0396                   .dbline 69
+ 0396           ;       DisplayChar(data_yearb+'0',1,9,0x0eee);
+ 0396 8EEE              ldi R24,3822
+ 0398 9EE0              ldi R25,14
+ 039A 9B83              std y+3,R25
+ 039C 8A83              std y+2,R24
+ 039E 89E0              ldi R24,9
+ 03A0 8883              std y+0,R24
+ 03A2 21E0              ldi R18,1
+ 03A4 00910800          lds R16,_data_yearb
+ 03A8 005D              subi R16,208    ; addi 48
+ 03AA 0E940000          xcall _DisplayChar
+ 03AE                   .dbline 70
+ 03AE           ;       DisplayChar(data_years+'0',2,9,0x0eee);
+ 03AE 8EEE              ldi R24,3822
+ 03B0 9EE0              ldi R25,14
+ 03B2 9B83              std y+3,R25
+ 03B4 8A83              std y+2,R24
+ 03B6 89E0              ldi R24,9
+ 03B8 8883              std y+0,R24
+ 03BA 22E0              ldi R18,2
+ 03BC 00910700          lds R16,_data_years
+ 03C0 005D              subi R16,208    ; addi 48
+ 03C2 0E940000          xcall _DisplayChar
+ 03C6                   .dbline 71
+ 03C6           ;       DisplayChar(data_yearg+'0',3,9,0x0eee);
+ 03C6 8EEE              ldi R24,3822
+ 03C8 9EE0              ldi R25,14
+ 03CA 9B83              std y+3,R25
+ 03CC 8A83              std y+2,R24
+ 03CE 89E0              ldi R24,9
+ 03D0 8883              std y+0,R24
+ 03D2 23E0              ldi R18,3
+ 03D4 00910600          lds R16,_data_yearg
+ 03D8 005D              subi R16,208    ; addi 48
+ 03DA 0E940000          xcall _DisplayChar
+ 03DE                   .dbline 73
+ 03DE           ;     
+ 03DE           ;       DisplayChar('/',4,9,0x0eee);                                    // "/"符号
+ 03DE 8EEE              ldi R24,3822
+ 03E0 9EE0              ldi R25,14
+ 03E2 9B83              std y+3,R25
+ 03E4 8A83              std y+2,R24
+ 03E6 89E0              ldi R24,9
+ 03E8 8883              std y+0,R24
+ 03EA 24E0              ldi R18,4
+ 03EC 0FE2              ldi R16,47
+ 03EE 0E940000          xcall _DisplayChar
+ 03F2                   .dbline 75
+ 03F2           ; 
+ 03F2           ;       DisplayChar(data_months+'0',5,9,0x0eee);
+ 03F2 8EEE              ldi R24,3822
+ 03F4 9EE0              ldi R25,14
+ 03F6 9B83              std y+3,R25
+ 03F8 8A83              std y+2,R24
+ 03FA 89E0              ldi R24,9
+ 03FC 8883              std y+0,R24
+ 03FE 25E0              ldi R18,5
+ 0400 00910500          lds R16,_data_months
+ 0404 005D              subi R16,208    ; addi 48
+ 0406 0E940000          xcall _DisplayChar
+ 040A                   .dbline 76
+ 040A           ;       DisplayChar(data_monthg+'0',6,9,0x0eee);
+ 040A 8EEE              ldi R24,3822
+ 040C 9EE0              ldi R25,14
+ 040E 9B83              std y+3,R25
+ 0410 8A83              std y+2,R24
+ 0412 89E0              ldi R24,9
+ 0414 8883              std y+0,R24
+ 0416 26E0              ldi R18,6
+ 0418 00910400          lds R16,_data_monthg
+ 041C 005D              subi R16,208    ; addi 48
+ 041E 0E940000          xcall _DisplayChar
+ 0422                   .dbline 77
+ 0422           ;       DisplayChar('/',7,9,0x0eee);                                    // "/"符号
+ 0422 8EEE              ldi R24,3822
+ 0424 9EE0              ldi R25,14
+ 0426 9B83              std y+3,R25
+ 0428 8A83              std y+2,R24
+ 042A 89E0              ldi R24,9
+ 042C 8883              std y+0,R24
+ 042E 27E0              ldi R18,7
+ 0430 0FE2              ldi R16,47
+ 0432 0E940000          xcall _DisplayChar
+ 0436                   .dbline 80
+ 0436           ; 
+ 0436           ; 
+ 0436           ;       DisplayChar(data_days+'0',8,9,0x0eee);
+ 0436 8EEE              ldi R24,3822
+ 0438 9EE0              ldi R25,14
+ 043A 9B83              std y+3,R25
+ 043C 8A83              std y+2,R24
+ 043E 89E0              ldi R24,9
+ 0440 8883              std y+0,R24
+ 0442 28E0              ldi R18,8
+ 0444 00910300          lds R16,_data_days
+ 0448 005D              subi R16,208    ; addi 48
+ 044A 0E940000          xcall _DisplayChar
+ 044E                   .dbline 81
+ 044E           ;       DisplayChar(data_dayg+'0',9,9,0x0eee);
+ 044E 8EEE              ldi R24,3822
+ 0450 9EE0              ldi R25,14
+ 0452 9B83              std y+3,R25
+ 0454 8A83              std y+2,R24
+ 0456 89E0              ldi R24,9
+ 0458 8883              std y+0,R24
+ 045A 29E0              ldi R18,9
+ 045C 00910200          lds R16,_data_dayg
+ 0460 005D              subi R16,208    ; addi 48
+ 0462 0E940000          xcall _DisplayChar
+ 0466                   .dbline 83
+ 0466           ;     
+ 0466           ;       DisplayGB2312(6,5,9,0x3fef);                                    //星
+ 0466 8FEE              ldi R24,16367
+ 0468 9FE3              ldi R25,63
+ 046A 9B83              std y+3,R25
+ 046C 8A83              std y+2,R24
+ 046E 89E0              ldi R24,9
+ 0470 8883              std y+0,R24
+ 0472 25E0              ldi R18,5
+ 0474 06E0              ldi R16,6
+ 0476 0E940000          xcall _DisplayGB2312
+ 047A                   .dbline 84
+ 047A           ;       DisplayGB2312(7,6,9,0x3fef);                                    //期
+ 047A 8FEE              ldi R24,16367
+ 047C 9FE3              ldi R25,63
+ 047E 9B83              std y+3,R25
+ 0480 8A83              std y+2,R24
+ 0482 89E0              ldi R24,9
+ 0484 8883              std y+0,R24
+ 0486 26E0              ldi R18,6
+ 0488 07E0              ldi R16,7
+ 048A 0E940000          xcall _DisplayGB2312
+ 048E                   .dbline 85
+ 048E           ;       DisplayGB2312(week+7,7,9,0x3fef);                               //星期几
+ 048E 8FEE              ldi R24,16367
+ 0490 9FE3              ldi R25,63
+ 0492 9B83              std y+3,R25
+ 0494 8A83              std y+2,R24
+ 0496 89E0              ldi R24,9
+ 0498 8883              std y+0,R24
+ 049A 27E0              ldi R18,7
+ 049C 00910100          lds R16,_week
+ 04A0 095F              subi R16,249    ; addi 7
+ 04A2 0E940000          xcall _DisplayGB2312
+ 04A6                   .dbline -2
+ 04A6           L35:
+ 04A6                   .dbline 0 ; func end
+ 04A6 2496              adiw R28,4
+ 04A8 0895              ret
+ 04AA                   .dbend
+ 04AA                   .dbfunc e main _main fI
+                        .even
+ 04AA           _main::
+ 04AA 2697              sbiw R28,6
+ 04AC                   .dbline -1
+ 04AC                   .dbline 93
+ 04AC           ;  }
+ 04AC           ; 
+ 04AC           ; //***********************************************************************
+ 04AC           ; //         主函数
+ 04AC           ; //***********************************************************************
+ 04AC           ; 
+ 04AC           ; int main(void)
+ 04AC           ; {
+ 04AC                   .dbline 94
+ 04AC           ;   delay_nms(100);
+ 04AC 04E6              ldi R16,100
+ 04AE 10E0              ldi R17,0
+ 04B0 E2DD              xcall _delay_nms
+ 04B2                   .dbline 95
+ 04B2           ;   McuInit();
+ 04B2 0E940000          xcall _McuInit
+ 04B6                   .dbline 96
+ 04B6           ;   LCD_RD1; 
+ 04B6 80916500          lds R24,101
+ 04BA 8061              ori R24,16
+ 04BC 80936500          sts 101,R24
+ 04C0                   .dbline 97
+ 04C0           ;   LCD_Init();
+ 04C0 0E940000          xcall _LCD_Init
+ 04C4                   .dbline 98
+ 04C4           ;   LCD_clear(0);
+ 04C4 0027              clr R16
+ 04C6 1127              clr R17
+ 04C8 0E940000          xcall _LCD_clear
+ 04CC                   .dbline 99
+ 04CC           ;   ds1302_init();                                                                      //DS1302初始化
+ 04CC 0E940000          xcall _ds1302_init
+ 04D0                   .dbline 100
+ 04D0           ;   delay_nms(10);
+ 04D0 0AE0              ldi R16,10
+ 04D2 10E0              ldi R17,0
+ 04D4 D0DD              xcall _delay_nms
+ 04D6                   .dbline 101
+ 04D6           ;   ds1302_write_time();                                                                        //向DS1302写初始数据，如年月和时间等     
+ 04D6 0E940000          xcall _ds1302_write_time
+ 04DA                   .dbline 102
+ 04DA           ;   GUIclock();                                                                                                 //画时钟界面框
+ 04DA E9DD              xcall _GUIclock
+ 04DC 9AC5              xjmp L38
+ 04DE           L37:
+ 04DE                   .dbline 105
+ 04DE           ;       
+ 04DE           ;   while(1)
+ 04DE           ;     {
+ 04DE                   .dbline 107
+ 04DE           ;         
+ 04DE           ;     delay_nms(900);
+ 04DE 04E8              ldi R16,900
+ 04E0 13E0              ldi R17,3
+ 04E2 C9DD              xcall _delay_nms
+ 04E4                   .dbline 108
+ 04E4           ;       ds1302_read_time();                                                                     //读DS1302数据
+ 04E4 0E940000          xcall _ds1302_read_time
+ 04E8                   .dbline 109
+ 04E8           ;     GUIline(64,64,sxi,syi,0);                                                                         //清除秒指针显示痕迹
+ 04E8 2224              clr R2
+ 04EA 3324              clr R3
+ 04EC 3D82              std y+5,R3
+ 04EE 2C82              std y+4,R2
+ 04F0 20901100          lds R2,_syi
+ 04F4 2A82              std y+2,R2
+ 04F6 20901200          lds R2,_sxi
+ 04FA 2882              std y+0,R2
+ 04FC 20E4              ldi R18,64
+ 04FE 00E4              ldi R16,64
+ 0500 0E940000          xcall _GUIline
+ 0504                   .dbline 110
+ 0504           ;       TimeGet(); 
+ 0504 DCDE              xcall _TimeGet
+ 0506                   .dbline 112
+ 0506           ;       
+ 0506           ;   if(time_h==0x02)
+ 0506 80910000          lds R24,_time_h
+ 050A 8230              cpi R24,2
+ 050C 59F4              brne L40
+ 050E           X3:
+ 050E                   .dbline 113
+ 050E           ;    {
+ 050E                   .dbline 114
+ 050E           ;       DisplayGB2312(16,3,5,0x079ff);                                                          //下
+ 050E 8FEF              ldi R24,31231
+ 0510 99E7              ldi R25,121
+ 0512 9B83              std y+3,R25
+ 0514 8A83              std y+2,R24
+ 0516 85E0              ldi R24,5
+ 0518 8883              std y+0,R24
+ 051A 23E0              ldi R18,3
+ 051C 00E1              ldi R16,16
+ 051E 0E940000          xcall _DisplayGB2312
+ 0522                   .dbline 115
+ 0522           ;    }
+ 0522 0AC0              xjmp L41
+ 0524           L40:
+ 0524                   .dbline 117
+ 0524           ;   else
+ 0524           ;    {
+ 0524                   .dbline 118
+ 0524           ;       DisplayGB2312(15,3,5,0x79ff);                                                           //上
+ 0524 8FEF              ldi R24,31231
+ 0526 99E7              ldi R25,121
+ 0528 9B83              std y+3,R25
+ 052A 8A83              std y+2,R24
+ 052C 85E0              ldi R24,5
+ 052E 8883              std y+0,R24
+ 0530 23E0              ldi R18,3
+ 0532 0FE0              ldi R16,15
+ 0534 0E940000          xcall _DisplayGB2312
+ 0538                   .dbline 119
+ 0538           ;    }
+ 0538           L41:
+ 0538                   .dbline 121
+ 0538           ; 
+ 0538           ;       DisplayGB2312(17,4,5,0x79ff);                                                           //午
+ 0538 8FEF              ldi R24,31231
+ 053A 99E7              ldi R25,121
+ 053C 9B83              std y+3,R25
+ 053E 8A83              std y+2,R24
+ 0540 85E0              ldi R24,5
+ 0542 8883              std y+0,R24
+ 0544 24E0              ldi R18,4
+ 0546 01E1              ldi R16,17
+ 0548 0E940000          xcall _DisplayGB2312
+ 054C                   .dbline 123
+ 054C           ;       
+ 054C           ;       DisplayData();
+ 054C 17DF              xcall _DisplayData
+ 054E                   .dbline 125
+ 054E           ; 
+ 054E           ;    if(time_sec==00)
+ 054E 20900A00          lds R2,_time_sec
+ 0552 2220              tst R2
+ 0554 09F0              breq X7
+ 0556 DFC1              xjmp L42
+ 0558           X7:
+ 0558           X4:
+ 0558                   .dbline 126
+ 0558           ;       {
+ 0558                   .dbline 127
+ 0558           ;     hxi=64+cos(PI*0.5-PI*(time_hour)/6-PI*(time_min-1)/360)*30;  //小时根据分钟的变化轨迹横坐标计算公式
+ 0558 00E0              ldi R16,<L45
+ 055A 10E0              ldi R17,>L45
+ 055C 0E940000          xcall elpm32
+ 0560 1801              movw R2,R16
+ 0562 2901              movw R4,R18
+ 0564 00E0              ldi R16,<L46
+ 0566 10E0              ldi R17,>L46
+ 0568 0E940000          xcall elpm32
+ 056C 3801              movw R6,R16
+ 056E 4901              movw R8,R18
+ 0570 00910C00          lds R16,_time_hour
+ 0574 1127              clr R17
+ 0576 0E940000          xcall int2fp
+ 057A 3A93              st -y,R19
+ 057C 2A93              st -y,R18
+ 057E 1A93              st -y,R17
+ 0580 0A93              st -y,R16
+ 0582 8301              movw R16,R6
+ 0584 9401              movw R18,R8
+ 0586 0E940000          xcall fpmule2
+ 058A 3801              movw R6,R16
+ 058C 4901              movw R8,R18
+ 058E 00E0              ldi R16,<L47
+ 0590 10E0              ldi R17,>L47
+ 0592 0E940000          xcall elpm32
+ 0596 3A93              st -y,R19
+ 0598 2A93              st -y,R18
+ 059A 1A93              st -y,R17
+ 059C 0A93              st -y,R16
+ 059E 8301              movw R16,R6
+ 05A0 9401              movw R18,R8
+ 05A2 0E940000          xcall fpdiv2x
+ 05A6 8101              movw R16,R2
+ 05A8 9201              movw R18,R4
+ 05AA 0E940000          xcall fpsub2
+ 05AE 1801              movw R2,R16
+ 05B0 2901              movw R4,R18
+ 05B2 00E0              ldi R16,<L46
+ 05B4 10E0              ldi R17,>L46
+ 05B6 0E940000          xcall elpm32
+ 05BA 3801              movw R6,R16
+ 05BC 4901              movw R8,R18
+ 05BE 00910B00          lds R16,_time_min
+ 05C2 1127              clr R17
+ 05C4 0150              subi R16,1
+ 05C6 1040              sbci R17,0
+ 05C8 0E940000          xcall int2fp
+ 05CC 3A93              st -y,R19
+ 05CE 2A93              st -y,R18
+ 05D0 1A93              st -y,R17
+ 05D2 0A93              st -y,R16
+ 05D4 8301              movw R16,R6
+ 05D6 9401              movw R18,R8
+ 05D8 0E940000          xcall fpmule2
+ 05DC 3801              movw R6,R16
+ 05DE 4901              movw R8,R18
+ 05E0 00E0              ldi R16,<L48
+ 05E2 10E0              ldi R17,>L48
+ 05E4 0E940000          xcall elpm32
+ 05E8 3A93              st -y,R19
+ 05EA 2A93              st -y,R18
+ 05EC 1A93              st -y,R17
+ 05EE 0A93              st -y,R16
+ 05F0 8301              movw R16,R6
+ 05F2 9401              movw R18,R8
+ 05F4 0E940000          xcall fpdiv2x
+ 05F8 8101              movw R16,R2
+ 05FA 9201              movw R18,R4
+ 05FC 0E940000          xcall fpsub2
+ 0600 0E940000          xcall _cosf
+ 0604 1801              movw R2,R16
+ 0606 2901              movw R4,R18
+ 0608 00E0              ldi R16,<L44
+ 060A 10E0              ldi R17,>L44
+ 060C 0E940000          xcall elpm32
+ 0610 5A92              st -y,R5
+ 0612 4A92              st -y,R4
+ 0614 3A92              st -y,R3
+ 0616 2A92              st -y,R2
+ 0618 0E940000          xcall fpmule2
+ 061C 1801              movw R2,R16
+ 061E 2901              movw R4,R18
+ 0620 00E0              ldi R16,<L49
+ 0622 10E0              ldi R17,>L49
+ 0624 0E940000          xcall elpm32
+ 0628 3A93              st -y,R19
+ 062A 2A93              st -y,R18
+ 062C 1A93              st -y,R17
+ 062E 0A93              st -y,R16
+ 0630 8101              movw R16,R2
+ 0632 9201              movw R18,R4
+ 0634 0E940000          xcall fpadd2
+ 0638 0E940000          xcall fpint
+ 063C 00930E00          sts _hxi,R16
+ 0640                   .dbline 128
+ 0640           ;     hyi=64-sin(PI*0.5-PI*(time_hour)/6-PI*(time_min-1)/360)*30;  //小时根据分钟的变化轨迹纵坐标计算公式
+ 0640 00E0              ldi R16,<L45
+ 0642 10E0              ldi R17,>L45
+ 0644 0E940000          xcall elpm32
+ 0648 1801              movw R2,R16
+ 064A 2901              movw R4,R18
+ 064C 00E0              ldi R16,<L46
+ 064E 10E0              ldi R17,>L46
+ 0650 0E940000          xcall elpm32
+ 0654 3801              movw R6,R16
+ 0656 4901              movw R8,R18
+ 0658 00910C00          lds R16,_time_hour
+ 065C 1127              clr R17
+ 065E 0E940000          xcall int2fp
+ 0662 3A93              st -y,R19
+ 0664 2A93              st -y,R18
+ 0666 1A93              st -y,R17
+ 0668 0A93              st -y,R16
+ 066A 8301              movw R16,R6
+ 066C 9401              movw R18,R8
+ 066E 0E940000          xcall fpmule2
+ 0672 3801              movw R6,R16
+ 0674 4901              movw R8,R18
+ 0676 00E0              ldi R16,<L47
+ 0678 10E0              ldi R17,>L47
+ 067A 0E940000          xcall elpm32
+ 067E 3A93              st -y,R19
+ 0680 2A93              st -y,R18
+ 0682 1A93              st -y,R17
+ 0684 0A93              st -y,R16
+ 0686 8301              movw R16,R6
+ 0688 9401              movw R18,R8
+ 068A 0E940000          xcall fpdiv2x
+ 068E 8101              movw R16,R2
+ 0690 9201              movw R18,R4
+ 0692 0E940000          xcall fpsub2
+ 0696 1801              movw R2,R16
+ 0698 2901              movw R4,R18
+ 069A 00E0              ldi R16,<L46
+ 069C 10E0              ldi R17,>L46
+ 069E 0E940000          xcall elpm32
+ 06A2 3801              movw R6,R16
+ 06A4 4901              movw R8,R18
+ 06A6 00910B00          lds R16,_time_min
+ 06AA 1127              clr R17
+ 06AC 0150              subi R16,1
+ 06AE 1040              sbci R17,0
+ 06B0 0E940000          xcall int2fp
+ 06B4 3A93              st -y,R19
+ 06B6 2A93              st -y,R18
+ 06B8 1A93              st -y,R17
+ 06BA 0A93              st -y,R16
+ 06BC 8301              movw R16,R6
+ 06BE 9401              movw R18,R8
+ 06C0 0E940000          xcall fpmule2
+ 06C4 3801              movw R6,R16
+ 06C6 4901              movw R8,R18
+ 06C8 00E0              ldi R16,<L48
+ 06CA 10E0              ldi R17,>L48
+ 06CC 0E940000          xcall elpm32
+ 06D0 3A93              st -y,R19
+ 06D2 2A93              st -y,R18
+ 06D4 1A93              st -y,R17
+ 06D6 0A93              st -y,R16
+ 06D8 8301              movw R16,R6
+ 06DA 9401              movw R18,R8
+ 06DC 0E940000          xcall fpdiv2x
+ 06E0 8101              movw R16,R2
+ 06E2 9201              movw R18,R4
+ 06E4 0E940000          xcall fpsub2
+ 06E8 0E940000          xcall _sinf
+ 06EC 1801              movw R2,R16
+ 06EE 2901              movw R4,R18
+ 06F0 00E0              ldi R16,<L49
+ 06F2 10E0              ldi R17,>L49
+ 06F4 0E940000          xcall elpm32
+ 06F8 3801              movw R6,R16
+ 06FA 4901              movw R8,R18
+ 06FC 00E0              ldi R16,<L44
+ 06FE 10E0              ldi R17,>L44
+ 0700 0E940000          xcall elpm32
+ 0704 5A92              st -y,R5
+ 0706 4A92              st -y,R4
+ 0708 3A92              st -y,R3
+ 070A 2A92              st -y,R2
+ 070C 0E940000          xcall fpmule2x
+ 0710 8301              movw R16,R6
+ 0712 9401              movw R18,R8
+ 0714 0E940000          xcall fpsub2
+ 0718 0E940000          xcall fpint
+ 071C 00930D00          sts _hyi,R16
+ 0720                   .dbline 129
+ 0720           ;       GUIline(64,64,hxi,hyi,0);                                                            //小时指针在小时更新后清除前一痕迹
+ 0720 2224              clr R2
+ 0722 3324              clr R3
+ 0724 3D82              std y+5,R3
+ 0726 2C82              std y+4,R2
+ 0728 202E              mov R2,R16
+ 072A 2A82              std y+2,R2
+ 072C 20900E00          lds R2,_hxi
+ 0730 2882              std y+0,R2
+ 0732 20E4              ldi R18,64
+ 0734 00E4              ldi R16,64
+ 0736 0E940000          xcall _GUIline
+ 073A                   .dbline 131
+ 073A           ; 
+ 073A           ;       hxi=64+cos(PI*0.5-PI*(time_hour)/6-PI*time_min/360)*30;             
+ 073A 00E0              ldi R16,<L45
+ 073C 10E0              ldi R17,>L45
+ 073E 0E940000          xcall elpm32
+ 0742 1801              movw R2,R16
+ 0744 2901              movw R4,R18
+ 0746 00E0              ldi R16,<L46
+ 0748 10E0              ldi R17,>L46
+ 074A 0E940000          xcall elpm32
+ 074E 3801              movw R6,R16
+ 0750 4901              movw R8,R18
+ 0752 00910C00          lds R16,_time_hour
+ 0756 1127              clr R17
+ 0758 0E940000          xcall int2fp
+ 075C 3A93              st -y,R19
+ 075E 2A93              st -y,R18
+ 0760 1A93              st -y,R17
+ 0762 0A93              st -y,R16
+ 0764 8301              movw R16,R6
+ 0766 9401              movw R18,R8
+ 0768 0E940000          xcall fpmule2
+ 076C 3801              movw R6,R16
+ 076E 4901              movw R8,R18
+ 0770 00E0              ldi R16,<L47
+ 0772 10E0              ldi R17,>L47
+ 0774 0E940000          xcall elpm32
+ 0778 3A93              st -y,R19
+ 077A 2A93              st -y,R18
+ 077C 1A93              st -y,R17
+ 077E 0A93              st -y,R16
+ 0780 8301              movw R16,R6
+ 0782 9401              movw R18,R8
+ 0784 0E940000          xcall fpdiv2x
+ 0788 8101              movw R16,R2
+ 078A 9201              movw R18,R4
+ 078C 0E940000          xcall fpsub2
+ 0790 1801              movw R2,R16
+ 0792 2901              movw R4,R18
+ 0794 00E0              ldi R16,<L46
+ 0796 10E0              ldi R17,>L46
+ 0798 0E940000          xcall elpm32
+ 079C 3801              movw R6,R16
+ 079E 4901              movw R8,R18
+ 07A0 00910B00          lds R16,_time_min
+ 07A4 1127              clr R17
+ 07A6 0E940000          xcall int2fp
+ 07AA 3A93              st -y,R19
+ 07AC 2A93              st -y,R18
+ 07AE 1A93              st -y,R17
+ 07B0 0A93              st -y,R16
+ 07B2 8301              movw R16,R6
+ 07B4 9401              movw R18,R8
+ 07B6 0E940000          xcall fpmule2
+ 07BA 3801              movw R6,R16
+ 07BC 4901              movw R8,R18
+ 07BE 00E0              ldi R16,<L48
+ 07C0 10E0              ldi R17,>L48
+ 07C2 0E940000          xcall elpm32
+ 07C6 3A93              st -y,R19
+ 07C8 2A93              st -y,R18
+ 07CA 1A93              st -y,R17
+ 07CC 0A93              st -y,R16
+ 07CE 8301              movw R16,R6
+ 07D0 9401              movw R18,R8
+ 07D2 0E940000          xcall fpdiv2x
+ 07D6 8101              movw R16,R2
+ 07D8 9201              movw R18,R4
+ 07DA 0E940000          xcall fpsub2
+ 07DE 0E940000          xcall _cosf
+ 07E2 1801              movw R2,R16
+ 07E4 2901              movw R4,R18
+ 07E6 00E0              ldi R16,<L44
+ 07E8 10E0              ldi R17,>L44
+ 07EA 0E940000          xcall elpm32
+ 07EE 5A92              st -y,R5
+ 07F0 4A92              st -y,R4
+ 07F2 3A92              st -y,R3
+ 07F4 2A92              st -y,R2
+ 07F6 0E940000          xcall fpmule2
+ 07FA 1801              movw R2,R16
+ 07FC 2901              movw R4,R18
+ 07FE 00E0              ldi R16,<L49
+ 0800 10E0              ldi R17,>L49
+ 0802 0E940000          xcall elpm32
+ 0806 3A93              st -y,R19
+ 0808 2A93              st -y,R18
+ 080A 1A93              st -y,R17
+ 080C 0A93              st -y,R16
+ 080E 8101              movw R16,R2
+ 0810 9201              movw R18,R4
+ 0812 0E940000          xcall fpadd2
+ 0816 0E940000          xcall fpint
+ 081A 00930E00          sts _hxi,R16
+ 081E                   .dbline 132
+ 081E           ;     hyi=64-sin(PI*0.5-PI*(time_hour)/6-PI*time_min/360)*30;
+ 081E 00E0              ldi R16,<L45
+ 0820 10E0              ldi R17,>L45
+ 0822 0E940000          xcall elpm32
+ 0826 1801              movw R2,R16
+ 0828 2901              movw R4,R18
+ 082A 00E0              ldi R16,<L46
+ 082C 10E0              ldi R17,>L46
+ 082E 0E940000          xcall elpm32
+ 0832 3801              movw R6,R16
+ 0834 4901              movw R8,R18
+ 0836 00910C00          lds R16,_time_hour
+ 083A 1127              clr R17
+ 083C 0E940000          xcall int2fp
+ 0840 3A93              st -y,R19
+ 0842 2A93              st -y,R18
+ 0844 1A93              st -y,R17
+ 0846 0A93              st -y,R16
+ 0848 8301              movw R16,R6
+ 084A 9401              movw R18,R8
+ 084C 0E940000          xcall fpmule2
+ 0850 3801              movw R6,R16
+ 0852 4901              movw R8,R18
+ 0854 00E0              ldi R16,<L47
+ 0856 10E0              ldi R17,>L47
+ 0858 0E940000          xcall elpm32
+ 085C 3A93              st -y,R19
+ 085E 2A93              st -y,R18
+ 0860 1A93              st -y,R17
+ 0862 0A93              st -y,R16
+ 0864 8301              movw R16,R6
+ 0866 9401              movw R18,R8
+ 0868 0E940000          xcall fpdiv2x
+ 086C 8101              movw R16,R2
+ 086E 9201              movw R18,R4
+ 0870 0E940000          xcall fpsub2
+ 0874 1801              movw R2,R16
+ 0876 2901              movw R4,R18
+ 0878 00E0              ldi R16,<L46
+ 087A 10E0              ldi R17,>L46
+ 087C 0E940000          xcall elpm32
+ 0880 3801              movw R6,R16
+ 0882 4901              movw R8,R18
+ 0884 00910B00          lds R16,_time_min
+ 0888 1127              clr R17
+ 088A 0E940000          xcall int2fp
+ 088E 3A93              st -y,R19
+ 0890 2A93              st -y,R18
+ 0892 1A93              st -y,R17
+ 0894 0A93              st -y,R16
+ 0896 8301              movw R16,R6
+ 0898 9401              movw R18,R8
+ 089A 0E940000          xcall fpmule2
+ 089E 3801              movw R6,R16
+ 08A0 4901              movw R8,R18
+ 08A2 00E0              ldi R16,<L48
+ 08A4 10E0              ldi R17,>L48
+ 08A6 0E940000          xcall elpm32
+ 08AA 3A93              st -y,R19
+ 08AC 2A93              st -y,R18
+ 08AE 1A93              st -y,R17
+ 08B0 0A93              st -y,R16
+ 08B2 8301              movw R16,R6
+ 08B4 9401              movw R18,R8
+ 08B6 0E940000          xcall fpdiv2x
+ 08BA 8101              movw R16,R2
+ 08BC 9201              movw R18,R4
+ 08BE 0E940000          xcall fpsub2
+ 08C2 0E940000          xcall _sinf
+ 08C6 1801              movw R2,R16
+ 08C8 2901              movw R4,R18
+ 08CA 00E0              ldi R16,<L49
+ 08CC 10E0              ldi R17,>L49
+ 08CE 0E940000          xcall elpm32
+ 08D2 3801              movw R6,R16
+ 08D4 4901              movw R8,R18
+ 08D6 00E0              ldi R16,<L44
+ 08D8 10E0              ldi R17,>L44
+ 08DA 0E940000          xcall elpm32
+ 08DE 5A92              st -y,R5
+ 08E0 4A92              st -y,R4
+ 08E2 3A92              st -y,R3
+ 08E4 2A92              st -y,R2
+ 08E6 0E940000          xcall fpmule2x
+ 08EA 8301              movw R16,R6
+ 08EC 9401              movw R18,R8
+ 08EE 0E940000          xcall fpsub2
+ 08F2 0E940000          xcall fpint
+ 08F6 00930D00          sts _hyi,R16
+ 08FA                   .dbline 133
+ 08FA           ;       GUIline(64,64,hxi,hyi,0x2ee0);                                               //小时指针在分钟更新后显示新的位置
+ 08FA 80EE              ldi R24,12000
+ 08FC 9EE2              ldi R25,46
+ 08FE 9D83              std y+5,R25
+ 0900 8C83              std y+4,R24
+ 0902 202E              mov R2,R16
+ 0904 2A82              std y+2,R2
+ 0906 20900E00          lds R2,_hxi
+ 090A 2882              std y+0,R2
+ 090C 20E4              ldi R18,64
+ 090E 00E4              ldi R16,64
+ 0910 0E940000          xcall _GUIline
+ 0914                   .dbline 134
+ 0914           ;       }
+ 0914 EDC0              xjmp L43
+ 0916           L42:
+ 0916                   .dbline 136
+ 0916           ;    else
+ 0916           ;       {
+ 0916                   .dbline 137
+ 0916           ;     hxi=64+cos(PI*0.5-PI*(time_hour)/6-PI*time_min/360)*30;
+ 0916 00E0              ldi R16,<L45
+ 0918 10E0              ldi R17,>L45
+ 091A 0E940000          xcall elpm32
+ 091E 1801              movw R2,R16
+ 0920 2901              movw R4,R18
+ 0922 00E0              ldi R16,<L46
+ 0924 10E0              ldi R17,>L46
+ 0926 0E940000          xcall elpm32
+ 092A 3801              movw R6,R16
+ 092C 4901              movw R8,R18
+ 092E 00910C00          lds R16,_time_hour
+ 0932 1127              clr R17
+ 0934 0E940000          xcall int2fp
+ 0938 3A93              st -y,R19
+ 093A 2A93              st -y,R18
+ 093C 1A93              st -y,R17
+ 093E 0A93              st -y,R16
+ 0940 8301              movw R16,R6
+ 0942 9401              movw R18,R8
+ 0944 0E940000          xcall fpmule2
+ 0948 3801              movw R6,R16
+ 094A 4901              movw R8,R18
+ 094C 00E0              ldi R16,<L47
+ 094E 10E0              ldi R17,>L47
+ 0950 0E940000          xcall elpm32
+ 0954 3A93              st -y,R19
+ 0956 2A93              st -y,R18
+ 0958 1A93              st -y,R17
+ 095A 0A93              st -y,R16
+ 095C 8301              movw R16,R6
+ 095E 9401              movw R18,R8
+ 0960 0E940000          xcall fpdiv2x
+ 0964 8101              movw R16,R2
+ 0966 9201              movw R18,R4
+ 0968 0E940000          xcall fpsub2
+ 096C 1801              movw R2,R16
+ 096E 2901              movw R4,R18
+ 0970 00E0              ldi R16,<L46
+ 0972 10E0              ldi R17,>L46
+ 0974 0E940000          xcall elpm32
+ 0978 3801              movw R6,R16
+ 097A 4901              movw R8,R18
+ 097C 00910B00          lds R16,_time_min
+ 0980 1127              clr R17
+ 0982 0E940000          xcall int2fp
+ 0986 3A93              st -y,R19
+ 0988 2A93              st -y,R18
+ 098A 1A93              st -y,R17
+ 098C 0A93              st -y,R16
+ 098E 8301              movw R16,R6
+ 0990 9401              movw R18,R8
+ 0992 0E940000          xcall fpmule2
+ 0996 3801              movw R6,R16
+ 0998 4901              movw R8,R18
+ 099A 00E0              ldi R16,<L48
+ 099C 10E0              ldi R17,>L48
+ 099E 0E940000          xcall elpm32
+ 09A2 3A93              st -y,R19
+ 09A4 2A93              st -y,R18
+ 09A6 1A93              st -y,R17
+ 09A8 0A93              st -y,R16
+ 09AA 8301              movw R16,R6
+ 09AC 9401              movw R18,R8
+ 09AE 0E940000          xcall fpdiv2x
+ 09B2 8101              movw R16,R2
+ 09B4 9201              movw R18,R4
+ 09B6 0E940000          xcall fpsub2
+ 09BA 0E940000          xcall _cosf
+ 09BE 1801              movw R2,R16
+ 09C0 2901              movw R4,R18
+ 09C2 00E0              ldi R16,<L44
+ 09C4 10E0              ldi R17,>L44
+ 09C6 0E940000          xcall elpm32
+ 09CA 5A92              st -y,R5
+ 09CC 4A92              st -y,R4
+ 09CE 3A92              st -y,R3
+ 09D0 2A92              st -y,R2
+ 09D2 0E940000          xcall fpmule2
+ 09D6 1801              movw R2,R16
+ 09D8 2901              movw R4,R18
+ 09DA 00E0              ldi R16,<L49
+ 09DC 10E0              ldi R17,>L49
+ 09DE 0E940000          xcall elpm32
+ 09E2 3A93              st -y,R19
+ 09E4 2A93              st -y,R18
+ 09E6 1A93              st -y,R17
+ 09E8 0A93              st -y,R16
+ 09EA 8101              movw R16,R2
+ 09EC 9201              movw R18,R4
+ 09EE 0E940000          xcall fpadd2
+ 09F2 0E940000          xcall fpint
+ 09F6 00930E00          sts _hxi,R16
+ 09FA                   .dbline 138
+ 09FA           ;     hyi=64-sin(PI*0.5-PI*(time_hour)/6-PI*time_min/360)*30;
+ 09FA 00E0              ldi R16,<L45
+ 09FC 10E0              ldi R17,>L45
+ 09FE 0E940000          xcall elpm32
+ 0A02 1801              movw R2,R16
+ 0A04 2901              movw R4,R18
+ 0A06 00E0              ldi R16,<L46
+ 0A08 10E0              ldi R17,>L46
+ 0A0A 0E940000          xcall elpm32
+ 0A0E 3801              movw R6,R16
+ 0A10 4901              movw R8,R18
+ 0A12 00910C00          lds R16,_time_hour
+ 0A16 1127              clr R17
+ 0A18 0E940000          xcall int2fp
+ 0A1C 3A93              st -y,R19
+ 0A1E 2A93              st -y,R18
+ 0A20 1A93              st -y,R17
+ 0A22 0A93              st -y,R16
+ 0A24 8301              movw R16,R6
+ 0A26 9401              movw R18,R8
+ 0A28 0E940000          xcall fpmule2
+ 0A2C 3801              movw R6,R16
+ 0A2E 4901              movw R8,R18
+ 0A30 00E0              ldi R16,<L47
+ 0A32 10E0              ldi R17,>L47
+ 0A34 0E940000          xcall elpm32
+ 0A38 3A93              st -y,R19
+ 0A3A 2A93              st -y,R18
+ 0A3C 1A93              st -y,R17
+ 0A3E 0A93              st -y,R16
+ 0A40 8301              movw R16,R6
+ 0A42 9401              movw R18,R8
+ 0A44 0E940000          xcall fpdiv2x
+ 0A48 8101              movw R16,R2
+ 0A4A 9201              movw R18,R4
+ 0A4C 0E940000          xcall fpsub2
+ 0A50 1801              movw R2,R16
+ 0A52 2901              movw R4,R18
+ 0A54 00E0              ldi R16,<L46
+ 0A56 10E0              ldi R17,>L46
+ 0A58 0E940000          xcall elpm32
+ 0A5C 3801              movw R6,R16
+ 0A5E 4901              movw R8,R18
+ 0A60 00910B00          lds R16,_time_min
+ 0A64 1127              clr R17
+ 0A66 0E940000          xcall int2fp
+ 0A6A 3A93              st -y,R19
+ 0A6C 2A93              st -y,R18
+ 0A6E 1A93              st -y,R17
+ 0A70 0A93              st -y,R16
+ 0A72 8301              movw R16,R6
+ 0A74 9401              movw R18,R8
+ 0A76 0E940000          xcall fpmule2
+ 0A7A 3801              movw R6,R16
+ 0A7C 4901              movw R8,R18
+ 0A7E 00E0              ldi R16,<L48
+ 0A80 10E0              ldi R17,>L48
+ 0A82 0E940000          xcall elpm32
+ 0A86 3A93              st -y,R19
+ 0A88 2A93              st -y,R18
+ 0A8A 1A93              st -y,R17
+ 0A8C 0A93              st -y,R16
+ 0A8E 8301              movw R16,R6
+ 0A90 9401              movw R18,R8
+ 0A92 0E940000          xcall fpdiv2x
+ 0A96 8101              movw R16,R2
+ 0A98 9201              movw R18,R4
+ 0A9A 0E940000          xcall fpsub2
+ 0A9E 0E940000          xcall _sinf
+ 0AA2 1801              movw R2,R16
+ 0AA4 2901              movw R4,R18
+ 0AA6 00E0              ldi R16,<L49
+ 0AA8 10E0              ldi R17,>L49
+ 0AAA 0E940000          xcall elpm32
+ 0AAE 3801              movw R6,R16
+ 0AB0 4901              movw R8,R18
+ 0AB2 00E0              ldi R16,<L44
+ 0AB4 10E0              ldi R17,>L44
+ 0AB6 0E940000          xcall elpm32
+ 0ABA 5A92              st -y,R5
+ 0ABC 4A92              st -y,R4
+ 0ABE 3A92              st -y,R3
+ 0AC0 2A92              st -y,R2
+ 0AC2 0E940000          xcall fpmule2x
+ 0AC6 8301              movw R16,R6
+ 0AC8 9401              movw R18,R8
+ 0ACA 0E940000          xcall fpsub2
+ 0ACE 0E940000          xcall fpint
+ 0AD2 00930D00          sts _hyi,R16
+ 0AD6                   .dbline 139
+ 0AD6           ;       GUIline(64,64,hxi,hyi,0x2ee0);                                              //小时指针在分钟不更新时显示原来位置
+ 0AD6 80EE              ldi R24,12000
+ 0AD8 9EE2              ldi R25,46
+ 0ADA 9D83              std y+5,R25
+ 0ADC 8C83              std y+4,R24
+ 0ADE 202E              mov R2,R16
+ 0AE0 2A82              std y+2,R2
+ 0AE2 20900E00          lds R2,_hxi
+ 0AE6 2882              std y+0,R2
+ 0AE8 20E4              ldi R18,64
+ 0AEA 00E4              ldi R16,64
+ 0AEC 0E940000          xcall _GUIline
+ 0AF0                   .dbline 140
+ 0AF0           ;       }       
+ 0AF0           L43:
+ 0AF0                   .dbline 143
+ 0AF0           ; 
+ 0AF0           ; 
+ 0AF0           ;    if(time_sec==00)                                                                                           //分钟指针在秒更新后清除前一痕迹
+ 0AF0 20900A00          lds R2,_time_sec
+ 0AF4 2220              tst R2
+ 0AF6 09F0              breq X8
+ 0AF8 43C1              xjmp L50
+ 0AFA           X8:
+ 0AFA           X5:
+ 0AFA                   .dbline 144
+ 0AFA           ;       {
+ 0AFA                   .dbline 145
+ 0AFA           ;       mxi=64+cos(PI*0.5-PI*(time_min-1)/30)*40;                               
+ 0AFA 00E0              ldi R16,<L45
+ 0AFC 10E0              ldi R17,>L45
+ 0AFE 0E940000          xcall elpm32
+ 0B02 1801              movw R2,R16
+ 0B04 2901              movw R4,R18
+ 0B06 00E0              ldi R16,<L46
+ 0B08 10E0              ldi R17,>L46
+ 0B0A 0E940000          xcall elpm32
+ 0B0E 3801              movw R6,R16
+ 0B10 4901              movw R8,R18
+ 0B12 00910B00          lds R16,_time_min
+ 0B16 1127              clr R17
+ 0B18 0150              subi R16,1
+ 0B1A 1040              sbci R17,0
+ 0B1C 0E940000          xcall int2fp
+ 0B20 3A93              st -y,R19
+ 0B22 2A93              st -y,R18
+ 0B24 1A93              st -y,R17
+ 0B26 0A93              st -y,R16
+ 0B28 8301              movw R16,R6
+ 0B2A 9401              movw R18,R8
+ 0B2C 0E940000          xcall fpmule2
+ 0B30 3801              movw R6,R16
+ 0B32 4901              movw R8,R18
+ 0B34 00E0              ldi R16,<L53
+ 0B36 10E0              ldi R17,>L53
+ 0B38 0E940000          xcall elpm32
+ 0B3C 3A93              st -y,R19
+ 0B3E 2A93              st -y,R18
+ 0B40 1A93              st -y,R17
+ 0B42 0A93              st -y,R16
+ 0B44 8301              movw R16,R6
+ 0B46 9401              movw R18,R8
+ 0B48 0E940000          xcall fpdiv2x
+ 0B4C 8101              movw R16,R2
+ 0B4E 9201              movw R18,R4
+ 0B50 0E940000          xcall fpsub2
+ 0B54 0E940000          xcall _cosf
+ 0B58 1801              movw R2,R16
+ 0B5A 2901              movw R4,R18
+ 0B5C 00E0              ldi R16,<L52
+ 0B5E 10E0              ldi R17,>L52
+ 0B60 0E940000          xcall elpm32
+ 0B64 5A92              st -y,R5
+ 0B66 4A92              st -y,R4
+ 0B68 3A92              st -y,R3
+ 0B6A 2A92              st -y,R2
+ 0B6C 0E940000          xcall fpmule2
+ 0B70 1801              movw R2,R16
+ 0B72 2901              movw R4,R18
+ 0B74 00E0              ldi R16,<L49
+ 0B76 10E0              ldi R17,>L49
+ 0B78 0E940000          xcall elpm32
+ 0B7C 3A93              st -y,R19
+ 0B7E 2A93              st -y,R18
+ 0B80 1A93              st -y,R17
+ 0B82 0A93              st -y,R16
+ 0B84 8101              movw R16,R2
+ 0B86 9201              movw R18,R4
+ 0B88 0E940000          xcall fpadd2
+ 0B8C 0E940000          xcall fpint
+ 0B90 00931000          sts _mxi,R16
+ 0B94                   .dbline 146
+ 0B94           ;     myi=64-sin(PI*0.5-PI*(time_min-1)/30)*40;
+ 0B94 00E0              ldi R16,<L45
+ 0B96 10E0              ldi R17,>L45
+ 0B98 0E940000          xcall elpm32
+ 0B9C 1801              movw R2,R16
+ 0B9E 2901              movw R4,R18
+ 0BA0 00E0              ldi R16,<L46
+ 0BA2 10E0              ldi R17,>L46
+ 0BA4 0E940000          xcall elpm32
+ 0BA8 3801              movw R6,R16
+ 0BAA 4901              movw R8,R18
+ 0BAC 00910B00          lds R16,_time_min
+ 0BB0 1127              clr R17
+ 0BB2 0150              subi R16,1
+ 0BB4 1040              sbci R17,0
+ 0BB6 0E940000          xcall int2fp
+ 0BBA 3A93              st -y,R19
+ 0BBC 2A93              st -y,R18
+ 0BBE 1A93              st -y,R17
+ 0BC0 0A93              st -y,R16
+ 0BC2 8301              movw R16,R6
+ 0BC4 9401              movw R18,R8
+ 0BC6 0E940000          xcall fpmule2
+ 0BCA 3801              movw R6,R16
+ 0BCC 4901              movw R8,R18
+ 0BCE 00E0              ldi R16,<L53
+ 0BD0 10E0              ldi R17,>L53
+ 0BD2 0E940000          xcall elpm32
+ 0BD6 3A93              st -y,R19
+ 0BD8 2A93              st -y,R18
+ 0BDA 1A93              st -y,R17
+ 0BDC 0A93              st -y,R16
+ 0BDE 8301              movw R16,R6
+ 0BE0 9401              movw R18,R8
+ 0BE2 0E940000          xcall fpdiv2x
+ 0BE6 8101              movw R16,R2
+ 0BE8 9201              movw R18,R4
+ 0BEA 0E940000          xcall fpsub2
+ 0BEE 0E940000          xcall _sinf
+ 0BF2 1801              movw R2,R16
+ 0BF4 2901              movw R4,R18
+ 0BF6 00E0              ldi R16,<L49
+ 0BF8 10E0              ldi R17,>L49
+ 0BFA 0E940000          xcall elpm32
+ 0BFE 3801              movw R6,R16
+ 0C00 4901              movw R8,R18
+ 0C02 00E0              ldi R16,<L52
+ 0C04 10E0              ldi R17,>L52
+ 0C06 0E940000          xcall elpm32
+ 0C0A 5A92              st -y,R5
+ 0C0C 4A92              st -y,R4
+ 0C0E 3A92              st -y,R3
+ 0C10 2A92              st -y,R2
+ 0C12 0E940000          xcall fpmule2x
+ 0C16 8301              movw R16,R6
+ 0C18 9401              movw R18,R8
+ 0C1A 0E940000          xcall fpsub2
+ 0C1E 0E940000          xcall fpint
+ 0C22 00930F00          sts _myi,R16
+ 0C26                   .dbline 147
+ 0C26           ;       GUIline(64,64,mxi,myi,0);                                                                       
+ 0C26 2224              clr R2
+ 0C28 3324              clr R3
+ 0C2A 3D82              std y+5,R3
+ 0C2C 2C82              std y+4,R2
+ 0C2E 202E              mov R2,R16
+ 0C30 2A82              std y+2,R2
+ 0C32 20901000          lds R2,_mxi
+ 0C36 2882              std y+0,R2
+ 0C38 20E4              ldi R18,64
+ 0C3A 00E4              ldi R16,64
+ 0C3C 0E940000          xcall _GUIline
+ 0C40                   .dbline 148
+ 0C40           ;       mxi=64+cos(PI*0.5-PI*time_min/30)*40;
+ 0C40 00E0              ldi R16,<L45
+ 0C42 10E0              ldi R17,>L45
+ 0C44 0E940000          xcall elpm32
+ 0C48 1801              movw R2,R16
+ 0C4A 2901              movw R4,R18
+ 0C4C 00E0              ldi R16,<L46
+ 0C4E 10E0              ldi R17,>L46
+ 0C50 0E940000          xcall elpm32
+ 0C54 3801              movw R6,R16
+ 0C56 4901              movw R8,R18
+ 0C58 00910B00          lds R16,_time_min
+ 0C5C 1127              clr R17
+ 0C5E 0E940000          xcall int2fp
+ 0C62 3A93              st -y,R19
+ 0C64 2A93              st -y,R18
+ 0C66 1A93              st -y,R17
+ 0C68 0A93              st -y,R16
+ 0C6A 8301              movw R16,R6
+ 0C6C 9401              movw R18,R8
+ 0C6E 0E940000          xcall fpmule2
+ 0C72 3801              movw R6,R16
+ 0C74 4901              movw R8,R18
+ 0C76 00E0              ldi R16,<L53
+ 0C78 10E0              ldi R17,>L53
+ 0C7A 0E940000          xcall elpm32
+ 0C7E 3A93              st -y,R19
+ 0C80 2A93              st -y,R18
+ 0C82 1A93              st -y,R17
+ 0C84 0A93              st -y,R16
+ 0C86 8301              movw R16,R6
+ 0C88 9401              movw R18,R8
+ 0C8A 0E940000          xcall fpdiv2x
+ 0C8E 8101              movw R16,R2
+ 0C90 9201              movw R18,R4
+ 0C92 0E940000          xcall fpsub2
+ 0C96 0E940000          xcall _cosf
+ 0C9A 1801              movw R2,R16
+ 0C9C 2901              movw R4,R18
+ 0C9E 00E0              ldi R16,<L52
+ 0CA0 10E0              ldi R17,>L52
+ 0CA2 0E940000          xcall elpm32
+ 0CA6 5A92              st -y,R5
+ 0CA8 4A92              st -y,R4
+ 0CAA 3A92              st -y,R3
+ 0CAC 2A92              st -y,R2
+ 0CAE 0E940000          xcall fpmule2
+ 0CB2 1801              movw R2,R16
+ 0CB4 2901              movw R4,R18
+ 0CB6 00E0              ldi R16,<L49
+ 0CB8 10E0              ldi R17,>L49
+ 0CBA 0E940000          xcall elpm32
+ 0CBE 3A93              st -y,R19
+ 0CC0 2A93              st -y,R18
+ 0CC2 1A93              st -y,R17
+ 0CC4 0A93              st -y,R16
+ 0CC6 8101              movw R16,R2
+ 0CC8 9201              movw R18,R4
+ 0CCA 0E940000          xcall fpadd2
+ 0CCE 0E940000          xcall fpint
+ 0CD2 00931000          sts _mxi,R16
+ 0CD6                   .dbline 149
+ 0CD6           ;     myi=64-sin(PI*0.5-PI*time_min/30)*40;
+ 0CD6 00E0              ldi R16,<L45
+ 0CD8 10E0              ldi R17,>L45
+ 0CDA 0E940000          xcall elpm32
+ 0CDE 1801              movw R2,R16
+ 0CE0 2901              movw R4,R18
+ 0CE2 00E0              ldi R16,<L46
+ 0CE4 10E0              ldi R17,>L46
+ 0CE6 0E940000          xcall elpm32
+ 0CEA 3801              movw R6,R16
+ 0CEC 4901              movw R8,R18
+ 0CEE 00910B00          lds R16,_time_min
+ 0CF2 1127              clr R17
+ 0CF4 0E940000          xcall int2fp
+ 0CF8 3A93              st -y,R19
+ 0CFA 2A93              st -y,R18
+ 0CFC 1A93              st -y,R17
+ 0CFE 0A93              st -y,R16
+ 0D00 8301              movw R16,R6
+ 0D02 9401              movw R18,R8
+ 0D04 0E940000          xcall fpmule2
+ 0D08 3801              movw R6,R16
+ 0D0A 4901              movw R8,R18
+ 0D0C 00E0              ldi R16,<L53
+ 0D0E 10E0              ldi R17,>L53
+ 0D10 0E940000          xcall elpm32
+ 0D14 3A93              st -y,R19
+ 0D16 2A93              st -y,R18
+ 0D18 1A93              st -y,R17
+ 0D1A 0A93              st -y,R16
+ 0D1C 8301              movw R16,R6
+ 0D1E 9401              movw R18,R8
+ 0D20 0E940000          xcall fpdiv2x
+ 0D24 8101              movw R16,R2
+ 0D26 9201              movw R18,R4
+ 0D28 0E940000          xcall fpsub2
+ 0D2C 0E940000          xcall _sinf
+ 0D30 1801              movw R2,R16
+ 0D32 2901              movw R4,R18
+ 0D34 00E0              ldi R16,<L49
+ 0D36 10E0              ldi R17,>L49
+ 0D38 0E940000          xcall elpm32
+ 0D3C 3801              movw R6,R16
+ 0D3E 4901              movw R8,R18
+ 0D40 00E0              ldi R16,<L52
+ 0D42 10E0              ldi R17,>L52
+ 0D44 0E940000          xcall elpm32
+ 0D48 5A92              st -y,R5
+ 0D4A 4A92              st -y,R4
+ 0D4C 3A92              st -y,R3
+ 0D4E 2A92              st -y,R2
+ 0D50 0E940000          xcall fpmule2x
+ 0D54 8301              movw R16,R6
+ 0D56 9401              movw R18,R8
+ 0D58 0E940000          xcall fpsub2
+ 0D5C 0E940000          xcall fpint
+ 0D60 00930F00          sts _myi,R16
+ 0D64                   .dbline 150
+ 0D64           ;       GUIline(64,64,mxi,myi,0x2e0);                                                           //分钟指针在秒更新后显示新的位置
+ 0D64 80EE              ldi R24,736
+ 0D66 92E0              ldi R25,2
+ 0D68 9D83              std y+5,R25
+ 0D6A 8C83              std y+4,R24
+ 0D6C 202E              mov R2,R16
+ 0D6E 2A82              std y+2,R2
+ 0D70 20901000          lds R2,_mxi
+ 0D74 2882              std y+0,R2
+ 0D76 20E4              ldi R18,64
+ 0D78 00E4              ldi R16,64
+ 0D7A 0E940000          xcall _GUIline
+ 0D7E                   .dbline 151
+ 0D7E           ;       }
+ 0D7E 9FC0              xjmp L51
+ 0D80           L50:
+ 0D80                   .dbline 153
+ 0D80           ;   else
+ 0D80           ;       {
+ 0D80                   .dbline 154
+ 0D80           ;     mxi=64+cos(PI*0.5-PI*time_min/30)*40;                                             //分钟的变化轨迹横坐标计算公式
+ 0D80 00E0              ldi R16,<L45
+ 0D82 10E0              ldi R17,>L45
+ 0D84 0E940000          xcall elpm32
+ 0D88 1801              movw R2,R16
+ 0D8A 2901              movw R4,R18
+ 0D8C 00E0              ldi R16,<L46
+ 0D8E 10E0              ldi R17,>L46
+ 0D90 0E940000          xcall elpm32
+ 0D94 3801              movw R6,R16
+ 0D96 4901              movw R8,R18
+ 0D98 00910B00          lds R16,_time_min
+ 0D9C 1127              clr R17
+ 0D9E 0E940000          xcall int2fp
+ 0DA2 3A93              st -y,R19
+ 0DA4 2A93              st -y,R18
+ 0DA6 1A93              st -y,R17
+ 0DA8 0A93              st -y,R16
+ 0DAA 8301              movw R16,R6
+ 0DAC 9401              movw R18,R8
+ 0DAE 0E940000          xcall fpmule2
+ 0DB2 3801              movw R6,R16
+ 0DB4 4901              movw R8,R18
+ 0DB6 00E0              ldi R16,<L53
+ 0DB8 10E0              ldi R17,>L53
+ 0DBA 0E940000          xcall elpm32
+ 0DBE 3A93              st -y,R19
+ 0DC0 2A93              st -y,R18
+ 0DC2 1A93              st -y,R17
+ 0DC4 0A93              st -y,R16
+ 0DC6 8301              movw R16,R6
+ 0DC8 9401              movw R18,R8
+ 0DCA 0E940000          xcall fpdiv2x
+ 0DCE 8101              movw R16,R2
+ 0DD0 9201              movw R18,R4
+ 0DD2 0E940000          xcall fpsub2
+ 0DD6 0E940000          xcall _cosf
+ 0DDA 1801              movw R2,R16
+ 0DDC 2901              movw R4,R18
+ 0DDE 00E0              ldi R16,<L52
+ 0DE0 10E0              ldi R17,>L52
+ 0DE2 0E940000          xcall elpm32
+ 0DE6 5A92              st -y,R5
+ 0DE8 4A92              st -y,R4
+ 0DEA 3A92              st -y,R3
+ 0DEC 2A92              st -y,R2
+ 0DEE 0E940000          xcall fpmule2
+ 0DF2 1801              movw R2,R16
+ 0DF4 2901              movw R4,R18
+ 0DF6 00E0              ldi R16,<L49
+ 0DF8 10E0              ldi R17,>L49
+ 0DFA 0E940000          xcall elpm32
+ 0DFE 3A93              st -y,R19
+ 0E00 2A93              st -y,R18
+ 0E02 1A93              st -y,R17
+ 0E04 0A93              st -y,R16
+ 0E06 8101              movw R16,R2
+ 0E08 9201              movw R18,R4
+ 0E0A 0E940000          xcall fpadd2
+ 0E0E 0E940000          xcall fpint
+ 0E12 00931000          sts _mxi,R16
+ 0E16                   .dbline 155
+ 0E16           ;     myi=64-sin(PI*0.5-PI*time_min/30)*40;                                             //分钟的变化轨迹纵坐标计算公式
+ 0E16 00E0              ldi R16,<L45
+ 0E18 10E0              ldi R17,>L45
+ 0E1A 0E940000          xcall elpm32
+ 0E1E 1801              movw R2,R16
+ 0E20 2901              movw R4,R18
+ 0E22 00E0              ldi R16,<L46
+ 0E24 10E0              ldi R17,>L46
+ 0E26 0E940000          xcall elpm32
+ 0E2A 3801              movw R6,R16
+ 0E2C 4901              movw R8,R18
+ 0E2E 00910B00          lds R16,_time_min
+ 0E32 1127              clr R17
+ 0E34 0E940000          xcall int2fp
+ 0E38 3A93              st -y,R19
+ 0E3A 2A93              st -y,R18
+ 0E3C 1A93              st -y,R17
+ 0E3E 0A93              st -y,R16
+ 0E40 8301              movw R16,R6
+ 0E42 9401              movw R18,R8
+ 0E44 0E940000          xcall fpmule2
+ 0E48 3801              movw R6,R16
+ 0E4A 4901              movw R8,R18
+ 0E4C 00E0              ldi R16,<L53
+ 0E4E 10E0              ldi R17,>L53
+ 0E50 0E940000          xcall elpm32
+ 0E54 3A93              st -y,R19
+ 0E56 2A93              st -y,R18
+ 0E58 1A93              st -y,R17
+ 0E5A 0A93              st -y,R16
+ 0E5C 8301              movw R16,R6
+ 0E5E 9401              movw R18,R8
+ 0E60 0E940000          xcall fpdiv2x
+ 0E64 8101              movw R16,R2
+ 0E66 9201              movw R18,R4
+ 0E68 0E940000          xcall fpsub2
+ 0E6C 0E940000          xcall _sinf
+ 0E70 1801              movw R2,R16
+ 0E72 2901              movw R4,R18
+ 0E74 00E0              ldi R16,<L49
+ 0E76 10E0              ldi R17,>L49
+ 0E78 0E940000          xcall elpm32
+ 0E7C 3801              movw R6,R16
+ 0E7E 4901              movw R8,R18
+ 0E80 00E0              ldi R16,<L52
+ 0E82 10E0              ldi R17,>L52
+ 0E84 0E940000          xcall elpm32
+ 0E88 5A92              st -y,R5
+ 0E8A 4A92              st -y,R4
+ 0E8C 3A92              st -y,R3
+ 0E8E 2A92              st -y,R2
+ 0E90 0E940000          xcall fpmule2x
+ 0E94 8301              movw R16,R6
+ 0E96 9401              movw R18,R8
+ 0E98 0E940000          xcall fpsub2
+ 0E9C 0E940000          xcall fpint
+ 0EA0 00930F00          sts _myi,R16
+ 0EA4                   .dbline 156
+ 0EA4           ;       GUIline(64,64,mxi,myi,0x2e0);                                                           //分钟指针在秒不更新时显示原来的位置
+ 0EA4 80EE              ldi R24,736
+ 0EA6 92E0              ldi R25,2
+ 0EA8 9D83              std y+5,R25
+ 0EAA 8C83              std y+4,R24
+ 0EAC 202E              mov R2,R16
+ 0EAE 2A82              std y+2,R2
+ 0EB0 20901000          lds R2,_mxi
+ 0EB4 2882              std y+0,R2
+ 0EB6 20E4              ldi R18,64
+ 0EB8 00E4              ldi R16,64
+ 0EBA 0E940000          xcall _GUIline
+ 0EBE                   .dbline 157
+ 0EBE           ;       }
+ 0EBE           L51:
+ 0EBE                   .dbline 159
+ 0EBE           ; 
+ 0EBE           ;       sxi=64+cos(PI*0.5-PI*time_sec/30)*50;                                           //秒指针的变化轨迹横坐标计算公式
+ 0EBE 00E0              ldi R16,<L45
+ 0EC0 10E0              ldi R17,>L45
+ 0EC2 0E940000          xcall elpm32
+ 0EC6 1801              movw R2,R16
+ 0EC8 2901              movw R4,R18
+ 0ECA 00E0              ldi R16,<L46
+ 0ECC 10E0              ldi R17,>L46
+ 0ECE 0E940000          xcall elpm32
+ 0ED2 3801              movw R6,R16
+ 0ED4 4901              movw R8,R18
+ 0ED6 00910A00          lds R16,_time_sec
+ 0EDA 1127              clr R17
+ 0EDC 0E940000          xcall int2fp
+ 0EE0 3A93              st -y,R19
+ 0EE2 2A93              st -y,R18
+ 0EE4 1A93              st -y,R17
+ 0EE6 0A93              st -y,R16
+ 0EE8 8301              movw R16,R6
+ 0EEA 9401              movw R18,R8
+ 0EEC 0E940000          xcall fpmule2
+ 0EF0 3801              movw R6,R16
+ 0EF2 4901              movw R8,R18
+ 0EF4 00E0              ldi R16,<L53
+ 0EF6 10E0              ldi R17,>L53
+ 0EF8 0E940000          xcall elpm32
+ 0EFC 3A93              st -y,R19
+ 0EFE 2A93              st -y,R18
+ 0F00 1A93              st -y,R17
+ 0F02 0A93              st -y,R16
+ 0F04 8301              movw R16,R6
+ 0F06 9401              movw R18,R8
+ 0F08 0E940000          xcall fpdiv2x
+ 0F0C 8101              movw R16,R2
+ 0F0E 9201              movw R18,R4
+ 0F10 0E940000          xcall fpsub2
+ 0F14 0E940000          xcall _cosf
+ 0F18 1801              movw R2,R16
+ 0F1A 2901              movw R4,R18
+ 0F1C 00E0              ldi R16,<L54
+ 0F1E 10E0              ldi R17,>L54
+ 0F20 0E940000          xcall elpm32
+ 0F24 5A92              st -y,R5
+ 0F26 4A92              st -y,R4
+ 0F28 3A92              st -y,R3
+ 0F2A 2A92              st -y,R2
+ 0F2C 0E940000          xcall fpmule2
+ 0F30 1801              movw R2,R16
+ 0F32 2901              movw R4,R18
+ 0F34 00E0              ldi R16,<L49
+ 0F36 10E0              ldi R17,>L49
+ 0F38 0E940000          xcall elpm32
+ 0F3C 3A93              st -y,R19
+ 0F3E 2A93              st -y,R18
+ 0F40 1A93              st -y,R17
+ 0F42 0A93              st -y,R16
+ 0F44 8101              movw R16,R2
+ 0F46 9201              movw R18,R4
+ 0F48 0E940000          xcall fpadd2
+ 0F4C 0E940000          xcall fpint
+ 0F50 00931200          sts _sxi,R16
+ 0F54                   .dbline 160
+ 0F54           ;     syi=64-sin(PI*0.5-PI*time_sec/30)*50;                                             //秒指针的变化轨迹纵坐标计算公式
+ 0F54 00E0              ldi R16,<L45
+ 0F56 10E0              ldi R17,>L45
+ 0F58 0E940000          xcall elpm32
+ 0F5C 1801              movw R2,R16
+ 0F5E 2901              movw R4,R18
+ 0F60 00E0              ldi R16,<L46
+ 0F62 10E0              ldi R17,>L46
+ 0F64 0E940000          xcall elpm32
+ 0F68 3801              movw R6,R16
+ 0F6A 4901              movw R8,R18
+ 0F6C 00910A00          lds R16,_time_sec
+ 0F70 1127              clr R17
+ 0F72 0E940000          xcall int2fp
+ 0F76 3A93              st -y,R19
+ 0F78 2A93              st -y,R18
+ 0F7A 1A93              st -y,R17
+ 0F7C 0A93              st -y,R16
+ 0F7E 8301              movw R16,R6
+ 0F80 9401              movw R18,R8
+ 0F82 0E940000          xcall fpmule2
+ 0F86 3801              movw R6,R16
+ 0F88 4901              movw R8,R18
+ 0F8A 00E0              ldi R16,<L53
+ 0F8C 10E0              ldi R17,>L53
+ 0F8E 0E940000          xcall elpm32
+ 0F92 3A93              st -y,R19
+ 0F94 2A93              st -y,R18
+ 0F96 1A93              st -y,R17
+ 0F98 0A93              st -y,R16
+ 0F9A 8301              movw R16,R6
+ 0F9C 9401              movw R18,R8
+ 0F9E 0E940000          xcall fpdiv2x
+ 0FA2 8101              movw R16,R2
+ 0FA4 9201              movw R18,R4
+ 0FA6 0E940000          xcall fpsub2
+ 0FAA 0E940000          xcall _sinf
+ 0FAE 1801              movw R2,R16
+ 0FB0 2901              movw R4,R18
+ 0FB2 00E0              ldi R16,<L49
+ 0FB4 10E0              ldi R17,>L49
+ 0FB6 0E940000          xcall elpm32
+ 0FBA 3801              movw R6,R16
+ 0FBC 4901              movw R8,R18
+ 0FBE 00E0              ldi R16,<L54
+ 0FC0 10E0              ldi R17,>L54
+ 0FC2 0E940000          xcall elpm32
+ 0FC6 5A92              st -y,R5
+ 0FC8 4A92              st -y,R4
+ 0FCA 3A92              st -y,R3
+ 0FCC 2A92              st -y,R2
+ 0FCE 0E940000          xcall fpmule2x
+ 0FD2 8301              movw R16,R6
+ 0FD4 9401              movw R18,R8
+ 0FD6 0E940000          xcall fpsub2
+ 0FDA 0E940000          xcall fpint
+ 0FDE 00931100          sts _syi,R16
+ 0FE2                   .dbline 162
+ 0FE2           ;       
+ 0FE2           ;       GUIline(64,64,sxi,syi,0xffe0);                                                          //显示秒指针位置
+ 0FE2 80EE              ldi R24,65504
+ 0FE4 9FEF              ldi R25,255
+ 0FE6 9D83              std y+5,R25
+ 0FE8 8C83              std y+4,R24
+ 0FEA 202E              mov R2,R16
+ 0FEC 2A82              std y+2,R2
+ 0FEE 20901200          lds R2,_sxi
+ 0FF2 2882              std y+0,R2
+ 0FF4 20E4              ldi R18,64
+ 0FF6 00E4              ldi R16,64
+ 0FF8 0E940000          xcall _GUIline
+ 0FFC                   .dbline 163
+ 0FFC           ;     GUIfull(61,60,67,67,0xf800);                                                              //显示时钟中心      
+ 0FFC 80E0              ldi R24,63488
+ 0FFE 98EF              ldi R25,248
+ 1000 9D83              std y+5,R25
+ 1002 8C83              std y+4,R24
+ 1004 83E4              ldi R24,67
+ 1006 8A83              std y+2,R24
+ 1008 8883              std y+0,R24
+ 100A 2CE3              ldi R18,60
+ 100C 0DE3              ldi R16,61
+ 100E 0E940000          xcall _GUIfull
+ 1012                   .dbline 164
+ 1012           ;        }
+ 1012           L38:
+ 1012                   .dbline 104
+ 1012 65CA              xjmp L37
+ 1014           X6:
+ 1014                   .dbline -2
+ 1014           L36:
+ 1014                   .dbline 0 ; func end
+ 1014 2696              adiw R28,6
+ 1016 0895              ret
+ 1018                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\TFTclock\main.c
+ 0000           _time_h::
+ 0000                   .blkb 1
+ 0001                   .dbfile F:\PROGRA~1\iccavr\include\TFTclock_main.h
+ 0001                   .dbsym e time_h _time_h c
+ 0001           _week::
+ 0001                   .blkb 1
+ 0002                   .dbsym e week _week c
+ 0002           _data_dayg::
+ 0002                   .blkb 1
+ 0003                   .dbsym e data_dayg _data_dayg c
+ 0003           _data_days::
+ 0003                   .blkb 1
+ 0004                   .dbsym e data_days _data_days c
+ 0004           _data_monthg::
+ 0004                   .blkb 1
+ 0005                   .dbsym e data_monthg _data_monthg c
+ 0005           _data_months::
+ 0005                   .blkb 1
+ 0006                   .dbsym e data_months _data_months c
+ 0006           _data_yearg::
+ 0006                   .blkb 1
+ 0007                   .dbsym e data_yearg _data_yearg c
+ 0007           _data_years::
+ 0007                   .blkb 1
+ 0008                   .dbsym e data_years _data_years c
+ 0008           _data_yearb::
+ 0008                   .blkb 1
+ 0009                   .dbsym e data_yearb _data_yearb c
+ 0009           _data_yearq::
+ 0009                   .blkb 1
+ 000A                   .dbsym e data_yearq _data_yearq c
+ 000A           _time_sec::
+ 000A                   .blkb 1
+ 000B                   .dbsym e time_sec _time_sec c
+ 000B           _time_min::
+ 000B                   .blkb 1
+ 000C                   .dbsym e time_min _time_min c
+ 000C           _time_hour::
+ 000C                   .blkb 1
+ 000D                   .dbsym e time_hour _time_hour c
+ 000D           _hyi::
+ 000D                   .blkb 1
+ 000E                   .dbsym e hyi _hyi c
+ 000E           _hxi::
+ 000E                   .blkb 1
+ 000F                   .dbsym e hxi _hxi c
+ 000F           _myi::
+ 000F                   .blkb 1
+ 0010                   .dbsym e myi _myi c
+ 0010           _mxi::
+ 0010                   .blkb 1
+ 0011                   .dbsym e mxi _mxi c
+ 0011           _syi::
+ 0011                   .blkb 1
+ 0012                   .dbsym e syi _syi c
+ 0012           _sxi::
+ 0012                   .blkb 1
+ 0013                   .dbsym e sxi _sxi c
+ 0013           _postion_y::
+ 0013                   .blkb 1
+ 0014                   .dbsym e postion_y _postion_y c
+ 0014           _postion_x::
+ 0014                   .blkb 1
+ 0015                   .dbsym e postion_x _postion_x c
+                        .area lit(rom, con, rel)
+ 0000           L54:
+ 0000 00004842          .word 0x0,0x4248
+ 0004           L53:
+ 0004 0000F041          .word 0x0,0x41f0
+ 0008           L52:
+ 0008 00002042          .word 0x0,0x4220
+ 000C           L49:
+ 000C 00008042          .word 0x0,0x4280
+ 0010           L48:
+ 0010 0000B443          .word 0x0,0x43b4
+ 0014           L47:
+ 0014 0000C040          .word 0x0,0x40c0
+ 0018           L46:
+ 0018 DA0F4940          .word 0xfda,0x4049
+ 001C           L45:
+ 001C DA0FC93F          .word 0xfda,0x3fc9
+ 0020           L44:
+ 0020 0000F041          .word 0x0,0x41f0
+ 0024           ; }
+ 0024           ; 
+ 0024           ; 

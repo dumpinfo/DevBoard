@@ -1,0 +1,450 @@
+Archive member included because of file (symbol)
+
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+                              f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o (exit)
+f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                              main.o (__do_clear_bss)
+
+Allocating common symbols
+Common symbol       size              file
+
+postion_y           0x1               main.o
+RamVar_1            0x200             TFTtest.o
+postion_x           0x1               main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+LOAD main.o
+LOAD mmp.o
+LOAD picture-xin.o
+LOAD TFTtest.o
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51\libc.a
+LOAD f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0xe15e
+ *(.vectors)
+ .vectors       0x00000000       0x8c f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+ .progmem.data  0x0000008c     0x3000 mmp.o
+                0x0000008c                gImage_mmp
+ .progmem.data  0x0000308c     0xa000 picture-xin.o
+                0x0000308c                gImage_ph1
+                0x0000808c                gImage_ph2
+                0x0000d08c                . = ALIGN (0x2)
+                0x0000d08c                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x0000d08c        0x0 linker stubs
+ *(.trampolines*)
+                0x0000d08c                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x0000d08c                __ctors_start = .
+ *(.ctors)
+                0x0000d08c                __ctors_end = .
+                0x0000d08c                __dtors_start = .
+ *(.dtors)
+                0x0000d08c                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x0000d08c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x0000d08c                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x0000d08c        0xc f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x0000d098       0x1a f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x0000d098                __do_copy_data
+ .init4         0x0000d0b2       0x10 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                0x0000d0b2                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x0000d0c2        0x8 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ *(.init9)
+ *(.text)
+ .text          0x0000d0ca        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+                0x0000d0ca                __vector_22
+                0x0000d0ca                __vector_28
+                0x0000d0ca                __vector_1
+                0x0000d0ca                __vector_32
+                0x0000d0ca                __vector_34
+                0x0000d0ca                __vector_24
+                0x0000d0ca                __vector_12
+                0x0000d0ca                __bad_interrupt
+                0x0000d0ca                __vector_6
+                0x0000d0ca                __vector_31
+                0x0000d0ca                __vector_3
+                0x0000d0ca                __vector_23
+                0x0000d0ca                __vector_30
+                0x0000d0ca                __vector_25
+                0x0000d0ca                __vector_11
+                0x0000d0ca                __vector_13
+                0x0000d0ca                __vector_17
+                0x0000d0ca                __vector_19
+                0x0000d0ca                __vector_7
+                0x0000d0ca                __vector_27
+                0x0000d0ca                __vector_5
+                0x0000d0ca                __vector_33
+                0x0000d0ca                __vector_4
+                0x0000d0ca                __vector_9
+                0x0000d0ca                __vector_2
+                0x0000d0ca                __vector_21
+                0x0000d0ca                __vector_15
+                0x0000d0ca                __vector_29
+                0x0000d0ca                __vector_8
+                0x0000d0ca                __vector_26
+                0x0000d0ca                __vector_14
+                0x0000d0ca                __vector_10
+                0x0000d0ca                __vector_16
+                0x0000d0ca                __vector_18
+                0x0000d0ca                __vector_20
+ .text          0x0000d0ce      0x194 main.o
+                0x0000d186                main
+                0x0000d0ce                DisplayData
+ .text          0x0000d262        0x0 mmp.o
+ .text          0x0000d262        0x0 picture-xin.o
+ .text          0x0000d262      0xef8 TFTtest.o
+                0x0000d84e                LCD_MM
+                0x0000d9b0                LCD_clear
+                0x0000d436                LCD_WR_DataP
+                0x0000d294                LCD_WR_REG
+                0x0000d2ce                LCD_RD_REG16
+                0x0000e016                plotC
+                0x0000d38e                LCD_WR_CMD
+                0x0000daa2                DisplayChar
+                0x0000e0b0                GUIcircle
+                0x0000dd1e                DisplayString
+                0x0000d262                McuInit
+                0x0000dfce                GUIfull
+                0x0000d8da                LCD_ph
+                0x0000d5aa                LCD_test
+                0x0000d44a                LCD_Init
+                0x0000de78                GUIline
+                0x0000dbde                DisplayGB2312
+                0x0000d414                LCD_WR_Data
+                0x0000dd74                GUIback
+                0x0000ddf8                GUIpoint
+ .text          0x0000e15a        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .text          0x0000e15a        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                0x0000e15a                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x0000e15a        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .text.libgcc   0x0000e15a        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+                0x0000e15a                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x0000e15a        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+                0x0000e15a                exit
+                0x0000e15a                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x0000e15a        0x4 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ *(.fini0)
+                0x0000e15e                _etext = .
+
+.data           0x00800100      0xb0c load address 0x0000e15e
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ .data          0x00800100       0x1c main.o
+ .data          0x0080011c        0x0 mmp.o
+ .data          0x0080011c        0x0 picture-xin.o
+ .data          0x0080011c      0xaf0 TFTtest.o
+                0x00800bfc                color
+                0x0080011c                ascii
+                0x0080091c                GB2312
+ .data          0x00800c0c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .data          0x00800c0c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x00800c0c                . = ALIGN (0x2)
+                0x00800c0c                _edata = .
+                0x00800c0c                PROVIDE (__data_end, .)
+
+.bss            0x00800c0c      0x202
+                0x00800c0c                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x00800c0c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr51/crtm128.o
+ .bss           0x00800c0c        0x0 main.o
+ .bss           0x00800c0c        0x0 mmp.o
+ .bss           0x00800c0c        0x0 picture-xin.o
+ .bss           0x00800c0c        0x0 TFTtest.o
+ .bss           0x00800c0c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_exit.o)
+ .bss           0x00800c0c        0x0 f:/program files/atmel/gcc/bin/../lib/gcc/avr/4.3.2/avr51\libgcc.a(_clear_bss.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x00800c0c        0x2 main.o
+                0x00800c0c                postion_y
+                0x00800c0d                postion_x
+ COMMON         0x00800c0e      0x200 TFTtest.o
+                0x00800c0e                RamVar_1
+                0x00800e0e                PROVIDE (__bss_end, .)
+                0x0000e15e                __data_load_start = LOADADDR (.data)
+                0x0000ec6a                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00800e0e        0x0
+                0x00800e0e                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00800e0e                PROVIDE (__noinit_end, .)
+                0x00800e0e                _end = .
+                0x00800e0e                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x40
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 main.o
+ .debug_aranges
+                0x00000020       0x20 TFTtest.o
+
+.debug_pubnames
+                0x00000000      0x1ed
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0x47 main.o
+ .debug_pubnames
+                0x00000047       0x21 mmp.o
+ .debug_pubnames
+                0x00000068       0x30 picture-xin.o
+ .debug_pubnames
+                0x00000098      0x155 TFTtest.o
+
+.debug_info     0x00000000     0x14a8
+ *(.debug_info)
+ .debug_info    0x00000000      0x361 main.o
+ .debug_info    0x00000361       0x97 mmp.o
+ .debug_info    0x000003f8       0xaf picture-xin.o
+ .debug_info    0x000004a7     0x1001 TFTtest.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x4b3
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x126 main.o
+ .debug_abbrev  0x00000126       0x6a mmp.o
+ .debug_abbrev  0x00000190       0x7b picture-xin.o
+ .debug_abbrev  0x0000020b      0x2a8 TFTtest.o
+
+.debug_line     0x00000000     0x1500
+ *(.debug_line)
+ .debug_line    0x00000000      0x318 main.o
+ .debug_line    0x00000318       0x94 mmp.o
+ .debug_line    0x000003ac       0x9c picture-xin.o
+ .debug_line    0x00000448     0x10b8 TFTtest.o
+
+.debug_frame    0x00000000      0x180
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x30 main.o
+ .debug_frame   0x00000030      0x150 TFTtest.o
+
+.debug_str      0x00000000      0x2c5
+ *(.debug_str)
+ .debug_str     0x00000000       0xec main.o
+                                0x125 (size before relaxing)
+ .debug_str     0x000000ec       0x1f mmp.o
+                                 0xcd (size before relaxing)
+ .debug_str     0x0000010b       0x27 picture-xin.o
+                                 0xe0 (size before relaxing)
+ .debug_str     0x00000132      0x193 TFTtest.o
+                                0x2dc (size before relaxing)
+
+.debug_loc      0x00000000      0xe80
+ *(.debug_loc)
+ .debug_loc     0x00000000      0x180 main.o
+ .debug_loc     0x00000180      0xd00 TFTtest.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(TFT.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000      0x108
+ .debug_ranges  0x00000000       0x48 main.o
+ .debug_ranges  0x00000048       0xc0 TFTtest.o

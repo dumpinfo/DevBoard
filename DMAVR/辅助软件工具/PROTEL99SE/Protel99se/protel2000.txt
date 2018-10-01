@@ -1,0 +1,4 @@
+Protel 2000中文版安装说明：
+1、打开cprotel目录，把access.cde文件拷贝到windows目录下，去掉只读属性；把s12sys.fon文件拷贝到windows\fonts目录下，去掉只读属性。
+2、cprotel整个目录拷贝到任意一个硬盘上，打开硬盘上的cprotel目录，分别运行sch.exe,pfw.exe,libedit.exe即可。
+3、软件的序列号在cprotel目录下的sn.txt文件里面。

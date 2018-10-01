@@ -1,0 +1,17 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+E:\Product development\TFT\TFT2.6\NBC系列TFT资料存档\2.8寸TFT资料\51单片机驱动程序\程序2、触摸屏画图演示实验\EX2_TP.uv2
+Project File Date:  03/15/2012
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+compiling NBCTFT.C...
+compiling TP.C...
+linking...
+Program Size: data=54.0 xdata=0 code=5344
+creating hex file from "EX2_TP"...
+"EX2_TP" - 0 Error(s), 0 Warning(s).

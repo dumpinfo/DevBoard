@@ -1,0 +1,1 @@
+main.o: C:/icc/include/TFTclock_main.h C:/icc/include/stdio.h C:/icc/include/stdarg.h C:/icc/include/_const.h C:/icc/include/math.h C:/icc/include/iom128v.h C:/icc/include/delay.h

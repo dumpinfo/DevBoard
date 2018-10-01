@@ -1,0 +1,54 @@
+XL
+H 1 areas 4 global symbols
+M uart.c
+S __textmode Ref0000
+A text size 54 flags 0
+dbfile ..\..\DMAVR-~3\FAT-NE~1\uart.c
+dbfile E:\DMAVR-~3\FAT-NE~1\uart.c
+dbfunc e putchar 0 fI
+dbsym r c 14 c
+dbline FFFFFFFF 4
+dbline 1D 4
+dbline 1E 4
+dbline 1F 18
+dbline 21 1C
+dbline 20 1C
+dbline 22 24
+dbline 23 28
+dbline FFFFFFFE 2C
+dbline 0 2C
+dbfunc e getchar 30 fI
+dbline FFFFFFFF 30
+dbline 2A 30
+dbline 2C 30
+dbline 2B 30
+dbline 2D 38
+dbline FFFFFFFE 3E
+dbline 0 3E
+dbfunc e uartInit 40 fV
+dbline FFFFFFFF 40
+dbline 34 40
+dbline 36 40
+dbline 37 46
+dbline 38 4C
+dbline FFFFFFFE 52
+dbline 0 52
+S _getchar$device_specific$ Def0030
+S _uartInit Def0040
+S _putchar$device_specific$ Def0000
+T 00 00 4A 93 40 2F 20 90 00 00 30 90 01 00 22 20
+R 00 00 00 00 02 08 00 00 02 0C 00 00
+T 0E 00 11 F4 33 20 21 F0 4A 30 11 F4 0D E0 F2 DF
+R 00 00 00 00
+T 1C 00 20 90 9B 00 25 FE FC CF 40 93 9C 00 04 2F
+R 00 00 00 00
+T 2A 00 11 27 49 91 08 95
+R 00 00 00 00
+T 30 00 20 90 9B 00 27 FE FC CF 00 91 9C 00 11 27
+R 00 00 00 00
+T 3E 00 08 95
+R 00 00 00 00
+T 40 00 88 E1 80 93 9A 00 22 24 20 92 98 00 8F E2
+R 00 00 00 00
+T 4E 00 80 93 99 00 08 95
+R 00 00 00 00

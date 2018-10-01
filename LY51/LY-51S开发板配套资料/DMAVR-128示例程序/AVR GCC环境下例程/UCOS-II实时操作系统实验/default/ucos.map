@@ -1,0 +1,592 @@
+Archive member included because of file (symbol)
+
+d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_mulsi3.o)
+                              ucos_ii.o (__mulsi3)
+d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_udivmodsi4.o)
+                              ucos_ii.o (__udivmodsi4)
+d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+                              d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o (exit)
+d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                              main.o (__do_clear_bss)
+
+Allocating common symbols
+Common symbol       size              file
+
+sem                 0x2               main.o
+OSLockNesting       0x1               ucos_ii.o
+OSRunning           0x1               ucos_ii.o
+OSTaskStkSize       0x2               os_cpu_c.o
+OSIdleCtr           0x4               ucos_ii.o
+OSPrioHighRdy       0x1               ucos_ii.o
+OSPrioCur           0x1               ucos_ii.o
+OSTaskStkSizeHard   0x2               os_cpu_c.o
+OSTCBList           0x2               ucos_ii.o
+OSTickStepState     0x1               ucos_ii.o
+OSTaskStatStk       0xe0              ucos_ii.o
+OSCtxSwCtr          0x4               ucos_ii.o
+Task2Stack          0xf0              main.o
+OSIdleCtrMax        0x4               ucos_ii.o
+OSTCBFreeList       0x2               ucos_ii.o
+OSCPUUsage          0x1               ucos_ii.o
+OSTaskCtr           0x1               ucos_ii.o
+Task4Stack          0xf0              main.o
+OSTCBHighRdy        0x2               ucos_ii.o
+OSRdyGrp            0x1               ucos_ii.o
+OSRdyTbl            0x2               ucos_ii.o
+OSEventFreeList     0x2               ucos_ii.o
+OSIntNesting        0x1               ucos_ii.o
+OSTCBCur            0x2               ucos_ii.o
+OSTime              0x4               ucos_ii.o
+OSTaskIdleStk       0xe0              ucos_ii.o
+OSEventTbl          0xf0              ucos_ii.o
+OSTCBTbl            0x252             ucos_ii.o
+Task3Stack          0xf0              main.o
+OSStatRdy           0x1               ucos_ii.o
+OSTCBPrioTbl        0x1e              ucos_ii.o
+OSIdleCtrRun        0x4               ucos_ii.o
+Task1Stack          0xf0              main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+LOAD main.o
+LOAD os_cpu_a.o
+LOAD ucos_ii.o
+LOAD os_cpu_c.o
+LOAD bsp.o
+LOAD d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
+LOAD d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51\libc.a
+LOAD d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x2498
+ *(.vectors)
+ .vectors       0x00000000       0x8c d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+                0x0000008c                . = ALIGN (0x2)
+                0x0000008c                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x0000008c        0x0 linker stubs
+ *(.trampolines*)
+                0x0000008c                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x0000008c                __ctors_start = .
+ *(.ctors)
+                0x0000008c                __ctors_end = .
+                0x0000008c                __dtors_start = .
+ *(.dtors)
+                0x0000008c                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x0000008c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+                0x0000008c                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x0000008c        0xc d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000098       0x1a d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+                0x00000098                __do_copy_data
+ .init4         0x000000b2       0x10 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x000000b2                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000000c2        0x8 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+ *(.init9)
+ *(.text)
+ .text          0x000000ca        0x4 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+                0x000000ca                __vector_22
+                0x000000ca                __vector_28
+                0x000000ca                __vector_1
+                0x000000ca                __vector_32
+                0x000000ca                __vector_34
+                0x000000ca                __vector_24
+                0x000000ca                __vector_12
+                0x000000ca                __bad_interrupt
+                0x000000ca                __vector_6
+                0x000000ca                __vector_31
+                0x000000ca                __vector_3
+                0x000000ca                __vector_23
+                0x000000ca                __vector_30
+                0x000000ca                __vector_25
+                0x000000ca                __vector_11
+                0x000000ca                __vector_13
+                0x000000ca                __vector_17
+                0x000000ca                __vector_19
+                0x000000ca                __vector_7
+                0x000000ca                __vector_27
+                0x000000ca                __vector_5
+                0x000000ca                __vector_33
+                0x000000ca                __vector_4
+                0x000000ca                __vector_2
+                0x000000ca                __vector_21
+                0x000000ca                __vector_15
+                0x000000ca                __vector_29
+                0x000000ca                __vector_8
+                0x000000ca                __vector_26
+                0x000000ca                __vector_14
+                0x000000ca                __vector_10
+                0x000000ca                __vector_16
+                0x000000ca                __vector_18
+                0x000000ca                __vector_20
+ .text          0x000000ce      0x170 main.o
+                0x000001e8                task0
+                0x0000019c                task1
+                0x00000134                task2
+                0x000000ce                main
+                0x00000150                task3
+ .text          0x0000023e      0x246 os_cpu_a.o
+                0x00000248                OSStartHighRdy
+                0x000002ac                OSCtxSw
+                0x00000372                OSIntCtxSw
+                0x000003dc                OSTickISR
+                0x00000244                OS_CPU_SR_RESTORE
+                0x0000023e                OS_CPU_SR_SAVE
+                0x000003dc                __vector_9
+ .text          0x00000484     0x1d82 ucos_ii.o
+                0x00000726                OSTimeSet
+                0x00001c28                OSEventPendMulti
+                0x00000484                OSIntEnter
+                0x00000d36                OS_TCBInit
+                0x00001584                OSTaskCreateExt
+                0x00001694                OSTaskCreate
+                0x00001758                OSTaskChangePrio
+                0x0000142a                OSTaskDel
+                0x0000057e                OS_EventTaskRemove
+                0x00000ccc                OSEventNameGet
+                0x00001f2c                OSIntExit
+                0x000006b6                OS_MemCopy
+                0x00000ee0                OS_Sched
+                0x00000958                OSTaskNameSet
+                0x000005b6                OS_EventTaskRemoveMulti
+                0x0000050a                OS_EventTaskWaitMulti
+                0x00001a24                OSSemPend
+                0x00000be4                OSSemAccept
+                0x0000199a                OSSemPendAbort
+                0x000012b6                OS_TaskStat
+                0x000006a4                OS_MemClr
+                0x000005fc                OS_EventTaskRdy
+                0x00001054                OSTimeDly
+                0x000010bc                OSTimeDlyHMSM
+                0x00001936                OSSemPost
+                0x00001be4                OSSchedUnlock
+                0x000011b6                OSStatInit
+                0x000004a2                OS_Dummy
+                0x00000c4e                OSEventNameSet
+                0x000004a4                OS_EventTaskWait
+                0x000008c8                OS_TaskStatStkChk
+                0x00000a80                OSTaskDelReq
+                0x00001ed2                OSStart
+                0x00001384                OSTaskResume
+                0x000009f6                OSTaskNameGet
+                0x00001e00                OSTimeTick
+                0x00000b80                OSSemCreate
+                0x00000b40                OSSemQuery
+                0x00000c22                OSSchedLock
+                0x000006cc                OS_StrCopy
+                0x00000f94                OSTimeDlyResume
+                0x000007fe                OSTaskStkChk
+                0x00001ff8                OSInit
+                0x00000782                OSTaskQuery
+                0x000006ea                OS_StrLen
+                0x00000754                OSTimeGet
+                0x00000ae8                OSSemSet
+                0x00001afa                OSSemDel
+                0x0000049c                OSVersion
+                0x00000704                OS_TaskStkClr
+                0x0000069a                OS_EventWaitListInit
+                0x0000120e                OSTaskSuspend
+                0x00000eaa                OS_TaskIdle
+ .text          0x00002206       0x9c os_cpu_c.o
+                0x0000220a                OSTaskCreateHook
+                0x00002210                OSTaskStatHook
+                0x00002206                OSInitHookBegin
+                0x0000220c                OSTaskDelHook
+                0x000022a0                OSTimeTickHook
+                0x0000229e                OSTCBInitHook
+                0x00002212                OSTaskStkInit
+                0x00002208                OSInitHookEnd
+                0x0000229c                OSTaskSwHook
+                0x0000220e                OSTaskIdleHook
+ .text          0x000022a2      0x170 bsp.o
+                0x000022d8                LED_Toggle
+                0x0000234a                LED_Off
+                0x0000240c                BSP_TickISR_Handler
+                0x000022a2                BSP_Init
+                0x000023ae                LED_On
+                0x000022c0                TimerInit
+ .text          0x00002412        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_mulsi3.o)
+ .text          0x00002412        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_udivmodsi4.o)
+ .text          0x00002412        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .text          0x00002412        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x00002412                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00002412       0x3e d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_mulsi3.o)
+                0x00002412                __mulsi3
+ .text.libgcc   0x00002450       0x44 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_udivmodsi4.o)
+                0x00002450                __udivmodsi4
+ .text.libgcc   0x00002494        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .text.libgcc   0x00002494        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x00002494                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x00002494        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+                0x00002494                exit
+                0x00002494                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x00002494        0x4 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ *(.fini0)
+                0x00002498                _etext = .
+
+.data           0x00800100      0x11c load address 0x00002498
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+ .data          0x00800100        0x0 main.o
+ .data          0x00800100        0x0 os_cpu_a.o
+ .data          0x00800100      0x11c ucos_ii.o
+                0x0080011c                OSUnMapTbl
+ .data          0x0080021c        0x0 os_cpu_c.o
+ .data          0x0080021c        0x0 bsp.o
+ .data          0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_mulsi3.o)
+ .data          0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_udivmodsi4.o)
+ .data          0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .data          0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x0080021c                . = ALIGN (0x2)
+                0x0080021c                _edata = .
+                0x0080021c                PROVIDE (__data_end, .)
+
+.bss            0x0080021c      0x910
+                0x0080021c                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+ .bss           0x0080021c        0x0 main.o
+ .bss           0x0080021c        0x0 os_cpu_a.o
+ .bss           0x0080021c        0x0 ucos_ii.o
+ .bss           0x0080021c        0x0 os_cpu_c.o
+ .bss           0x0080021c        0x0 bsp.o
+ .bss           0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_mulsi3.o)
+ .bss           0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_udivmodsi4.o)
+ .bss           0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .bss           0x0080021c        0x0 d:/program files/atmel/winavr/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x0080021c      0x3c2 main.o
+                0x0080021c                sem
+                0x0080021e                Task2Stack
+                0x0080030e                Task4Stack
+                0x008003fe                Task3Stack
+                0x008004ee                Task1Stack
+ COMMON         0x008005de      0x54a ucos_ii.o
+                0x008005de                OSLockNesting
+                0x008005df                OSRunning
+                0x008005e0                OSIdleCtr
+                0x008005e4                OSPrioHighRdy
+                0x008005e5                OSPrioCur
+                0x008005e6                OSTCBList
+                0x008005e8                OSTickStepState
+                0x008005e9                OSTaskStatStk
+                0x008006c9                OSCtxSwCtr
+                0x008006cd                OSIdleCtrMax
+                0x008006d1                OSTCBFreeList
+                0x008006d3                OSCPUUsage
+                0x008006d4                OSTaskCtr
+                0x008006d5                OSTCBHighRdy
+                0x008006d7                OSRdyGrp
+                0x008006d8                OSRdyTbl
+                0x008006da                OSEventFreeList
+                0x008006dc                OSIntNesting
+                0x008006dd                OSTCBCur
+                0x008006df                OSTime
+                0x008006e3                OSTaskIdleStk
+                0x008007c3                OSEventTbl
+                0x008008b3                OSTCBTbl
+                0x00800b05                OSStatRdy
+                0x00800b06                OSTCBPrioTbl
+                0x00800b24                OSIdleCtrRun
+ COMMON         0x00800b28        0x4 os_cpu_c.o
+                0x00800b28                OSTaskStkSize
+                0x00800b2a                OSTaskStkSizeHard
+                0x00800b2c                PROVIDE (__bss_end, .)
+                0x00002498                __data_load_start = LOADADDR (.data)
+                0x000025b4                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00800b2c        0x0
+                0x00800b2c                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00800b2c                PROVIDE (__noinit_end, .)
+                0x00800b2c                _end = .
+                0x00800b2c                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0xa0
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 main.o
+ .debug_aranges
+                0x00000020       0x20 os_cpu_a.o
+ .debug_aranges
+                0x00000040       0x20 ucos_ii.o
+ .debug_aranges
+                0x00000060       0x20 os_cpu_c.o
+ .debug_aranges
+                0x00000080       0x20 bsp.o
+
+.debug_pubnames
+                0x00000000      0x71f
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0x87 main.o
+ .debug_pubnames
+                0x00000087      0x538 ucos_ii.o
+ .debug_pubnames
+                0x000005bf       0xf5 os_cpu_c.o
+ .debug_pubnames
+                0x000006b4       0x6b bsp.o
+
+.debug_info     0x00000000     0x25b6
+ *(.debug_info)
+ .debug_info    0x00000000      0x277 main.o
+ .debug_info    0x00000277       0x89 os_cpu_a.o
+ .debug_info    0x00000300     0x1c5c ucos_ii.o
+ .debug_info    0x00001f5c      0x480 os_cpu_c.o
+ .debug_info    0x000023dc      0x1da bsp.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x711
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000       0xf9 main.o
+ .debug_abbrev  0x000000f9       0x14 os_cpu_a.o
+ .debug_abbrev  0x0000010d      0x366 ucos_ii.o
+ .debug_abbrev  0x00000473      0x177 os_cpu_c.o
+ .debug_abbrev  0x000005ea      0x127 bsp.o
+
+.debug_line     0x00000000     0x2503
+ *(.debug_line)
+ .debug_line    0x00000000      0x219 main.o
+ .debug_line    0x00000219       0x99 os_cpu_a.o
+ .debug_line    0x000002b2     0x1cf0 ucos_ii.o
+ .debug_line    0x00001fa2      0x2c9 os_cpu_c.o
+ .debug_line    0x0000226b      0x298 bsp.o
+
+.debug_frame    0x00000000      0x4e0
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x60 main.o
+ .debug_frame   0x00000060      0x360 ucos_ii.o
+ .debug_frame   0x000003c0       0xb0 os_cpu_c.o
+ .debug_frame   0x00000470       0x70 bsp.o
+
+.debug_str      0x00000000      0xa3b
+ *(.debug_str)
+ .debug_str     0x00000000      0x159 main.o
+                                0x192 (size before relaxing)
+ .debug_str     0x00000159      0x79c ucos_ii.o
+                                0x8d6 (size before relaxing)
+ .debug_str     0x000008f5       0xd9 os_cpu_c.o
+                                0x331 (size before relaxing)
+ .debug_str     0x000009ce       0x6d bsp.o
+                                0x150 (size before relaxing)
+
+.debug_loc      0x00000000     0x2091
+ *(.debug_loc)
+ .debug_loc     0x00000000       0x60 main.o
+ .debug_loc     0x00000060     0x1f81 ucos_ii.o
+ .debug_loc     0x00001fe1       0x30 os_cpu_c.o
+ .debug_loc     0x00002011       0x80 bsp.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(ucos.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000       0x18
+ .debug_ranges  0x00000000       0x18 ucos_ii.o

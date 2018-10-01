@@ -1,0 +1,385 @@
+XL
+H 5 areas 1F global symbols
+M TIMER0.C
+S push_gset1 Ref0000
+S push_gset2 Ref0000
+S mod16s Ref0000
+S mod16u Ref0000
+S div16s Ref0000
+S div16u Ref0000
+S pop_lset Ref0000
+S pop_gset1 Ref0000
+S pop_gset2 Ref0000
+S push_lset Ref0000
+A text size 252 flags 0
+dbfile C:/icc/include/delay.h
+dbfunc e delay_1us 0 fV
+dbline FFFFFFFF 0
+dbline 14 0
+dbline 15 0
+dbline 16 2
+dbline 17 4
+dbline 18 6
+dbline 19 8
+dbline 1A A
+dbline FFFFFFFE C
+dbline 0 C
+dbfunc e delay_3us E fV
+dbline FFFFFFFF E
+dbline 1E E
+dbline 20 E
+dbline 21 10
+dbline 22 12
+dbline 23 14
+dbline 24 16
+dbline 25 18
+dbline 26 1A
+dbline 27 1C
+dbline 28 1E
+dbline 29 20
+dbline 2A 22
+dbline 2B 24
+dbline 2C 26
+dbline 2D 28
+dbline 2E 2A
+dbline 2F 2C
+dbline 30 2E
+dbline 31 30
+dbline 32 32
+dbline 33 34
+dbline 34 36
+dbline FFFFFFFE 38
+dbline 0 38
+dbfunc e delay_10us 3A fV
+dbline FFFFFFFF 3A
+dbline 38 3A
+dbline 39 3A
+dbline 3A 3C
+dbline 3B 3E
+dbline FFFFFFFE 40
+dbline 0 40
+dbfunc e delay_50us 42 fV
+dbline FFFFFFFF 42
+dbline 3F 42
+dbline 40 42
+dbline 41 44
+dbline 42 46
+dbline 43 48
+dbline FFFFFFFE 4A
+dbline 0 4A
+dbfunc e delay_100us 4C fV
+dbline FFFFFFFF 4C
+dbline 46 4C
+dbline 47 4C
+dbline 48 4E
+dbline FFFFFFFE 50
+dbline 0 50
+dbfunc e delay_n100us 52 fV
+dbsym r n100us 14 c
+dbline FFFFFFFF 58
+dbline 4B 58
+dbline 4D 5A
+dbline 4C 5C
+dbline FFFFFFFE 66
+dbline 0 6A
+dbfunc e delay_1ms 6C fV
+dbline FFFFFFFF 6C
+dbline 59 6C
+dbline 5A 6C
+dbline 5B 6E
+dbline 5C 70
+dbline 5D 72
+dbline 5E 74
+dbline 5F 76
+dbline 60 78
+dbline 61 7A
+dbline 62 7C
+dbline 63 7E
+dbline FFFFFFFE 80
+dbline 0 80
+dbfunc e delay_nms 82 fV
+dbsym r nms 14 i
+dbline FFFFFFFF 88
+dbline 6D 88
+dbline 6F 8A
+dbline 6E 8C
+dbline FFFFFFFE 9A
+dbline 0 9E
+dbfunc e delay_ns A0 fV
+dbsym r ns 14 c
+dbline FFFFFFFF A6
+dbline 72 A6
+dbline 74 A8
+dbline 73 AE
+dbline FFFFFFFE B8
+dbline 0 BC
+dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\8.八位定时器计时实验\TIMER0\TIMER0.C
+dbfunc e system_init BE fV
+dbline FFFFFFFF BE
+dbline 32 BE
+dbline 33 BE
+dbline 34 C2
+dbline 36 C4
+dbline 37 C6
+dbline 39 C8
+dbline 3A CA
+dbline FFFFFFFE CC
+dbline 0 CC
+dbfunc e timer0_init CE fV
+dbline FFFFFFFF CE
+dbline 43 CE
+dbline 44 CE
+dbline 45 D2
+dbline 46 D6
+dbline 47 DA
+dbline FFFFFFFE DC
+dbline 0 DC
+dbfunc e data_do DE fV
+dbsym r A2t 14 c
+dbsym r temp_d 14 i
+dbline FFFFFFFF E4
+dbline 4E E4
+dbline 50 E4
+dbline 51 F6
+dbline 52 102
+dbline 53 114
+dbline FFFFFFFE 128
+dbline 0 12C
+dbfunc e Display_Timer0 12E fV
+dbsym r i 14 c
+dbsym r j 16 c
+dbline FFFFFFFF 132
+dbline 59 132
+dbline 5B 132
+dbline 5C 134
+dbline 5D 136
+dbline 5E 13A
+dbline 5F 13A
+dbline 60 13C
+dbline 61 13E
+dbline 62 144
+dbline 63 146
+dbline 64 148
+dbline 65 14C
+dbline 66 14E
+dbline 67 154
+dbline 5D 154
+dbline 5D 156
+dbline 68 15A
+dbline 69 15C
+dbline 6A 15E
+dbline 6B 164
+dbline 6C 166
+dbline 6D 168
+dbline 6E 17C
+dbline 6F 17E
+dbline 71 184
+dbline 72 186
+dbline 73 188
+dbline 74 18E
+dbline 75 190
+dbline 76 192
+dbline 77 1A6
+dbline 78 1A8
+dbline 7A 1AE
+dbline 7B 1B0
+dbline 7C 1B2
+dbline 7D 1B8
+dbline 7E 1BA
+dbline 7F 1BC
+dbline 80 1D0
+dbline 81 1D2
+dbline 83 1D8
+dbline 84 1DA
+dbline 85 1DC
+dbline 86 1E0
+dbline FFFFFFFE 1E2
+dbline 0 1E6
+dbfunc e TIMER0_ISR 1E8 fV
+dbline FFFFFFFF 1EC
+dbline 8E 1EC
+dbline 90 1EC
+dbline 91 1F0
+dbline 92 1F8
+dbline 93 1F8
+dbline 94 1FE
+dbline 96 200
+dbline 97 200
+dbline 98 210
+dbline 99 210
+dbline 9A 21A
+dbline 9C 21C
+dbline 9D 228
+dbline 9E 22E
+dbline 9F 238
+dbline FFFFFFFE 238
+dbline 0 23C
+dbfunc e main 23E fV
+dbline FFFFFFFF 23E
+dbline A6 23E
+dbline A7 23E
+dbline A8 240
+dbline A9 242
+dbline AA 248
+dbline AC 24C
+dbline AD 24C
+dbline AE 24E
+dbline AB 24E
+dbline FFFFFFFE 250
+dbline 0 250
+S _main Def023E
+S _delay_10us Def003A
+S _system_init Def00BE
+S _delay_50us Def0042
+S _delay_nms Def0082
+S _data_do Def00DE
+S _delay_100us Def004C
+S _TIMER0_ISR Def01E8
+S _delay_ns Def00A0
+S _delay_n100us Def0052
+S _timer0_init Def00CE
+S _Display_Timer0 Def012E
+S _delay_1ms Def006C
+S _delay_1us Def0000
+S _delay_3us Def000E
+A data size 11 flags 20
+dbfile C:/icc/include/delay.h
+dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\8.八位定时器计时实验\TIMER0\TIMER0.C
+dbsym e table 0 A[16:16]c
+dbsym e time_1s_count 10 c
+S _table Def0000
+S _time_1s_count Def0010
+A idata size 11 flags 0
+A vector size 44 flags C
+A bss size 8 flags 20
+dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\8.八位定时器计时实验\TIMER0\TIMER0.C
+dbsym e A3 0 i
+dbsym e A2 2 i
+dbsym e A1 4 i
+dbsym e second 6 i
+S _A1 Def0004
+S _A2 Def0002
+S _A3 Def0000
+S _second Def0006
+T 00 00 00 00 00 00 00 00 00 00 00 00 00 00 08 95
+R 00 00 00 00
+T 0E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 1C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 2A 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 38 00 08 95
+R 00 00 00 00
+T 3A 00 E9 DF E8 DF E7 DF 08 95
+R 00 00 00 00
+T 42 00 FB DF FA DF F9 DF F8 DF 08 95
+R 00 00 00 00
+T 4C 00 FA DF F9 DF 08 95
+R 00 00 00 00
+T 52 00 0E 94 00 00 40 2F 01 C0 F8 DF 24 2E 33 24
+R 00 00 00 00 12 04 00 00
+T 60 00 41 50 22 20 D1 F7 0E 94 00 00 08 95
+R 00 00 00 00 12 0A 07 00
+T 6C 00 EF DF EE DF ED DF EC DF EB DF EA DF E9 DF
+R 00 00 00 00
+T 7A 00 E8 DF E7 DF E6 DF 08 95
+R 00 00 00 00
+T 82 00 0E 94 00 00 A8 01 01 C0 F0 DF 1A 01 41 50
+R 00 00 00 00 12 04 00 00
+T 90 00 50 40 22 20 D1 F7 33 20 C1 F7 0E 94 00 00
+R 00 00 00 00 12 0E 07 00
+T 9E 00 08 95
+R 00 00 00 00
+T A0 00 0E 94 00 00 40 2F 03 C0 08 EE 13 E0 EA DF
+R 00 00 00 00 12 04 00 00
+T AE 00 24 2E 33 24 41 50 22 20 C1 F7 0E 94 00 00
+R 00 00 00 00 12 0E 07 00
+T BC 00 08 95
+R 00 00 00 00
+T 00 00 3F 06
+R 00 00 02 00
+T 02 00 5B 4F
+R 00 00 02 00
+T 04 00 66 6D
+R 00 00 02 00
+T 06 00 7D 07
+R 00 00 02 00
+T 08 00 7F 6F
+R 00 00 02 00
+T 0A 00 77 7C
+R 00 00 02 00
+T 0C 00 39 5E
+R 00 00 02 00
+T 0E 00 79 71
+R 00 00 02 00
+T 10 00 00
+R 00 00 02 00
+T BE 00 8F EF 8B BB 8A BB 82 BB 81 BB 88 BB 87 BB
+R 00 00 00 00
+T CC 00 08 95
+R 00 00 00 00
+T CE 00 87 E0 83 BF 87 EB 82 BF 81 E0 86 BF 87 BF
+R 00 00 00 00
+T DC 00 08 95
+R 00 00 00 00
+T DE 00 0E 94 00 00 A8 01 24 E6 30 E0 8A 01 0E 94
+R 00 00 00 00 12 04 00 00
+T EC 00 00 00 10 93 05 00 00 93 04 00 24 E6 30 E0
+R 00 00 00 00 12 02 05 00 00 06 04 00 00 0A 04 00
+T FA 00 8A 01 0E 94 00 00 40 2F 2A E0 30 E0 11 27
+R 00 00 00 00 12 06 03 00
+T 08 01 0E 94 00 00 10 93 03 00 00 93 02 00 2A E0
+R 00 00 00 00 12 04 04 00 00 08 04 00 00 0C 04 00
+T 16 01 30 E0 04 2F 11 27 0E 94 00 00 10 93 01 00
+R 00 00 00 00 12 0A 02 00 00 0E 04 00
+T 24 01 00 93 00 00 0E 94 00 00 08 95
+R 00 00 00 00 00 04 04 00 12 08 07 00
+T 2E 01 0E 94 00 00 C5 DF 61 E0 44 27 0E C0 94 9A
+R 00 00 00 00 12 04 01 00
+T 3C 01 95 9A 26 2E 20 94 2B BA 95 98 66 0F 22 24
+R 00 00 00 00
+T 4A 01 2B BA 94 98 01 E0 10 E0 97 DF 43 95 45 30
+R 00 00 00 00
+T 58 01 80 F3 94 9A 95 9A 26 2E 20 94 2B BA 95 98
+R 00 00 00 00
+T 66 01 66 0F 80 E0 90 E0 E0 91
+R 00 00 00 00 20 04 01 00 00 00 40 06 01 00 00 00
+T 6E 01 04 00 F0 91 05 00 E8 0F F9 1F 20 80 2B BA
+R 00 00 00 00 00 02 04 00 00 06 04 00
+T 7C 01 94 98 01 E0 10 E0 7F DF 94 9A 95 9A 26 2E
+R 00 00 00 00
+T 8A 01 20 94 2B BA 95 98 66 0F 80 E0 90 E0 E0 91
+R 00 00 00 00 20 0A 01 00 00 00 40 0C 01 00 00 00
+T 98 01 02 00 F0 91 03 00 E8 0F F9 1F 20 80 2B BA
+R 00 00 00 00 00 02 04 00 00 06 04 00
+T A6 01 94 98 01 E0 10 E0 6A DF 94 9A 95 9A 26 2E
+R 00 00 00 00
+T B4 01 20 94 2B BA 95 98 66 0F 80 E0 90 E0 E0 91
+R 00 00 00 00 20 0A 01 00 00 00 40 0C 01 00 00 00
+T C2 01 00 00 F0 91 01 00 E8 0F F9 1F 20 80 2B BA
+R 00 00 00 00 00 02 04 00 00 06 04 00
+T D0 01 94 98 01 E0 10 E0 55 DF 94 9A 95 9A 8F EF
+R 00 00 00 00
+T DE 01 8B BB 95 98 0E 94 00 00 08 95
+R 00 00 00 00 12 08 08 00
+T 40 00 0C 94 F4 00
+R 00 00 03 00 10 04 00 00
+T E8 01 0E 94 00 00 87 EB 82 BF 80 91 10 00 84 36
+R 00 00 00 00 12 04 09 00 00 0C 01 00
+T F6 01 21 F0 8F 5F 80 93 10 00 1C C0 80 91 06 00
+R 00 00 00 00 00 08 01 00 00 0E 04 00
+T 04 02 90 91 07 00 87 3E E3 E0 9E 07 31 F0 01 96
+R 00 00 00 00 00 04 04 00
+T 12 02 90 93 07 00 80 93 06 00 06 C0 22 24 33 24
+R 00 00 00 00 00 04 04 00 00 08 04 00
+T 20 02 30 92 07 00 20 92 06 00 22 24 20 92 10 00
+R 00 00 00 00 00 04 04 00 00 08 04 00 00 0E 01 00
+T 2E 02 00 91 06 00 10 91 07 00 53 DF 0E 94 00 00
+R 00 00 00 00 00 04 04 00 00 08 04 00 12 0E 06 00
+T 3C 02 18 95
+R 00 00 00 00
+T 3E 02 3F DF 46 DF 22 24 20 92 10 00 78 94 01 C0
+R 00 00 00 00 00 0A 01 00
+T 4C 02 70 DF FE CF 08 95
+R 00 00 00 00

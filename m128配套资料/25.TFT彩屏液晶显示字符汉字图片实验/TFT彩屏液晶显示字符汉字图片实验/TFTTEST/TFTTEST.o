@@ -1,0 +1,282 @@
+XL
+H 4 areas 17 global symbols
+M TFTTEST.C
+S push_gset1 Ref0000
+S _McuInit Ref0000
+S _LCD_Init Ref0000
+S _LCD_MM Ref0000
+S _LCD_test Ref0000
+S _DisplayGB2312 Ref0000
+S pop_gset1 Ref0000
+S _LCD_clear Ref0000
+S _DisplayString Ref0000
+S _DisplayChar Ref0000
+A text size 24E flags 0
+dbfile C:/icc/include/delay.h
+dbfunc e delay_1us 0 fV
+dbline FFFFFFFF 0
+dbline 14 0
+dbline 15 0
+dbline 16 2
+dbline 17 4
+dbline 18 6
+dbline 19 8
+dbline 1A A
+dbline FFFFFFFE C
+dbline 0 C
+dbfunc e delay_3us E fV
+dbline FFFFFFFF E
+dbline 1E E
+dbline 20 E
+dbline 21 10
+dbline 22 12
+dbline 23 14
+dbline 24 16
+dbline 25 18
+dbline 26 1A
+dbline 27 1C
+dbline 28 1E
+dbline 29 20
+dbline 2A 22
+dbline 2B 24
+dbline 2C 26
+dbline 2D 28
+dbline 2E 2A
+dbline 2F 2C
+dbline 30 2E
+dbline 31 30
+dbline 32 32
+dbline 33 34
+dbline 34 36
+dbline FFFFFFFE 38
+dbline 0 38
+dbfunc e delay_10us 3A fV
+dbline FFFFFFFF 3A
+dbline 38 3A
+dbline 39 3A
+dbline 3A 3C
+dbline 3B 3E
+dbline FFFFFFFE 40
+dbline 0 40
+dbfunc e delay_50us 42 fV
+dbline FFFFFFFF 42
+dbline 3F 42
+dbline 40 42
+dbline 41 44
+dbline 42 46
+dbline 43 48
+dbline FFFFFFFE 4A
+dbline 0 4A
+dbfunc e delay_100us 4C fV
+dbline FFFFFFFF 4C
+dbline 46 4C
+dbline 47 4C
+dbline 48 4E
+dbline FFFFFFFE 50
+dbline 0 50
+dbfunc e delay_n100us 52 fV
+dbsym r n100us 14 c
+dbline FFFFFFFF 58
+dbline 4B 58
+dbline 4D 5A
+dbline 4C 5C
+dbline FFFFFFFE 66
+dbline 0 6A
+dbfunc e delay_1ms 6C fV
+dbline FFFFFFFF 6C
+dbline 59 6C
+dbline 5A 6C
+dbline 5B 6E
+dbline 5C 70
+dbline 5D 72
+dbline 5E 74
+dbline 5F 76
+dbline 60 78
+dbline 61 7A
+dbline 62 7C
+dbline 63 7E
+dbline FFFFFFFE 80
+dbline 0 80
+dbfunc e delay_nms 82 fV
+dbsym r nms 14 i
+dbline FFFFFFFF 88
+dbline 6D 88
+dbline 6F 8A
+dbline 6E 8C
+dbline FFFFFFFE 9A
+dbline 0 9E
+dbfunc e delay_ns A0 fV
+dbsym r ns 14 c
+dbline FFFFFFFF A6
+dbline 72 A6
+dbline 74 A8
+dbline 73 AE
+dbline FFFFFFFE B8
+dbline 0 BC
+dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\TFTTEST\TFTTEST.C
+dbfunc e DisplayData BE fV
+dbline FFFFFFFF C0
+dbline 16 C0
+dbline 17 C0
+dbline 18 D4
+dbline 19 E8
+dbline 1A FC
+dbline 1C 110
+dbline 1E 124
+dbline 1F 138
+dbline 20 14C
+dbline 23 160
+dbline 24 174
+dbline 26 188
+dbline 27 19C
+dbline 28 1B0
+dbline FFFFFFFE 1C4
+dbline 0 1C6
+dbfunc e main 1C8 fV
+dbsym l i 5 c
+dbline FFFFFFFF 1CA
+dbline 32 1CA
+dbline 35 1CA
+dbline 36 1CE
+dbline 37 1D8
+dbline 38 1DC
+dbline 3B 1E6
+dbline 3C 1E6
+dbline 3D 1FC
+dbline 3E 212
+dbline 3F 214
+dbline 40 21A
+dbline 41 220
+dbline 42 226
+dbline 44 22C
+dbline 45 230
+dbline 46 236
+dbline 47 23C
+dbline 48 240
+dbline 4B 248
+dbline 3A 248
+dbline FFFFFFFE 24A
+dbline 0 24C
+S _main Def01C8
+S _delay_10us Def003A
+S _delay_50us Def0042
+S _delay_nms Def0082
+S _delay_100us Def004C
+S _delay_ns Def00A0
+S _DisplayData Def00BE
+S _delay_n100us Def0052
+S _delay_1ms Def006C
+S _delay_1us Def0000
+S _delay_3us Def000E
+A bss size 2 flags 20
+dbfile E:\ATMEGA128开发板\我的ATMEGA128开发板\配套资料\TFTTEST\TFTTEST.C
+dbfile C:/icc/include/TFT_main.h
+dbsym e postion_y 0 c
+dbsym e postion_x 1 c
+S _postion_x Def0001
+S _postion_y Def0000
+A data size 1C flags 20
+dbfile C:/icc/include/TFT_main.h
+A idata size 1C flags 0
+T 00 00 00 00 00 00 00 00 00 00 00 00 00 00 08 95
+R 00 00 00 00
+T 0E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 1C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 2A 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 00 00
+T 38 00 08 95
+R 00 00 00 00
+T 3A 00 E9 DF E8 DF E7 DF 08 95
+R 00 00 00 00
+T 42 00 FB DF FA DF F9 DF F8 DF 08 95
+R 00 00 00 00
+T 4C 00 FA DF F9 DF 08 95
+R 00 00 00 00
+T 52 00 0E 94 00 00 40 2F 01 C0 F8 DF 24 2E 33 24
+R 00 00 00 00 12 04 00 00
+T 60 00 41 50 22 20 D1 F7 0E 94 00 00 08 95
+R 00 00 00 00 12 0A 06 00
+T 6C 00 EF DF EE DF ED DF EC DF EB DF EA DF E9 DF
+R 00 00 00 00
+T 7A 00 E8 DF E7 DF E6 DF 08 95
+R 00 00 00 00
+T 82 00 0E 94 00 00 A8 01 01 C0 F0 DF 1A 01 41 50
+R 00 00 00 00 12 04 00 00
+T 90 00 50 40 22 20 D1 F7 33 20 C1 F7 0E 94 00 00
+R 00 00 00 00 12 0E 06 00
+T 9E 00 08 95
+R 00 00 00 00
+T A0 00 0E 94 00 00 40 2F 03 C0 08 EE 13 E0 EA DF
+R 00 00 00 00 12 04 00 00
+T AE 00 24 2E 33 24 41 50 22 20 C1 F7 0E 94 00 00
+R 00 00 00 00 12 0E 06 00
+T BC 00 08 95
+R 00 00 00 00
+T BE 00 24 97 8E EE 9E E0 9B 83 8A 83 84 E0 88 83
+R 00 00 00 00
+T CC 00 22 27 02 E3 0E 94 00 00 8E EE 9E E0 9B 83
+R 00 00 00 00 12 08 09 00
+T DA 00 8A 83 84 E0 88 83 21 E0 00 E3 0E 94 00 00
+R 00 00 00 00 12 0E 09 00
+T E8 00 8E EE 9E E0 9B 83 8A 83 84 E0 88 83 22 E0
+R 00 00 00 00
+T F6 00 01 E3 0E 94 00 00 8E EE 9E E0 9B 83 8A 83
+R 00 00 00 00 12 06 09 00
+T 04 01 84 E0 88 83 23 E0 00 E3 0E 94 00 00 8E EE
+R 00 00 00 00 12 0C 09 00
+T 12 01 9E E0 9B 83 8A 83 84 E0 88 83 24 E0 0F E2
+R 00 00 00 00
+T 20 01 0E 94 00 00 8E EE 9E E0 9B 83 8A 83 84 E0
+R 00 00 00 00 12 04 09 00
+T 2E 01 88 83 25 E0 00 E3 0E 94 00 00 8E EE 9E E0
+R 00 00 00 00 12 0A 09 00
+T 3C 01 9B 83 8A 83 84 E0 88 83 26 E0 01 E3 0E 94
+R 00 00 00 00
+T 4A 01 00 00 8E EE 9E E0 9B 83 8A 83 84 E0 88 83
+R 00 00 00 00 12 02 09 00
+T 58 01 27 E0 0F E2 0E 94 00 00 8E EE 9E E0 9B 83
+R 00 00 00 00 12 08 09 00
+T 66 01 8A 83 84 E0 88 83 28 E0 02 E3 0E 94 00 00
+R 00 00 00 00 12 0E 09 00
+T 74 01 8E EE 9E E0 9B 83 8A 83 84 E0 88 83 29 E0
+R 00 00 00 00
+T 82 01 09 E3 0E 94 00 00 80 E0 90 EA 9B 83 8A 83
+R 00 00 00 00 12 06 09 00
+T 90 01 84 E0 88 83 25 E0 06 E0 0E 94 00 00 80 E0
+R 00 00 00 00 12 0C 05 00
+T 9E 01 90 EA 9B 83 8A 83 84 E0 88 83 26 E0 07 E0
+R 00 00 00 00
+T AC 01 0E 94 00 00 80 E0 90 EA 9B 83 8A 83 84 E0
+R 00 00 00 00 12 04 05 00
+T BA 01 88 83 27 E0 0C E0 0E 94 00 00 24 96 08 95
+R 00 00 00 00 12 0A 05 00
+T C8 01 24 97 0E 94 00 00 80 91 65 00 80 61 80 93
+R 00 00 00 00 12 06 01 00
+T D6 01 65 00 0E 94 00 00 00 27 11 27 0E 94 00 00
+R 00 00 00 00 12 06 02 00 12 0E 07 00
+T E4 01 31 C0 8E EE 9E E0 9B 83 8A 83 81 E0 88 83
+R 00 00 00 00
+T F2 01 22 27 00 E0 10 E0 0E 94
+R 00 00 00 00 20 04 02 00 0C 00 40 06 02 00 0C 00
+T FA 01 00 00 8E EE 9E E0 9B 83 8A 83 82 E0 88 83
+R 00 00 00 00 12 02 08 00
+T 08 02 22 E0 00 E0 10 E0 0E 94
+R 00 00 00 00 20 04 02 00 00 00 40 06 02 00 00 00
+T 10 02 00 00 55 DF 08 EE 13 E0 34 DF 08 EE 13 E0
+R 00 00 00 00 12 02 08 00
+T 1E 02 31 DF 08 EE 13 E0 2E DF 08 EE 13 E0 2B DF
+R 00 00 00 00
+T 2C 02 0E 94 00 00 08 EE 13 E0 26 DF 08 EE 13 E0
+R 00 00 00 00 12 04 03 00
+T 3A 02 23 DF 0E 94 00 00 00 27 11 27 0E 94 00 00
+R 00 00 00 00 12 06 04 00 12 0E 07 00
+T 48 02 CE CF 24 96 08 95
+R 00 00 00 00
+T 00 00 54 46 54 20 54 65 73 74 69 6E 67 00
+R 00 00 03 00
+T 0C 00 41 54 4D 45 47 41 31 32 38 20 42 6F 61 72
+R 00 00 03 00
+T 1A 00 64 00
+R 00 00 03 00

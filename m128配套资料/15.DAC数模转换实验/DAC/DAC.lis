@@ -1,0 +1,495 @@
+                        .module DAC.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128的DAC转换驱动程序
+ 0000           ; //DAC为TI公司的10位串行电压型输出的DAC芯片TLC5615
+ 0000           ; //驱动DAC芯片，使其完成000-FFC(TLC5615后两位的值一直为0)输出的转换，LED指示灯对应从暗到亮
+ 0000           ; //编译环境 ICCAVR 
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //忠兴电子元件店编辑
+ 0000           ; //日期：2010.06.14
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //    定义变量区
+ 0000           ; //***********************************************************************
+ 0000                   .dbline 21
+ 0000           ; #define uchar unsigned char
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; #define uint  unsigned int
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; 
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; #define cs0     PORTB &= ~(1 << PB0)
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; #define cs1           PORTB |= (1 << PB0)
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; #define din0    PORTB &= ~(1 << PB2)
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; #define din1          PORTB |= (1 << PB2)
+ 000E           ; #define dout0   PORTB &= ~(1 << PB3)
+ 000E           ; #define dout1   PORTB |= (1 << PB3)
+ 000E           ; #define sclk0   PORTB &= ~(1 << PB1)
+ 000E                   .dbline 32
+ 000E           ; #define sclk1   PORTB |= (1 << PB1)
+ 000E           ; 
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; uint da_data;
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; //*************************************************************************
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ; //                    初始化子程序
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; //*************************************************************************
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; void system_init()
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ; {
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ; 
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ;       PORTB = 0xFF;                                   //电平设置
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ;       DDRB = 0xFF;                                    //方向输出
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; 
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ; }
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ; //*************************************************************************
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ; //                    DAC转换程序
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ; //*************************************************************************
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ; void DAC_SER(uint data)
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ; {
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ;   uchar i;
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ;   uint da_data2;
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ; 
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ;   cs0;                       //片选DAC，置低有效
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ;   sclk0;        
+ 003A           ; 
+ 003A           ;   for (i=0;i<16;i++)         //尽管是10位DAC，但是其寄存器为16位，只有10位数据有效
+ 003A           ;   {
+ 003A                   .dbline 57
+ 003A           ;    da_data2=data&0x8000;    //逐位取出
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;    if(da_data2>>15)
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;    din1;
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ;    else
+ 0042           ;    din0;
+ 0042           ;    sclk1;                  //上升沿数据锁存
+ 0042           ;    data<<=1;               //移位
+ 0042                   .dbline 64
+ 0042           ;    sclk0;
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ;    
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ;   }
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ;   delay_10us();                               //延时10us
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;    cs1;
+ 004C           ;    sclk0;
+ 004C           ; 
+ 004C                   .dbline 71
+ 004C           ; }
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ; 
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ; 
+ 0058           ; //*************************************************************************
+ 0058           ; //                    主程序
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ; //*************************************************************************
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ; void main(void)
+ 006C           ; {
+ 006C           ;   system_init();                                                        //系统初始化
+ 006C           ;   while(1)
+ 006C           ;   {
+ 006C           ;    for(da_data=0x000;da_data<0xffc;da_data++)    //连续转换，输出电压从小到大
+ 006C           ;    {
+ 006C           ;      DAC_SER(da_data);
+ 006C           ;      delay_nms(1);
+ 006C           ;   }
+ 006C           ;   } 
+ 006C           ; }
+ 006C           ; }
+ 006C                   .dbline 90
+ 006C           ; }
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ; }
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ; }
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ; }
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ; }
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ; }
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ; }
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ; }
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ; }
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ; }
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; }
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; }
+ 00A6           ; }
+ 00A6           ; }
+ 00A6           ; }
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; }
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\17.DAC数模转换实验\DAC\DAC.C
+ 00BE                   .dbfunc e system_init _system_init fV
+                        .even
+ 00BE           _system_init::
+ 00BE                   .dbline -1
+ 00BE                   .dbline 38
+ 00BE                   .dbline 40
+ 00BE 8FEF              ldi R24,255
+ 00C0 88BB              out 0x18,R24
+ 00C2                   .dbline 41
+ 00C2 87BB              out 0x17,R24
+ 00C4                   .dbline -2
+ 00C4           L19:
+ 00C4                   .dbline 0 ; func end
+ 00C4 0895              ret
+ 00C6                   .dbend
+ 00C6                   .dbfunc e DAC_SER _DAC_SER fV
+ 00C6           ;       da_data2 -> R20,R21
+ 00C6           ;              i -> R22
+ 00C6           ;           data -> R10,R11
+                        .even
+ 00C6           _DAC_SER::
+ 00C6 0E940000          xcall push_gset3
+ 00CA 5801              movw R10,R16
+ 00CC                   .dbline -1
+ 00CC                   .dbline 48
+ 00CC                   .dbline 52
+ 00CC C098              cbi 0x18,0
+ 00CE                   .dbline 53
+ 00CE C198              cbi 0x18,1
+ 00D0                   .dbline 55
+ 00D0 6627              clr R22
+ 00D2 13C0              xjmp L24
+ 00D4           L21:
+ 00D4                   .dbline 56
+ 00D4                   .dbline 57
+ 00D4 A501              movw R20,R10
+ 00D6 4070              andi R20,0
+ 00D8 5078              andi R21,128
+ 00DA                   .dbline 58
+ 00DA 2FE0              ldi R18,15
+ 00DC 30E0              ldi R19,0
+ 00DE 8A01              movw R16,R20
+ 00E0 0E940000          xcall lsr16
+ 00E4 0030              cpi R16,0
+ 00E6 0107              cpc R16,R17
+ 00E8 11F0              breq L25
+ 00EA           X1:
+ 00EA                   .dbline 59
+ 00EA C29A              sbi 0x18,2
+ 00EC 01C0              xjmp L26
+ 00EE           L25:
+ 00EE                   .dbline 61
+ 00EE C298              cbi 0x18,2
+ 00F0           L26:
+ 00F0                   .dbline 62
+ 00F0 C19A              sbi 0x18,1
+ 00F2                   .dbline 63
+ 00F2 AA0C              lsl R10
+ 00F4 BB1C              rol R11
+ 00F6                   .dbline 64
+ 00F6 C198              cbi 0x18,1
+ 00F8                   .dbline 66
+ 00F8           L22:
+ 00F8                   .dbline 55
+ 00F8 6395              inc R22
+ 00FA           L24:
+ 00FA                   .dbline 55
+ 00FA 6031              cpi R22,16
+ 00FC 58F3              brlo L21
+ 00FE                   .dbline 67
+ 00FE 9DDF              xcall _delay_10us
+ 0100                   .dbline 68
+ 0100 C09A              sbi 0x18,0
+ 0102                   .dbline 69
+ 0102 C198              cbi 0x18,1
+ 0104                   .dbline -2
+ 0104           L20:
+ 0104 0E940000          xcall pop_gset3
+ 0108                   .dbline 0 ; func end
+ 0108 0895              ret
+ 010A                   .dbsym r da_data2 20 i
+ 010A                   .dbsym r i 22 c
+ 010A                   .dbsym r data 10 i
+ 010A                   .dbend
+ 010A                   .dbfunc e main _main fV
+                        .even
+ 010A           _main::
+ 010A                   .dbline -1
+ 010A                   .dbline 78
+ 010A                   .dbline 79
+ 010A D9DF              xcall _system_init
+ 010C 20C0              xjmp L29
+ 010E           L28:
+ 010E                   .dbline 81
+ 010E                   .dbline 82
+ 010E 2224              clr R2
+ 0110 3324              clr R3
+ 0112 30920100          sts _da_data+1,R3
+ 0116 20920000          sts _da_data,R2
+ 011A 11C0              xjmp L34
+ 011C           L31:
+ 011C                   .dbline 83
+ 011C                   .dbline 84
+ 011C 00910000          lds R16,_da_data
+ 0120 10910100          lds R17,_da_data+1
+ 0124 D0DF              xcall _DAC_SER
+ 0126                   .dbline 85
+ 0126 01E0              ldi R16,1
+ 0128 10E0              ldi R17,0
+ 012A ABDF              xcall _delay_nms
+ 012C                   .dbline 86
+ 012C           L32:
+ 012C                   .dbline 82
+ 012C 80910000          lds R24,_da_data
+ 0130 90910100          lds R25,_da_data+1
+ 0134 0196              adiw R24,1
+ 0136 90930100          sts _da_data+1,R25
+ 013A 80930000          sts _da_data,R24
+ 013E           L34:
+ 013E                   .dbline 82
+ 013E 80910000          lds R24,_da_data
+ 0142 90910100          lds R25,_da_data+1
+ 0146 8C3F              cpi R24,252
+ 0148 EFE0              ldi R30,15
+ 014A 9E07              cpc R25,R30
+ 014C 38F3              brlo L31
+ 014E                   .dbline 87
+ 014E           L29:
+ 014E                   .dbline 80
+ 014E DFCF              xjmp L28
+ 0150           X2:
+ 0150                   .dbline -2
+ 0150           L27:
+ 0150                   .dbline 0 ; func end
+ 0150 0895              ret
+ 0152                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\17.DAC数模转换实验\DAC\DAC.C
+ 0000           _da_data::
+ 0000                   .blkb 2
+ 0002                   .dbsym e da_data _da_data i

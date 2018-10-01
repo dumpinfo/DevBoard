@@ -1,0 +1,673 @@
+                        .module _2KEY.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128的2位独立键盘控制程序，显示键值1和2
+ 0000           ; //编译环境 ICCAVR 
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡
+ 0000           ; //作者：忠兴电子元件店
+ 0000           ; //日期：2010.05.24
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; #define uchar           unsigned char
+ 0000           ; #define uint            unsigned int
+ 0000           ; 
+ 0000           ; #define key_io          PORTC               //独立键盘与PC4和PC5连接
+ 0000           ; #define key_ior         PINC                //读取IO口值为PINC的值
+ 0000           ; #define Data_IO               PORTA                //数据口
+ 0000           ; #define Data_DDR        DDRA                 //数据口方向寄存器
+ 0000           ; #define D_LE0         PORTD &= ~(1 << PD4) //数码管段控制位为0
+ 0000                   .dbline 21
+ 0000           ; #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; #define W_LE0         PORTD &= ~(1 << PD5) //数码管位控制位为0
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; 
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; 
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; //***********************************************************************
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; //                    共阴数码管显示的断码表
+ 000E           ; //***********************************************************************
+ 000E           ; 
+ 000E           ; uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,
+ 000E                   .dbline 32
+ 000E           ;                          0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+ 000E           ; uchar key;
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; 
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; //***********************************************************************
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ; //                    IO端口初始化
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; //***********************************************************************
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; 
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ; void System_Init()
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ; {
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ;     Data_IO=0xFF;             //数据口为输出
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ;     Data_DDR=0xFF;
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; 
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;     PORTD=0xFF;               //74HC573的控制口，设置为输出
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ;     DDRD=0xFF;
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ;       
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ;       PORTB=0xFF;
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ;       DDRB=0xFF;                                //关闭发光二极管
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ; }
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ; 
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ; //*************************************************************************
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ; //                    74HC573控制数码管动态扫描显示函数
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ; //*************************************************************************
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ; 
+ 003A           ; void Display_Key(uchar num)
+ 003A           ; {
+ 003A           ;  uchar i,j;
+ 003A                   .dbline 57
+ 003A           ;  System_Init();
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;  j=0x01;                    //此数据用来控制位选
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;   for(i=0;i<8;i++)
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ;   {
+ 0042           ;     D_LE1;                    //控制数码管段数据的74HC573的LE管脚置高
+ 0042           ;     W_LE1;                    //控制数码管位的74HC573的LE管脚置高
+ 0042           ;     Data_IO=0x00;               //设置要显示的位，也就是哪一个数码管亮，这里是八个一起显示
+ 0042                   .dbline 64
+ 0042           ;     W_LE0;                    //锁存位数据，下面送上段数据以后，就显示出来了
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ;       j=(j<<1);
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ;     Data_IO=table[num];         //送要显示的数据，就是段数据，如显示0送的是0x3f
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ;     D_LE0;                    //锁存段数据，数码管亮一个时间片刻
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;     delay_nms(1);              //显示一个时间片刻，会影响亮度和闪烁性
+ 004C           ; 
+ 004C           ;   }
+ 004C                   .dbline 71
+ 004C           ; 
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ; }
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ; 
+ 0058           ; //**********************************************************************
+ 0058           ; //    键盘扫描子程序，采用逐键扫描的方式
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ; //**********************************************************************
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ; 
+ 006C           ; uchar KeyboardScan() 
+ 006C           ; {
+ 006C           ;   uchar statevalue,key_checkin,key_check;
+ 006C           ;   key_io=0xf0;                    //在IO口由输出方式变为输入方式时要延迟一个周期
+ 006C           ;   key_io=0xf0;                    //采取写两次的方法延时
+ 006C           ;   key_checkin=key_ior;            //读取IO口状态，判断是否有键按下
+ 006C           ;   if(key_checkin!=0xf0)           //IO口值发生变化则表示有键按下
+ 006C           ;   {
+ 006C           ;     delay_nms(20);                 //键盘消抖，延时20MS
+ 006C           ;     key_checkin=key_ior;
+ 006C           ;     if(key_checkin!=0xf0)
+ 006C           ;     {
+ 006C                   .dbline 90
+ 006C           ;      
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ;      key_check=key_ior;
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ;      switch (key_check)
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ;      {
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ;      case 0xd0:key=2;break;
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ;      case 0xe0:key=1;break;
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ;      }
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ;           
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ;     }
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ;   }
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ;   else
+ 0088           ;   {
+ 0088           ;   statevalue=0xff;                      //无按键时返回值
+ 0088           ;   key=statevalue;
+ 0088           ;   return(key);
+ 0088           ;   }
+ 0088           ; }
+ 0088           ; 
+ 0088           ; //*************************************************************************
+ 0088           ; //                    主程序
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; //*************************************************************************
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; 
+ 00A6           ; void main()
+ 00A6           ; 
+ 00A6           ; {         
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ;      
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000           _table::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 3F06              .byte 63,6
+                        .area data(ram, con, rel)
+ 0002                   .dbfile C:/icc/include/delay.h
+ 0002                   .blkb 2
+                        .area idata
+ 0002 5B4F              .byte 91,'O
+                        .area data(ram, con, rel)
+ 0004                   .dbfile C:/icc/include/delay.h
+ 0004                   .blkb 2
+                        .area idata
+ 0004 666D              .byte 'f,'m
+                        .area data(ram, con, rel)
+ 0006                   .dbfile C:/icc/include/delay.h
+ 0006                   .blkb 2
+                        .area idata
+ 0006 7D07              .byte 125,7
+                        .area data(ram, con, rel)
+ 0008                   .dbfile C:/icc/include/delay.h
+ 0008                   .blkb 2
+                        .area idata
+ 0008 7F6F              .byte 127,'o
+                        .area data(ram, con, rel)
+ 000A                   .dbfile C:/icc/include/delay.h
+ 000A                   .blkb 2
+                        .area idata
+ 000A 777C              .byte 'w,124
+                        .area data(ram, con, rel)
+ 000C                   .dbfile C:/icc/include/delay.h
+ 000C                   .blkb 2
+                        .area idata
+ 000C 395E              .byte 57,94
+                        .area data(ram, con, rel)
+ 000E                   .dbfile C:/icc/include/delay.h
+ 000E                   .blkb 2
+                        .area idata
+ 000E 7971              .byte 'y,'q
+                        .area data(ram, con, rel)
+ 0010                   .dbfile C:/icc/include/delay.h
+ 0010                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\4.两位独立键盘实验\2KEY程序\2KEY.C
+ 0010                   .dbsym e table _table A[16:16]c
+                        .area text(rom, con, rel)
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\4.两位独立键盘实验\2KEY程序\2KEY.C
+ 00BE                   .dbfunc e System_Init _System_Init fV
+                        .even
+ 00BE           _System_Init::
+ 00BE                   .dbline -1
+ 00BE                   .dbline 39
+ 00BE                   .dbline 40
+ 00BE 8FEF              ldi R24,255
+ 00C0 8BBB              out 0x1b,R24
+ 00C2                   .dbline 41
+ 00C2 8ABB              out 0x1a,R24
+ 00C4                   .dbline 43
+ 00C4 82BB              out 0x12,R24
+ 00C6                   .dbline 44
+ 00C6 81BB              out 0x11,R24
+ 00C8                   .dbline 46
+ 00C8 88BB              out 0x18,R24
+ 00CA                   .dbline 47
+ 00CA 87BB              out 0x17,R24
+ 00CC                   .dbline -2
+ 00CC           L19:
+ 00CC                   .dbline 0 ; func end
+ 00CC 0895              ret
+ 00CE                   .dbend
+ 00CE                   .dbfunc e Display_Key _Display_Key fV
+ 00CE           ;              j -> R20
+ 00CE           ;              i -> R22
+ 00CE           ;            num -> R10
+                        .even
+ 00CE           _Display_Key::
+ 00CE 0E940000          xcall push_gset3
+ 00D2 A02E              mov R10,R16
+ 00D4                   .dbline -1
+ 00D4                   .dbline 55
+ 00D4                   .dbline 57
+ 00D4 F4DF              xcall _System_Init
+ 00D6                   .dbline 58
+ 00D6 41E0              ldi R20,1
+ 00D8                   .dbline 59
+ 00D8 6627              clr R22
+ 00DA 13C0              xjmp L24
+ 00DC           L21:
+ 00DC                   .dbline 60
+ 00DC                   .dbline 61
+ 00DC 949A              sbi 0x12,4
+ 00DE                   .dbline 62
+ 00DE 959A              sbi 0x12,5
+ 00E0                   .dbline 63
+ 00E0 2224              clr R2
+ 00E2 2BBA              out 0x1b,R2
+ 00E4                   .dbline 64
+ 00E4 9598              cbi 0x12,5
+ 00E6                   .dbline 65
+ 00E6 440F              lsl R20
+ 00E8                   .dbline 66
+ 00E8 80E0              ldi R24,<_table
+ 00EA 90E0              ldi R25,>_table
+ 00EC EA2D              mov R30,R10
+ 00EE FF27              clr R31
+ 00F0 E80F              add R30,R24
+ 00F2 F91F              adc R31,R25
+ 00F4 2080              ldd R2,z+0
+ 00F6 2BBA              out 0x1b,R2
+ 00F8                   .dbline 67
+ 00F8 9498              cbi 0x12,4
+ 00FA                   .dbline 68
+ 00FA 01E0              ldi R16,1
+ 00FC 10E0              ldi R17,0
+ 00FE C1DF              xcall _delay_nms
+ 0100                   .dbline 70
+ 0100           L22:
+ 0100                   .dbline 59
+ 0100 6395              inc R22
+ 0102           L24:
+ 0102                   .dbline 59
+ 0102 6830              cpi R22,8
+ 0104 58F3              brlo L21
+ 0106                   .dbline -2
+ 0106           L20:
+ 0106 0E940000          xcall pop_gset3
+ 010A                   .dbline 0 ; func end
+ 010A 0895              ret
+ 010C                   .dbsym r j 20 c
+ 010C                   .dbsym r i 22 c
+ 010C                   .dbsym r num 10 c
+ 010C                   .dbend
+ 010C                   .dbfunc e KeyboardScan _KeyboardScan fc
+ 010C           ;      key_check -> R20
+ 010C           ;     statevalue -> R20
+ 010C           ;    key_checkin -> R20
+                        .even
+ 010C           _KeyboardScan::
+ 010C 0E940000          xcall push_gset1
+ 0110                   .dbline -1
+ 0110                   .dbline 79
+ 0110                   .dbline 81
+ 0110 80EF              ldi R24,240
+ 0112 85BB              out 0x15,R24
+ 0114                   .dbline 82
+ 0114 85BB              out 0x15,R24
+ 0116                   .dbline 83
+ 0116 43B3              in R20,0x13
+ 0118                   .dbline 84
+ 0118 403F              cpi R20,240
+ 011A E9F0              breq L26
+ 011C                   .dbline 85
+ 011C                   .dbline 86
+ 011C 04E1              ldi R16,20
+ 011E 10E0              ldi R17,0
+ 0120 B0DF              xcall _delay_nms
+ 0122                   .dbline 87
+ 0122 43B3              in R20,0x13
+ 0124                   .dbline 88
+ 0124 403F              cpi R20,240
+ 0126 D9F0              breq L27
+ 0128                   .dbline 89
+ 0128                   .dbline 91
+ 0128 43B3              in R20,0x13
+ 012A                   .dbline 92
+ 012A 5527              clr R21
+ 012C 403D              cpi R20,208
+ 012E E0E0              ldi R30,0
+ 0130 5E07              cpc R21,R30
+ 0132 49F0              breq L33
+ 0134 403D              cpi R20,208
+ 0136 E0E0              ldi R30,0
+ 0138 5E07              cpc R21,R30
+ 013A 8CF0              brlt L27
+ 013C           L35:
+ 013C 403E              cpi R20,224
+ 013E E0E0              ldi R30,0
+ 0140 5E07              cpc R21,R30
+ 0142 29F0              breq L34
+ 0144 0CC0              xjmp L27
+ 0146           X1:
+ 0146                   .dbline 93
+ 0146           L33:
+ 0146                   .dbline 94
+ 0146 82E0              ldi R24,2
+ 0148 80930000          sts _key,R24
+ 014C                   .dbline 94
+ 014C 08C0              xjmp L27
+ 014E           L34:
+ 014E                   .dbline 95
+ 014E 81E0              ldi R24,1
+ 0150 80930000          sts _key,R24
+ 0154                   .dbline 95
+ 0154                   .dbline 98
+ 0154                   .dbline 99
+ 0154 04C0              xjmp L27
+ 0156           L26:
+ 0156                   .dbline 101
+ 0156                   .dbline 102
+ 0156 4FEF              ldi R20,255
+ 0158                   .dbline 103
+ 0158 40930000          sts _key,R20
+ 015C                   .dbline 104
+ 015C 042F              mov R16,R20
+ 015E           L27:
+ 015E                   .dbline -2
+ 015E           L25:
+ 015E 0E940000          xcall pop_gset1
+ 0162                   .dbline 0 ; func end
+ 0162 0895              ret
+ 0164                   .dbsym r key_check 20 c
+ 0164                   .dbsym r statevalue 20 c
+ 0164                   .dbsym r key_checkin 20 c
+ 0164                   .dbend
+ 0164                   .dbfunc e main _main fV
+ 0164           ;      key_store -> R20,R21
+                        .even
+ 0164           _main::
+ 0164                   .dbline -1
+ 0164                   .dbline 114
+ 0164                   .dbline 117
+ 0164           ;         uint key_store;
+ 0164           ;         DDRC=0x0f;                        //PC口上拉电阻使能
+ 0164 8FE0              ldi R24,15
+ 0166 84BB              out 0x14,R24
+ 0168                   .dbline 118
+ 0168           ;       PORTC=0xf0;                       //PC高四位输入低四位输出
+ 0168 80EF              ldi R24,240
+ 016A 85BB              out 0x15,R24
+ 016C                   .dbline 119
+ 016C           ;       key_store=0;
+ 016C 4427              clr R20
+ 016E 5527              clr R21
+ 0170 1CC0              xjmp L38
+ 0172           L37:
+ 0172                   .dbline 122
+ 0172           ; 
+ 0172           ; while(1)
+ 0172           ;   {
+ 0172                   .dbline 124
+ 0172           ; 
+ 0172           ;  KeyboardScan();                         //键盘扫描，看是否有按键按下
+ 0172 CCDF              xcall _KeyboardScan
+ 0174                   .dbline 125
+ 0174           ;     if(key!=0xff)                        //如果有按键按下，则显示该按键键值0~15
+ 0174 80910000          lds R24,_key
+ 0178 8F3F              cpi R24,255
+ 017A A9F0              breq L40
+ 017C                   .dbline 126
+ 017C           ;       {
+ 017C                   .dbline 127
+ 017C           ;             { switch(key)
+ 017C                   .dbline 127
+ 017C 682F              mov R22,R24
+ 017E 7727              clr R23
+ 0180 6130              cpi R22,1
+ 0182 E0E0              ldi R30,0
+ 0184 7E07              cpc R23,R30
+ 0186 29F0              breq L45
+ 0188 6230              cpi R22,2
+ 018A E0E0              ldi R30,0
+ 018C 7E07              cpc R23,R30
+ 018E 31F0              breq L46
+ 0190 0CC0              xjmp L41
+ 0192           X2:
+ 0192                   .dbline 128
+ 0192           L45:
+ 0192                   .dbline 128
+ 0192           ;                  { case 1: Display_Key(0x01);key_store=0x01;break;   //给不同的键赋键值
+ 0192 01E0              ldi R16,1
+ 0194 9CDF              xcall _Display_Key
+ 0196                   .dbline 128
+ 0196 41E0              ldi R20,1
+ 0198 50E0              ldi R21,0
+ 019A                   .dbline 128
+ 019A 07C0              xjmp L41
+ 019C           L46:
+ 019C                   .dbline 129
+ 019C           ;                    case 2: Display_Key(0x02);key_store=0x02;break;
+ 019C 02E0              ldi R16,2
+ 019E 97DF              xcall _Display_Key
+ 01A0                   .dbline 129
+ 01A0 42E0              ldi R20,2
+ 01A2 50E0              ldi R21,0
+ 01A4                   .dbline 129
+ 01A4                   .dbline 132
+ 01A4           ;            }
+ 01A4           ; 
+ 01A4           ;           }
+ 01A4                   .dbline 134
+ 01A4           ;       
+ 01A4           ;        }
+ 01A4 02C0              xjmp L41
+ 01A6           L40:
+ 01A6                   .dbline 136
+ 01A6           ;      else
+ 01A6           ;        {
+ 01A6                   .dbline 137
+ 01A6           ;        Display_Key(key_store);              //没有按键的时候显示上次的键值
+ 01A6 042F              mov R16,R20
+ 01A8 92DF              xcall _Display_Key
+ 01AA                   .dbline 138
+ 01AA           ;        }
+ 01AA           L41:
+ 01AA                   .dbline 140
+ 01AA           L38:
+ 01AA                   .dbline 121
+ 01AA E3CF              xjmp L37
+ 01AC           X3:
+ 01AC                   .dbline -2
+ 01AC           L36:
+ 01AC                   .dbline 0 ; func end
+ 01AC 0895              ret
+ 01AE                   .dbsym r key_store 20 i
+ 01AE                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\4.两位独立键盘实验\2KEY程序\2KEY.C
+ 0000           _key::
+ 0000                   .blkb 1
+ 0001                   .dbsym e key _key c

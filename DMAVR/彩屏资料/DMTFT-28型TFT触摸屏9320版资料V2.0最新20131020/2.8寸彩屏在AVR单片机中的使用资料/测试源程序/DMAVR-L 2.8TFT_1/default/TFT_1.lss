@@ -1,0 +1,2754 @@
+
+TFT_1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000cb0  00800100  00001014  000010a8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00001014  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000003  00800db0  00800db0  00001d58  2**0
+                  ALLOC
+  3 .debug_aranges 00000020  00000000  00000000  00001d58  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 0000015c  00000000  00000000  00001d78  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000b95  00000000  00000000  00001ed4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000028f  00000000  00000000  00002a69  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000cc0  00000000  00000000  00002cf8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000130  00000000  00000000  000039b8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000001ff  00000000  00000000  00003ae8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000c3a  00000000  00000000  00003ce7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000090  00000000  00000000  00004921  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+       0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+       4:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+       8:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+       c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      10:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      14:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      18:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      1c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      20:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      24:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      28:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      2c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      30:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      34:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      38:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      3c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      40:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      44:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      48:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      4c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      50:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      54:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      58:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      5c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      60:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      64:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      68:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      6c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      70:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      74:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      78:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      7c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      80:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      84:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+      88:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+
+0000008c <__ctors_end>:
+      8c:	11 24       	eor	r1, r1
+      8e:	1f be       	out	0x3f, r1	; 63
+      90:	cf ef       	ldi	r28, 0xFF	; 255
+      92:	d0 e1       	ldi	r29, 0x10	; 16
+      94:	de bf       	out	0x3e, r29	; 62
+      96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+      98:	1d e0       	ldi	r17, 0x0D	; 13
+      9a:	a0 e0       	ldi	r26, 0x00	; 0
+      9c:	b1 e0       	ldi	r27, 0x01	; 1
+      9e:	e4 e1       	ldi	r30, 0x14	; 20
+      a0:	f0 e1       	ldi	r31, 0x10	; 16
+      a2:	00 e0       	ldi	r16, 0x00	; 0
+      a4:	0b bf       	out	0x3b, r16	; 59
+      a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+      a8:	07 90       	elpm	r0, Z+
+      aa:	0d 92       	st	X+, r0
+      ac:	a0 3b       	cpi	r26, 0xB0	; 176
+      ae:	b1 07       	cpc	r27, r17
+      b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+
+000000b2 <__do_clear_bss>:
+      b2:	1d e0       	ldi	r17, 0x0D	; 13
+      b4:	a0 eb       	ldi	r26, 0xB0	; 176
+      b6:	bd e0       	ldi	r27, 0x0D	; 13
+      b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
+
+000000ba <.do_clear_bss_loop>:
+      ba:	1d 92       	st	X+, r1
+
+000000bc <.do_clear_bss_start>:
+      bc:	a3 3b       	cpi	r26, 0xB3	; 179
+      be:	b1 07       	cpc	r27, r17
+      c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
+      c2:	0e 94 36 06 	call	0xc6c	; 0xc6c <main>
+      c6:	0c 94 08 08 	jmp	0x1010	; 0x1010 <_exit>
+
+000000ca <__bad_interrupt>:
+      ca:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ce <delayms>:
+    int i,j;                                                                                
+    for(i=0;i<count;i++)                                                                    
+       {
+	     for(j=0;j<255;j++);
+       }                                                                                     
+}
+      ce:	08 95       	ret
+
+000000d0 <Write_Cmd>:
+//	输入参数：  DH 需要输入16bits命令的高8位
+//              DL 需要输入16bits命令的低8位
+***************************************************************************************************/
+void Write_Cmd(unsigned char DH,unsigned char DL)
+{
+	CS_CLR;
+      d0:	1a 98       	cbi	0x03, 2	; 3
+	RS_CLR;
+      d2:	e2 e6       	ldi	r30, 0x62	; 98
+      d4:	f0 e0       	ldi	r31, 0x00	; 0
+      d6:	90 81       	ld	r25, Z
+      d8:	9b 7f       	andi	r25, 0xFB	; 251
+      da:	90 83       	st	Z, r25
+        RD_SET;
+      dc:	90 81       	ld	r25, Z
+      de:	91 60       	ori	r25, 0x01	; 1
+      e0:	90 83       	st	Z, r25
+        RW_CLR;
+      e2:	90 81       	ld	r25, Z
+      e4:	9d 7f       	andi	r25, 0xFD	; 253
+      e6:	90 83       	st	Z, r25
+
+    //注意：当使用8位数据口驱动16位数据模式时，使用74HC573作为IO扩展，程序如下
+    DataPort=DL;            //送低8位命令给573待锁存
+      e8:	65 bb       	out	0x15, r22	; 21
+    LE_SET;                   //锁存位
+      ea:	90 81       	ld	r25, Z
+      ec:	98 60       	ori	r25, 0x08	; 8
+      ee:	90 83       	st	Z, r25
+    LE_CLR;                   //断开锁存,位选573的Q7~Q0仍保持 
+      f0:	90 81       	ld	r25, Z
+      f2:	97 7f       	andi	r25, 0xF7	; 247
+      f4:	90 83       	st	Z, r25
+
+	DataPort=DH;            //送高8位命令给TFT
+      f6:	85 bb       	out	0x15, r24	; 21
+    //如果使用16位数据口驱动16位数据模式，则无需IO扩展，直接将数据送到数据口即可
+    DataPort_L=DL; 
+    DataPort_H=DH;
+	*/
+
+	RW_SET;
+      f8:	80 81       	ld	r24, Z
+      fa:	82 60       	ori	r24, 0x02	; 2
+      fc:	80 83       	st	Z, r24
+	CS_SET;
+      fe:	1a 9a       	sbi	0x03, 2	; 3
+}
+     100:	08 95       	ret
+
+00000102 <Write_Data>:
+//              DL 需要输入16bits数据的低8位
+***************************************************************************************************/
+void Write_Data(unsigned char DH,unsigned char DL)
+{
+	
+	CS_CLR;
+     102:	1a 98       	cbi	0x03, 2	; 3
+	RS_SET;
+     104:	e2 e6       	ldi	r30, 0x62	; 98
+     106:	f0 e0       	ldi	r31, 0x00	; 0
+     108:	90 81       	ld	r25, Z
+     10a:	94 60       	ori	r25, 0x04	; 4
+     10c:	90 83       	st	Z, r25
+
+    //注意：当使用8位数据口驱动16位数据模式时，使用74HC573作为IO扩展，程序如下
+	DataPort=DL;            //送低8位数据给573待锁存
+     10e:	65 bb       	out	0x15, r22	; 21
+    LE_SET;                   //锁存位
+     110:	90 81       	ld	r25, Z
+     112:	98 60       	ori	r25, 0x08	; 8
+     114:	90 83       	st	Z, r25
+    LE_CLR;                   //断开锁存,位选573的Q7~Q0仍保持 
+     116:	90 81       	ld	r25, Z
+     118:	97 7f       	andi	r25, 0xF7	; 247
+     11a:	90 83       	st	Z, r25
+
+	DataPort=DH;            //送高8位数据给TFT
+     11c:	85 bb       	out	0x15, r24	; 21
+    //如果使用16位数据口驱动16位数据模式，则无需IO扩展，直接将数据送到数据口即可
+    DataPort_L=DL; 
+    DataPort_H=DH;
+	*/
+
+	RW_CLR;
+     11e:	80 81       	ld	r24, Z
+     120:	8d 7f       	andi	r24, 0xFD	; 253
+     122:	80 83       	st	Z, r24
+	RW_SET;
+     124:	80 81       	ld	r24, Z
+     126:	82 60       	ori	r24, 0x02	; 2
+     128:	80 83       	st	Z, r24
+	CS_SET;
+     12a:	1a 9a       	sbi	0x03, 2	; 3
+}
+     12c:	08 95       	ret
+
+0000012e <Write_Data_U16>:
+/***************************************************************************************************
+//	实现功能：	写数据(16位)
+//	输入参数：  y 需要输入16bits数据
+***************************************************************************************************/
+void  Write_Data_U16(unsigned int y)
+{
+     12e:	68 2f       	mov	r22, r24
+	unsigned char m,n;
+	m=y>>8;
+	n=y;
+	Write_Data(m,n);
+     130:	89 2f       	mov	r24, r25
+     132:	0e 94 81 00 	call	0x102	; 0x102 <Write_Data>
+}
+     136:	08 95       	ret
+
+00000138 <Write_Cmd_Data>:
+//	实现功能：	向x寄存器写入y数据
+//	输入参数：  x 需要输入的命令 16位
+//              y 需要输入的数据 16位
+***************************************************************************************************/
+void  Write_Cmd_Data (unsigned char x,unsigned int y)
+{
+     138:	0f 93       	push	r16
+     13a:	1f 93       	push	r17
+     13c:	98 2f       	mov	r25, r24
+     13e:	8b 01       	movw	r16, r22
+	unsigned char m,n;
+	m=y>>8;
+	n=y;
+	Write_Cmd(0x00,x);
+     140:	80 e0       	ldi	r24, 0x00	; 0
+     142:	69 2f       	mov	r22, r25
+     144:	0e 94 68 00 	call	0xd0	; 0xd0 <Write_Cmd>
+	Write_Data(m,n);
+     148:	81 2f       	mov	r24, r17
+     14a:	60 2f       	mov	r22, r16
+     14c:	0e 94 81 00 	call	0x102	; 0x102 <Write_Data>
+}
+     150:	1f 91       	pop	r17
+     152:	0f 91       	pop	r16
+     154:	08 95       	ret
+
+00000156 <TFT_Initial>:
+//	实现功能：	TFT初始化
+***************************************************************************************************/
+void TFT_Initial(void)
+{  
+
+    RST_SET;    
+     156:	1b 9a       	sbi	0x03, 3	; 3
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+     158:	83 e3       	ldi	r24, 0x33	; 51
+     15a:	97 e0       	ldi	r25, 0x07	; 7
+     15c:	01 97       	sbiw	r24, 0x01	; 1
+     15e:	f1 f7       	brne	.-4      	; 0x15c <TFT_Initial+0x6>
+	delay_ms(1);                    // Delay 1ms 
+	RST_CLR;  
+     160:	1b 98       	cbi	0x03, 3	; 3
+     162:	80 e0       	ldi	r24, 0x00	; 0
+     164:	98 e4       	ldi	r25, 0x48	; 72
+     166:	01 97       	sbiw	r24, 0x01	; 1
+     168:	f1 f7       	brne	.-4      	; 0x166 <TFT_Initial+0x10>
+	delay_ms(10);                   // Delay 10ms            
+	RST_SET;  
+     16a:	1b 9a       	sbi	0x03, 3	; 3
+     16c:	24 ef       	ldi	r18, 0xF4	; 244
+     16e:	31 e0       	ldi	r19, 0x01	; 1
+     170:	48 eb       	ldi	r20, 0xB8	; 184
+     172:	50 e0       	ldi	r21, 0x00	; 0
+     174:	ca 01       	movw	r24, r20
+     176:	01 97       	sbiw	r24, 0x01	; 1
+     178:	f1 f7       	brne	.-4      	; 0x176 <TFT_Initial+0x20>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     17a:	21 50       	subi	r18, 0x01	; 1
+     17c:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     17e:	d1 f7       	brne	.-12     	; 0x174 <TFT_Initial+0x1e>
+	delay_ms(50);                   // Delay 50 ms  
+  
+	if(Device_code==0x9320)
+     180:	80 91 b1 0d 	lds	r24, 0x0DB1
+     184:	90 91 b2 0d 	lds	r25, 0x0DB2
+     188:	23 e9       	ldi	r18, 0x93	; 147
+     18a:	80 32       	cpi	r24, 0x20	; 32
+     18c:	92 07       	cpc	r25, r18
+     18e:	09 f4       	brne	.+2      	; 0x192 <TFT_Initial+0x3c>
+     190:	13 c1       	rjmp	.+550    	; 0x3b8 <TFT_Initial+0x262>
+	//-------------- Display on ---------//
+    Write_Cmd_Data(0x07,0x0173); 
+
+	}
+
+	else if(Device_code==0x1505 )
+     192:	25 e1       	ldi	r18, 0x15	; 21
+     194:	85 30       	cpi	r24, 0x05	; 5
+     196:	92 07       	cpc	r25, r18
+     198:	09 f4       	brne	.+2      	; 0x19c <TFT_Initial+0x46>
+     19a:	ff c1       	rjmp	.+1022   	; 0x59a <TFT_Initial+0x444>
+	//-------------- Display on ---------//
+    Write_Cmd_Data(0x07,0x0173); 
+
+	}
+
+    else if(Device_code==0x9328)
+     19c:	88 52       	subi	r24, 0x28	; 40
+     19e:	93 49       	sbci	r25, 0x93	; 147
+     1a0:	09 f0       	breq	.+2      	; 0x1a4 <TFT_Initial+0x4e>
+     1a2:	08 95       	ret
+     {
+
+    //************* Start Initial Sequence **********//
+	 Write_Cmd_Data(0x0001,0x0100);   //set SS and SM bit //设置扫描方向
+     1a4:	81 e0       	ldi	r24, 0x01	; 1
+     1a6:	60 e0       	ldi	r22, 0x00	; 0
+     1a8:	71 e0       	ldi	r23, 0x01	; 1
+     1aa:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0002,0x0700);   //EOR=1 and B/C=1 to set the line inversion  //设置行反转
+     1ae:	82 e0       	ldi	r24, 0x02	; 2
+     1b0:	60 e0       	ldi	r22, 0x00	; 0
+     1b2:	77 e0       	ldi	r23, 0x07	; 7
+     1b4:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0003,0x1030);   //set Entry Mode  //设置进入模式   
+     1b8:	83 e0       	ldi	r24, 0x03	; 3
+     1ba:	60 e3       	ldi	r22, 0x30	; 48
+     1bc:	70 e1       	ldi	r23, 0x10	; 16
+     1be:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0004,0x0000);   //
+     1c2:	84 e0       	ldi	r24, 0x04	; 4
+     1c4:	60 e0       	ldi	r22, 0x00	; 0
+     1c6:	70 e0       	ldi	r23, 0x00	; 0
+     1c8:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x00A4,0x0001);
+     1cc:	84 ea       	ldi	r24, 0xA4	; 164
+     1ce:	61 e0       	ldi	r22, 0x01	; 1
+     1d0:	70 e0       	ldi	r23, 0x00	; 0
+     1d2:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0008,0x0202); // set the back porch and front porch
+     1d6:	88 e0       	ldi	r24, 0x08	; 8
+     1d8:	62 e0       	ldi	r22, 0x02	; 2
+     1da:	72 e0       	ldi	r23, 0x02	; 2
+     1dc:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0009,0x0000); // set non-display area refresh cycle ISC[3:0]
+     1e0:	89 e0       	ldi	r24, 0x09	; 9
+     1e2:	60 e0       	ldi	r22, 0x00	; 0
+     1e4:	70 e0       	ldi	r23, 0x00	; 0
+     1e6:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x000A,0x0000); // FMARK function
+     1ea:	8a e0       	ldi	r24, 0x0A	; 10
+     1ec:	60 e0       	ldi	r22, 0x00	; 0
+     1ee:	70 e0       	ldi	r23, 0x00	; 0
+     1f0:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x000C,0x0000); // RGB interface setting
+     1f4:	8c e0       	ldi	r24, 0x0C	; 12
+     1f6:	60 e0       	ldi	r22, 0x00	; 0
+     1f8:	70 e0       	ldi	r23, 0x00	; 0
+     1fa:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x000D, 0x0000); // Frame marker Position
+     1fe:	8d e0       	ldi	r24, 0x0D	; 13
+     200:	60 e0       	ldi	r22, 0x00	; 0
+     202:	70 e0       	ldi	r23, 0x00	; 0
+     204:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x000F, 0x0000); // RGB interface polarity
+     208:	8f e0       	ldi	r24, 0x0F	; 15
+     20a:	60 e0       	ldi	r22, 0x00	; 0
+     20c:	70 e0       	ldi	r23, 0x00	; 0
+     20e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+
+
+
+//*************Power On sequence ****************//
+    Write_Cmd_Data(0x0010, 0x0000); // SAP, BT[3:0], AP, DSTB, SLP, STB 
+     212:	80 e1       	ldi	r24, 0x10	; 16
+     214:	60 e0       	ldi	r22, 0x00	; 0
+     216:	70 e0       	ldi	r23, 0x00	; 0
+     218:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0011, 0x0007); // DC1[2:0], DC0[2:0], VC[2:0]
+     21c:	81 e1       	ldi	r24, 0x11	; 17
+     21e:	67 e0       	ldi	r22, 0x07	; 7
+     220:	70 e0       	ldi	r23, 0x00	; 0
+     222:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0012, 0x0000); // VREG1OUT voltage
+     226:	82 e1       	ldi	r24, 0x12	; 18
+     228:	60 e0       	ldi	r22, 0x00	; 0
+     22a:	70 e0       	ldi	r23, 0x00	; 0
+     22c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0013, 0x0000); // VDV[4:0] for VCOM amplitude 
+     230:	83 e1       	ldi	r24, 0x13	; 19
+     232:	60 e0       	ldi	r22, 0x00	; 0
+     234:	70 e0       	ldi	r23, 0x00	; 0
+     236:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    delayms(30);
+    Write_Cmd_Data(0x0010, 0x1690); // SAP, BT[3:0], AP, DSTB, SLP, STB 
+     23a:	80 e1       	ldi	r24, 0x10	; 16
+     23c:	60 e9       	ldi	r22, 0x90	; 144
+     23e:	76 e1       	ldi	r23, 0x16	; 22
+     240:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0011, 0x0227); // R11h=0x0221 at VCI=3.3V, DC1[2:0], DC0[2:0], VC[2:0]
+     244:	81 e1       	ldi	r24, 0x11	; 17
+     246:	67 e2       	ldi	r22, 0x27	; 39
+     248:	72 e0       	ldi	r23, 0x02	; 2
+     24a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    delayms(30);
+    Write_Cmd_Data(0x0012, 0x001C); // External reference voltage= Vci;
+     24e:	82 e1       	ldi	r24, 0x12	; 18
+     250:	6c e1       	ldi	r22, 0x1C	; 28
+     252:	70 e0       	ldi	r23, 0x00	; 0
+     254:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    delayms(30); 
+    Write_Cmd_Data(0x0013, 0x1800); // R13=1200 when R12=009D;VDV[4:0] for VCOM amplitude
+     258:	83 e1       	ldi	r24, 0x13	; 19
+     25a:	60 e0       	ldi	r22, 0x00	; 0
+     25c:	78 e1       	ldi	r23, 0x18	; 24
+     25e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0029, 0x001C); // R29=000C when R12=009D;VCM[5:0] for VCOMH
+     262:	89 e2       	ldi	r24, 0x29	; 41
+     264:	6c e1       	ldi	r22, 0x1C	; 28
+     266:	70 e0       	ldi	r23, 0x00	; 0
+     268:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x002B, 0x000D); // Frame Rate = 91Hz
+     26c:	8b e2       	ldi	r24, 0x2B	; 43
+     26e:	6d e0       	ldi	r22, 0x0D	; 13
+     270:	70 e0       	ldi	r23, 0x00	; 0
+     272:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    delayms(30);    
+    Write_Cmd_Data(0x0020, 0x0000); // GRAM horizontal Address
+     276:	80 e2       	ldi	r24, 0x20	; 32
+     278:	60 e0       	ldi	r22, 0x00	; 0
+     27a:	70 e0       	ldi	r23, 0x00	; 0
+     27c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0021, 0x0000); // GRAM Vertical Address
+     280:	81 e2       	ldi	r24, 0x21	; 33
+     282:	60 e0       	ldi	r22, 0x00	; 0
+     284:	70 e0       	ldi	r23, 0x00	; 0
+     286:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+// ----------- Adjust the Gamma Curve ----------// 		 
+	Write_Cmd_Data(0x0030, 0x0007);
+     28a:	80 e3       	ldi	r24, 0x30	; 48
+     28c:	67 e0       	ldi	r22, 0x07	; 7
+     28e:	70 e0       	ldi	r23, 0x00	; 0
+     290:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0031, 0x0302);
+     294:	81 e3       	ldi	r24, 0x31	; 49
+     296:	62 e0       	ldi	r22, 0x02	; 2
+     298:	73 e0       	ldi	r23, 0x03	; 3
+     29a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0032, 0x0105);
+     29e:	82 e3       	ldi	r24, 0x32	; 50
+     2a0:	65 e0       	ldi	r22, 0x05	; 5
+     2a2:	71 e0       	ldi	r23, 0x01	; 1
+     2a4:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0035, 0x0206);
+     2a8:	85 e3       	ldi	r24, 0x35	; 53
+     2aa:	66 e0       	ldi	r22, 0x06	; 6
+     2ac:	72 e0       	ldi	r23, 0x02	; 2
+     2ae:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0036, 0x0808);	          
+     2b2:	86 e3       	ldi	r24, 0x36	; 54
+     2b4:	68 e0       	ldi	r22, 0x08	; 8
+     2b6:	78 e0       	ldi	r23, 0x08	; 8
+     2b8:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0037, 0x0206);
+     2bc:	87 e3       	ldi	r24, 0x37	; 55
+     2be:	66 e0       	ldi	r22, 0x06	; 6
+     2c0:	72 e0       	ldi	r23, 0x02	; 2
+     2c2:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0038, 0x0504);
+     2c6:	88 e3       	ldi	r24, 0x38	; 56
+     2c8:	64 e0       	ldi	r22, 0x04	; 4
+     2ca:	75 e0       	ldi	r23, 0x05	; 5
+     2cc:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0039, 0x0007);
+     2d0:	89 e3       	ldi	r24, 0x39	; 57
+     2d2:	67 e0       	ldi	r22, 0x07	; 7
+     2d4:	70 e0       	ldi	r23, 0x00	; 0
+     2d6:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x003C, 0x0105);
+     2da:	8c e3       	ldi	r24, 0x3C	; 60
+     2dc:	65 e0       	ldi	r22, 0x05	; 5
+     2de:	71 e0       	ldi	r23, 0x01	; 1
+     2e0:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x003D, 0x0808);
+     2e4:	8d e3       	ldi	r24, 0x3D	; 61
+     2e6:	68 e0       	ldi	r22, 0x08	; 8
+     2e8:	78 e0       	ldi	r23, 0x08	; 8
+     2ea:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+//------------------ Set GRAM area ---------------//
+    Write_Cmd_Data(0x0050, 0x0000); // Horizontal GRAM Start Address
+     2ee:	80 e5       	ldi	r24, 0x50	; 80
+     2f0:	60 e0       	ldi	r22, 0x00	; 0
+     2f2:	70 e0       	ldi	r23, 0x00	; 0
+     2f4:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0051, 0x00EF); // Horizontal GRAM End Address
+     2f8:	81 e5       	ldi	r24, 0x51	; 81
+     2fa:	6f ee       	ldi	r22, 0xEF	; 239
+     2fc:	70 e0       	ldi	r23, 0x00	; 0
+     2fe:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0052, 0x0000); // Vertical GRAM Start Address
+     302:	82 e5       	ldi	r24, 0x52	; 82
+     304:	60 e0       	ldi	r22, 0x00	; 0
+     306:	70 e0       	ldi	r23, 0x00	; 0
+     308:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	delayms(30);
+    Write_Cmd_Data(0x0053, 0x013F); // Vertical GRAM Start Address
+     30c:	83 e5       	ldi	r24, 0x53	; 83
+     30e:	6f e3       	ldi	r22, 0x3F	; 63
+     310:	71 e0       	ldi	r23, 0x01	; 1
+     312:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	delayms(30);
+    Write_Cmd_Data(0x0060, 0xA700); // Gate Scan Line
+     316:	80 e6       	ldi	r24, 0x60	; 96
+     318:	60 e0       	ldi	r22, 0x00	; 0
+     31a:	77 ea       	ldi	r23, 0xA7	; 167
+     31c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0061, 0x0001); // NDL,VLE, REV  
+     320:	81 e6       	ldi	r24, 0x61	; 97
+     322:	61 e0       	ldi	r22, 0x01	; 1
+     324:	70 e0       	ldi	r23, 0x00	; 0
+     326:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x006A, 0x0000); // set scrolling line
+     32a:	8a e6       	ldi	r24, 0x6A	; 106
+     32c:	60 e0       	ldi	r22, 0x00	; 0
+     32e:	70 e0       	ldi	r23, 0x00	; 0
+     330:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+//-------------- Partial Display Control ---------//
+    Write_Cmd_Data(0x0080, 0x0000);
+     334:	80 e8       	ldi	r24, 0x80	; 128
+     336:	60 e0       	ldi	r22, 0x00	; 0
+     338:	70 e0       	ldi	r23, 0x00	; 0
+     33a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0081, 0x0000);
+     33e:	81 e8       	ldi	r24, 0x81	; 129
+     340:	60 e0       	ldi	r22, 0x00	; 0
+     342:	70 e0       	ldi	r23, 0x00	; 0
+     344:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0082,0x0000); 
+     348:	82 e8       	ldi	r24, 0x82	; 130
+     34a:	60 e0       	ldi	r22, 0x00	; 0
+     34c:	70 e0       	ldi	r23, 0x00	; 0
+     34e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0083,0x0000); 
+     352:	83 e8       	ldi	r24, 0x83	; 131
+     354:	60 e0       	ldi	r22, 0x00	; 0
+     356:	70 e0       	ldi	r23, 0x00	; 0
+     358:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0084,0x0000); 
+     35c:	84 e8       	ldi	r24, 0x84	; 132
+     35e:	60 e0       	ldi	r22, 0x00	; 0
+     360:	70 e0       	ldi	r23, 0x00	; 0
+     362:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0085,0x0000); 
+     366:	85 e8       	ldi	r24, 0x85	; 133
+     368:	60 e0       	ldi	r22, 0x00	; 0
+     36a:	70 e0       	ldi	r23, 0x00	; 0
+     36c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+//-------------- Panel Control -------------------//        
+    Write_Cmd_Data(0x0090, 0x0010);
+     370:	80 e9       	ldi	r24, 0x90	; 144
+     372:	60 e1       	ldi	r22, 0x10	; 16
+     374:	70 e0       	ldi	r23, 0x00	; 0
+     376:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0092, 0x0000);
+     37a:	82 e9       	ldi	r24, 0x92	; 146
+     37c:	60 e0       	ldi	r22, 0x00	; 0
+     37e:	70 e0       	ldi	r23, 0x00	; 0
+     380:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0093, 0x0003);
+     384:	83 e9       	ldi	r24, 0x93	; 147
+     386:	63 e0       	ldi	r22, 0x03	; 3
+     388:	70 e0       	ldi	r23, 0x00	; 0
+     38a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0095, 0x0110);
+     38e:	85 e9       	ldi	r24, 0x95	; 149
+     390:	60 e1       	ldi	r22, 0x10	; 16
+     392:	71 e0       	ldi	r23, 0x01	; 1
+     394:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0097, 0x0000);
+     398:	87 e9       	ldi	r24, 0x97	; 151
+     39a:	60 e0       	ldi	r22, 0x00	; 0
+     39c:	70 e0       	ldi	r23, 0x00	; 0
+     39e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0098, 0x0000);
+     3a2:	88 e9       	ldi	r24, 0x98	; 152
+     3a4:	60 e0       	ldi	r22, 0x00	; 0
+     3a6:	70 e0       	ldi	r23, 0x00	; 0
+     3a8:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0007, 0x0133); // 262K color and display ON
+     3ac:	87 e0       	ldi	r24, 0x07	; 7
+     3ae:	63 e3       	ldi	r22, 0x33	; 51
+     3b0:	71 e0       	ldi	r23, 0x01	; 1
+     3b2:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+     3b6:	08 95       	ret
+  
+	if(Device_code==0x9320)
+     {
+
+    //************* Start Initial Sequence **********//
+	Write_Cmd_Data(0x00,0x0001);   //Set the OSC bit as ‘1’ to start the internal oscillator
+     3b8:	80 e0       	ldi	r24, 0x00	; 0
+     3ba:	61 e0       	ldi	r22, 0x01	; 1
+     3bc:	70 e0       	ldi	r23, 0x00	; 0
+     3be:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x01,0x0100);   // set SS and SM bit
+     3c2:	81 e0       	ldi	r24, 0x01	; 1
+     3c4:	60 e0       	ldi	r22, 0x00	; 0
+     3c6:	71 e0       	ldi	r23, 0x01	; 1
+     3c8:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x02,0x0700);   // set 1 line inversion
+     3cc:	82 e0       	ldi	r24, 0x02	; 2
+     3ce:	60 e0       	ldi	r22, 0x00	; 0
+     3d0:	77 e0       	ldi	r23, 0x07	; 7
+     3d2:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x03,0x1030);   //set GRAM Write direction and BGR=1
+     3d6:	83 e0       	ldi	r24, 0x03	; 3
+     3d8:	60 e3       	ldi	r22, 0x30	; 48
+     3da:	70 e1       	ldi	r23, 0x10	; 16
+     3dc:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x04,0x0000);   // Resize register
+     3e0:	84 e0       	ldi	r24, 0x04	; 4
+     3e2:	60 e0       	ldi	r22, 0x00	; 0
+     3e4:	70 e0       	ldi	r23, 0x00	; 0
+     3e6:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x08,0x0202);   // set the back porch and front porch
+     3ea:	88 e0       	ldi	r24, 0x08	; 8
+     3ec:	62 e0       	ldi	r22, 0x02	; 2
+     3ee:	72 e0       	ldi	r23, 0x02	; 2
+     3f0:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x09,0x0000);   // set non-display area refresh cycle ISC[3:0]
+     3f4:	89 e0       	ldi	r24, 0x09	; 9
+     3f6:	60 e0       	ldi	r22, 0x00	; 0
+     3f8:	70 e0       	ldi	r23, 0x00	; 0
+     3fa:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0A,0x0000);   // FMARK function
+     3fe:	8a e0       	ldi	r24, 0x0A	; 10
+     400:	60 e0       	ldi	r22, 0x00	; 0
+     402:	70 e0       	ldi	r23, 0x00	; 0
+     404:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0C,0x0000);   // RGB interface setting
+     408:	8c e0       	ldi	r24, 0x0C	; 12
+     40a:	60 e0       	ldi	r22, 0x00	; 0
+     40c:	70 e0       	ldi	r23, 0x00	; 0
+     40e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0D,0x0000);   // Frame marker Position
+     412:	8d e0       	ldi	r24, 0x0D	; 13
+     414:	60 e0       	ldi	r22, 0x00	; 0
+     416:	70 e0       	ldi	r23, 0x00	; 0
+     418:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0F,0x0000);   // RGB interface polarity
+     41c:	8f e0       	ldi	r24, 0x0F	; 15
+     41e:	60 e0       	ldi	r22, 0x00	; 0
+     420:	70 e0       	ldi	r23, 0x00	; 0
+     422:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    delayms(30);
+	//*************Power On sequence ****************//
+	Write_Cmd_Data(0x10, 0x16b0);   // SAP, BT[3:0], AP, DSTB, SLP, STB
+     426:	80 e1       	ldi	r24, 0x10	; 16
+     428:	60 eb       	ldi	r22, 0xB0	; 176
+     42a:	76 e1       	ldi	r23, 0x16	; 22
+     42c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	delayms(30);
+	Write_Cmd_Data(0x11, 0x0007);   //Write final user’s setting values to VC bit
+     430:	81 e1       	ldi	r24, 0x11	; 17
+     432:	67 e0       	ldi	r22, 0x07	; 7
+     434:	70 e0       	ldi	r23, 0x00	; 0
+     436:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x12, 0x013a);   // set Internal reference voltage
+     43a:	82 e1       	ldi	r24, 0x12	; 18
+     43c:	6a e3       	ldi	r22, 0x3A	; 58
+     43e:	71 e0       	ldi	r23, 0x01	; 1
+     440:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x13, 0x1a00);   // VDV[4:0] for VCOM amplitude
+     444:	83 e1       	ldi	r24, 0x13	; 19
+     446:	60 e0       	ldi	r22, 0x00	; 0
+     448:	7a e1       	ldi	r23, 0x1A	; 26
+     44a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    delayms(30);
+    Write_Cmd_Data(0x29, 0x000c);   // Set VCM[5:0] for VCOMH
+     44e:	89 e2       	ldi	r24, 0x29	; 41
+     450:	6c e0       	ldi	r22, 0x0C	; 12
+     452:	70 e0       	ldi	r23, 0x00	; 0
+     454:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	delayms(30); // Delay 50ms
+
+	// ----------- Adjust the Gamma Curve ----------//
+	Write_Cmd_Data(0x0030, 0x0000);
+     458:	80 e3       	ldi	r24, 0x30	; 48
+     45a:	60 e0       	ldi	r22, 0x00	; 0
+     45c:	70 e0       	ldi	r23, 0x00	; 0
+     45e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0031, 0x0505);
+     462:	81 e3       	ldi	r24, 0x31	; 49
+     464:	65 e0       	ldi	r22, 0x05	; 5
+     466:	75 e0       	ldi	r23, 0x05	; 5
+     468:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0032, 0x0304);
+     46c:	82 e3       	ldi	r24, 0x32	; 50
+     46e:	64 e0       	ldi	r22, 0x04	; 4
+     470:	73 e0       	ldi	r23, 0x03	; 3
+     472:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0035, 0x0006);
+     476:	85 e3       	ldi	r24, 0x35	; 53
+     478:	66 e0       	ldi	r22, 0x06	; 6
+     47a:	70 e0       	ldi	r23, 0x00	; 0
+     47c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0036, 0x0707);
+     480:	86 e3       	ldi	r24, 0x36	; 54
+     482:	67 e0       	ldi	r22, 0x07	; 7
+     484:	77 e0       	ldi	r23, 0x07	; 7
+     486:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0037, 0x0105);
+     48a:	87 e3       	ldi	r24, 0x37	; 55
+     48c:	65 e0       	ldi	r22, 0x05	; 5
+     48e:	71 e0       	ldi	r23, 0x01	; 1
+     490:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0038, 0x0002);
+     494:	88 e3       	ldi	r24, 0x38	; 56
+     496:	62 e0       	ldi	r22, 0x02	; 2
+     498:	70 e0       	ldi	r23, 0x00	; 0
+     49a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0039, 0x0707);
+     49e:	89 e3       	ldi	r24, 0x39	; 57
+     4a0:	67 e0       	ldi	r22, 0x07	; 7
+     4a2:	77 e0       	ldi	r23, 0x07	; 7
+     4a4:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x003C, 0x0704);
+     4a8:	8c e3       	ldi	r24, 0x3C	; 60
+     4aa:	64 e0       	ldi	r22, 0x04	; 4
+     4ac:	77 e0       	ldi	r23, 0x07	; 7
+     4ae:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x003D, 0x0807);
+     4b2:	8d e3       	ldi	r24, 0x3D	; 61
+     4b4:	67 e0       	ldi	r22, 0x07	; 7
+     4b6:	78 e0       	ldi	r23, 0x08	; 8
+     4b8:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+
+	//------------------ Set GRAM area ---------------//
+	Write_Cmd_Data(0x0050, 0x0000); // Horizontal GRAM Start Address
+     4bc:	80 e5       	ldi	r24, 0x50	; 80
+     4be:	60 e0       	ldi	r22, 0x00	; 0
+     4c0:	70 e0       	ldi	r23, 0x00	; 0
+     4c2:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0051, 0x00EF); // Horizontal GRAM End Address
+     4c6:	81 e5       	ldi	r24, 0x51	; 81
+     4c8:	6f ee       	ldi	r22, 0xEF	; 239
+     4ca:	70 e0       	ldi	r23, 0x00	; 0
+     4cc:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0052, 0x0000); // Vertical GRAM Start Address
+     4d0:	82 e5       	ldi	r24, 0x52	; 82
+     4d2:	60 e0       	ldi	r22, 0x00	; 0
+     4d4:	70 e0       	ldi	r23, 0x00	; 0
+     4d6:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0053, 0x013F); // Vertical GRAM Start Address
+     4da:	83 e5       	ldi	r24, 0x53	; 83
+     4dc:	6f e3       	ldi	r22, 0x3F	; 63
+     4de:	71 e0       	ldi	r23, 0x01	; 1
+     4e0:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0060, 0x2700); // Gate Scan Line
+     4e4:	80 e6       	ldi	r24, 0x60	; 96
+     4e6:	60 e0       	ldi	r22, 0x00	; 0
+     4e8:	77 e2       	ldi	r23, 0x27	; 39
+     4ea:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0061, 0x0001); // NDL,VLE, REV
+     4ee:	81 e6       	ldi	r24, 0x61	; 97
+     4f0:	61 e0       	ldi	r22, 0x01	; 1
+     4f2:	70 e0       	ldi	r23, 0x00	; 0
+     4f4:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x006A, 0x0000); // set scrolling line
+     4f8:	8a e6       	ldi	r24, 0x6A	; 106
+     4fa:	60 e0       	ldi	r22, 0x00	; 0
+     4fc:	70 e0       	ldi	r23, 0x00	; 0
+	Write_Cmd_Data(0x0051, 0x00EF); // Horizontal GRAM End Address
+	Write_Cmd_Data(0x0052, 0x0000); // Vertical GRAM Start Address
+	Write_Cmd_Data(0x0053, 0x013F); // Vertical GRAM Start Address
+	Write_Cmd_Data(0x0060, 0x2700); // Gate Scan Line
+	Write_Cmd_Data(0x0061, 0x0001); // NDL,VLE, REV
+	Write_Cmd_Data(0x006A, 0x2700); // set scrolling line
+     4fe:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x20, 0x0000);   // GRAM horizontal Address
+     502:	80 e2       	ldi	r24, 0x20	; 32
+     504:	60 e0       	ldi	r22, 0x00	; 0
+     506:	70 e0       	ldi	r23, 0x00	; 0
+     508:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x21, 0x0000);   // GRAM Vertical Address
+     50c:	81 e2       	ldi	r24, 0x21	; 33
+     50e:	60 e0       	ldi	r22, 0x00	; 0
+     510:	70 e0       	ldi	r23, 0x00	; 0
+     512:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+
+	//-------------- Partial Display Control ---------//
+	Write_Cmd_Data(0x0080, 0x0000);
+     516:	80 e8       	ldi	r24, 0x80	; 128
+     518:	60 e0       	ldi	r22, 0x00	; 0
+     51a:	70 e0       	ldi	r23, 0x00	; 0
+     51c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0081, 0x0000);
+     520:	81 e8       	ldi	r24, 0x81	; 129
+     522:	60 e0       	ldi	r22, 0x00	; 0
+     524:	70 e0       	ldi	r23, 0x00	; 0
+     526:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0082, 0x0000);
+     52a:	82 e8       	ldi	r24, 0x82	; 130
+     52c:	60 e0       	ldi	r22, 0x00	; 0
+     52e:	70 e0       	ldi	r23, 0x00	; 0
+     530:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0083, 0x0000);
+     534:	83 e8       	ldi	r24, 0x83	; 131
+     536:	60 e0       	ldi	r22, 0x00	; 0
+     538:	70 e0       	ldi	r23, 0x00	; 0
+     53a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0084, 0x0000);
+     53e:	84 e8       	ldi	r24, 0x84	; 132
+     540:	60 e0       	ldi	r22, 0x00	; 0
+     542:	70 e0       	ldi	r23, 0x00	; 0
+     544:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0085, 0x0000);
+     548:	85 e8       	ldi	r24, 0x85	; 133
+     54a:	60 e0       	ldi	r22, 0x00	; 0
+     54c:	70 e0       	ldi	r23, 0x00	; 0
+     54e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+
+	//-------------- Panel Control ---------//
+    Write_Cmd_Data(0x90,0x0010);   //Frame Cycle Contral
+     552:	80 e9       	ldi	r24, 0x90	; 144
+     554:	60 e1       	ldi	r22, 0x10	; 16
+     556:	70 e0       	ldi	r23, 0x00	; 0
+     558:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x92,0x0000);   //Panel Interface Contral
+     55c:	82 e9       	ldi	r24, 0x92	; 146
+     55e:	60 e0       	ldi	r22, 0x00	; 0
+     560:	70 e0       	ldi	r23, 0x00	; 0
+     562:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x93,0x0003);   //Panel Interface Contral 3. 
+     566:	83 e9       	ldi	r24, 0x93	; 147
+     568:	63 e0       	ldi	r22, 0x03	; 3
+     56a:	70 e0       	ldi	r23, 0x00	; 0
+     56c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x95,0x0110);   //Frame Cycle Contral
+     570:	85 e9       	ldi	r24, 0x95	; 149
+     572:	60 e1       	ldi	r22, 0x10	; 16
+     574:	71 e0       	ldi	r23, 0x01	; 1
+     576:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x97,0x0000);   // 
+     57a:	87 e9       	ldi	r24, 0x97	; 151
+     57c:	60 e0       	ldi	r22, 0x00	; 0
+     57e:	70 e0       	ldi	r23, 0x00	; 0
+     580:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x98,0x0000);   //Frame Cycle Contral.     
+     584:	88 e9       	ldi	r24, 0x98	; 152
+     586:	60 e0       	ldi	r22, 0x00	; 0
+     588:	70 e0       	ldi	r23, 0x00	; 0
+     58a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+
+	//-------------- Display on ---------//
+    Write_Cmd_Data(0x07,0x0173); 
+     58e:	87 e0       	ldi	r24, 0x07	; 7
+     590:	63 e7       	ldi	r22, 0x73	; 115
+     592:	71 e0       	ldi	r23, 0x01	; 1
+     594:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+     598:	08 95       	ret
+
+	else if(Device_code==0x1505 )
+     {
+
+    //************* Start Initial Sequence **********//
+	Write_Cmd_Data(0x00,0x0001);   //Set the OSC bit as ‘1’ to start the internal oscillator
+     59a:	80 e0       	ldi	r24, 0x00	; 0
+     59c:	61 e0       	ldi	r22, 0x01	; 1
+     59e:	70 e0       	ldi	r23, 0x00	; 0
+     5a0:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x01,0x0100);   // set SS and SM bit
+     5a4:	81 e0       	ldi	r24, 0x01	; 1
+     5a6:	60 e0       	ldi	r22, 0x00	; 0
+     5a8:	71 e0       	ldi	r23, 0x01	; 1
+     5aa:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x02,0x0700);   // set 1 line inversion
+     5ae:	82 e0       	ldi	r24, 0x02	; 2
+     5b0:	60 e0       	ldi	r22, 0x00	; 0
+     5b2:	77 e0       	ldi	r23, 0x07	; 7
+     5b4:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x03,0x1030);   //set GRAM Write direction and BGR=1
+     5b8:	83 e0       	ldi	r24, 0x03	; 3
+     5ba:	60 e3       	ldi	r22, 0x30	; 48
+     5bc:	70 e1       	ldi	r23, 0x10	; 16
+     5be:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x04,0x0000);   // Resize register
+     5c2:	84 e0       	ldi	r24, 0x04	; 4
+     5c4:	60 e0       	ldi	r22, 0x00	; 0
+     5c6:	70 e0       	ldi	r23, 0x00	; 0
+     5c8:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x08,0x0202);   // set the back porch and front porch
+     5cc:	88 e0       	ldi	r24, 0x08	; 8
+     5ce:	62 e0       	ldi	r22, 0x02	; 2
+     5d0:	72 e0       	ldi	r23, 0x02	; 2
+     5d2:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x09,0x0000);   // set non-display area refresh cycle ISC[3:0]
+     5d6:	89 e0       	ldi	r24, 0x09	; 9
+     5d8:	60 e0       	ldi	r22, 0x00	; 0
+     5da:	70 e0       	ldi	r23, 0x00	; 0
+     5dc:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0A,0x0000);   // FMARK function
+     5e0:	8a e0       	ldi	r24, 0x0A	; 10
+     5e2:	60 e0       	ldi	r22, 0x00	; 0
+     5e4:	70 e0       	ldi	r23, 0x00	; 0
+     5e6:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0C,0x0000);   // RGB interface setting
+     5ea:	8c e0       	ldi	r24, 0x0C	; 12
+     5ec:	60 e0       	ldi	r22, 0x00	; 0
+     5ee:	70 e0       	ldi	r23, 0x00	; 0
+     5f0:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0D,0x0000);   // Frame marker Position
+     5f4:	8d e0       	ldi	r24, 0x0D	; 13
+     5f6:	60 e0       	ldi	r22, 0x00	; 0
+     5f8:	70 e0       	ldi	r23, 0x00	; 0
+     5fa:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    Write_Cmd_Data(0x0F,0x0000);   // RGB interface polarity
+     5fe:	8f e0       	ldi	r24, 0x0F	; 15
+     600:	60 e0       	ldi	r22, 0x00	; 0
+     602:	70 e0       	ldi	r23, 0x00	; 0
+     604:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    delayms(30);
+	//*************Power On sequence ****************//
+	Write_Cmd_Data(0x10, 0x16b0);   // SAP, BT[3:0], AP, DSTB, SLP, STB
+     608:	80 e1       	ldi	r24, 0x10	; 16
+     60a:	60 eb       	ldi	r22, 0xB0	; 176
+     60c:	76 e1       	ldi	r23, 0x16	; 22
+     60e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	delayms(30);
+	Write_Cmd_Data(0x11, 0x0007);   //Write final user’s setting values to VC bit
+     612:	81 e1       	ldi	r24, 0x11	; 17
+     614:	67 e0       	ldi	r22, 0x07	; 7
+     616:	70 e0       	ldi	r23, 0x00	; 0
+     618:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x12, 0x013a);   // set Internal reference voltage
+     61c:	82 e1       	ldi	r24, 0x12	; 18
+     61e:	6a e3       	ldi	r22, 0x3A	; 58
+     620:	71 e0       	ldi	r23, 0x01	; 1
+     622:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x13, 0x1a00);   // VDV[4:0] for VCOM amplitude
+     626:	83 e1       	ldi	r24, 0x13	; 19
+     628:	60 e0       	ldi	r22, 0x00	; 0
+     62a:	7a e1       	ldi	r23, 0x1A	; 26
+     62c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+    delayms(30);
+    Write_Cmd_Data(0x29, 0x000c);   // Set VCM[5:0] for VCOMH
+     630:	89 e2       	ldi	r24, 0x29	; 41
+     632:	6c e0       	ldi	r22, 0x0C	; 12
+     634:	70 e0       	ldi	r23, 0x00	; 0
+     636:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	delayms(30); // Delay 50ms
+
+	// ----------- Adjust the Gamma Curve ----------//
+	Write_Cmd_Data(0x0030, 0x0000);
+     63a:	80 e3       	ldi	r24, 0x30	; 48
+     63c:	60 e0       	ldi	r22, 0x00	; 0
+     63e:	70 e0       	ldi	r23, 0x00	; 0
+     640:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0031, 0x0505);
+     644:	81 e3       	ldi	r24, 0x31	; 49
+     646:	65 e0       	ldi	r22, 0x05	; 5
+     648:	75 e0       	ldi	r23, 0x05	; 5
+     64a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0032, 0x0304);
+     64e:	82 e3       	ldi	r24, 0x32	; 50
+     650:	64 e0       	ldi	r22, 0x04	; 4
+     652:	73 e0       	ldi	r23, 0x03	; 3
+     654:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0035, 0x0006);
+     658:	85 e3       	ldi	r24, 0x35	; 53
+     65a:	66 e0       	ldi	r22, 0x06	; 6
+     65c:	70 e0       	ldi	r23, 0x00	; 0
+     65e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0036, 0x0707);
+     662:	86 e3       	ldi	r24, 0x36	; 54
+     664:	67 e0       	ldi	r22, 0x07	; 7
+     666:	77 e0       	ldi	r23, 0x07	; 7
+     668:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0037, 0x0105);
+     66c:	87 e3       	ldi	r24, 0x37	; 55
+     66e:	65 e0       	ldi	r22, 0x05	; 5
+     670:	71 e0       	ldi	r23, 0x01	; 1
+     672:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0038, 0x0002);
+     676:	88 e3       	ldi	r24, 0x38	; 56
+     678:	62 e0       	ldi	r22, 0x02	; 2
+     67a:	70 e0       	ldi	r23, 0x00	; 0
+     67c:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0039, 0x0707);
+     680:	89 e3       	ldi	r24, 0x39	; 57
+     682:	67 e0       	ldi	r22, 0x07	; 7
+     684:	77 e0       	ldi	r23, 0x07	; 7
+     686:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x003C, 0x0704);
+     68a:	8c e3       	ldi	r24, 0x3C	; 60
+     68c:	64 e0       	ldi	r22, 0x04	; 4
+     68e:	77 e0       	ldi	r23, 0x07	; 7
+     690:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x003D, 0x0807);
+     694:	8d e3       	ldi	r24, 0x3D	; 61
+     696:	67 e0       	ldi	r22, 0x07	; 7
+     698:	78 e0       	ldi	r23, 0x08	; 8
+     69a:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+
+	//------------------ Set GRAM area ---------------//
+	Write_Cmd_Data(0x0050, 0x0000); // Horizontal GRAM Start Address
+     69e:	80 e5       	ldi	r24, 0x50	; 80
+     6a0:	60 e0       	ldi	r22, 0x00	; 0
+     6a2:	70 e0       	ldi	r23, 0x00	; 0
+     6a4:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0051, 0x00EF); // Horizontal GRAM End Address
+     6a8:	81 e5       	ldi	r24, 0x51	; 81
+     6aa:	6f ee       	ldi	r22, 0xEF	; 239
+     6ac:	70 e0       	ldi	r23, 0x00	; 0
+     6ae:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0052, 0x0000); // Vertical GRAM Start Address
+     6b2:	82 e5       	ldi	r24, 0x52	; 82
+     6b4:	60 e0       	ldi	r22, 0x00	; 0
+     6b6:	70 e0       	ldi	r23, 0x00	; 0
+     6b8:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0053, 0x013F); // Vertical GRAM Start Address
+     6bc:	83 e5       	ldi	r24, 0x53	; 83
+     6be:	6f e3       	ldi	r22, 0x3F	; 63
+     6c0:	71 e0       	ldi	r23, 0x01	; 1
+     6c2:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0060, 0x2700); // Gate Scan Line
+     6c6:	80 e6       	ldi	r24, 0x60	; 96
+     6c8:	60 e0       	ldi	r22, 0x00	; 0
+     6ca:	77 e2       	ldi	r23, 0x27	; 39
+     6cc:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x0061, 0x0001); // NDL,VLE, REV
+     6d0:	81 e6       	ldi	r24, 0x61	; 97
+     6d2:	61 e0       	ldi	r22, 0x01	; 1
+     6d4:	70 e0       	ldi	r23, 0x00	; 0
+     6d6:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+	Write_Cmd_Data(0x006A, 0x2700); // set scrolling line
+     6da:	8a e6       	ldi	r24, 0x6A	; 106
+     6dc:	60 e0       	ldi	r22, 0x00	; 0
+     6de:	77 e2       	ldi	r23, 0x27	; 39
+     6e0:	0e cf       	rjmp	.-484    	; 0x4fe <TFT_Initial+0x3a8>
+
+000006e2 <LCD_SetPos>:
+//	实现功能：	设置坐标
+//  输入参数：  x0，y0 起始坐标
+//              x1，y1 结束坐标
+***************************************************************************************************/
+void LCD_SetPos(unsigned int x0,unsigned int x1,unsigned int y0,unsigned int y1)
+{
+     6e2:	af 92       	push	r10
+     6e4:	bf 92       	push	r11
+     6e6:	cf 92       	push	r12
+     6e8:	df 92       	push	r13
+     6ea:	ef 92       	push	r14
+     6ec:	ff 92       	push	r15
+     6ee:	0f 93       	push	r16
+     6f0:	1f 93       	push	r17
+     6f2:	6c 01       	movw	r12, r24
+     6f4:	8b 01       	movw	r16, r22
+     6f6:	5a 01       	movw	r10, r20
+     6f8:	79 01       	movw	r14, r18
+
+  Write_Cmd_Data(0x50,x0);  // Horizontal GRAM Start Address
+     6fa:	80 e5       	ldi	r24, 0x50	; 80
+     6fc:	b6 01       	movw	r22, r12
+     6fe:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+  Write_Cmd_Data(0x51,x1);  // Horizontal GRAM End Address
+     702:	81 e5       	ldi	r24, 0x51	; 81
+     704:	b8 01       	movw	r22, r16
+     706:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+  Write_Cmd_Data(0x52,y0);  // Vertical GRAM Start Address
+     70a:	82 e5       	ldi	r24, 0x52	; 82
+     70c:	b5 01       	movw	r22, r10
+     70e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+  Write_Cmd_Data(0x53,y1);  // Vertical GRAM Start Address
+     712:	83 e5       	ldi	r24, 0x53	; 83
+     714:	b7 01       	movw	r22, r14
+     716:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+  Write_Cmd_Data(0x20,x0);  // GRAM horizontal Address
+     71a:	80 e2       	ldi	r24, 0x20	; 32
+     71c:	b6 01       	movw	r22, r12
+     71e:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+  Write_Cmd_Data(0x21,y0);  // GRAM Vertical Address
+     722:	81 e2       	ldi	r24, 0x21	; 33
+     724:	b5 01       	movw	r22, r10
+     726:	0e 94 9c 00 	call	0x138	; 0x138 <Write_Cmd_Data>
+  Write_Cmd (0x00,0x22);    // 0x0022,Start to Write Data to GRAM 
+     72a:	80 e0       	ldi	r24, 0x00	; 0
+     72c:	62 e2       	ldi	r22, 0x22	; 34
+     72e:	0e 94 68 00 	call	0xd0	; 0xd0 <Write_Cmd>
+}
+     732:	1f 91       	pop	r17
+     734:	0f 91       	pop	r16
+     736:	ff 90       	pop	r15
+     738:	ef 90       	pop	r14
+     73a:	df 90       	pop	r13
+     73c:	cf 90       	pop	r12
+     73e:	bf 90       	pop	r11
+     740:	af 90       	pop	r10
+     742:	08 95       	ret
+
+00000744 <Show_RGB>:
+//              x1，y1 结束坐标
+//		        Color  背景颜色
+***************************************************************************************************/
+
+void Show_RGB (unsigned int x0,unsigned int x1,unsigned int y0,unsigned int y1,unsigned int Color)
+{
+     744:	8f 92       	push	r8
+     746:	9f 92       	push	r9
+     748:	af 92       	push	r10
+     74a:	bf 92       	push	r11
+     74c:	cf 92       	push	r12
+     74e:	df 92       	push	r13
+     750:	ef 92       	push	r14
+     752:	ff 92       	push	r15
+     754:	0f 93       	push	r16
+     756:	1f 93       	push	r17
+     758:	cf 93       	push	r28
+     75a:	df 93       	push	r29
+     75c:	5c 01       	movw	r10, r24
+     75e:	7b 01       	movw	r14, r22
+     760:	ea 01       	movw	r28, r20
+     762:	49 01       	movw	r8, r18
+	unsigned int i,j;
+	LCD_SetPos(x0,x1,y0,y1);      //设置显示位置
+     764:	0e 94 71 03 	call	0x6e2	; 0x6e2 <LCD_SetPos>
+	for (i=y0;i<=y1;i++)
+     768:	8c 16       	cp	r8, r28
+     76a:	9d 06       	cpc	r9, r29
+     76c:	90 f0       	brcs	.+36     	; 0x792 <Show_RGB+0x4e>
+     76e:	6e 01       	movw	r12, r28
+	{
+	   for (j=x0;j<=x1;j++)
+     770:	ea 14       	cp	r14, r10
+     772:	fb 04       	cpc	r15, r11
+     774:	40 f0       	brcs	.+16     	; 0x786 <Show_RGB+0x42>
+
+void Show_RGB (unsigned int x0,unsigned int x1,unsigned int y0,unsigned int y1,unsigned int Color)
+{
+	unsigned int i,j;
+	LCD_SetPos(x0,x1,y0,y1);      //设置显示位置
+	for (i=y0;i<=y1;i++)
+     776:	e5 01       	movw	r28, r10
+	{
+	   for (j=x0;j<=x1;j++)
+	       Write_Data_U16(Color);
+     778:	c8 01       	movw	r24, r16
+     77a:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+{
+	unsigned int i,j;
+	LCD_SetPos(x0,x1,y0,y1);      //设置显示位置
+	for (i=y0;i<=y1;i++)
+	{
+	   for (j=x0;j<=x1;j++)
+     77e:	21 96       	adiw	r28, 0x01	; 1
+     780:	ec 16       	cp	r14, r28
+     782:	fd 06       	cpc	r15, r29
+     784:	c8 f7       	brcc	.-14     	; 0x778 <Show_RGB+0x34>
+
+void Show_RGB (unsigned int x0,unsigned int x1,unsigned int y0,unsigned int y1,unsigned int Color)
+{
+	unsigned int i,j;
+	LCD_SetPos(x0,x1,y0,y1);      //设置显示位置
+	for (i=y0;i<=y1;i++)
+     786:	08 94       	sec
+     788:	c1 1c       	adc	r12, r1
+     78a:	d1 1c       	adc	r13, r1
+     78c:	8c 14       	cp	r8, r12
+     78e:	9d 04       	cpc	r9, r13
+     790:	78 f7       	brcc	.-34     	; 0x770 <Show_RGB+0x2c>
+	{
+	   for (j=x0;j<=x1;j++)
+	       Write_Data_U16(Color);
+	}
+}
+     792:	df 91       	pop	r29
+     794:	cf 91       	pop	r28
+     796:	1f 91       	pop	r17
+     798:	0f 91       	pop	r16
+     79a:	ff 90       	pop	r15
+     79c:	ef 90       	pop	r14
+     79e:	df 90       	pop	r13
+     7a0:	cf 90       	pop	r12
+     7a2:	bf 90       	pop	r11
+     7a4:	af 90       	pop	r10
+     7a6:	9f 90       	pop	r9
+     7a8:	8f 90       	pop	r8
+     7aa:	08 95       	ret
+
+000007ac <PutGB2424>:
+          y 纵坐标
+          c 需要显示的汉字码
+	  fColor 字符颜色
+          bColor 字符背景颜色
+***********************************************************************************************************/
+void PutGB2424(unsigned short x, unsigned short  y, unsigned char c[2], unsigned int fColor,unsigned int bColor){
+     7ac:	2f 92       	push	r2
+     7ae:	3f 92       	push	r3
+     7b0:	4f 92       	push	r4
+     7b2:	5f 92       	push	r5
+     7b4:	6f 92       	push	r6
+     7b6:	7f 92       	push	r7
+     7b8:	8f 92       	push	r8
+     7ba:	9f 92       	push	r9
+     7bc:	af 92       	push	r10
+     7be:	bf 92       	push	r11
+     7c0:	cf 92       	push	r12
+     7c2:	df 92       	push	r13
+     7c4:	ef 92       	push	r14
+     7c6:	ff 92       	push	r15
+     7c8:	0f 93       	push	r16
+     7ca:	1f 93       	push	r17
+     7cc:	cf 93       	push	r28
+     7ce:	df 93       	push	r29
+     7d0:	fc 01       	movw	r30, r24
+     7d2:	db 01       	movw	r26, r22
+     7d4:	1a 01       	movw	r2, r20
+     7d6:	49 01       	movw	r8, r18
+     7d8:	58 01       	movw	r10, r16
+	unsigned int i,j,k;
+
+	LCD_SetPos(x,  x+24-1,y, y+24-1);
+     7da:	77 96       	adiw	r30, 0x17	; 23
+     7dc:	bf 01       	movw	r22, r30
+     7de:	ad 01       	movw	r20, r26
+     7e0:	57 96       	adiw	r26, 0x17	; 23
+     7e2:	9d 01       	movw	r18, r26
+     7e4:	0e 94 71 03 	call	0x6e2	; 0x6e2 <LCD_SetPos>
+     7e8:	4f ed       	ldi	r20, 0xDF	; 223
+     7ea:	64 2e       	mov	r6, r20
+     7ec:	47 e0       	ldi	r20, 0x07	; 7
+     7ee:	74 2e       	mov	r7, r20
+     7f0:	44 24       	eor	r4, r4
+     7f2:	55 24       	eor	r5, r5
+     7f4:	0c c0       	rjmp	.+24     	; 0x80e <PutGB2424+0x62>
+
+	for (k=0;k<11;k++) { //11表示自建汉字库中的个数，循环查询内码
+     7f6:	08 94       	sec
+     7f8:	41 1c       	adc	r4, r1
+     7fa:	51 1c       	adc	r5, r1
+     7fc:	8a e4       	ldi	r24, 0x4A	; 74
+     7fe:	90 e0       	ldi	r25, 0x00	; 0
+     800:	68 0e       	add	r6, r24
+     802:	79 1e       	adc	r7, r25
+     804:	9b e0       	ldi	r25, 0x0B	; 11
+     806:	49 16       	cp	r4, r25
+     808:	51 04       	cpc	r5, r1
+     80a:	09 f4       	brne	.+2      	; 0x80e <PutGB2424+0x62>
+     80c:	48 c0       	rjmp	.+144    	; 0x89e <PutGB2424+0xf2>
+	  if ((codeGB_24[k].Index[0]==c[0])&&(codeGB_24[k].Index[1]==c[1])){ 
+     80e:	f3 01       	movw	r30, r6
+     810:	90 81       	ld	r25, Z
+     812:	f1 01       	movw	r30, r2
+     814:	80 81       	ld	r24, Z
+     816:	98 17       	cp	r25, r24
+     818:	71 f7       	brne	.-36     	; 0x7f6 <PutGB2424+0x4a>
+     81a:	f3 01       	movw	r30, r6
+     81c:	91 81       	ldd	r25, Z+1	; 0x01
+     81e:	f1 01       	movw	r30, r2
+     820:	81 81       	ldd	r24, Z+1	; 0x01
+     822:	98 17       	cp	r25, r24
+     824:	41 f7       	brne	.-48     	; 0x7f6 <PutGB2424+0x4a>
+     826:	c2 01       	movw	r24, r4
+     828:	88 0f       	add	r24, r24
+     82a:	99 1f       	adc	r25, r25
+     82c:	88 0f       	add	r24, r24
+     82e:	99 1f       	adc	r25, r25
+     830:	7c 01       	movw	r14, r24
+     832:	ee 0c       	add	r14, r14
+     834:	ff 1c       	adc	r15, r15
+     836:	ee 0c       	add	r14, r14
+     838:	ff 1c       	adc	r15, r15
+     83a:	ee 0c       	add	r14, r14
+     83c:	ff 1c       	adc	r15, r15
+     83e:	e8 0e       	add	r14, r24
+     840:	f9 1e       	adc	r15, r25
+     842:	e4 0c       	add	r14, r4
+     844:	f5 1c       	adc	r15, r5
+     846:	ee 0c       	add	r14, r14
+     848:	ff 1c       	adc	r15, r15
+     84a:	81 ee       	ldi	r24, 0xE1	; 225
+     84c:	97 e0       	ldi	r25, 0x07	; 7
+     84e:	e8 0e       	add	r14, r24
+     850:	f9 1e       	adc	r15, r25
+     852:	cc 24       	eor	r12, r12
+     854:	dd 24       	eor	r13, r13
+    	for(i=0;i<72;i++) {
+		  unsigned short m=codeGB_24[k].Msk[i];
+     856:	f7 01       	movw	r30, r14
+     858:	80 81       	ld	r24, Z
+     85a:	08 2f       	mov	r16, r24
+     85c:	10 e0       	ldi	r17, 0x00	; 0
+     85e:	c0 e0       	ldi	r28, 0x00	; 0
+     860:	d0 e0       	ldi	r29, 0x00	; 0
+     862:	09 c0       	rjmp	.+18     	; 0x876 <PutGB2424+0xca>
+		  for(j=0;j<8;j++) {
+			if((m&0x80)==0x80) {
+				Write_Data_U16(fColor);
+     864:	c4 01       	movw	r24, r8
+     866:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+
+	for (k=0;k<11;k++) { //11表示自建汉字库中的个数，循环查询内码
+	  if ((codeGB_24[k].Index[0]==c[0])&&(codeGB_24[k].Index[1]==c[1])){ 
+    	for(i=0;i<72;i++) {
+		  unsigned short m=codeGB_24[k].Msk[i];
+		  for(j=0;j<8;j++) {
+     86a:	21 96       	adiw	r28, 0x01	; 1
+     86c:	c8 30       	cpi	r28, 0x08	; 8
+     86e:	d1 05       	cpc	r29, r1
+     870:	59 f0       	breq	.+22     	; 0x888 <PutGB2424+0xdc>
+				Write_Data_U16(fColor);
+				}
+			else {
+				Write_Data_U16(bColor);
+				}
+			m<<=1;
+     872:	00 0f       	add	r16, r16
+     874:	11 1f       	adc	r17, r17
+	for (k=0;k<11;k++) { //11表示自建汉字库中的个数，循环查询内码
+	  if ((codeGB_24[k].Index[0]==c[0])&&(codeGB_24[k].Index[1]==c[1])){ 
+    	for(i=0;i<72;i++) {
+		  unsigned short m=codeGB_24[k].Msk[i];
+		  for(j=0;j<8;j++) {
+			if((m&0x80)==0x80) {
+     876:	07 fd       	sbrc	r16, 7
+     878:	f5 cf       	rjmp	.-22     	; 0x864 <PutGB2424+0xb8>
+				Write_Data_U16(fColor);
+				}
+			else {
+				Write_Data_U16(bColor);
+     87a:	c5 01       	movw	r24, r10
+     87c:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+
+	for (k=0;k<11;k++) { //11表示自建汉字库中的个数，循环查询内码
+	  if ((codeGB_24[k].Index[0]==c[0])&&(codeGB_24[k].Index[1]==c[1])){ 
+    	for(i=0;i<72;i++) {
+		  unsigned short m=codeGB_24[k].Msk[i];
+		  for(j=0;j<8;j++) {
+     880:	21 96       	adiw	r28, 0x01	; 1
+     882:	c8 30       	cpi	r28, 0x08	; 8
+     884:	d1 05       	cpc	r29, r1
+     886:	a9 f7       	brne	.-22     	; 0x872 <PutGB2424+0xc6>
+
+	LCD_SetPos(x,  x+24-1,y, y+24-1);
+
+	for (k=0;k<11;k++) { //11表示自建汉字库中的个数，循环查询内码
+	  if ((codeGB_24[k].Index[0]==c[0])&&(codeGB_24[k].Index[1]==c[1])){ 
+    	for(i=0;i<72;i++) {
+     888:	08 94       	sec
+     88a:	c1 1c       	adc	r12, r1
+     88c:	d1 1c       	adc	r13, r1
+     88e:	08 94       	sec
+     890:	e1 1c       	adc	r14, r1
+     892:	f1 1c       	adc	r15, r1
+     894:	f8 e4       	ldi	r31, 0x48	; 72
+     896:	cf 16       	cp	r12, r31
+     898:	d1 04       	cpc	r13, r1
+     89a:	e9 f6       	brne	.-70     	; 0x856 <PutGB2424+0xaa>
+     89c:	ac cf       	rjmp	.-168    	; 0x7f6 <PutGB2424+0x4a>
+			m<<=1;
+			} 
+		  }
+		}  
+	  }	
+}
+     89e:	df 91       	pop	r29
+     8a0:	cf 91       	pop	r28
+     8a2:	1f 91       	pop	r17
+     8a4:	0f 91       	pop	r16
+     8a6:	ff 90       	pop	r15
+     8a8:	ef 90       	pop	r14
+     8aa:	df 90       	pop	r13
+     8ac:	cf 90       	pop	r12
+     8ae:	bf 90       	pop	r11
+     8b0:	af 90       	pop	r10
+     8b2:	9f 90       	pop	r9
+     8b4:	8f 90       	pop	r8
+     8b6:	7f 90       	pop	r7
+     8b8:	6f 90       	pop	r6
+     8ba:	5f 90       	pop	r5
+     8bc:	4f 90       	pop	r4
+     8be:	3f 90       	pop	r3
+     8c0:	2f 90       	pop	r2
+     8c2:	08 95       	ret
+
+000008c4 <Put16x16>:
+//		        fColor 字符颜色
+//		        bColor 字符背景颜色
+***************************************************************************************************/
+
+void Put16x16(unsigned short x, unsigned short  y, unsigned char g[2], unsigned int fColor,unsigned int bColor)
+{
+     8c4:	2f 92       	push	r2
+     8c6:	3f 92       	push	r3
+     8c8:	4f 92       	push	r4
+     8ca:	5f 92       	push	r5
+     8cc:	6f 92       	push	r6
+     8ce:	7f 92       	push	r7
+     8d0:	8f 92       	push	r8
+     8d2:	9f 92       	push	r9
+     8d4:	af 92       	push	r10
+     8d6:	bf 92       	push	r11
+     8d8:	cf 92       	push	r12
+     8da:	df 92       	push	r13
+     8dc:	ef 92       	push	r14
+     8de:	ff 92       	push	r15
+     8e0:	0f 93       	push	r16
+     8e2:	1f 93       	push	r17
+     8e4:	cf 93       	push	r28
+     8e6:	df 93       	push	r29
+     8e8:	fc 01       	movw	r30, r24
+     8ea:	db 01       	movw	r26, r22
+     8ec:	1a 01       	movw	r2, r20
+     8ee:	49 01       	movw	r8, r18
+     8f0:	58 01       	movw	r10, r16
+	unsigned int i,j,k;
+
+	LCD_SetPos(x,  x+16-1,y, y+16-1);                       //设置汉字显示位置
+     8f2:	3f 96       	adiw	r30, 0x0f	; 15
+     8f4:	bf 01       	movw	r22, r30
+     8f6:	ad 01       	movw	r20, r26
+     8f8:	1f 96       	adiw	r26, 0x0f	; 15
+     8fa:	9d 01       	movw	r18, r26
+     8fc:	0e 94 71 03 	call	0x6e2	; 0x6e2 <LCD_SetPos>
+     900:	e3 ec       	ldi	r30, 0xC3	; 195
+     902:	6e 2e       	mov	r6, r30
+     904:	ea e0       	ldi	r30, 0x0A	; 10
+     906:	7e 2e       	mov	r7, r30
+     908:	44 24       	eor	r4, r4
+     90a:	55 24       	eor	r5, r5
+     90c:	0c c0       	rjmp	.+24     	; 0x926 <Put16x16+0x62>
+
+	for (k=0;k<32;k++)                                      //循环32次，查询汉字字模位置
+     90e:	08 94       	sec
+     910:	41 1c       	adc	r4, r1
+     912:	51 1c       	adc	r5, r1
+     914:	82 e2       	ldi	r24, 0x22	; 34
+     916:	90 e0       	ldi	r25, 0x00	; 0
+     918:	68 0e       	add	r6, r24
+     91a:	79 1e       	adc	r7, r25
+     91c:	90 e2       	ldi	r25, 0x20	; 32
+     91e:	49 16       	cp	r4, r25
+     920:	51 04       	cpc	r5, r1
+     922:	09 f4       	brne	.+2      	; 0x926 <Put16x16+0x62>
+     924:	42 c0       	rjmp	.+132    	; 0x9aa <Put16x16+0xe6>
+	{ 
+	  if ((ch16[k].GBK[0]==g[0])&&(ch16[k].GBK[1]==g[1]))   //判断第k个汉字的编码是否与输入汉字g[2]相等
+     926:	f3 01       	movw	r30, r6
+     928:	90 81       	ld	r25, Z
+     92a:	f1 01       	movw	r30, r2
+     92c:	80 81       	ld	r24, Z
+     92e:	98 17       	cp	r25, r24
+     930:	71 f7       	brne	.-36     	; 0x90e <Put16x16+0x4a>
+     932:	f3 01       	movw	r30, r6
+     934:	91 81       	ldd	r25, Z+1	; 0x01
+     936:	f1 01       	movw	r30, r2
+     938:	81 81       	ldd	r24, Z+1	; 0x01
+     93a:	98 17       	cp	r25, r24
+     93c:	41 f7       	brne	.-48     	; 0x90e <Put16x16+0x4a>
+     93e:	72 01       	movw	r14, r4
+     940:	e2 94       	swap	r14
+     942:	f2 94       	swap	r15
+     944:	70 ef       	ldi	r23, 0xF0	; 240
+     946:	f7 22       	and	r15, r23
+     948:	fe 24       	eor	r15, r14
+     94a:	e7 22       	and	r14, r23
+     94c:	fe 24       	eor	r15, r14
+     94e:	e4 0c       	add	r14, r4
+     950:	f5 1c       	adc	r15, r5
+     952:	ee 0c       	add	r14, r14
+     954:	ff 1c       	adc	r15, r15
+     956:	85 ec       	ldi	r24, 0xC5	; 197
+     958:	9a e0       	ldi	r25, 0x0A	; 10
+     95a:	e8 0e       	add	r14, r24
+     95c:	f9 1e       	adc	r15, r25
+     95e:	cc 24       	eor	r12, r12
+     960:	dd 24       	eor	r13, r13
+	  { 
+    	for(i=0;i<32;i++)                                   //如果相等，既已找到待显示字模位置，循环写入32字节
+		{
+		  unsigned short m=ch16[k].hz16[i];                 //读取32字节中的第i字节
+     962:	f7 01       	movw	r30, r14
+     964:	80 81       	ld	r24, Z
+     966:	08 2f       	mov	r16, r24
+     968:	10 e0       	ldi	r17, 0x00	; 0
+     96a:	c0 e0       	ldi	r28, 0x00	; 0
+     96c:	d0 e0       	ldi	r29, 0x00	; 0
+     96e:	09 c0       	rjmp	.+18     	; 0x982 <Put16x16+0xbe>
+		  for(j=0;j<8;j++)                                  //循环写入8位数据
+		   {                                                
+			 if((m&0x80)==0x80) Write_Data_U16(fColor);     //判断最高位是否为1,最高位为1，写入字符颜色
+     970:	c4 01       	movw	r24, r8
+     972:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+	  if ((ch16[k].GBK[0]==g[0])&&(ch16[k].GBK[1]==g[1]))   //判断第k个汉字的编码是否与输入汉字g[2]相等
+	  { 
+    	for(i=0;i<32;i++)                                   //如果相等，既已找到待显示字模位置，循环写入32字节
+		{
+		  unsigned short m=ch16[k].hz16[i];                 //读取32字节中的第i字节
+		  for(j=0;j<8;j++)                                  //循环写入8位数据
+     976:	21 96       	adiw	r28, 0x01	; 1
+     978:	c8 30       	cpi	r28, 0x08	; 8
+     97a:	d1 05       	cpc	r29, r1
+     97c:	59 f0       	breq	.+22     	; 0x994 <Put16x16+0xd0>
+		   {                                                
+			 if((m&0x80)==0x80) Write_Data_U16(fColor);     //判断最高位是否为1,最高位为1，写入字符颜色
+			 else              Write_Data_U16(bColor);      //最高位为0，写入背景颜色
+		     m<<=1;                                         //左移1位，准备写下一位
+     97e:	00 0f       	add	r16, r16
+     980:	11 1f       	adc	r17, r17
+    	for(i=0;i<32;i++)                                   //如果相等，既已找到待显示字模位置，循环写入32字节
+		{
+		  unsigned short m=ch16[k].hz16[i];                 //读取32字节中的第i字节
+		  for(j=0;j<8;j++)                                  //循环写入8位数据
+		   {                                                
+			 if((m&0x80)==0x80) Write_Data_U16(fColor);     //判断最高位是否为1,最高位为1，写入字符颜色
+     982:	07 fd       	sbrc	r16, 7
+     984:	f5 cf       	rjmp	.-22     	; 0x970 <Put16x16+0xac>
+			 else              Write_Data_U16(bColor);      //最高位为0，写入背景颜色
+     986:	c5 01       	movw	r24, r10
+     988:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+	  if ((ch16[k].GBK[0]==g[0])&&(ch16[k].GBK[1]==g[1]))   //判断第k个汉字的编码是否与输入汉字g[2]相等
+	  { 
+    	for(i=0;i<32;i++)                                   //如果相等，既已找到待显示字模位置，循环写入32字节
+		{
+		  unsigned short m=ch16[k].hz16[i];                 //读取32字节中的第i字节
+		  for(j=0;j<8;j++)                                  //循环写入8位数据
+     98c:	21 96       	adiw	r28, 0x01	; 1
+     98e:	c8 30       	cpi	r28, 0x08	; 8
+     990:	d1 05       	cpc	r29, r1
+     992:	a9 f7       	brne	.-22     	; 0x97e <Put16x16+0xba>
+
+	for (k=0;k<32;k++)                                      //循环32次，查询汉字字模位置
+	{ 
+	  if ((ch16[k].GBK[0]==g[0])&&(ch16[k].GBK[1]==g[1]))   //判断第k个汉字的编码是否与输入汉字g[2]相等
+	  { 
+    	for(i=0;i<32;i++)                                   //如果相等，既已找到待显示字模位置，循环写入32字节
+     994:	08 94       	sec
+     996:	c1 1c       	adc	r12, r1
+     998:	d1 1c       	adc	r13, r1
+     99a:	08 94       	sec
+     99c:	e1 1c       	adc	r14, r1
+     99e:	f1 1c       	adc	r15, r1
+     9a0:	f0 e2       	ldi	r31, 0x20	; 32
+     9a2:	cf 16       	cp	r12, r31
+     9a4:	d1 04       	cpc	r13, r1
+     9a6:	e9 f6       	brne	.-70     	; 0x962 <Put16x16+0x9e>
+     9a8:	b2 cf       	rjmp	.-156    	; 0x90e <Put16x16+0x4a>
+		     m<<=1;                                         //左移1位，准备写下一位
+	       } 
+		}
+	  }  
+    }	
+}
+     9aa:	df 91       	pop	r29
+     9ac:	cf 91       	pop	r28
+     9ae:	1f 91       	pop	r17
+     9b0:	0f 91       	pop	r16
+     9b2:	ff 90       	pop	r15
+     9b4:	ef 90       	pop	r14
+     9b6:	df 90       	pop	r13
+     9b8:	cf 90       	pop	r12
+     9ba:	bf 90       	pop	r11
+     9bc:	af 90       	pop	r10
+     9be:	9f 90       	pop	r9
+     9c0:	8f 90       	pop	r8
+     9c2:	7f 90       	pop	r7
+     9c4:	6f 90       	pop	r6
+     9c6:	5f 90       	pop	r5
+     9c8:	4f 90       	pop	r4
+     9ca:	3f 90       	pop	r3
+     9cc:	2f 90       	pop	r2
+     9ce:	08 95       	ret
+
+000009d0 <LCD_PutChar>:
+//		        fColor 字符颜色
+//		        bColor 字符背景颜色
+***************************************************************************************************/
+//#include "Ascii_8x16.h"
+void LCD_PutChar(unsigned short x, unsigned short y, char c, unsigned int fColor, unsigned int bColor)
+{
+     9d0:	8f 92       	push	r8
+     9d2:	9f 92       	push	r9
+     9d4:	af 92       	push	r10
+     9d6:	bf 92       	push	r11
+     9d8:	cf 92       	push	r12
+     9da:	df 92       	push	r13
+     9dc:	ef 92       	push	r14
+     9de:	ff 92       	push	r15
+     9e0:	0f 93       	push	r16
+     9e2:	1f 93       	push	r17
+     9e4:	cf 93       	push	r28
+     9e6:	df 93       	push	r29
+     9e8:	fc 01       	movw	r30, r24
+     9ea:	db 01       	movw	r26, r22
+     9ec:	f4 2e       	mov	r15, r20
+     9ee:	59 01       	movw	r10, r18
+     9f0:	68 01       	movw	r12, r16
+ unsigned int i,j;
+ LCD_SetPos(x,x+8-1,y,y+16-1);                    //设置字符显示位置
+     9f2:	37 96       	adiw	r30, 0x07	; 7
+     9f4:	bf 01       	movw	r22, r30
+     9f6:	ad 01       	movw	r20, r26
+     9f8:	1f 96       	adiw	r26, 0x0f	; 15
+     9fa:	9d 01       	movw	r18, r26
+     9fc:	0e 94 71 03 	call	0x6e2	; 0x6e2 <LCD_SetPos>
+     a00:	4f 2d       	mov	r20, r15
+     a02:	50 e0       	ldi	r21, 0x00	; 0
+     a04:	40 52       	subi	r20, 0x20	; 32
+     a06:	50 40       	sbci	r21, 0x00	; 0
+     a08:	42 95       	swap	r20
+     a0a:	52 95       	swap	r21
+     a0c:	50 7f       	andi	r21, 0xF0	; 240
+     a0e:	54 27       	eor	r21, r20
+     a10:	40 7f       	andi	r20, 0xF0	; 240
+     a12:	54 27       	eor	r21, r20
+     a14:	af ed       	ldi	r26, 0xDF	; 223
+     a16:	ea 2e       	mov	r14, r26
+     a18:	a1 e0       	ldi	r26, 0x01	; 1
+     a1a:	fa 2e       	mov	r15, r26
+     a1c:	e4 0e       	add	r14, r20
+     a1e:	f5 1e       	adc	r15, r21
+ for(i=0; i<16;i++) {                             //循环写入16字节，一个字符为16字节
+     a20:	ff ee       	ldi	r31, 0xEF	; 239
+     a22:	8f 2e       	mov	r8, r31
+     a24:	f1 e0       	ldi	r31, 0x01	; 1
+     a26:	9f 2e       	mov	r9, r31
+     a28:	84 0e       	add	r8, r20
+     a2a:	95 1e       	adc	r9, r21
+		unsigned char m=Font8x16[(c-0x20)*16+i];  //提取c字符的第i个字节以,c减去0x20是由于Ascii码库中的0~1f被去掉
+     a2c:	f7 01       	movw	r30, r14
+     a2e:	10 81       	ld	r17, Z
+     a30:	c0 e0       	ldi	r28, 0x00	; 0
+     a32:	d0 e0       	ldi	r29, 0x00	; 0
+     a34:	08 c0       	rjmp	.+16     	; 0xa46 <LCD_PutChar+0x76>
+		for(j=0;j<8;j++) {                        //循环写入8位，一个字节为8位
+			if((m&0x80)==0x80) {                  //判断最高位是否为1
+				Write_Data_U16(fColor);           //最高位为1，写入字符颜色
+				}
+			else {
+				Write_Data_U16(bColor);           //最高位为0，写入背景颜色
+     a36:	c6 01       	movw	r24, r12
+     a38:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+{
+ unsigned int i,j;
+ LCD_SetPos(x,x+8-1,y,y+16-1);                    //设置字符显示位置
+ for(i=0; i<16;i++) {                             //循环写入16字节，一个字符为16字节
+		unsigned char m=Font8x16[(c-0x20)*16+i];  //提取c字符的第i个字节以,c减去0x20是由于Ascii码库中的0~1f被去掉
+		for(j=0;j<8;j++) {                        //循环写入8位，一个字节为8位
+     a3c:	21 96       	adiw	r28, 0x01	; 1
+     a3e:	c8 30       	cpi	r28, 0x08	; 8
+     a40:	d1 05       	cpc	r29, r1
+     a42:	51 f0       	breq	.+20     	; 0xa58 <LCD_PutChar+0x88>
+				Write_Data_U16(fColor);           //最高位为1，写入字符颜色
+				}
+			else {
+				Write_Data_U16(bColor);           //最高位为0，写入背景颜色
+				}
+			m<<=1;                                //左移1位，准备写下一位
+     a44:	11 0f       	add	r17, r17
+ unsigned int i,j;
+ LCD_SetPos(x,x+8-1,y,y+16-1);                    //设置字符显示位置
+ for(i=0; i<16;i++) {                             //循环写入16字节，一个字符为16字节
+		unsigned char m=Font8x16[(c-0x20)*16+i];  //提取c字符的第i个字节以,c减去0x20是由于Ascii码库中的0~1f被去掉
+		for(j=0;j<8;j++) {                        //循环写入8位，一个字节为8位
+			if((m&0x80)==0x80) {                  //判断最高位是否为1
+     a46:	17 ff       	sbrs	r17, 7
+     a48:	f6 cf       	rjmp	.-20     	; 0xa36 <LCD_PutChar+0x66>
+				Write_Data_U16(fColor);           //最高位为1，写入字符颜色
+     a4a:	c5 01       	movw	r24, r10
+     a4c:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+{
+ unsigned int i,j;
+ LCD_SetPos(x,x+8-1,y,y+16-1);                    //设置字符显示位置
+ for(i=0; i<16;i++) {                             //循环写入16字节，一个字符为16字节
+		unsigned char m=Font8x16[(c-0x20)*16+i];  //提取c字符的第i个字节以,c减去0x20是由于Ascii码库中的0~1f被去掉
+		for(j=0;j<8;j++) {                        //循环写入8位，一个字节为8位
+     a50:	21 96       	adiw	r28, 0x01	; 1
+     a52:	c8 30       	cpi	r28, 0x08	; 8
+     a54:	d1 05       	cpc	r29, r1
+     a56:	b1 f7       	brne	.-20     	; 0xa44 <LCD_PutChar+0x74>
+				Write_Data_U16(fColor);           //最高位为1，写入字符颜色
+				}
+			else {
+				Write_Data_U16(bColor);           //最高位为0，写入背景颜色
+				}
+			m<<=1;                                //左移1位，准备写下一位
+     a58:	08 94       	sec
+     a5a:	e1 1c       	adc	r14, r1
+     a5c:	f1 1c       	adc	r15, r1
+//#include "Ascii_8x16.h"
+void LCD_PutChar(unsigned short x, unsigned short y, char c, unsigned int fColor, unsigned int bColor)
+{
+ unsigned int i,j;
+ LCD_SetPos(x,x+8-1,y,y+16-1);                    //设置字符显示位置
+ for(i=0; i<16;i++) {                             //循环写入16字节，一个字符为16字节
+     a5e:	e8 14       	cp	r14, r8
+     a60:	f9 04       	cpc	r15, r9
+     a62:	21 f7       	brne	.-56     	; 0xa2c <LCD_PutChar+0x5c>
+				Write_Data_U16(bColor);           //最高位为0，写入背景颜色
+				}
+			m<<=1;                                //左移1位，准备写下一位
+			}
+		}
+}
+     a64:	df 91       	pop	r29
+     a66:	cf 91       	pop	r28
+     a68:	1f 91       	pop	r17
+     a6a:	0f 91       	pop	r16
+     a6c:	ff 90       	pop	r15
+     a6e:	ef 90       	pop	r14
+     a70:	df 90       	pop	r13
+     a72:	cf 90       	pop	r12
+     a74:	bf 90       	pop	r11
+     a76:	af 90       	pop	r10
+     a78:	9f 90       	pop	r9
+     a7a:	8f 90       	pop	r8
+     a7c:	08 95       	ret
+
+00000a7e <LCD_PutString24>:
+          y 纵坐标
+         *s 需要显示的字符串
+	  fColor 字符颜色
+          bColor 字符背景颜色
+******************************************************************************************/
+void LCD_PutString24(unsigned short x, unsigned short y, unsigned char *s, unsigned int fColor, unsigned int bColor) {
+     a7e:	6f 92       	push	r6
+     a80:	7f 92       	push	r7
+     a82:	8f 92       	push	r8
+     a84:	9f 92       	push	r9
+     a86:	af 92       	push	r10
+     a88:	bf 92       	push	r11
+     a8a:	cf 92       	push	r12
+     a8c:	df 92       	push	r13
+     a8e:	ef 92       	push	r14
+     a90:	ff 92       	push	r15
+     a92:	0f 93       	push	r16
+     a94:	1f 93       	push	r17
+     a96:	cf 93       	push	r28
+     a98:	df 93       	push	r29
+     a9a:	3c 01       	movw	r6, r24
+     a9c:	4b 01       	movw	r8, r22
+     a9e:	ea 01       	movw	r28, r20
+     aa0:	59 01       	movw	r10, r18
+     aa2:	68 01       	movw	r12, r16
+     aa4:	ff 24       	eor	r15, r15
+			LCD_PutChar(x+l*8,y,*s,fColor,bColor);
+			s++;l++;
+			}
+		else
+		    {
+			PutGB2424(x+l*12,y,(unsigned char*)s,fColor,bColor);
+     aa6:	0c e0       	ldi	r16, 0x0C	; 12
+     aa8:	e0 2e       	mov	r14, r16
+	  fColor 字符颜色
+          bColor 字符背景颜色
+******************************************************************************************/
+void LCD_PutString24(unsigned short x, unsigned short y, unsigned char *s, unsigned int fColor, unsigned int bColor) {
+	 unsigned char l=0;
+	while(*s) {
+     aaa:	48 81       	ld	r20, Y
+     aac:	44 23       	and	r20, r20
+     aae:	b1 f0       	breq	.+44     	; 0xadc <LCD_PutString24+0x5e>
+		if( *s < 0x80) 
+     ab0:	47 fd       	sbrc	r20, 7
+     ab2:	23 c0       	rjmp	.+70     	; 0xafa <LCD_PutString24+0x7c>
+		    {
+			LCD_PutChar(x+l*8,y,*s,fColor,bColor);
+     ab4:	8f 2d       	mov	r24, r15
+     ab6:	90 e0       	ldi	r25, 0x00	; 0
+     ab8:	88 0f       	add	r24, r24
+     aba:	99 1f       	adc	r25, r25
+     abc:	88 0f       	add	r24, r24
+     abe:	99 1f       	adc	r25, r25
+     ac0:	88 0f       	add	r24, r24
+     ac2:	99 1f       	adc	r25, r25
+     ac4:	86 0d       	add	r24, r6
+     ac6:	97 1d       	adc	r25, r7
+     ac8:	b4 01       	movw	r22, r8
+     aca:	95 01       	movw	r18, r10
+     acc:	86 01       	movw	r16, r12
+     ace:	0e 94 e8 04 	call	0x9d0	; 0x9d0 <LCD_PutChar>
+			s++;l++;
+     ad2:	21 96       	adiw	r28, 0x01	; 1
+     ad4:	f3 94       	inc	r15
+	  fColor 字符颜色
+          bColor 字符背景颜色
+******************************************************************************************/
+void LCD_PutString24(unsigned short x, unsigned short y, unsigned char *s, unsigned int fColor, unsigned int bColor) {
+	 unsigned char l=0;
+	while(*s) {
+     ad6:	48 81       	ld	r20, Y
+     ad8:	44 23       	and	r20, r20
+     ada:	51 f7       	brne	.-44     	; 0xab0 <LCD_PutString24+0x32>
+		    {
+			PutGB2424(x+l*12,y,(unsigned char*)s,fColor,bColor);
+			s+=2;l+=2;
+			}
+		}
+	}
+     adc:	df 91       	pop	r29
+     ade:	cf 91       	pop	r28
+     ae0:	1f 91       	pop	r17
+     ae2:	0f 91       	pop	r16
+     ae4:	ff 90       	pop	r15
+     ae6:	ef 90       	pop	r14
+     ae8:	df 90       	pop	r13
+     aea:	cf 90       	pop	r12
+     aec:	bf 90       	pop	r11
+     aee:	af 90       	pop	r10
+     af0:	9f 90       	pop	r9
+     af2:	8f 90       	pop	r8
+     af4:	7f 90       	pop	r7
+     af6:	6f 90       	pop	r6
+     af8:	08 95       	ret
+			LCD_PutChar(x+l*8,y,*s,fColor,bColor);
+			s++;l++;
+			}
+		else
+		    {
+			PutGB2424(x+l*12,y,(unsigned char*)s,fColor,bColor);
+     afa:	fe 9c       	mul	r15, r14
+     afc:	c0 01       	movw	r24, r0
+     afe:	11 24       	eor	r1, r1
+     b00:	86 0d       	add	r24, r6
+     b02:	97 1d       	adc	r25, r7
+     b04:	b4 01       	movw	r22, r8
+     b06:	ae 01       	movw	r20, r28
+     b08:	95 01       	movw	r18, r10
+     b0a:	86 01       	movw	r16, r12
+     b0c:	0e 94 d6 03 	call	0x7ac	; 0x7ac <PutGB2424>
+			s+=2;l+=2;
+     b10:	22 96       	adiw	r28, 0x02	; 2
+     b12:	82 e0       	ldi	r24, 0x02	; 2
+     b14:	f8 0e       	add	r15, r24
+     b16:	c9 cf       	rjmp	.-110    	; 0xaaa <LCD_PutString24+0x2c>
+
+00000b18 <LCD_PutString>:
+//              y 纵坐标
+//		        *s 待显示的字符串,例如LCD_PutString(24,16,"123蓝芯",White,Blue);即把"123蓝芯"的第一个字符地址赋给指针变量s.
+//		        bColor 字符背景颜色
+**************************************************************************************************/
+void LCD_PutString(unsigned short x, unsigned short y, unsigned char *s, unsigned int fColor, unsigned int bColor) 
+{
+     b18:	6f 92       	push	r6
+     b1a:	7f 92       	push	r7
+     b1c:	8f 92       	push	r8
+     b1e:	9f 92       	push	r9
+     b20:	af 92       	push	r10
+     b22:	bf 92       	push	r11
+     b24:	cf 92       	push	r12
+     b26:	df 92       	push	r13
+     b28:	ff 92       	push	r15
+     b2a:	0f 93       	push	r16
+     b2c:	1f 93       	push	r17
+     b2e:	cf 93       	push	r28
+     b30:	df 93       	push	r29
+     b32:	3c 01       	movw	r6, r24
+     b34:	4b 01       	movw	r8, r22
+     b36:	ea 01       	movw	r28, r20
+     b38:	59 01       	movw	r10, r18
+     b3a:	68 01       	movw	r12, r16
+     b3c:	ff 24       	eor	r15, r15
+	 unsigned char l=0;                            //显示屏位置增量
+     while(*s) 
+     b3e:	48 81       	ld	r20, Y
+     b40:	44 23       	and	r20, r20
+     b42:	b1 f0       	breq	.+44     	; 0xb70 <LCD_PutString+0x58>
+	 {
+		if( *s < 0x80)                             //判断s指向的字符串中的某字符的编码值是否小于128,如果小于,即为ASCII字符
+     b44:	47 fd       	sbrc	r20, 7
+     b46:	22 c0       	rjmp	.+68     	; 0xb8c <LCD_PutString+0x74>
+		    {
+			 LCD_PutChar(x+l*8,y,*s,fColor,bColor);//显示该字符
+     b48:	8f 2d       	mov	r24, r15
+     b4a:	90 e0       	ldi	r25, 0x00	; 0
+     b4c:	88 0f       	add	r24, r24
+     b4e:	99 1f       	adc	r25, r25
+     b50:	88 0f       	add	r24, r24
+     b52:	99 1f       	adc	r25, r25
+     b54:	88 0f       	add	r24, r24
+     b56:	99 1f       	adc	r25, r25
+     b58:	86 0d       	add	r24, r6
+     b5a:	97 1d       	adc	r25, r7
+     b5c:	b4 01       	movw	r22, r8
+     b5e:	95 01       	movw	r18, r10
+     b60:	86 01       	movw	r16, r12
+     b62:	0e 94 e8 04 	call	0x9d0	; 0x9d0 <LCD_PutChar>
+		     s++;l++;                              //指针加1,位置加1
+     b66:	21 96       	adiw	r28, 0x01	; 1
+     b68:	f3 94       	inc	r15
+//		        bColor 字符背景颜色
+**************************************************************************************************/
+void LCD_PutString(unsigned short x, unsigned short y, unsigned char *s, unsigned int fColor, unsigned int bColor) 
+{
+	 unsigned char l=0;                            //显示屏位置增量
+     while(*s) 
+     b6a:	48 81       	ld	r20, Y
+     b6c:	44 23       	and	r20, r20
+     b6e:	51 f7       	brne	.-44     	; 0xb44 <LCD_PutString+0x2c>
+		    {
+			 Put16x16(x+l*8,y,(unsigned char*)s,fColor,bColor);//显示该汉字
+		     s+=2;l+=2;                                        //因为汉字为编码为2字节，指针加2,显示16x16所以位置加2
+			}
+	 }
+}
+     b70:	df 91       	pop	r29
+     b72:	cf 91       	pop	r28
+     b74:	1f 91       	pop	r17
+     b76:	0f 91       	pop	r16
+     b78:	ff 90       	pop	r15
+     b7a:	df 90       	pop	r13
+     b7c:	cf 90       	pop	r12
+     b7e:	bf 90       	pop	r11
+     b80:	af 90       	pop	r10
+     b82:	9f 90       	pop	r9
+     b84:	8f 90       	pop	r8
+     b86:	7f 90       	pop	r7
+     b88:	6f 90       	pop	r6
+     b8a:	08 95       	ret
+			 LCD_PutChar(x+l*8,y,*s,fColor,bColor);//显示该字符
+		     s++;l++;                              //指针加1,位置加1
+			}
+		else
+		    {
+			 Put16x16(x+l*8,y,(unsigned char*)s,fColor,bColor);//显示该汉字
+     b8c:	8f 2d       	mov	r24, r15
+     b8e:	90 e0       	ldi	r25, 0x00	; 0
+     b90:	88 0f       	add	r24, r24
+     b92:	99 1f       	adc	r25, r25
+     b94:	88 0f       	add	r24, r24
+     b96:	99 1f       	adc	r25, r25
+     b98:	88 0f       	add	r24, r24
+     b9a:	99 1f       	adc	r25, r25
+     b9c:	86 0d       	add	r24, r6
+     b9e:	97 1d       	adc	r25, r7
+     ba0:	b4 01       	movw	r22, r8
+     ba2:	ae 01       	movw	r20, r28
+     ba4:	95 01       	movw	r18, r10
+     ba6:	86 01       	movw	r16, r12
+     ba8:	0e 94 62 04 	call	0x8c4	; 0x8c4 <Put16x16>
+		     s+=2;l+=2;                                        //因为汉字为编码为2字节，指针加2,显示16x16所以位置加2
+     bac:	22 96       	adiw	r28, 0x02	; 2
+     bae:	82 e0       	ldi	r24, 0x02	; 2
+     bb0:	f8 0e       	add	r15, r24
+     bb2:	c5 cf       	rjmp	.-118    	; 0xb3e <LCD_PutString+0x26>
+
+00000bb4 <CLR_Screen>:
+/***************************************************************************************************
+//	实现功能：	TFT清屏
+//	输入参数：	bColor 清屏所使用的背景色
+***************************************************************************************************/
+void CLR_Screen(unsigned int bColor)
+{
+     bb4:	ef 92       	push	r14
+     bb6:	ff 92       	push	r15
+     bb8:	0f 93       	push	r16
+     bba:	1f 93       	push	r17
+     bbc:	cf 93       	push	r28
+     bbe:	df 93       	push	r29
+     bc0:	8c 01       	movw	r16, r24
+ unsigned int i,j;
+ LCD_SetPos(0,240,0,320);//320x240
+     bc2:	80 e0       	ldi	r24, 0x00	; 0
+     bc4:	90 e0       	ldi	r25, 0x00	; 0
+     bc6:	60 ef       	ldi	r22, 0xF0	; 240
+     bc8:	70 e0       	ldi	r23, 0x00	; 0
+     bca:	40 e0       	ldi	r20, 0x00	; 0
+     bcc:	50 e0       	ldi	r21, 0x00	; 0
+     bce:	20 e4       	ldi	r18, 0x40	; 64
+     bd0:	31 e0       	ldi	r19, 0x01	; 1
+     bd2:	0e 94 71 03 	call	0x6e2	; 0x6e2 <LCD_SetPos>
+     bd6:	ee 24       	eor	r14, r14
+     bd8:	ff 24       	eor	r15, r15
+ for (i=0;i<320;i++)
+     bda:	c0 e0       	ldi	r28, 0x00	; 0
+     bdc:	d0 e0       	ldi	r29, 0x00	; 0
+	{
+	   for (j=0;j<240;j++)
+	       Write_Data_U16(bColor);
+     bde:	c8 01       	movw	r24, r16
+     be0:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+{
+ unsigned int i,j;
+ LCD_SetPos(0,240,0,320);//320x240
+ for (i=0;i<320;i++)
+	{
+	   for (j=0;j<240;j++)
+     be4:	21 96       	adiw	r28, 0x01	; 1
+     be6:	c0 3f       	cpi	r28, 0xF0	; 240
+     be8:	d1 05       	cpc	r29, r1
+     bea:	c9 f7       	brne	.-14     	; 0xbde <CLR_Screen+0x2a>
+***************************************************************************************************/
+void CLR_Screen(unsigned int bColor)
+{
+ unsigned int i,j;
+ LCD_SetPos(0,240,0,320);//320x240
+ for (i=0;i<320;i++)
+     bec:	08 94       	sec
+     bee:	e1 1c       	adc	r14, r1
+     bf0:	f1 1c       	adc	r15, r1
+     bf2:	80 e4       	ldi	r24, 0x40	; 64
+     bf4:	e8 16       	cp	r14, r24
+     bf6:	81 e0       	ldi	r24, 0x01	; 1
+     bf8:	f8 06       	cpc	r15, r24
+     bfa:	79 f7       	brne	.-34     	; 0xbda <CLR_Screen+0x26>
+	{
+	   for (j=0;j<240;j++)
+	       Write_Data_U16(bColor);
+	}
+}
+     bfc:	df 91       	pop	r29
+     bfe:	cf 91       	pop	r28
+     c00:	1f 91       	pop	r17
+     c02:	0f 91       	pop	r16
+     c04:	ff 90       	pop	r15
+     c06:	ef 90       	pop	r14
+     c08:	08 95       	ret
+
+00000c0a <Put_pixel>:
+//	实现功能：	画点
+//  输入参数：  x，y 需要画点坐标
+//              color 点的颜色
+***************************************************************************************************/
+void Put_pixel(unsigned int x,unsigned int y,unsigned int color)
+{
+     c0a:	0f 93       	push	r16
+     c0c:	1f 93       	push	r17
+     c0e:	fc 01       	movw	r30, r24
+     c10:	9b 01       	movw	r18, r22
+     c12:	8a 01       	movw	r16, r20
+	LCD_SetPos(x,x,y,y);        //设置待画点坐标
+     c14:	bf 01       	movw	r22, r30
+     c16:	a9 01       	movw	r20, r18
+     c18:	0e 94 71 03 	call	0x6e2	; 0x6e2 <LCD_SetPos>
+	Write_Data_U16(color);      //在指定点写入颜色数据
+     c1c:	c8 01       	movw	r24, r16
+     c1e:	0e 94 97 00 	call	0x12e	; 0x12e <Write_Data_U16>
+}
+     c22:	1f 91       	pop	r17
+     c24:	0f 91       	pop	r16
+     c26:	08 95       	ret
+
+00000c28 <Port_Init>:
+/********************************************************************
+			初始化IO口子程序
+********************************************************************/
+void Port_Init()
+{
+	DDRF = 0xFF;
+     c28:	8f ef       	ldi	r24, 0xFF	; 255
+     c2a:	80 93 61 00 	sts	0x0061, r24
+	PORTF = 0x00;
+     c2e:	10 92 62 00 	sts	0x0062, r1
+
+	DDRE = 0xFF;
+     c32:	82 b9       	out	0x02, r24	; 2
+	PORTE = 0xFF;
+     c34:	83 b9       	out	0x03, r24	; 3
+
+	DDRC = 0xFF;
+     c36:	84 bb       	out	0x14, r24	; 20
+	PORTC = 0x00;
+     c38:	15 ba       	out	0x15, r1	; 21
+
+}
+     c3a:	08 95       	ret
+
+00000c3c <LED_Light>:
+/********************************************************************
+	LED闪烁一次，可在需要查看程序执行位置时灵活设置，类似断点
+********************************************************************/
+void LED_Light()
+{
+    LED8=0x00;                    //点亮LED
+     c3c:	13 b8       	out	0x03, r1	; 3
+     c3e:	28 e8       	ldi	r18, 0x88	; 136
+     c40:	33 e1       	ldi	r19, 0x13	; 19
+     c42:	48 eb       	ldi	r20, 0xB8	; 184
+     c44:	50 e0       	ldi	r21, 0x00	; 0
+     c46:	ca 01       	movw	r24, r20
+     c48:	01 97       	sbiw	r24, 0x01	; 1
+     c4a:	f1 f7       	brne	.-4      	; 0xc48 <LED_Light+0xc>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     c4c:	21 50       	subi	r18, 0x01	; 1
+     c4e:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     c50:	d1 f7       	brne	.-12     	; 0xc46 <LED_Light+0xa>
+    delay_ms(500);
+    LED8=0xFF;                    //熄灭LED
+     c52:	8f ef       	ldi	r24, 0xFF	; 255
+     c54:	83 b9       	out	0x03, r24	; 3
+     c56:	28 e8       	ldi	r18, 0x88	; 136
+     c58:	33 e1       	ldi	r19, 0x13	; 19
+     c5a:	48 eb       	ldi	r20, 0xB8	; 184
+     c5c:	50 e0       	ldi	r21, 0x00	; 0
+     c5e:	ca 01       	movw	r24, r20
+     c60:	01 97       	sbiw	r24, 0x01	; 1
+     c62:	f1 f7       	brne	.-4      	; 0xc60 <LED_Light+0x24>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     c64:	21 50       	subi	r18, 0x01	; 1
+     c66:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     c68:	d1 f7       	brne	.-12     	; 0xc5e <LED_Light+0x22>
+    delay_ms(500);
+}
+     c6a:	08 95       	ret
+
+00000c6c <main>:
+
+/********************************************************************
+                      主函数
+********************************************************************/
+int main(void)
+{
+     c6c:	cf 92       	push	r12
+     c6e:	df 92       	push	r13
+     c70:	ef 92       	push	r14
+     c72:	ff 92       	push	r15
+     c74:	0f 93       	push	r16
+     c76:	1f 93       	push	r17
+     c78:	cf 93       	push	r28
+     c7a:	df 93       	push	r29
+   uint i,y;
+
+  Port_Init();                       //系统初始化，设置IO口属性
+     c7c:	0e 94 14 06 	call	0xc28	; 0xc28 <Port_Init>
+  LED_Light();                       //LED点亮一次，如有现象，说明单片机初始化成功   
+     c80:	0e 94 1e 06 	call	0xc3c	; 0xc3c <LED_Light>
+  Device_code=0x9320;                //TFT控制IC型号
+     c84:	80 e2       	ldi	r24, 0x20	; 32
+     c86:	93 e9       	ldi	r25, 0x93	; 147
+     c88:	90 93 b2 0d 	sts	0x0DB2, r25
+     c8c:	80 93 b1 0d 	sts	0x0DB1, r24
+  TFT_Initial();                     //初始化LCD	 
+     c90:	0e 94 ab 00 	call	0x156	; 0x156 <TFT_Initial>
+     c94:	e8 eb       	ldi	r30, 0xB8	; 184
+     c96:	ee 2e       	mov	r14, r30
+     c98:	f1 2c       	mov	r15, r1
+
+  while(1)                           //循环执行程序
+   {
+        
+    CLR_Screen(Magenta);               //用背景色清屏
+     c9a:	c1 2c       	mov	r12, r1
+     c9c:	78 ed       	ldi	r23, 0xD8	; 216
+     c9e:	d7 2e       	mov	r13, r23
+     ca0:	8f e1       	ldi	r24, 0x1F	; 31
+     ca2:	98 ef       	ldi	r25, 0xF8	; 248
+     ca4:	0e 94 da 05 	call	0xbb4	; 0xbb4 <CLR_Screen>
+    LCD_PutString24(35,140,"欣世纪电子科技",Yellow,Magenta); //欢迎界面，24x24大小汉字，字模软件隶书小二号
+     ca8:	83 e2       	ldi	r24, 0x23	; 35
+     caa:	90 e0       	ldi	r25, 0x00	; 0
+     cac:	6c e8       	ldi	r22, 0x8C	; 140
+     cae:	70 e0       	ldi	r23, 0x00	; 0
+     cb0:	40 e0       	ldi	r20, 0x00	; 0
+     cb2:	51 e0       	ldi	r21, 0x01	; 1
+     cb4:	20 ee       	ldi	r18, 0xE0	; 224
+     cb6:	3f ef       	ldi	r19, 0xFF	; 255
+     cb8:	0f e1       	ldi	r16, 0x1F	; 31
+     cba:	18 ef       	ldi	r17, 0xF8	; 248
+     cbc:	0e 94 3f 05 	call	0xa7e	; 0xa7e <LCD_PutString24>
+     cc0:	28 e8       	ldi	r18, 0x88	; 136
+     cc2:	33 e1       	ldi	r19, 0x13	; 19
+     cc4:	c7 01       	movw	r24, r14
+     cc6:	01 97       	sbiw	r24, 0x01	; 1
+     cc8:	f1 f7       	brne	.-4      	; 0xcc6 <main+0x5a>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     cca:	21 50       	subi	r18, 0x01	; 1
+     ccc:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     cce:	d1 f7       	brne	.-12     	; 0xcc4 <main+0x58>
+    delay_ms(500);    
+    LCD_PutString24(83,170,"欢",Yellow,Magenta);
+     cd0:	83 e5       	ldi	r24, 0x53	; 83
+     cd2:	90 e0       	ldi	r25, 0x00	; 0
+     cd4:	6a ea       	ldi	r22, 0xAA	; 170
+     cd6:	70 e0       	ldi	r23, 0x00	; 0
+     cd8:	4f e0       	ldi	r20, 0x0F	; 15
+     cda:	51 e0       	ldi	r21, 0x01	; 1
+     cdc:	20 ee       	ldi	r18, 0xE0	; 224
+     cde:	3f ef       	ldi	r19, 0xFF	; 255
+     ce0:	0f e1       	ldi	r16, 0x1F	; 31
+     ce2:	18 ef       	ldi	r17, 0xF8	; 248
+     ce4:	0e 94 3f 05 	call	0xa7e	; 0xa7e <LCD_PutString24>
+     ce8:	28 eb       	ldi	r18, 0xB8	; 184
+     cea:	3b e0       	ldi	r19, 0x0B	; 11
+     cec:	c7 01       	movw	r24, r14
+     cee:	01 97       	sbiw	r24, 0x01	; 1
+     cf0:	f1 f7       	brne	.-4      	; 0xcee <main+0x82>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     cf2:	21 50       	subi	r18, 0x01	; 1
+     cf4:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     cf6:	d1 f7       	brne	.-12     	; 0xcec <main+0x80>
+    delay_ms(300);
+    LCD_PutString24(107,170,"迎",Yellow,Magenta);
+     cf8:	8b e6       	ldi	r24, 0x6B	; 107
+     cfa:	90 e0       	ldi	r25, 0x00	; 0
+     cfc:	6a ea       	ldi	r22, 0xAA	; 170
+     cfe:	70 e0       	ldi	r23, 0x00	; 0
+     d00:	42 e1       	ldi	r20, 0x12	; 18
+     d02:	51 e0       	ldi	r21, 0x01	; 1
+     d04:	20 ee       	ldi	r18, 0xE0	; 224
+     d06:	3f ef       	ldi	r19, 0xFF	; 255
+     d08:	0f e1       	ldi	r16, 0x1F	; 31
+     d0a:	18 ef       	ldi	r17, 0xF8	; 248
+     d0c:	0e 94 3f 05 	call	0xa7e	; 0xa7e <LCD_PutString24>
+     d10:	28 eb       	ldi	r18, 0xB8	; 184
+     d12:	3b e0       	ldi	r19, 0x0B	; 11
+     d14:	c7 01       	movw	r24, r14
+     d16:	01 97       	sbiw	r24, 0x01	; 1
+     d18:	f1 f7       	brne	.-4      	; 0xd16 <main+0xaa>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     d1a:	21 50       	subi	r18, 0x01	; 1
+     d1c:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     d1e:	d1 f7       	brne	.-12     	; 0xd14 <main+0xa8>
+    delay_ms(300);
+    LCD_PutString24(131,170,"您",Yellow,Magenta);
+     d20:	83 e8       	ldi	r24, 0x83	; 131
+     d22:	90 e0       	ldi	r25, 0x00	; 0
+     d24:	6a ea       	ldi	r22, 0xAA	; 170
+     d26:	70 e0       	ldi	r23, 0x00	; 0
+     d28:	45 e1       	ldi	r20, 0x15	; 21
+     d2a:	51 e0       	ldi	r21, 0x01	; 1
+     d2c:	20 ee       	ldi	r18, 0xE0	; 224
+     d2e:	3f ef       	ldi	r19, 0xFF	; 255
+     d30:	0f e1       	ldi	r16, 0x1F	; 31
+     d32:	18 ef       	ldi	r17, 0xF8	; 248
+     d34:	0e 94 3f 05 	call	0xa7e	; 0xa7e <LCD_PutString24>
+     d38:	28 eb       	ldi	r18, 0xB8	; 184
+     d3a:	3b e0       	ldi	r19, 0x0B	; 11
+     d3c:	c7 01       	movw	r24, r14
+     d3e:	01 97       	sbiw	r24, 0x01	; 1
+     d40:	f1 f7       	brne	.-4      	; 0xd3e <main+0xd2>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     d42:	21 50       	subi	r18, 0x01	; 1
+     d44:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     d46:	d1 f7       	brne	.-12     	; 0xd3c <main+0xd0>
+    delay_ms(300);
+    LCD_PutString(69,300,"www.avrgcc.com",White,Magenta);  //字符显示官方网站
+     d48:	85 e4       	ldi	r24, 0x45	; 69
+     d4a:	90 e0       	ldi	r25, 0x00	; 0
+     d4c:	6c e2       	ldi	r22, 0x2C	; 44
+     d4e:	71 e0       	ldi	r23, 0x01	; 1
+     d50:	48 e1       	ldi	r20, 0x18	; 24
+     d52:	51 e0       	ldi	r21, 0x01	; 1
+     d54:	2f ef       	ldi	r18, 0xFF	; 255
+     d56:	3f ef       	ldi	r19, 0xFF	; 255
+     d58:	0f e1       	ldi	r16, 0x1F	; 31
+     d5a:	18 ef       	ldi	r17, 0xF8	; 248
+     d5c:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+     d60:	28 eb       	ldi	r18, 0xB8	; 184
+     d62:	3b e0       	ldi	r19, 0x0B	; 11
+     d64:	c7 01       	movw	r24, r14
+     d66:	01 97       	sbiw	r24, 0x01	; 1
+     d68:	f1 f7       	brne	.-4      	; 0xd66 <main+0xfa>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     d6a:	21 50       	subi	r18, 0x01	; 1
+     d6c:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     d6e:	d1 f7       	brne	.-12     	; 0xd64 <main+0xf8>
+    delay_ms(300);
+    
+    CLR_Screen(Black);                                     //用背景色清屏
+     d70:	80 e0       	ldi	r24, 0x00	; 0
+     d72:	90 e0       	ldi	r25, 0x00	; 0
+     d74:	0e 94 da 05 	call	0xbb4	; 0xbb4 <CLR_Screen>
+     d78:	c0 e0       	ldi	r28, 0x00	; 0
+     d7a:	d0 e0       	ldi	r29, 0x00	; 0
+    
+    for(y=0;y<10;y++)
+    {
+      LCD_PutString(52,y*32,"欣创电子,与您同行",White,Black);      //汉字显示
+     d7c:	84 e3       	ldi	r24, 0x34	; 52
+     d7e:	90 e0       	ldi	r25, 0x00	; 0
+     d80:	be 01       	movw	r22, r28
+     d82:	47 e2       	ldi	r20, 0x27	; 39
+     d84:	51 e0       	ldi	r21, 0x01	; 1
+     d86:	2f ef       	ldi	r18, 0xFF	; 255
+     d88:	3f ef       	ldi	r19, 0xFF	; 255
+     d8a:	00 e0       	ldi	r16, 0x00	; 0
+     d8c:	10 e0       	ldi	r17, 0x00	; 0
+     d8e:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+     d92:	c6 01       	movw	r24, r12
+     d94:	01 97       	sbiw	r24, 0x01	; 1
+     d96:	f1 f7       	brne	.-4      	; 0xd94 <main+0x128>
+     d98:	a0 96       	adiw	r28, 0x20	; 32
+    LCD_PutString(69,300,"www.avrgcc.com",White,Magenta);  //字符显示官方网站
+    delay_ms(300);
+    
+    CLR_Screen(Black);                                     //用背景色清屏
+    
+    for(y=0;y<10;y++)
+     d9a:	81 e0       	ldi	r24, 0x01	; 1
+     d9c:	c0 34       	cpi	r28, 0x40	; 64
+     d9e:	d8 07       	cpc	r29, r24
+     da0:	69 f7       	brne	.-38     	; 0xd7c <main+0x110>
+     da2:	28 eb       	ldi	r18, 0xB8	; 184
+     da4:	3b e0       	ldi	r19, 0x0B	; 11
+     da6:	c7 01       	movw	r24, r14
+     da8:	01 97       	sbiw	r24, 0x01	; 1
+     daa:	f1 f7       	brne	.-4      	; 0xda8 <main+0x13c>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     dac:	21 50       	subi	r18, 0x01	; 1
+     dae:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     db0:	d1 f7       	brne	.-12     	; 0xda6 <main+0x13a>
+      LCD_PutString(52,y*32,"欣创电子,与您同行",White,Black);      //汉字显示
+      delay_ms(30);
+    }
+    delay_ms(300);
+    
+    CLR_Screen(Black);                                             //用背景色清屏
+     db2:	80 e0       	ldi	r24, 0x00	; 0
+     db4:	90 e0       	ldi	r25, 0x00	; 0
+     db6:	0e 94 da 05 	call	0xbb4	; 0xbb4 <CLR_Screen>
+     dba:	c0 e0       	ldi	r28, 0x00	; 0
+     dbc:	d0 e0       	ldi	r29, 0x00	; 0
+    for(y=0;y<10;y++)
+    {
+      LCD_PutString(24,y*32,"宁波欣创电子科技有限公司",White,Black);      //汉字显示
+     dbe:	88 e1       	ldi	r24, 0x18	; 24
+     dc0:	90 e0       	ldi	r25, 0x00	; 0
+     dc2:	be 01       	movw	r22, r28
+     dc4:	49 e3       	ldi	r20, 0x39	; 57
+     dc6:	51 e0       	ldi	r21, 0x01	; 1
+     dc8:	2f ef       	ldi	r18, 0xFF	; 255
+     dca:	3f ef       	ldi	r19, 0xFF	; 255
+     dcc:	00 e0       	ldi	r16, 0x00	; 0
+     dce:	10 e0       	ldi	r17, 0x00	; 0
+     dd0:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+     dd4:	c6 01       	movw	r24, r12
+     dd6:	01 97       	sbiw	r24, 0x01	; 1
+     dd8:	f1 f7       	brne	.-4      	; 0xdd6 <main+0x16a>
+     dda:	a0 96       	adiw	r28, 0x20	; 32
+      delay_ms(30);
+    }
+    delay_ms(300);
+    
+    CLR_Screen(Black);                                             //用背景色清屏
+    for(y=0;y<10;y++)
+     ddc:	81 e0       	ldi	r24, 0x01	; 1
+     dde:	c0 34       	cpi	r28, 0x40	; 64
+     de0:	d8 07       	cpc	r29, r24
+     de2:	69 f7       	brne	.-38     	; 0xdbe <main+0x152>
+     de4:	28 eb       	ldi	r18, 0xB8	; 184
+     de6:	3b e0       	ldi	r19, 0x0B	; 11
+     de8:	c7 01       	movw	r24, r14
+     dea:	01 97       	sbiw	r24, 0x01	; 1
+     dec:	f1 f7       	brne	.-4      	; 0xdea <main+0x17e>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+     dee:	21 50       	subi	r18, 0x01	; 1
+     df0:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+     df2:	d1 f7       	brne	.-12     	; 0xde8 <main+0x17c>
+      LCD_PutString(24,y*32,"宁波欣创电子科技有限公司",White,Black);      //汉字显示
+      delay_ms(30);
+    }
+    delay_ms(300);
+        
+    Show_RGB(0,240,0,64,Blue);                              //5种颜色将屏分为5个区域
+     df4:	80 e0       	ldi	r24, 0x00	; 0
+     df6:	90 e0       	ldi	r25, 0x00	; 0
+     df8:	60 ef       	ldi	r22, 0xF0	; 240
+     dfa:	70 e0       	ldi	r23, 0x00	; 0
+     dfc:	40 e0       	ldi	r20, 0x00	; 0
+     dfe:	50 e0       	ldi	r21, 0x00	; 0
+     e00:	20 e4       	ldi	r18, 0x40	; 64
+     e02:	30 e0       	ldi	r19, 0x00	; 0
+     e04:	0f e1       	ldi	r16, 0x1F	; 31
+     e06:	10 e0       	ldi	r17, 0x00	; 0
+     e08:	0e 94 a2 03 	call	0x744	; 0x744 <Show_RGB>
+    Show_RGB(0,240,64,128,Green);
+     e0c:	80 e0       	ldi	r24, 0x00	; 0
+     e0e:	90 e0       	ldi	r25, 0x00	; 0
+     e10:	60 ef       	ldi	r22, 0xF0	; 240
+     e12:	70 e0       	ldi	r23, 0x00	; 0
+     e14:	40 e4       	ldi	r20, 0x40	; 64
+     e16:	50 e0       	ldi	r21, 0x00	; 0
+     e18:	20 e8       	ldi	r18, 0x80	; 128
+     e1a:	30 e0       	ldi	r19, 0x00	; 0
+     e1c:	00 ee       	ldi	r16, 0xE0	; 224
+     e1e:	17 e0       	ldi	r17, 0x07	; 7
+     e20:	0e 94 a2 03 	call	0x744	; 0x744 <Show_RGB>
+    Show_RGB(0,240,128,192,Magenta);
+     e24:	80 e0       	ldi	r24, 0x00	; 0
+     e26:	90 e0       	ldi	r25, 0x00	; 0
+     e28:	60 ef       	ldi	r22, 0xF0	; 240
+     e2a:	70 e0       	ldi	r23, 0x00	; 0
+     e2c:	40 e8       	ldi	r20, 0x80	; 128
+     e2e:	50 e0       	ldi	r21, 0x00	; 0
+     e30:	20 ec       	ldi	r18, 0xC0	; 192
+     e32:	30 e0       	ldi	r19, 0x00	; 0
+     e34:	0f e1       	ldi	r16, 0x1F	; 31
+     e36:	18 ef       	ldi	r17, 0xF8	; 248
+     e38:	0e 94 a2 03 	call	0x744	; 0x744 <Show_RGB>
+    Show_RGB(0,240,192,256,Red);
+     e3c:	80 e0       	ldi	r24, 0x00	; 0
+     e3e:	90 e0       	ldi	r25, 0x00	; 0
+     e40:	60 ef       	ldi	r22, 0xF0	; 240
+     e42:	70 e0       	ldi	r23, 0x00	; 0
+     e44:	40 ec       	ldi	r20, 0xC0	; 192
+     e46:	50 e0       	ldi	r21, 0x00	; 0
+     e48:	20 e0       	ldi	r18, 0x00	; 0
+     e4a:	31 e0       	ldi	r19, 0x01	; 1
+     e4c:	00 e0       	ldi	r16, 0x00	; 0
+     e4e:	18 ef       	ldi	r17, 0xF8	; 248
+     e50:	0e 94 a2 03 	call	0x744	; 0x744 <Show_RGB>
+    Show_RGB(0,240,256,320,Yellow);
+     e54:	80 e0       	ldi	r24, 0x00	; 0
+     e56:	90 e0       	ldi	r25, 0x00	; 0
+     e58:	60 ef       	ldi	r22, 0xF0	; 240
+     e5a:	70 e0       	ldi	r23, 0x00	; 0
+     e5c:	40 e0       	ldi	r20, 0x00	; 0
+     e5e:	51 e0       	ldi	r21, 0x01	; 1
+     e60:	20 e4       	ldi	r18, 0x40	; 64
+     e62:	31 e0       	ldi	r19, 0x01	; 1
+     e64:	00 ee       	ldi	r16, 0xE0	; 224
+     e66:	1f ef       	ldi	r17, 0xFF	; 255
+     e68:	0e 94 a2 03 	call	0x744	; 0x744 <Show_RGB>
+
+    LCD_PutString(24,16,"宁波欣创电子科技有限公司",White,Blue);//第1个区域显示16x16汉字
+     e6c:	88 e1       	ldi	r24, 0x18	; 24
+     e6e:	90 e0       	ldi	r25, 0x00	; 0
+     e70:	60 e1       	ldi	r22, 0x10	; 16
+     e72:	70 e0       	ldi	r23, 0x00	; 0
+     e74:	49 e3       	ldi	r20, 0x39	; 57
+     e76:	51 e0       	ldi	r21, 0x01	; 1
+     e78:	2f ef       	ldi	r18, 0xFF	; 255
+     e7a:	3f ef       	ldi	r19, 0xFF	; 255
+     e7c:	0f e1       	ldi	r16, 0x1F	; 31
+     e7e:	10 e0       	ldi	r17, 0x00	; 0
+     e80:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+    LCD_PutString(24,40,"   欣创科技,与您同行",White,Blue);
+     e84:	88 e1       	ldi	r24, 0x18	; 24
+     e86:	90 e0       	ldi	r25, 0x00	; 0
+     e88:	68 e2       	ldi	r22, 0x28	; 40
+     e8a:	70 e0       	ldi	r23, 0x00	; 0
+     e8c:	42 e5       	ldi	r20, 0x52	; 82
+     e8e:	51 e0       	ldi	r21, 0x01	; 1
+     e90:	2f ef       	ldi	r18, 0xFF	; 255
+     e92:	3f ef       	ldi	r19, 0xFF	; 255
+     e94:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+    
+    LCD_PutString(80,72,"0123456789",Black,Green);            //第2个区域显示ascii字符中的数字和符号
+     e98:	80 e5       	ldi	r24, 0x50	; 80
+     e9a:	90 e0       	ldi	r25, 0x00	; 0
+     e9c:	68 e4       	ldi	r22, 0x48	; 72
+     e9e:	70 e0       	ldi	r23, 0x00	; 0
+     ea0:	47 e6       	ldi	r20, 0x67	; 103
+     ea2:	51 e0       	ldi	r21, 0x01	; 1
+     ea4:	20 e0       	ldi	r18, 0x00	; 0
+     ea6:	30 e0       	ldi	r19, 0x00	; 0
+     ea8:	00 ee       	ldi	r16, 0xE0	; 224
+     eaa:	17 e0       	ldi	r17, 0x07	; 7
+     eac:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+    LCD_PutString(16,96,",,`,./<>';:[]{}\|?-=+*&^%$",Black,Green);
+     eb0:	80 e1       	ldi	r24, 0x10	; 16
+     eb2:	90 e0       	ldi	r25, 0x00	; 0
+     eb4:	60 e6       	ldi	r22, 0x60	; 96
+     eb6:	70 e0       	ldi	r23, 0x00	; 0
+     eb8:	42 e7       	ldi	r20, 0x72	; 114
+     eba:	51 e0       	ldi	r21, 0x01	; 1
+     ebc:	20 e0       	ldi	r18, 0x00	; 0
+     ebe:	30 e0       	ldi	r19, 0x00	; 0
+     ec0:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+
+    LCD_PutString(16,136,"abcdefghijklmnopqrstuvwxyz",Blue,Magenta);//第3个区域显示ascii字符中字母
+     ec4:	80 e1       	ldi	r24, 0x10	; 16
+     ec6:	90 e0       	ldi	r25, 0x00	; 0
+     ec8:	68 e8       	ldi	r22, 0x88	; 136
+     eca:	70 e0       	ldi	r23, 0x00	; 0
+     ecc:	4c e8       	ldi	r20, 0x8C	; 140
+     ece:	51 e0       	ldi	r21, 0x01	; 1
+     ed0:	2f e1       	ldi	r18, 0x1F	; 31
+     ed2:	30 e0       	ldi	r19, 0x00	; 0
+     ed4:	0f e1       	ldi	r16, 0x1F	; 31
+     ed6:	18 ef       	ldi	r17, 0xF8	; 248
+     ed8:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+    LCD_PutString(16,156,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",Blue,Magenta);
+     edc:	80 e1       	ldi	r24, 0x10	; 16
+     ede:	90 e0       	ldi	r25, 0x00	; 0
+     ee0:	6c e9       	ldi	r22, 0x9C	; 156
+     ee2:	70 e0       	ldi	r23, 0x00	; 0
+     ee4:	47 ea       	ldi	r20, 0xA7	; 167
+     ee6:	51 e0       	ldi	r21, 0x01	; 1
+     ee8:	2f e1       	ldi	r18, 0x1F	; 31
+     eea:	30 e0       	ldi	r19, 0x00	; 0
+     eec:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+    
+    LCD_PutString(16,200,"The Device IC Of TFT Is:",Black,Red);    //第4个区域显示TFT控制器IC型号
+     ef0:	80 e1       	ldi	r24, 0x10	; 16
+     ef2:	90 e0       	ldi	r25, 0x00	; 0
+     ef4:	68 ec       	ldi	r22, 0xC8	; 200
+     ef6:	70 e0       	ldi	r23, 0x00	; 0
+     ef8:	42 ec       	ldi	r20, 0xC2	; 194
+     efa:	51 e0       	ldi	r21, 0x01	; 1
+     efc:	20 e0       	ldi	r18, 0x00	; 0
+     efe:	30 e0       	ldi	r19, 0x00	; 0
+     f00:	00 e0       	ldi	r16, 0x00	; 0
+     f02:	18 ef       	ldi	r17, 0xF8	; 248
+     f04:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+    LCD_PutString(96,224,"ILI",Black,Red);
+     f08:	80 e6       	ldi	r24, 0x60	; 96
+     f0a:	90 e0       	ldi	r25, 0x00	; 0
+     f0c:	60 ee       	ldi	r22, 0xE0	; 224
+     f0e:	70 e0       	ldi	r23, 0x00	; 0
+     f10:	4b ed       	ldi	r20, 0xDB	; 219
+     f12:	51 e0       	ldi	r21, 0x01	; 1
+     f14:	20 e0       	ldi	r18, 0x00	; 0
+     f16:	30 e0       	ldi	r19, 0x00	; 0
+     f18:	0e 94 8c 05 	call	0xb18	; 0xb18 <LCD_PutString>
+    LCD_PutChar(120, 224, 0x30+(Device_code>>12), Black, Red);
+     f1c:	40 91 b2 0d 	lds	r20, 0x0DB2
+     f20:	42 95       	swap	r20
+     f22:	4f 70       	andi	r20, 0x0F	; 15
+     f24:	40 5d       	subi	r20, 0xD0	; 208
+     f26:	88 e7       	ldi	r24, 0x78	; 120
+     f28:	90 e0       	ldi	r25, 0x00	; 0
+     f2a:	60 ee       	ldi	r22, 0xE0	; 224
+     f2c:	70 e0       	ldi	r23, 0x00	; 0
+     f2e:	20 e0       	ldi	r18, 0x00	; 0
+     f30:	30 e0       	ldi	r19, 0x00	; 0
+     f32:	0e 94 e8 04 	call	0x9d0	; 0x9d0 <LCD_PutChar>
+    LCD_PutChar(128, 224, 0x30+((Device_code>>8)&0x000f), Black, Red);
+     f36:	40 91 b2 0d 	lds	r20, 0x0DB2
+     f3a:	4f 70       	andi	r20, 0x0F	; 15
+     f3c:	40 5d       	subi	r20, 0xD0	; 208
+     f3e:	80 e8       	ldi	r24, 0x80	; 128
+     f40:	90 e0       	ldi	r25, 0x00	; 0
+     f42:	60 ee       	ldi	r22, 0xE0	; 224
+     f44:	70 e0       	ldi	r23, 0x00	; 0
+     f46:	20 e0       	ldi	r18, 0x00	; 0
+     f48:	30 e0       	ldi	r19, 0x00	; 0
+     f4a:	0e 94 e8 04 	call	0x9d0	; 0x9d0 <LCD_PutChar>
+    LCD_PutChar(136, 224, 0x30+((Device_code>>4)&0x000f), Black, Red);
+     f4e:	40 91 b1 0d 	lds	r20, 0x0DB1
+     f52:	50 91 b2 0d 	lds	r21, 0x0DB2
+     f56:	52 95       	swap	r21
+     f58:	42 95       	swap	r20
+     f5a:	4f 70       	andi	r20, 0x0F	; 15
+     f5c:	45 27       	eor	r20, r21
+     f5e:	5f 70       	andi	r21, 0x0F	; 15
+     f60:	45 27       	eor	r20, r21
+     f62:	4f 70       	andi	r20, 0x0F	; 15
+     f64:	40 5d       	subi	r20, 0xD0	; 208
+     f66:	88 e8       	ldi	r24, 0x88	; 136
+     f68:	90 e0       	ldi	r25, 0x00	; 0
+     f6a:	60 ee       	ldi	r22, 0xE0	; 224
+     f6c:	70 e0       	ldi	r23, 0x00	; 0
+     f6e:	20 e0       	ldi	r18, 0x00	; 0
+     f70:	30 e0       	ldi	r19, 0x00	; 0
+     f72:	0e 94 e8 04 	call	0x9d0	; 0x9d0 <LCD_PutChar>
+    LCD_PutChar(144, 224, 0x30+(Device_code&0x000f), Black, Red);
+     f76:	40 91 b1 0d 	lds	r20, 0x0DB1
+     f7a:	4f 70       	andi	r20, 0x0F	; 15
+     f7c:	40 5d       	subi	r20, 0xD0	; 208
+     f7e:	80 e9       	ldi	r24, 0x90	; 144
+     f80:	90 e0       	ldi	r25, 0x00	; 0
+     f82:	60 ee       	ldi	r22, 0xE0	; 224
+     f84:	70 e0       	ldi	r23, 0x00	; 0
+     f86:	20 e0       	ldi	r18, 0x00	; 0
+     f88:	30 e0       	ldi	r19, 0x00	; 0
+     f8a:	0e 94 e8 04 	call	0x9d0	; 0x9d0 <LCD_PutChar>
+     f8e:	c8 e3       	ldi	r28, 0x38	; 56
+     f90:	d1 e0       	ldi	r29, 0x01	; 1
+    
+    for(i=312;i>264;i--){ Put_pixel(68,i,Blue);}                   //第5个区域打点实现画线
+     f92:	84 e4       	ldi	r24, 0x44	; 68
+     f94:	90 e0       	ldi	r25, 0x00	; 0
+     f96:	be 01       	movw	r22, r28
+     f98:	4f e1       	ldi	r20, 0x1F	; 31
+     f9a:	50 e0       	ldi	r21, 0x00	; 0
+     f9c:	0e 94 05 06 	call	0xc0a	; 0xc0a <Put_pixel>
+     fa0:	21 97       	sbiw	r28, 0x01	; 1
+     fa2:	81 e0       	ldi	r24, 0x01	; 1
+     fa4:	c8 30       	cpi	r28, 0x08	; 8
+     fa6:	d8 07       	cpc	r29, r24
+     fa8:	a1 f7       	brne	.-24     	; 0xf92 <main+0x326>
+     faa:	04 e4       	ldi	r16, 0x44	; 68
+     fac:	10 e0       	ldi	r17, 0x00	; 0
+    for(i=68;i<172;i++) { Put_pixel(i,264,Blue);}
+     fae:	c8 01       	movw	r24, r16
+     fb0:	68 e0       	ldi	r22, 0x08	; 8
+     fb2:	71 e0       	ldi	r23, 0x01	; 1
+     fb4:	4f e1       	ldi	r20, 0x1F	; 31
+     fb6:	50 e0       	ldi	r21, 0x00	; 0
+     fb8:	0e 94 05 06 	call	0xc0a	; 0xc0a <Put_pixel>
+     fbc:	0f 5f       	subi	r16, 0xFF	; 255
+     fbe:	1f 4f       	sbci	r17, 0xFF	; 255
+     fc0:	0c 3a       	cpi	r16, 0xAC	; 172
+     fc2:	11 05       	cpc	r17, r1
+     fc4:	a1 f7       	brne	.-24     	; 0xfae <main+0x342>
+    for(i=264;i<312;i++){ Put_pixel(172,i,Blue);} 
+     fc6:	8c ea       	ldi	r24, 0xAC	; 172
+     fc8:	90 e0       	ldi	r25, 0x00	; 0
+     fca:	be 01       	movw	r22, r28
+     fcc:	4f e1       	ldi	r20, 0x1F	; 31
+     fce:	50 e0       	ldi	r21, 0x00	; 0
+     fd0:	0e 94 05 06 	call	0xc0a	; 0xc0a <Put_pixel>
+     fd4:	21 96       	adiw	r28, 0x01	; 1
+     fd6:	81 e0       	ldi	r24, 0x01	; 1
+     fd8:	c8 33       	cpi	r28, 0x38	; 56
+     fda:	d8 07       	cpc	r29, r24
+     fdc:	a1 f7       	brne	.-24     	; 0xfc6 <main+0x35a>
+    for(i=172;i>68;i--) { Put_pixel(i,312,Blue);}
+     fde:	c8 01       	movw	r24, r16
+     fe0:	68 e3       	ldi	r22, 0x38	; 56
+     fe2:	71 e0       	ldi	r23, 0x01	; 1
+     fe4:	4f e1       	ldi	r20, 0x1F	; 31
+     fe6:	50 e0       	ldi	r21, 0x00	; 0
+     fe8:	0e 94 05 06 	call	0xc0a	; 0xc0a <Put_pixel>
+     fec:	01 50       	subi	r16, 0x01	; 1
+     fee:	10 40       	sbci	r17, 0x00	; 0
+     ff0:	04 34       	cpi	r16, 0x44	; 68
+     ff2:	11 05       	cpc	r17, r1
+     ff4:	a1 f7       	brne	.-24     	; 0xfde <main+0x372>
+     ff6:	20 e2       	ldi	r18, 0x20	; 32
+     ff8:	3e e4       	ldi	r19, 0x4E	; 78
+     ffa:	c7 01       	movw	r24, r14
+     ffc:	01 97       	sbiw	r24, 0x01	; 1
+     ffe:	f1 f7       	brne	.-4      	; 0xffc <main+0x390>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+    1000:	21 50       	subi	r18, 0x01	; 1
+    1002:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+    1004:	d1 f7       	brne	.-12     	; 0xffa <main+0x38e>
+    
+    delay_ms(2000);                                               //显示一段时间
+    CLR_Screen(Red);                                              //用背景色清屏
+    1006:	80 e0       	ldi	r24, 0x00	; 0
+    1008:	98 ef       	ldi	r25, 0xF8	; 248
+    100a:	0e 94 da 05 	call	0xbb4	; 0xbb4 <CLR_Screen>
+    100e:	48 ce       	rjmp	.-880    	; 0xca0 <main+0x34>
+
+00001010 <_exit>:
+    1010:	f8 94       	cli
+
+00001012 <__stop_program>:
+    1012:	ff cf       	rjmp	.-2      	; 0x1012 <__stop_program>

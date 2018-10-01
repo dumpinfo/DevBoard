@@ -1,0 +1,1075 @@
+__text_start:
+__start:
+      D1 EFCF      LDI	R28,0xFF
+      D2 E1D0      LDI	R29,0x10
+      D3 BFCD      OUT	0x3D,R28
+      D4 BFDE      OUT	0x3E,R29
+      D5 51CE      SUBI	R28,0x1E
+      D6 40D0      SBCI	R29,0
+      D7 EA0A      LDI	R16,0xAA
+      D8 8308      STD	Y+0,R16
+      D9 2400      CLR	R0
+      DA E1E5      LDI	R30,0x15
+      DB E0F2      LDI	R31,2
+      DC E012      LDI	R17,2
+      DD 31EC      CPI	R30,0x1C
+      DE 07F1      CPC	R31,R17
+      DF F011      BEQ	0x00E2
+      E0 9201      ST	R0,Z+
+      E1 CFFB      RJMP	0x00DD
+      E2 8300      STD	Z+0,R16
+      E3 E8EC      LDI	R30,0x8C
+      E4 E0F0      LDI	R31,0
+      E5 E0A0      LDI	R26,0
+      E6 E0B1      LDI	R27,1
+      E7 E011      LDI	R17,1
+      E8 E000      LDI	R16,0
+      E9 BF0B      OUT	0x3B,R16
+      EA 3AE1      CPI	R30,0xA1
+      EB 07F1      CPC	R31,R17
+      EC F021      BEQ	0x00F1
+      ED 95C8      LPM
+      EE 9631      ADIW	R30,1
+      EF 920D      ST	R0,X+
+      F0 CFF9      RJMP	0x00EA
+      F1 940E 0330 CALL	_main
+_exit:
+      F3 CFFF      RJMP	_exit
+FILE: F:\PROGRA~1\iccavr\include\delay.h
+(0001) //********************************************************************
+(0002) /*函 数 名：delay_us
+(0003) 建立日期：2010年1月28日
+(0004) 编译环境：ICCAVR7.16A
+(0005) 函数作用：微秒级的延时程序
+(0006) 说    明：7.3728M晶振下
+(0007) ********************************************************************/
+(0008) void delay_1us(void);
+(0009) void delay_3us(void);
+(0010) void delay_10us(void);
+(0011) void delay_50us(void);
+(0012) void delay_100us(void);
+(0013) void delay_n100us(unsigned char n100us);
+(0014) void delay_1ms(void);
+(0015) void delay_nms(unsigned int nms);
+(0016) void delay_ns(unsigned char ns);
+(0017) 
+(0018) 
+(0019) void delay_1us(void)                 //1us延时函数，不能连续调用， 
+(0020) { 
+(0021)    asm("nop");                       //1时钟周期
+_delay_1us:
+      F4 0000      NOP
+(0022)    asm("nop");
+      F5 0000      NOP
+(0023)    asm("nop");
+      F6 0000      NOP
+(0024)    asm("nop");
+      F7 0000      NOP
+(0025)    asm("nop");                       //1T
+      F8 0000      NOP
+(0026)    asm("nop");
+      F9 0000      NOP
+      FA 9508      RET
+(0027) 
+(0028) }
+(0029) void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+(0030) { 
+(0031)    
+(0032)    asm("nop");
+_delay_3us:
+      FB 0000      NOP
+(0033)    asm("nop");
+      FC 0000      NOP
+(0034)    asm("nop");                       
+      FD 0000      NOP
+(0035)    asm("nop");
+      FE 0000      NOP
+(0036)    asm("nop");
+      FF 0000      NOP
+(0037)    asm("nop");
+     100 0000      NOP
+(0038)    asm("nop");                       
+     101 0000      NOP
+(0039)    asm("nop");
+     102 0000      NOP
+(0040)    asm("nop");
+     103 0000      NOP
+(0041)    asm("nop");
+     104 0000      NOP
+(0042)    asm("nop");                       
+     105 0000      NOP
+(0043)    asm("nop");
+     106 0000      NOP
+(0044)    asm("nop");
+     107 0000      NOP
+(0045)    asm("nop");
+     108 0000      NOP
+(0046)    asm("nop");                       
+     109 0000      NOP
+(0047)    asm("nop");
+     10A 0000      NOP
+(0048)    asm("nop");
+     10B 0000      NOP
+(0049)    asm("nop");
+     10C 0000      NOP
+(0050)    asm("nop");
+     10D 0000      NOP
+(0051)    asm("nop");
+     10E 0000      NOP
+(0052)    asm("nop");                       
+     10F 0000      NOP
+     110 9508      RET
+(0053) } 
+(0054) 
+(0055) void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+(0056) {
+(0057)    delay_3us();
+_delay_10us:
+     111 DFE9      RCALL	_delay_3us
+(0058)    delay_3us(); 
+     112 DFE8      RCALL	_delay_3us
+(0059)    delay_3us();  
+     113 CFE7      RJMP	_delay_3us
+(0060) }
+(0061)   
+(0062) void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+(0063) { 
+(0064)    delay_10us();
+_delay_50us:
+     114 DFFC      RCALL	_delay_10us
+(0065)    delay_10us(); 
+     115 DFFB      RCALL	_delay_10us
+(0066)    delay_10us();
+     116 DFFA      RCALL	_delay_10us
+(0067)    delay_10us();
+     117 CFF9      RJMP	_delay_10us
+(0068) }
+(0069) void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+(0070) {
+(0071)  delay_50us();
+_delay_100us:
+     118 DFFB      RCALL	_delay_50us
+(0072)  delay_50us();
+     119 CFFA      RJMP	_delay_50us
+_delay_n100us:
+  n100us               --> R20
+     11A 934A      ST	R20,-Y
+     11B 2F40      MOV	R20,R16
+(0073) }
+(0074) void delay_n100us(unsigned char n100us)
+(0075) {
+     11C C001      RJMP	0x011E
+(0076)  while(n100us--)                          
+(0077)  delay_100us();
+     11D DFFA      RCALL	_delay_100us
+     11E 2E24      MOV	R2,R20
+     11F 2433      CLR	R3
+     120 5041      SUBI	R20,1
+     121 2022      TST	R2
+     122 F7D1      BNE	0x011D
+     123 9149      LD	R20,Y+
+     124 9508      RET
+(0078) }
+(0079) /*delay_n100us(2)        250us
+(0080) delay_n100us(3)          360us
+(0081) delay_n100us(4)          470us
+(0082) delay_n100us(5)          580us
+(0083) delay_n100us(6)          690us
+(0084) delay_n100us(7)       800us
+(0085) delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+(0086) 
+(0087) */
+(0088) void delay_1ms()
+(0089) {
+(0090)  delay_100us();
+_delay_1ms:
+     125 DFF2      RCALL	_delay_100us
+(0091)  delay_100us();
+     126 DFF1      RCALL	_delay_100us
+(0092)  delay_100us();
+     127 DFF0      RCALL	_delay_100us
+(0093)  delay_100us();
+     128 DFEF      RCALL	_delay_100us
+(0094)  delay_100us();
+     129 DFEE      RCALL	_delay_100us
+(0095)  delay_100us();
+     12A DFED      RCALL	_delay_100us
+(0096)  delay_100us();
+     12B DFEC      RCALL	_delay_100us
+(0097)  delay_100us();
+     12C DFEB      RCALL	_delay_100us
+(0098)  delay_100us();
+     12D DFEA      RCALL	_delay_100us
+(0099)  delay_100us();
+     12E CFE9      RJMP	_delay_100us
+_delay_nms:
+  nms                  --> R20
+     12F 934A      ST	R20,-Y
+     130 935A      ST	R21,-Y
+     131 01A8      MOVW	R20,R16
+(0100) }
+(0101) /********************************************************************
+(0102) 函 数 名：Delay_ms
+(0103) 建立日期：2010年1月28日
+(0104) 修改日期：
+(0105) 函数作用：毫秒级的精确延时程序
+(0106) 说    明：
+(0107) ********************************************************************/
+(0108) void delay_nms(unsigned int nms)
+(0109) {
+     132 C001      RJMP	0x0134
+(0110)  while(nms--) 
+(0111)  delay_1ms();
+     133 DFF1      RCALL	_delay_1ms
+     134 011A      MOVW	R2,R20
+     135 5041      SUBI	R20,1
+     136 4050      SBCI	R21,0
+     137 2022      TST	R2
+     138 F7D1      BNE	0x0133
+     139 2033      TST	R3
+     13A F7C1      BNE	0x0133
+     13B 9159      LD	R21,Y+
+     13C 9149      LD	R20,Y+
+     13D 9508      RET
+_delay_ns:
+  ns                   --> R20
+     13E 934A      ST	R20,-Y
+     13F 2F40      MOV	R20,R16
+(0112) }
+(0113) void delay_ns(unsigned char ns)
+(0114) {
+     140 C003      RJMP	0x0144
+(0115)  while(ns--) 
+(0116)  delay_nms(1000);
+     141 EE08      LDI	R16,0xE8
+     142 E013      LDI	R17,3
+     143 DFEB      RCALL	_delay_nms
+     144 2E24      MOV	R2,R20
+     145 2433      CLR	R3
+     146 5041      SUBI	R20,1
+     147 2022      TST	R2
+     148 F7C1      BNE	0x0141
+     149 9149      LD	R20,Y+
+     14A 9508      RET
+FILE: E:\DMAVR-~3\PS2\PS2.C
+(0001) //DMAVR-128的PS2键盘驱动程序，并在1602液晶上显示键值
+(0002) //PS2键盘按键1次输出33个时钟脉冲，因此采用中断的方式读取33次，只提取最后一个字节中的数据位做键码
+(0003) //按键1次，实际输出3个字节数据，每个字节为11位，一个起始位(0)，8个数据位，一个奇偶校验位，一个停止位(1)
+(0004) //并且第1个字节与第3个字节数据相同，此程序提取第3个字节的数据位键值数据
+(0005) //有的键盘在第一次按键会触发34次中断，因此在中断服务程序中多一个判断程序，默认使用33个中断
+(0006) //学习前请阅读PS2键盘的相关资料，以充分的理解程序，译码表可以做成头文件的形式，为了直观，这里就全部放在一起
+(0007) //编译环境 ICCAVR 7.16A
+(0008) //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+(0009) //作者：阿迪 www.avrgcc.com
+(0010) //日期：2010.01.14
+(0011) 
+(0012) //***********************************************************************
+(0013) //			包含文件
+(0014) //***********************************************************************
+(0015) 
+(0016) #include <string.h>
+(0017) #include <stdio.h>
+(0018) #define  F_CPU	7372800		               //单片机主频为7.3728MHz
+(0019) #include <delay.h>
+(0020) #include <iom128v.h>
+(0021) #include <PS2.h>
+(0022) 
+(0023) 
+(0024) 
+(0025) //***********************************************************************
+(0026) //			定义变量区
+(0027) //***********************************************************************
+(0028) 
+(0029) #define uchar           unsigned char
+(0030) #define uint            unsigned int
+(0031) #define ulong           unsigned long
+(0032) 
+(0033) extern  uchar unshifted[][2];
+(0034) extern  uchar shifted[][2];
+(0035) 
+(0036) #define RS_CLR	PORTF &= ~(1 << PF1)                 //RS置低
+(0037) #define RS_SET	PORTF |= (1 << PF1)                  //RS置高
+(0038) 
+(0039) #define RW_CLR	PORTF &= ~(1 << PF2)                 //RW置低
+(0040) #define RW_SET	PORTF |= (1 << PF2)                  //RW置高
+(0041) 
+(0042) #define EN_CLR	PORTF &= ~(1 << PF3)                 //E置低
+(0043) #define EN_SET	PORTF |= (1 << PF3)                  //E置高
+(0044) 
+(0045) #define Data_IO	        PORTA                //液晶数据口
+(0046) #define Data_DDR        DDRA                 //数据口方向寄存器
+(0047) #define D_LE0	        PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+(0048) #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+(0049) #define W_LE0	        PORTD &= ~(1 << PD5) //数码管位控制位为0
+(0050) #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+(0051) 
+(0052) 
+(0053) uchar bitcount;
+(0054) uchar data2,key_value=0x30;
+(0055) ulong data;
+(0056) uchar finish;
+(0057) uchar up=0,shift=0;	//up为通、断码标志，shift为shift键按下标志 
+(0058) 
+(0059) 
+(0060) //*************************************************************************
+(0061) //			初始化子程序
+(0062) //*************************************************************************
+(0063) void system_init()
+(0064) {
+(0065) 
+(0066) 	Data_IO = 0xFF;				        //电平设置
+_system_init:
+     14B EF8F      LDI	R24,0xFF
+     14C BB8B      OUT	0x1B,R24
+(0067) 	Data_DDR = 0xFF;				        //方向输出
+     14D BB8A      OUT	0x1A,R24
+(0068) 	PORTF = 0xFF;                       //电平设置
+     14E 9380 0062 STS	0x0062,R24
+(0069) 	DDRF = 0xFF;                        //方向输出
+     150 9380 0061 STS	0x0061,R24
+(0070)     PORTD=0xFF;
+     152 BB82      OUT	0x12,R24
+(0071) 	DDRD=0xFF;
+     153 BB81      OUT	0x11,R24
+(0072) 	D_LE1;                             //关掉数码管，以免显示乱码                   
+     154 9A94      SBI	0x12,4
+(0073)     W_LE1;                     
+     155 9A95      SBI	0x12,5
+(0074)     Data_IO=0xFF;                      //关数码管            
+     156 BB8B      OUT	0x1B,R24
+(0075)     W_LE0; 
+     157 9895      CBI	0x12,5
+     158 9508      RET
+_LCD_write_com:
+  com                  --> R10
+     159 92AA      ST	R10,-Y
+     15A 2EA0      MOV	R10,R16
+(0076) }
+(0077) 
+(0078) //***********************************************************************
+(0079) //	显示屏命令写入函数
+(0080) //***********************************************************************
+(0081) 
+(0082) 
+(0083) void LCD_write_com(unsigned char com) 
+(0084) {	
+(0085) 	RS_CLR;
+     15B 9180 0062 LDS	R24,0x0062
+     15D 7F8D      ANDI	R24,0xFD
+     15E 9380 0062 STS	0x0062,R24
+(0086) 	RW_CLR;
+     160 9180 0062 LDS	R24,0x0062
+     162 7F8B      ANDI	R24,0xFB
+     163 9380 0062 STS	0x0062,R24
+(0087) 	EN_SET;
+     165 9180 0062 LDS	R24,0x0062
+     167 6088      ORI	R24,0x8
+     168 9380 0062 STS	0x0062,R24
+(0088) 	Data_IO = com;
+     16A BAAB      OUT	0x1B,R10
+(0089) 	delay_nms(5);
+     16B E005      LDI	R16,5
+     16C E010      LDI	R17,0
+     16D DFC1      RCALL	_delay_nms
+(0090) 	EN_CLR;
+     16E 9180 0062 LDS	R24,0x0062
+     170 7F87      ANDI	R24,0xF7
+     171 9380 0062 STS	0x0062,R24
+     173 90A9      LD	R10,Y+
+     174 9508      RET
+_LCD_write_data:
+  data                 --> R10
+     175 92AA      ST	R10,-Y
+     176 2EA0      MOV	R10,R16
+(0091) }
+(0092) //***********************************************************************
+(0093) //	显示屏数据写入函数
+(0094) //***********************************************************************
+(0095) 
+(0096) void LCD_write_data(unsigned char data) 
+(0097) {
+(0098) 	RS_SET;
+     177 9180 0062 LDS	R24,0x0062
+     179 6082      ORI	R24,2
+     17A 9380 0062 STS	0x0062,R24
+(0099) 	RW_CLR;
+     17C 9180 0062 LDS	R24,0x0062
+     17E 7F8B      ANDI	R24,0xFB
+     17F 9380 0062 STS	0x0062,R24
+(0100) 	EN_SET;
+     181 9180 0062 LDS	R24,0x0062
+     183 6088      ORI	R24,0x8
+     184 9380 0062 STS	0x0062,R24
+(0101) 	Data_IO = data;
+     186 BAAB      OUT	0x1B,R10
+(0102) 	delay_nms(5);
+     187 E005      LDI	R16,5
+     188 E010      LDI	R17,0
+     189 DFA5      RCALL	_delay_nms
+(0103) 	EN_CLR;
+     18A 9180 0062 LDS	R24,0x0062
+     18C 7F87      ANDI	R24,0xF7
+     18D 9380 0062 STS	0x0062,R24
+     18F 90A9      LD	R10,Y+
+     190 9508      RET
+(0104) }
+(0105) //***********************************************************************
+(0106) //	显示屏清空显示
+(0107) //***********************************************************************
+(0108) 
+(0109) void LCD_clear(void) 
+(0110) {
+(0111) 	LCD_write_com(0x01);
+_LCD_clear:
+     191 E001      LDI	R16,1
+     192 DFC6      RCALL	_LCD_write_com
+(0112) 	delay_nms(5);
+     193 E005      LDI	R16,5
+     194 E010      LDI	R17,0
+     195 CF99      RJMP	_delay_nms
+_LCD_write_char:
+  data                 --> Y,+2
+  y                    --> R10
+  x                    --> R20
+     196 92AA      ST	R10,-Y
+     197 934A      ST	R20,-Y
+     198 2EA2      MOV	R10,R18
+     199 2F40      MOV	R20,R16
+(0113) }
+(0114) //***********************************************************************
+(0115) //	显示屏单字符写入函数
+(0116) //***********************************************************************
+(0117) 
+(0118) void LCD_write_char(unsigned char x,unsigned char y,unsigned char data) 
+(0119) {
+(0120) 	
+(0121)     if (y == 0) 
+     19A 20AA      TST	R10
+     19B F421      BNE	0x01A0
+(0122)     {
+(0123)     	LCD_write_com(0x80 + x);
+     19C 2F04      MOV	R16,R20
+     19D 5800      SUBI	R16,0x80
+     19E DFBA      RCALL	_LCD_write_com
+(0124)     }
+     19F C003      RJMP	0x01A3
+(0125)     else 
+(0126)     {
+(0127)     	LCD_write_com(0xC0 + x);
+     1A0 2F04      MOV	R16,R20
+     1A1 5400      SUBI	R16,0x40
+     1A2 DFB6      RCALL	_LCD_write_com
+(0128)     }
+(0129)     
+(0130)     LCD_write_data( data);  
+     1A3 810A      LDD	R16,Y+2
+     1A4 DFD0      RCALL	_LCD_write_data
+     1A5 9149      LD	R20,Y+
+     1A6 90A9      LD	R10,Y+
+     1A7 9508      RET
+_LCD_write_str:
+  s                    --> R20
+  y                    --> R10
+  x                    --> R22
+     1A8 940E 035D CALL	push_xgsetF00C
+     1AA 2EA2      MOV	R10,R18
+     1AB 2F60      MOV	R22,R16
+     1AC 814E      LDD	R20,Y+6
+     1AD 815F      LDD	R21,Y+7
+(0131) }
+(0132) 
+(0133) //***********************************************************************
+(0134) //	显示屏字符串写入函数
+(0135) //***********************************************************************
+(0136) void LCD_write_str(unsigned char x,unsigned char y,unsigned char *s) 
+(0137) {
+(0138) 	
+(0139)     if (y == 0) 
+     1AE 20AA      TST	R10
+     1AF F421      BNE	0x01B4
+(0140)     {
+(0141)     	LCD_write_com(0x80 + x);
+     1B0 2F06      MOV	R16,R22
+     1B1 5800      SUBI	R16,0x80
+     1B2 DFA6      RCALL	_LCD_write_com
+(0142)     }
+     1B3 C009      RJMP	0x01BD
+(0143)     else 
+(0144)     {
+(0145)     	LCD_write_com(0xC0 + x);
+     1B4 2F06      MOV	R16,R22
+     1B5 5400      SUBI	R16,0x40
+     1B6 DFA2      RCALL	_LCD_write_com
+(0146)     }
+     1B7 C005      RJMP	0x01BD
+(0147)     
+(0148)     while (*s) 
+(0149)     {
+(0150)     	LCD_write_data( *s);
+     1B8 01FA      MOVW	R30,R20
+     1B9 8100      LDD	R16,Z+0
+     1BA DFBA      RCALL	_LCD_write_data
+(0151)     	s ++;
+     1BB 5F4F      SUBI	R20,0xFF
+     1BC 4F5F      SBCI	R21,0xFF
+     1BD 01FA      MOVW	R30,R20
+     1BE 8020      LDD	R2,Z+0
+     1BF 2022      TST	R2
+     1C0 F7B9      BNE	0x01B8
+     1C1 940C 0364 JMP	pop_xgsetF00C
+(0152)     }
+(0153) }
+(0154) 
+(0155) //***********************************************************************
+(0156) //	显示屏初始化函数
+(0157) //***********************************************************************
+(0158) 
+(0159) void LCD_init(void) 
+(0160) {
+(0161) 	LCD_write_com(0x38);				//显示模式设置
+_LCD_init:
+     1C3 E308      LDI	R16,0x38
+     1C4 DF94      RCALL	_LCD_write_com
+(0162) 	delay_nms(5);
+     1C5 E005      LDI	R16,5
+     1C6 E010      LDI	R17,0
+     1C7 DF67      RCALL	_delay_nms
+(0163) 	LCD_write_com(0x08);				//显示关闭
+     1C8 E008      LDI	R16,0x8
+     1C9 DF8F      RCALL	_LCD_write_com
+(0164) 	delay_nms(5);
+     1CA E005      LDI	R16,5
+     1CB E010      LDI	R17,0
+     1CC DF62      RCALL	_delay_nms
+(0165)     LCD_write_com(0x01);				//显示清屏
+     1CD E001      LDI	R16,1
+     1CE DF8A      RCALL	_LCD_write_com
+(0166) 	delay_nms(5);
+     1CF E005      LDI	R16,5
+     1D0 E010      LDI	R17,0
+     1D1 DF5D      RCALL	_delay_nms
+(0167)     LCD_write_com(0x06);				//显示光标移动设置
+     1D2 E006      LDI	R16,6
+     1D3 DF85      RCALL	_LCD_write_com
+(0168) 	delay_nms(5);
+     1D4 E005      LDI	R16,5
+     1D5 E010      LDI	R17,0
+     1D6 DF58      RCALL	_delay_nms
+(0169) 	LCD_write_com(0x0C);				//显示开及光标设置
+     1D7 E00C      LDI	R16,0xC
+     1D8 DF80      RCALL	_LCD_write_com
+(0170)     delay_nms(5);
+     1D9 E005      LDI	R16,5
+     1DA E010      LDI	R17,0
+     1DB CF53      RJMP	_delay_nms
+(0171) }
+(0172) 
+(0173) 
+(0174) //************************************************************** 
+(0175) //                初始化PS2函数 
+(0176) //************************************************************** 
+(0177) void ps2_init(void) 
+(0178) { 
+(0179)      
+(0180)      EIMSK|=0x03;          //使能外部中断0
+_ps2_init:
+     1DC B789      IN	R24,0x39
+     1DD 6083      ORI	R24,3
+     1DE BF89      OUT	0x39,R24
+(0181)      EICRA=0x0A;          //下降沿触发方式
+     1DF E08A      LDI	R24,0xA
+     1E0 9380 006A STS	0x006A,R24
+(0182)      MCUCSR=0x00;         //控制和状态寄存器初始化
+     1E2 2422      CLR	R2
+     1E3 BE24      OUT	0x34,R2
+(0183)      bitcount = 0;	     //每次11位数据，一个起始位(0)，8个数据位，一个奇偶校验位，一个停止位(1)  
+     1E4 9220 021B STS	bitcount,R2
+(0184)      PORTD|=(1<<PD0);    //使能中断管脚的上拉
+     1E6 9A90      SBI	0x12,0
+(0185)      DDRD&=~(1<<PD0);    //配置中断管脚为输入 
+     1E7 9888      CBI	0x11,0
+(0186)      PORTC|=(1<<PC7);    //使能数据管脚的上拉 
+     1E8 9AAF      SBI	0x15,7
+(0187)      DDRC&=~(1<<PC7);    //配置数据管脚为输入
+     1E9 98A7      CBI	0x14,7
+     1EA 9508      RET
+_Decode:
+  i                    --> R10
+  scancode             --> R16
+     1EB 940E 0353 CALL	push_xgset300C
+(0188) 
+(0189) } 
+(0190) 
+(0191) //************************************************************** 
+(0192) //              译码函数，scancode--需要翻译的扫描码  
+(0193) //************************************************************** 
+(0194) 
+(0195) void Decode(uchar scancode) 
+(0196) { 
+(0197) 
+(0198) uchar i; 
+(0199) if (!up)	 //已接收的11位数据是通码（up为0） 
+     1ED 9020 0205 LDS	R2,up
+     1EF 2022      TST	R2
+     1F0 F009      BEQ	0x01F2
+     1F1 C06F      RJMP	0x0261
+(0200) { 
+(0201) 	switch (scancode)//开始翻译扫描码 
+     1F2 2F40      MOV	R20,R16
+     1F3 2755      CLR	R21
+     1F4 3549      CPI	R20,0x59
+     1F5 E0E0      LDI	R30,0
+     1F6 075E      CPC	R21,R30
+     1F7 F0B9      BEQ	0x020F
+     1F8 E589      LDI	R24,0x59
+     1F9 E090      LDI	R25,0
+     1FA 1784      CP	R24,R20
+     1FB 0795      CPC	R25,R21
+     1FC F02C      BLT	0x0202
+     1FD 3142      CPI	R20,0x12
+     1FE E0E0      LDI	R30,0
+     1FF 075E      CPC	R21,R30
+     200 F051      BEQ	0x020B
+     201 C011      RJMP	0x0213
+     202 3F40      CPI	R20,0xF0
+     203 E0E0      LDI	R30,0
+     204 075E      CPC	R21,R30
+     205 F009      BEQ	0x0207
+     206 C00C      RJMP	0x0213
+(0202) 		{ 
+(0203) 			case 0xF0:	 //键盘释放标志（随后的一个字节是断码） 
+(0204) 						up=1;	        //设置up为断码标志 
+     207 E081      LDI	R24,1
+     208 9380 0205 STS	up,R24
+(0205) 						break; 
+     20A C06F      RJMP	0x027A
+(0206) 			case 0x12:	 //左shift键按下 
+(0207) 						shift=1;         //设置shift为按下标志 
+     20B E081      LDI	R24,1
+     20C 9380 0206 STS	shift,R24
+(0208) 						break; 
+     20E C06B      RJMP	0x027A
+(0209) 			case 0x59:	 //右shift键按下 
+(0210) 						shift=1;         //设置shift为按下标志 
+     20F E081      LDI	R24,1
+     210 9380 0206 STS	shift,R24
+(0211) 						break; 
+     212 C067      RJMP	0x027A
+(0212) 			default: 
+(0213) if(!shift)	 //如果shift键没有按下 
+     213 9020 0206 LDS	R2,shift
+     215 2022      TST	R2
+     216 F521      BNE	0x023B
+(0214) 	{ //查找unshifted表，表中左列是扫描码，右列是对应的ASCII码 
+(0215) 		for(i=0;unshifted[i][0]!=scancode;i++); 
+     217 24AA      CLR	R10
+     218 C001      RJMP	0x021A
+     219 94A3      INC	R10
+     21A E080      LDI	R24,0
+     21B E091      LDI	R25,1
+     21C 2DEA      MOV	R30,R10
+     21D 27FF      CLR	R31
+     21E 0FEE      LSL	R30
+     21F 1FFF      ROL	R31
+     220 0FE8      ADD	R30,R24
+     221 1FF9      ADC	R31,R25
+     222 8020      LDD	R2,Z+0
+     223 1620      CP	R2,R16
+     224 F7A1      BNE	0x0219
+(0216) 			if(unshifted[i][0]==scancode) 
+     225 2DEA      MOV	R30,R10
+     226 27FF      CLR	R31
+     227 0FEE      LSL	R30
+     228 1FFF      ROL	R31
+     229 0FE8      ADD	R30,R24
+     22A 1FF9      ADC	R31,R25
+     22B 8020      LDD	R2,Z+0
+     22C 1620      CP	R2,R16
+     22D F009      BEQ	0x022F
+     22E C04B      RJMP	0x027A
+(0217) 				{ 
+(0218) 					key_value=unshifted[i][1]; 
+     22F E081      LDI	R24,1
+     230 E091      LDI	R25,1
+     231 2DEA      MOV	R30,R10
+     232 27FF      CLR	R31
+     233 0FEE      LSL	R30
+     234 1FFF      ROL	R31
+     235 0FE8      ADD	R30,R24
+     236 1FF9      ADC	R31,R25
+     237 8020      LDD	R2,Z+0
+     238 9220 0204 STS	key_value,R2
+(0219) 				} 
+(0220) 	} 
+     23A C03F      RJMP	0x027A
+(0221) else //如果shift键按下 
+(0222) 	{	 //查找shifted表 
+(0223) 		for(i=0;shifted[i][0]!=scancode;i++); 
+     23B 24AA      CLR	R10
+     23C C001      RJMP	0x023E
+     23D 94A3      INC	R10
+     23E E882      LDI	R24,0x82
+     23F E091      LDI	R25,1
+     240 2DEA      MOV	R30,R10
+     241 27FF      CLR	R31
+     242 0FEE      LSL	R30
+     243 1FFF      ROL	R31
+     244 0FE8      ADD	R30,R24
+     245 1FF9      ADC	R31,R25
+     246 8020      LDD	R2,Z+0
+     247 1620      CP	R2,R16
+     248 F7A1      BNE	0x023D
+(0224) 			if(shifted[i][0]==scancode) 
+     249 2DEA      MOV	R30,R10
+     24A 27FF      CLR	R31
+     24B 0FEE      LSL	R30
+     24C 1FFF      ROL	R31
+     24D 0FE8      ADD	R30,R24
+     24E 1FF9      ADC	R31,R25
+     24F 8020      LDD	R2,Z+0
+     250 1620      CP	R2,R16
+     251 F541      BNE	0x027A
+(0225) 				{ 
+(0226) 					key_value=shifted[i][1];
+     252 E883      LDI	R24,0x83
+     253 E091      LDI	R25,1
+     254 2DEA      MOV	R30,R10
+     255 27FF      CLR	R31
+     256 0FEE      LSL	R30
+     257 1FFF      ROL	R31
+     258 0FE8      ADD	R30,R24
+     259 1FF9      ADC	R31,R25
+     25A 8020      LDD	R2,Z+0
+     25B 9220 0204 STS	key_value,R2
+(0227) 					shift=0;
+     25D 2422      CLR	R2
+     25E 9220 0206 STS	shift,R2
+(0228) 				} 
+(0229) 	} 
+(0230) 			break; 
+(0231) 		} 
+(0232) } 
+     260 C019      RJMP	0x027A
+(0233) else                      //已接收的11位数据是断码（up为1） 
+(0234) 	{ 
+(0235) 		up = 0;                   //将断码标志复位 
+     261 2422      CLR	R2
+     262 9220 0205 STS	up,R2
+(0236) 		switch (scancode)	 //检测shift键释放 
+     264 2F40      MOV	R20,R16
+     265 2755      CLR	R21
+     266 3142      CPI	R20,0x12
+     267 E0E0      LDI	R30,0
+     268 075E      CPC	R21,R30
+     269 F049      BEQ	0x0273
+     26A 3142      CPI	R20,0x12
+     26B E0E0      LDI	R30,0
+     26C 075E      CPC	R21,R30
+     26D F064      BLT	0x027A
+     26E 3549      CPI	R20,0x59
+     26F E0E0      LDI	R30,0
+     270 075E      CPC	R21,R30
+     271 F029      BEQ	0x0277
+     272 C007      RJMP	0x027A
+(0237) 			{ 
+(0238) 				case 0x12 :	         //左shift键 
+(0239) 							shift = 0; 
+     273 2422      CLR	R2
+     274 9220 0206 STS	shift,R2
+(0240) 							break; 
+     276 C003      RJMP	0x027A
+(0241) 				case 0x59 :	         //右shift键 
+(0242) 							shift = 0; 
+     277 2422      CLR	R2
+     278 9220 0206 STS	shift,R2
+(0243) 							break; 
+(0244) 				default: 
+(0245) 							break; 
+(0246) 			} 
+(0247) 	} 
+     27A 940C 0358 JMP	pop_xgset300C
+_get_code:
+  i                    --> R20
+  cdata                --> R16
+     27C 934A      ST	R20,-Y
+     27D 935A      ST	R21,-Y
+(0248) } 
+(0249) //************************************************************************
+(0250) //          中断读入的数据是先低位后高位，该函数将数据位重新排列
+(0251) //************************************************************************
+(0252) void get_code(uchar cdata)
+(0253) {
+(0254)   int i;
+(0255)   for(i=0;i<8;i++)
+     27E 2744      CLR	R20
+     27F 2755      CLR	R21
+(0256)   { data2<<=1 ;
+     280 9020 021A LDS	R2,data2
+     282 0C22      LSL	R2
+     283 9220 021A STS	data2,R2
+(0257)     data2|=cdata&0x01;
+     285 2F80      MOV	R24,R16
+     286 7081      ANDI	R24,1
+     287 2A28      OR	R2,R24
+     288 9220 021A STS	data2,R2
+(0258)     cdata>>=1;
+     28A 9506      LSR	R16
+     28B 5F4F      SUBI	R20,0xFF
+     28C 4F5F      SBCI	R21,0xFF
+     28D 3048      CPI	R20,0x8
+     28E E0E0      LDI	R30,0
+     28F 075E      CPC	R21,R30
+     290 F37C      BLT	0x0280
+     291 9159      LD	R21,Y+
+     292 9149      LD	R20,Y+
+     293 9508      RET
+_INT0_ISR:
+     294 920A      ST	R0,-Y
+     295 921A      ST	R1,-Y
+     296 922A      ST	R2,-Y
+     297 923A      ST	R3,-Y
+     298 924A      ST	R4,-Y
+     299 925A      ST	R5,-Y
+     29A 926A      ST	R6,-Y
+     29B 927A      ST	R7,-Y
+     29C 928A      ST	R8,-Y
+     29D 929A      ST	R9,-Y
+     29E 930A      ST	R16,-Y
+     29F 931A      ST	R17,-Y
+     2A0 932A      ST	R18,-Y
+     2A1 933A      ST	R19,-Y
+     2A2 938A      ST	R24,-Y
+     2A3 939A      ST	R25,-Y
+     2A4 93AA      ST	R26,-Y
+     2A5 93BA      ST	R27,-Y
+     2A6 93EA      ST	R30,-Y
+     2A7 93FA      ST	R31,-Y
+     2A8 B60F      IN	R0,0x3F
+     2A9 920A      ST	R0,-Y
+     2AA 940E 035D CALL	push_xgsetF00C
+(0259)   
+(0260)   }
+(0261) }
+(0262) //*************************************************************************
+(0263) //	        外部中断0服务子程序
+(0264) //功 能: 外部中断0的中断服务函数，下降沿读取数据，数据位ULONG型，全部读取 
+(0265) //*************************************************************************
+(0266) #pragma interrupt_handler  INT0_ISR:iv_INT0 //int0_ISR：中断函数名，接着是中断向量号
+(0267) void INT0_ISR() 	 				  		//中断0服务程序
+(0268)    {
+(0269)     bitcount++;                               //中断次数计数值，按一次键，中断33次
+     2AC 9180 021B LDS	R24,bitcount
+     2AE 5F8F      SUBI	R24,0xFF
+     2AF 9380 021B STS	bitcount,R24
+(0270)     data<<=1;                                 //但是键盘初始化后可能有一个中断，所以第一个是中断34次
+     2B1 9040 0218 LDS	R4,data+2
+     2B3 9050 0219 LDS	R5,data+3
+     2B5 9020 0216 LDS	R2,data
+     2B7 9030 0217 LDS	R3,data+1
+     2B9 0C22      LSL	R2
+     2BA 1C33      ROL	R3
+     2BB 1C44      ROL	R4
+     2BC 1C55      ROL	R5
+     2BD 9230 0217 STS	data+1,R3
+     2BF 9220 0216 STS	data,R2
+     2C1 9250 0219 STS	data+3,R5
+     2C3 9240 0218 STS	data+2,R4
+(0271)     data|=((PINC&0x80)>>7);                   //读取每一个中断时的数据位
+     2C5 E027      LDI	R18,7
+     2C6 E030      LDI	R19,0
+     2C7 B303      IN	R16,0x13
+     2C8 2711      CLR	R17
+     2C9 7800      ANDI	R16,0x80
+     2CA 7010      ANDI	R17,0
+     2CB 940E 034C CALL	asr16
+     2CD 0118      MOVW	R2,R16
+     2CE 2444      CLR	R4
+     2CF FC37      SBRC	R3,7
+     2D0 9440      COM	R4
+     2D1 2455      CLR	R5
+     2D2 FC47      SBRC	R4,7
+     2D3 9450      COM	R5
+     2D4 9080 0218 LDS	R8,data+2
+     2D6 9090 0219 LDS	R9,data+3
+     2D8 9060 0216 LDS	R6,data
+     2DA 9070 0217 LDS	R7,data+1
+     2DC 2862      OR	R6,R2
+     2DD 2873      OR	R7,R3
+     2DE 2884      OR	R8,R4
+     2DF 2895      OR	R9,R5
+     2E0 9270 0217 STS	data+1,R7
+     2E2 9260 0216 STS	data,R6
+     2E4 9290 0219 STS	data+3,R9
+     2E6 9280 0218 STS	data+2,R8
+(0272)     //if((bitcount==0x22)&&(finish==0))        //有的键盘在初始化后会有一个下降沿中断
+(0273)     //{
+(0274)      // bitcount=0;
+(0275)     //  finish=1;                              //只有在第一个键时调用此判断，多一个中断
+(0276)      // data=data&0x03fc;
+(0277)    //   data>>=2;
+(0278)     //  get_code(data);                        //得到8位键码
+(0279)     //   Decode(data2);	                     //将扫描码翻译成ASCII码
+(0280)   //  }
+(0281)     if(bitcount==0x21)//&&(finish==1))    //正常来说，都是33次中断
+     2E8 9180 021B LDS	R24,bitcount
+     2EA 3281      CPI	R24,0x21
+     2EB F559      BNE	0x0317
+(0282)         {
+(0283)       bitcount=0;
+     2EC 2422      CLR	R2
+     2ED 9220 021B STS	bitcount,R2
+(0284)       finish=1;
+     2EF E081      LDI	R24,1
+     2F0 9380 0215 STS	finish,R24
+(0285)       data=data&0x03fc;      //读取最后一个字节中的8位数据位，每次按键三个字节数据，第一个和第三个字节数据相同
+     2F2 EF4C      LDI	R20,0xFC
+     2F3 E053      LDI	R21,3
+     2F4 E060      LDI	R22,0
+     2F5 E070      LDI	R23,0
+     2F6 0113      MOVW	R2,R6
+     2F7 0124      MOVW	R4,R8
+     2F8 2224      AND	R2,R20
+     2F9 2235      AND	R3,R21
+     2FA 2246      AND	R4,R22
+     2FB 2257      AND	R5,R23
+     2FC 9230 0217 STS	data+1,R3
+     2FE 9220 0216 STS	data,R2
+     300 9250 0219 STS	data+3,R5
+     302 9240 0218 STS	data+2,R4
+(0286)       data>>=2;               //移位处理
+     304 E082      LDI	R24,2
+     305 E090      LDI	R25,0
+     306 0181      MOVW	R16,R2
+     307 0192      MOVW	R18,R4
+     308 938A      ST	R24,-Y
+     309 940E 036B CALL	lsr32
+     30B 9310 0217 STS	data+1,R17
+     30D 9300 0216 STS	data,R16
+     30F 9330 0219 STS	data+3,R19
+     311 9320 0218 STS	data+2,R18
+(0287)       get_code(data);        //得到8位正常排序的数据位
+     313 DF68      RCALL	_get_code
+(0288)        Decode(data2);	     //将扫描码翻译成ASCII码
+     314 9100 021A LDS	R16,data2
+     316 DED4      RCALL	_Decode
+(0289)     }
+     317 940E 0364 CALL	pop_xgsetF00C
+     319 9009      LD	R0,Y+
+     31A BE0F      OUT	0x3F,R0
+     31B 91F9      LD	R31,Y+
+     31C 91E9      LD	R30,Y+
+     31D 91B9      LD	R27,Y+
+     31E 91A9      LD	R26,Y+
+     31F 9199      LD	R25,Y+
+     320 9189      LD	R24,Y+
+     321 9139      LD	R19,Y+
+     322 9129      LD	R18,Y+
+     323 9119      LD	R17,Y+
+     324 9109      LD	R16,Y+
+     325 9099      LD	R9,Y+
+     326 9089      LD	R8,Y+
+     327 9079      LD	R7,Y+
+     328 9069      LD	R6,Y+
+     329 9059      LD	R5,Y+
+     32A 9049      LD	R4,Y+
+     32B 9039      LD	R3,Y+
+     32C 9029      LD	R2,Y+
+     32D 9019      LD	R1,Y+
+     32E 9009      LD	R0,Y+
+     32F 9518      RETI
+_main:
+     330 9722      SBIW	R28,2
+(0290)    
+(0291)   }
+(0292) 
+(0293) //*************************************************************************
+(0294) //                 主函数 
+(0295) //*************************************************************************
+(0296) void main(void) 
+(0297) { 
+(0298)         system_init();                                //系统初始化，设置IO口属性
+     331 DE19      RCALL	_system_init
+(0299) 	    delay_nms(100);                                //延时100ms
+     332 E604      LDI	R16,0x64
+     333 E010      LDI	R17,0
+     334 DDFA      RCALL	_delay_nms
+(0300)   	    LCD_init();                                   //液晶参数初始化设置
+     335 DE8D      RCALL	_LCD_init
+(0301)         ps2_init();	                             //初始化PS2键盘接口 
+     336 DEA5      RCALL	_ps2_init
+(0302)         LCD_write_str(0,0,"The Keyvalue:");          //液晶初始界面
+     337 E087      LDI	R24,7
+     338 E092      LDI	R25,2
+     339 8399      STD	Y+1,R25
+     33A 8388      STD	Y+0,R24
+     33B 2722      CLR	R18
+     33C 2700      CLR	R16
+     33D DE6A      RCALL	_LCD_write_str
+(0303)         delay_nms(2);
+     33E E002      LDI	R16,2
+     33F E010      LDI	R17,0
+     340 DDEE      RCALL	_delay_nms
+(0304)         SREG|=0x80;                                  //开全局中断
+     341 9478      BSET	7
+     342 C006      RJMP	0x0349
+(0305)        while(1) 
+(0306)    		{       
+(0307)          LCD_write_char(4,1,key_value);             //单个字符输出显示，显示键值
+FILE: <library>
+     343 9020 0204 LDS	R2,key_value
+     345 8228      STD	Y+0,R2
+     346 E021      LDI	R18,1
+     347 E004      LDI	R16,4
+     348 DE4D      RCALL	_LCD_write_char
+     349 CFF9      RJMP	0x0343
+     34A 9622      ADIW	R28,2
+     34B 9508      RET
+asr16:
+     34C 2322      TST	R18
+     34D F021      BEQ	0x0352
+     34E 9515      ASR	R17
+     34F 9507      ROR	R16
+     350 952A      DEC	R18
+     351 CFFA      RJMP	asr16
+     352 9508      RET
+push_xgset300C:
+     353 935A      ST	R21,-Y
+     354 934A      ST	R20,-Y
+     355 92BA      ST	R11,-Y
+     356 92AA      ST	R10,-Y
+     357 9508      RET
+pop_xgset300C:
+     358 90A9      LD	R10,Y+
+     359 90B9      LD	R11,Y+
+     35A 9149      LD	R20,Y+
+     35B 9159      LD	R21,Y+
+     35C 9508      RET
+push_xgsetF00C:
+     35D 937A      ST	R23,-Y
+     35E 936A      ST	R22,-Y
+     35F 935A      ST	R21,-Y
+     360 934A      ST	R20,-Y
+     361 92BA      ST	R11,-Y
+     362 92AA      ST	R10,-Y
+     363 9508      RET
+pop_xgsetF00C:
+     364 90A9      LD	R10,Y+
+     365 90B9      LD	R11,Y+
+     366 9149      LD	R20,Y+
+     367 9159      LD	R21,Y+
+     368 9169      LD	R22,Y+
+     369 9179      LD	R23,Y+
+     36A 9508      RET
+lsr32:
+     36B 920F      PUSH	R0
+     36C 9009      LD	R0,Y+
+     36D 2000      TST	R0
+     36E F031      BEQ	0x0375
+     36F 9536      LSR	R19
+     370 9527      ROR	R18
+     371 9517      ROR	R17
+     372 9507      ROR	R16
+     373 940A      DEC	R0
+     374 CFF8      RJMP	0x036D
+     375 900F      POP	R0
+     376 9508      RET

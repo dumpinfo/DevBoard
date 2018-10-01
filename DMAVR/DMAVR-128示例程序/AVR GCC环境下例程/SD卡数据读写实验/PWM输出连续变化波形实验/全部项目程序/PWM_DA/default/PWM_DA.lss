@@ -1,0 +1,229 @@
+
+PWM_DA.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000082  00800100  00000158  000001ec  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000158  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000001  00800182  00800182  0000026e  2**0
+                  ALLOC
+  3 .debug_aranges 00000020  00000000  00000000  0000026e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 0000006f  00000000  00000000  0000028e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000012f  00000000  00000000  000002fd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000000af  00000000  00000000  0000042c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000010a  00000000  00000000  000004db  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000050  00000000  00000000  000005e8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000000c5  00000000  00000000  00000638  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 46 00 	jmp	0x8c	; 0x8c <__ctors_end>
+   4:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   8:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+   c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  10:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  14:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  18:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  1c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  20:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  24:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  28:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  2c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  30:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  34:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  38:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  3c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  40:	0c 94 73 00 	jmp	0xe6	; 0xe6 <__vector_16>
+  44:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  48:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  4c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  50:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  54:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  58:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  5c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  60:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  64:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  68:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  6c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  70:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  74:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  78:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  7c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  80:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  84:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  88:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+
+0000008c <__ctors_end>:
+  8c:	11 24       	eor	r1, r1
+  8e:	1f be       	out	0x3f, r1	; 63
+  90:	cf ef       	ldi	r28, 0xFF	; 255
+  92:	d0 e1       	ldi	r29, 0x10	; 16
+  94:	de bf       	out	0x3e, r29	; 62
+  96:	cd bf       	out	0x3d, r28	; 61
+
+00000098 <__do_copy_data>:
+  98:	11 e0       	ldi	r17, 0x01	; 1
+  9a:	a0 e0       	ldi	r26, 0x00	; 0
+  9c:	b1 e0       	ldi	r27, 0x01	; 1
+  9e:	e8 e5       	ldi	r30, 0x58	; 88
+  a0:	f1 e0       	ldi	r31, 0x01	; 1
+  a2:	00 e0       	ldi	r16, 0x00	; 0
+  a4:	0b bf       	out	0x3b, r16	; 59
+  a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
+  a8:	07 90       	elpm	r0, Z+
+  aa:	0d 92       	st	X+, r0
+  ac:	a2 38       	cpi	r26, 0x82	; 130
+  ae:	b1 07       	cpc	r27, r17
+  b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
+
+000000b2 <__do_clear_bss>:
+  b2:	11 e0       	ldi	r17, 0x01	; 1
+  b4:	a2 e8       	ldi	r26, 0x82	; 130
+  b6:	b1 e0       	ldi	r27, 0x01	; 1
+  b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
+
+000000ba <.do_clear_bss_loop>:
+  ba:	1d 92       	st	X+, r1
+
+000000bc <.do_clear_bss_start>:
+  bc:	a3 38       	cpi	r26, 0x83	; 131
+  be:	b1 07       	cpc	r27, r17
+  c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
+  c2:	0e 94 9c 00 	call	0x138	; 0x138 <main>
+  c6:	0c 94 aa 00 	jmp	0x154	; 0x154 <_exit>
+
+000000ca <__bad_interrupt>:
+  ca:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000ce <system_init>:
+//			初始化子程序
+//*************************************************************************
+void system_init()                                   //IO口初始化
+{
+  
+  PORTB=0xff;                                       //PB设置为输出
+  ce:	8f ef       	ldi	r24, 0xFF	; 255
+  d0:	88 bb       	out	0x18, r24	; 24
+  DDRB=0xff;                                        //上拉电阻无效
+  d2:	87 bb       	out	0x17, r24	; 23
+}
+  d4:	08 95       	ret
+
+000000d6 <timer0_init>:
+
+void timer0_init()                                 //定时器初始化
+{
+  TCCR0=0x68|timer_clk;                            //快读PWM模式，OC0输出，分频
+  d6:	8f e6       	ldi	r24, 0x6F	; 111
+  d8:	83 bf       	out	0x33, r24	; 51
+  OCR0=128;                                        //OCR0比较匹配寄存器值
+  da:	80 e8       	ldi	r24, 0x80	; 128
+  dc:	81 bf       	out	0x31, r24	; 49
+  TIFR=0x01;                                       //清中断标志位
+  de:	81 e0       	ldi	r24, 0x01	; 1
+  e0:	86 bf       	out	0x36, r24	; 54
+  TIMSK=0x01;                                      //使能定时器0溢出中断
+  e2:	87 bf       	out	0x37, r24	; 55
+}
+  e4:	08 95       	ret
+
+000000e6 <__vector_16>:
+//*************************************************************************
+//		定时器0中断服务子程序
+//*************************************************************************
+
+ISR(TIMER0_OVF_vect)             				 //中断服务程序
+{
+  e6:	1f 92       	push	r1
+  e8:	0f 92       	push	r0
+  ea:	0f b6       	in	r0, 0x3f	; 63
+  ec:	0f 92       	push	r0
+  ee:	0b b6       	in	r0, 0x3b	; 59
+  f0:	0f 92       	push	r0
+  f2:	11 24       	eor	r1, r1
+  f4:	8f 93       	push	r24
+  f6:	9f 93       	push	r25
+  f8:	ef 93       	push	r30
+  fa:	ff 93       	push	r31
+    X_LUT += x_SW;  							 // 新样点指针
+  fc:	90 91 80 01 	lds	r25, 0x0180
+ 100:	80 91 82 01 	lds	r24, 0x0182
+ 104:	98 0f       	add	r25, r24
+ 106:	90 93 82 01 	sts	0x0182, r25
+	if (X_LUT > 127) X_LUT -= 128;	         	 // 样点指针调整
+ 10a:	97 ff       	sbrs	r25, 7
+ 10c:	03 c0       	rjmp	.+6      	; 0x114 <__vector_16+0x2e>
+ 10e:	90 58       	subi	r25, 0x80	; 128
+ 110:	90 93 82 01 	sts	0x0182, r25
+	OCR0 =auc_SinParam[X_LUT];				  	 // 取样点指针到比较匹配寄存器
+ 114:	e0 91 82 01 	lds	r30, 0x0182
+ 118:	f0 e0       	ldi	r31, 0x00	; 0
+ 11a:	e0 50       	subi	r30, 0x00	; 0
+ 11c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 11e:	80 81       	ld	r24, Z
+ 120:	81 bf       	out	0x31, r24	; 49
+}
+ 122:	ff 91       	pop	r31
+ 124:	ef 91       	pop	r30
+ 126:	9f 91       	pop	r25
+ 128:	8f 91       	pop	r24
+ 12a:	0f 90       	pop	r0
+ 12c:	0b be       	out	0x3b, r0	; 59
+ 12e:	0f 90       	pop	r0
+ 130:	0f be       	out	0x3f, r0	; 63
+ 132:	0f 90       	pop	r0
+ 134:	1f 90       	pop	r1
+ 136:	18 95       	reti
+
+00000138 <main>:
+//			初始化子程序
+//*************************************************************************
+void system_init()                                   //IO口初始化
+{
+  
+  PORTB=0xff;                                       //PB设置为输出
+ 138:	8f ef       	ldi	r24, 0xFF	; 255
+ 13a:	88 bb       	out	0x18, r24	; 24
+  DDRB=0xff;                                        //上拉电阻无效
+ 13c:	87 bb       	out	0x17, r24	; 23
+}
+
+void timer0_init()                                 //定时器初始化
+{
+  TCCR0=0x68|timer_clk;                            //快读PWM模式，OC0输出，分频
+ 13e:	8f e6       	ldi	r24, 0x6F	; 111
+ 140:	83 bf       	out	0x33, r24	; 51
+  OCR0=128;                                        //OCR0比较匹配寄存器值
+ 142:	80 e8       	ldi	r24, 0x80	; 128
+ 144:	81 bf       	out	0x31, r24	; 49
+  TIFR=0x01;                                       //清中断标志位
+ 146:	81 e0       	ldi	r24, 0x01	; 1
+ 148:	86 bf       	out	0x36, r24	; 54
+  TIMSK=0x01;                                      //使能定时器0溢出中断
+ 14a:	87 bf       	out	0x37, r24	; 55
+
+int main(void)
+{
+  system_init();                             	 //系统初始化.PB3输出PWM波形
+  timer0_init();                             	 //定时器0初始化，完成PWM相关配置
+  SREG|=0x80;                                	 //开启全局中断
+ 14c:	8f b7       	in	r24, 0x3f	; 63
+ 14e:	80 68       	ori	r24, 0x80	; 128
+ 150:	8f bf       	out	0x3f, r24	; 63
+ 152:	ff cf       	rjmp	.-2      	; 0x152 <main+0x1a>
+
+00000154 <_exit>:
+ 154:	f8 94       	cli
+
+00000156 <__stop_program>:
+ 156:	ff cf       	rjmp	.-2      	; 0x156 <__stop_program>

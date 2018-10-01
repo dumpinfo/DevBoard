@@ -1,0 +1,1104 @@
+                        .module mmc.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\DMAVR-~3\WRSD\mmc.c
+ 0000                   .dbfunc e McuInit _McuInit fV
+                        .even
+ 0000           _McuInit::
+ 0000                   .dbline -1
+ 0000                   .dbline 25
+ 0000           ; //SD卡驱动函数，采取网络上开源的第三方库文件
+ 0000           ; //欣世纪电子略作修改，由于部分SD卡并非标准SD卡命令，因此可能存在兼容性问题，建议使用金士顿SD卡
+ 0000           ; //SD卡片选信号SD_CS在mmcconf.h文件中修改，DMAVR-M128为PG3脚控制SD_CS
+ 0000           ; //由于DMAVR-128板载SPI接口同时连接在TLC5615芯片上，因此，初始化时要先将SS管脚拉高，禁止TLC5615芯片
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; #include "libtypes.h"         // include our global settings
+ 0000           ; #include "DM_spi.h"                   // include spi bus support
+ 0000           ; #include "mmc.h"
+ 0000           ; #include "mmcconf.h"     // include project-specific hardware configuration
+ 0000           ; #include <stdio.h>
+ 0000           ; //#include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; 
+ 0000           ; #define   set(x)                (1<<(x))
+ 0000           ; #define   sbi(temp,x)                 temp|=(1<<(x))
+ 0000           ; #define   clr(x)                (~(1<<(x)))
+ 0000           ; #define   cbi(temp,x)                 temp&=~(1<<(x))
+ 0000           ; //***********************************************************************
+ 0000           ; //                    IO口初始化
+ 0000           ; //***********************************************************************
+ 0000           ; void McuInit()
+ 0000           ; {
+ 0000                   .dbline 26
+ 0000           ;       PORTB=0XFF;
+ 0000 8FEF              ldi R24,255
+ 0002 88BB              out 0x18,R24
+ 0004                   .dbline 27
+ 0004           ;       DDRB=0XFF;
+ 0004 87BB              out 0x17,R24
+ 0006                   .dbline -2
+ 0006           L1:
+ 0006                   .dbline 0 ; func end
+ 0006 0895              ret
+ 0008                   .dbend
+ 0008                   .dbfunc e mmcInit _mmcInit fV
+                        .even
+ 0008           _mmcInit::
+ 0008                   .dbline -1
+ 0008                   .dbline 37
+ 0008           ;       //sbi(DDRB, 0); // SS must be output for Master mode to work
+ 0008           ;       //sbi(PORTB,0);   // set SS hi
+ 0008           ; 
+ 0008           ; }
+ 0008           ; 
+ 0008           ; //***********************************************************************
+ 0008           ; //                    SD卡初始化
+ 0008           ; //***********************************************************************
+ 0008           ; void mmcInit(void)
+ 0008           ; {
+ 0008                   .dbline 39
+ 0008           ;       // initialize SPI interface
+ 0008           ;       spiInit();
+ 0008 0E940000          xcall _spiInit
+ 000C                   .dbline 41
+ 000C           ;       // release chip select
+ 000C           ;       sbi(MMC_CS_DDR, MMC_CS_PIN);
+ 000C 80916400          lds R24,100
+ 0010 8860              ori R24,8
+ 0012 80936400          sts 100,R24
+ 0016                   .dbline 42
+ 0016           ;       sbi(MMC_CS_PORT,MMC_CS_PIN);
+ 0016 80916500          lds R24,101
+ 001A 8860              ori R24,8
+ 001C 80936500          sts 101,R24
+ 0020                   .dbline -2
+ 0020           L2:
+ 0020                   .dbline 0 ; func end
+ 0020 0895              ret
+ 0022                   .dbend
+ 0022                   .dbfunc e mmcReset _mmcReset fc
+ 0022           ;          retry -> R10
+ 0022           ;             r1 -> R20
+ 0022           ;              i -> R22
+                        .even
+ 0022           _mmcReset::
+ 0022 0E940000          xcall push_xgsetF00C
+ 0026 2297              sbiw R28,2
+ 0028                   .dbline -1
+ 0028                   .dbline 50
+ 0028           ; }
+ 0028           ; 
+ 0028           ; //***********************************************************************
+ 0028           ; //                    识别SD卡是否存在
+ 0028           ; //***********************************************************************
+ 0028           ; 
+ 0028           ; u08 mmcReset(void)
+ 0028           ; {
+ 0028                   .dbline 53
+ 0028           ;       u08 i;
+ 0028           ;       u08 retry;
+ 0028           ;       u08 r1=0;
+ 0028 4427              clr R20
+ 002A                   .dbline 55
+ 002A           ; 
+ 002A           ;       retry = 0;
+ 002A AA24              clr R10
+ 002C           L4:
+ 002C                   .dbline 57
+ 002C           ;       do
+ 002C           ;       {
+ 002C                   .dbline 59
+ 002C           ;               // send dummy bytes with CS high before accessing
+ 002C           ;               for(i=0;i<10;i++) spiTransferByte(0xFF);
+ 002C 6627              clr R22
+ 002E 04C0              xjmp L10
+ 0030           L7:
+ 0030                   .dbline 59
+ 0030 0FEF              ldi R16,255
+ 0032 0E940000          xcall _spiTransferByte
+ 0036           L8:
+ 0036                   .dbline 59
+ 0036 6395              inc R22
+ 0038           L10:
+ 0038                   .dbline 59
+ 0038 6A30              cpi R22,10
+ 003A D0F3              brlo L7
+ 003C           X0:
+ 003C                   .dbline 61
+ 003C           ;               // resetting card, go to SPI mode
+ 003C           ;               r1 = mmcSendCommand(MMC_GO_IDLE_STATE, 0);
+ 003C 80E0              ldi R24,0
+ 003E 90E0              ldi R25,0
+ 0040 A0E0              ldi R26,0
+ 0042 B0E0              ldi R27,0
+ 0044 A883              std y+0,R26
+ 0046 B983              std y+1,R27
+ 0048 9C01              movw R18,R24
+ 004A 0027              clr R16
+ 004C 34D0              xcall _mmcSendCommand
+ 004E 402F              mov R20,R16
+ 0050                   .dbline 66
+ 0050           ;               #ifdef MMC_DEBUG
+ 0050           ;               //rprintf("MMC_GO_IDLE_STATE: R1=0x%x\r\n", r1);
+ 0050           ;               #endif
+ 0050           ;               // do retry counter
+ 0050           ;               retry++;
+ 0050 A394              inc R10
+ 0052                   .dbline 67
+ 0052           ;               if(retry>10) return -1;
+ 0052 8AE0              ldi R24,10
+ 0054 8A15              cp R24,R10
+ 0056 10F4              brsh L11
+ 0058           X1:
+ 0058                   .dbline 67
+ 0058 0FEF              ldi R16,255
+ 005A 2AC0              xjmp L3
+ 005C           L11:
+ 005C                   .dbline 68
+ 005C           ;       } while(r1 != 0x01);
+ 005C           L5:
+ 005C                   .dbline 68
+ 005C 4130              cpi R20,1
+ 005E 31F7              brne L4
+ 0060           X2:
+ 0060                   .dbline 73
+ 0060           ; 
+ 0060           ;       // TODO: check card parameters for voltage compliance
+ 0060           ;       // before issuing initialize command
+ 0060           ; 
+ 0060           ;       retry = 0;
+ 0060 AA24              clr R10
+ 0062           L13:
+ 0062                   .dbline 75
+ 0062           ;       do
+ 0062           ;       {
+ 0062                   .dbline 77
+ 0062           ;               // initializing card for operation
+ 0062           ;               r1 = mmcSendCommand(MMC_SEND_OP_COND, 0);
+ 0062 80E0              ldi R24,0
+ 0064 90E0              ldi R25,0
+ 0066 A0E0              ldi R26,0
+ 0068 B0E0              ldi R27,0
+ 006A A883              std y+0,R26
+ 006C B983              std y+1,R27
+ 006E 9C01              movw R18,R24
+ 0070 01E0              ldi R16,1
+ 0072 21D0              xcall _mmcSendCommand
+ 0074 402F              mov R20,R16
+ 0076                   .dbline 82
+ 0076           ;               #ifdef MMC_DEBUG
+ 0076           ;               //rprintf("MMC_SEND_OP_COND: R1=0x%x\r\n", r1);
+ 0076           ;               #endif
+ 0076           ;               // do retry counter
+ 0076           ;               retry++;
+ 0076 A394              inc R10
+ 0078                   .dbline 83
+ 0078           ;               if(retry>100) return -1;
+ 0078 84E6              ldi R24,100
+ 007A 8A15              cp R24,R10
+ 007C 10F4              brsh L16
+ 007E           X3:
+ 007E                   .dbline 83
+ 007E 0FEF              ldi R16,255
+ 0080 17C0              xjmp L3
+ 0082           L16:
+ 0082                   .dbline 84
+ 0082           ;       } while(r1);
+ 0082           L14:
+ 0082                   .dbline 84
+ 0082 4423              tst R20
+ 0084 71F7              brne L13
+ 0086           X4:
+ 0086                   .dbline 87
+ 0086           ;               
+ 0086           ;       // turn off CRC checking to simplify communication
+ 0086           ;       r1 = mmcSendCommand(MMC_CRC_ON_OFF, 0);
+ 0086 80E0              ldi R24,0
+ 0088 90E0              ldi R25,0
+ 008A A0E0              ldi R26,0
+ 008C B0E0              ldi R27,0
+ 008E A883              std y+0,R26
+ 0090 B983              std y+1,R27
+ 0092 9C01              movw R18,R24
+ 0094 0BE3              ldi R16,59
+ 0096 0FD0              xcall _mmcSendCommand
+ 0098                   .dbline 93
+ 0098           ;       #ifdef MMC_DEBUG
+ 0098           ;       //rprintf("MMC_CRC_ON_OFF: R1=0x%x\r\n", r1);
+ 0098           ;       #endif
+ 0098           ; 
+ 0098           ;       // set block length to 512 bytes
+ 0098           ;       r1 = mmcSendCommand(MMC_SET_BLOCKLEN, 512);
+ 0098 80E0              ldi R24,0
+ 009A 92E0              ldi R25,2
+ 009C A0E0              ldi R26,0
+ 009E B0E0              ldi R27,0
+ 00A0 A883              std y+0,R26
+ 00A2 B983              std y+1,R27
+ 00A4 9C01              movw R18,R24
+ 00A6 00E1              ldi R16,16
+ 00A8 06D0              xcall _mmcSendCommand
+ 00AA A02E              mov R10,R16
+ 00AC 4A2D              mov R20,R10
+ 00AE                   .dbline 99
+ 00AE           ;       #ifdef MMC_DEBUG
+ 00AE           ;       //rprintf("MMC_SET_BLOCKLEN: R1=0x%x\r\n", r1);
+ 00AE           ;       #endif
+ 00AE           ; 
+ 00AE           ;       // return success
+ 00AE           ;       return 0;
+ 00AE 0027              clr R16
+ 00B0                   .dbline -2
+ 00B0           L3:
+ 00B0                   .dbline 0 ; func end
+ 00B0 2296              adiw R28,2
+ 00B2 0C940000          xjmp pop_xgsetF00C
+ 00B6                   .dbsym r retry 10 c
+ 00B6                   .dbsym r r1 20 c
+ 00B6                   .dbsym r i 22 c
+ 00B6                   .dbend
+ 00B6                   .dbfunc e mmcSendCommand _mmcSendCommand fc
+ 00B6           ;             r1 -> R10
+ 00B6           ;            arg -> y+3
+ 00B6           ;            cmd -> R10
+                        .even
+ 00B6           _mmcSendCommand::
+ 00B6 3A93              st -y,r19
+ 00B8 2A93              st -y,r18
+ 00BA AA92              st -y,R10
+ 00BC A02E              mov R10,R16
+ 00BE 2297              sbiw R28,2
+ 00C0                   .dbline -1
+ 00C0                   .dbline 107
+ 00C0           ; }
+ 00C0           ; 
+ 00C0           ; //***********************************************************************
+ 00C0           ; //                    发送SD卡命令函数
+ 00C0           ; //***********************************************************************
+ 00C0           ; 
+ 00C0           ; u08 mmcSendCommand(u08 cmd, u32 arg)
+ 00C0           ; {
+ 00C0                   .dbline 111
+ 00C0           ;       u08 r1;
+ 00C0           ; 
+ 00C0           ;       // assert chip select
+ 00C0           ;       cbi(MMC_CS_PORT,MMC_CS_PIN);
+ 00C0 80916500          lds R24,101
+ 00C4 877F              andi R24,247
+ 00C6 80936500          sts 101,R24
+ 00CA                   .dbline 113
+ 00CA           ;       // issue the command
+ 00CA           ;       r1 = mmcCommand(cmd, arg);
+ 00CA 2B80              ldd R2,y+3
+ 00CC 3C80              ldd R3,y+4
+ 00CE 4D80              ldd R4,y+5
+ 00D0 5E80              ldd R5,y+6
+ 00D2 4882              std y+0,R4
+ 00D4 5982              std y+1,R5
+ 00D6 9101              movw R18,R2
+ 00D8 0A2D              mov R16,R10
+ 00DA AAD0              xcall _mmcCommand
+ 00DC A02E              mov R10,R16
+ 00DE                   .dbline 115
+ 00DE           ;       // release chip select
+ 00DE           ;       sbi(MMC_CS_PORT,MMC_CS_PIN);
+ 00DE 80916500          lds R24,101
+ 00E2 8860              ori R24,8
+ 00E4 80936500          sts 101,R24
+ 00E8                   .dbline 117
+ 00E8           ; 
+ 00E8           ;       return r1;
+ 00E8                   .dbline -2
+ 00E8           L18:
+ 00E8                   .dbline 0 ; func end
+ 00E8 2296              adiw R28,2
+ 00EA A990              ld R10,y+
+ 00EC 2296              adiw R28,2
+ 00EE 0895              ret
+ 00F0                   .dbsym r r1 10 c
+ 00F0                   .dbsym l arg 3 l
+ 00F0                   .dbsym r cmd 10 c
+ 00F0                   .dbend
+ 00F0                   .dbfunc e mmcRead _mmcRead fc
+ 00F0           ;             r1 -> R12
+ 00F0           ;              i -> R20,R21
+ 00F0           ;         buffer -> R10,R11
+ 00F0           ;         sector -> y+8
+                        .even
+ 00F0           _mmcRead::
+ 00F0 0E940000          xcall push_arg4
+ 00F4 0E940000          xcall push_xgset303C
+ 00F8 2297              sbiw R28,2
+ 00FA AC84              ldd R10,y+12
+ 00FC BD84              ldd R11,y+13
+ 00FE                   .dbline -1
+ 00FE                   .dbline 124
+ 00FE           ; }
+ 00FE           ; 
+ 00FE           ; //***********************************************************************
+ 00FE           ; //                    读SD卡数据函数，扇区读，一次512个字节
+ 00FE           ; //***********************************************************************
+ 00FE           ; u08 mmcRead(u32 sector, u08* buffer)
+ 00FE           ; {
+ 00FE                   .dbline 129
+ 00FE           ;       u08 r1;
+ 00FE           ;       u16 i;
+ 00FE           ; 
+ 00FE           ;       // assert chip select
+ 00FE           ;       cbi(MMC_CS_PORT,MMC_CS_PIN);
+ 00FE 80916500          lds R24,101
+ 0102 877F              andi R24,247
+ 0104 80936500          sts 101,R24
+ 0108                   .dbline 130
+ 0108           ;       for(i=0;i<10;i++) spiTransferByte(0xFF);
+ 0108 4427              clr R20
+ 010A 5527              clr R21
+ 010C 05C0              xjmp L23
+ 010E           L20:
+ 010E                   .dbline 130
+ 010E 0FEF              ldi R16,255
+ 0110 0E940000          xcall _spiTransferByte
+ 0114           L21:
+ 0114                   .dbline 130
+ 0114 4F5F              subi R20,255  ; offset = 1
+ 0116 5F4F              sbci R21,255
+ 0118           L23:
+ 0118                   .dbline 130
+ 0118 4A30              cpi R20,10
+ 011A A0E0              ldi R26,0
+ 011C 5A07              cpc R21,R26
+ 011E B8F3              brlo L20
+ 0120           X5:
+ 0120                   .dbline 132
+ 0120           ;       // issue command
+ 0120           ;       r1 = mmcCommand(MMC_READ_SINGLE_BLOCK, sector<<9);
+ 0120 89E0              ldi R24,9
+ 0122 90E0              ldi R25,0
+ 0124 0885              ldd R16,y+8
+ 0126 1985              ldd R17,y+9
+ 0128 2A85              ldd R18,y+10
+ 012A 3B85              ldd R19,y+11
+ 012C 8A93              st -y,R24
+ 012E 0E940000          xcall lsl32
+ 0132 2883              std y+0,R18
+ 0134 3983              std y+1,R19
+ 0136 9801              movw R18,R16
+ 0138 01E1              ldi R16,17
+ 013A 7AD0              xcall _mmcCommand
+ 013C C02E              mov R12,R16
+ 013E                   .dbline 137
+ 013E           ;       #ifdef MMC_DEBUG
+ 013E           ;       //rprintf("MMC Read Block R1=0x%x\r\n", r1);
+ 013E           ;       #endif
+ 013E           ;       // check for valid response
+ 013E           ;       if(r1 != 0x00)
+ 013E 0023              tst R16
+ 0140 09F0              breq L27
+ 0142           X6:
+ 0142                   .dbline 138
+ 0142           ;               return r1;
+ 0142 21C0              xjmp L19
+ 0144           L26:
+ 0144                   .dbline 140
+ 0144           ;       // wait for block start
+ 0144           ;       while(spiTransferByte(0xFF) != MMC_STARTBLOCK_READ);
+ 0144           L27:
+ 0144                   .dbline 140
+ 0144 0FEF              ldi R16,255
+ 0146 0E940000          xcall _spiTransferByte
+ 014A 0E3F              cpi R16,254
+ 014C D9F7              brne L26
+ 014E           X7:
+ 014E                   .dbline 142
+ 014E           ;       // read in data
+ 014E           ;       for(i=0; i<0x200; i++)
+ 014E 4427              clr R20
+ 0150 5527              clr R21
+ 0152 09C0              xjmp L32
+ 0154           L29:
+ 0154                   .dbline 143
+ 0154           ;       {
+ 0154                   .dbline 144
+ 0154           ;               *buffer++ =spiTransferByte(0xFF);
+ 0154 0FEF              ldi R16,255
+ 0156 0E940000          xcall _spiTransferByte
+ 015A C02E              mov R12,R16
+ 015C F501              movw R30,R10
+ 015E C192              st Z+,R12
+ 0160 5F01              movw R10,R30
+ 0162                   .dbline 145
+ 0162           ;       }
+ 0162           L30:
+ 0162                   .dbline 142
+ 0162 4F5F              subi R20,255  ; offset = 1
+ 0164 5F4F              sbci R21,255
+ 0166           L32:
+ 0166                   .dbline 142
+ 0166 4030              cpi R20,0
+ 0168 E2E0              ldi R30,2
+ 016A 5E07              cpc R21,R30
+ 016C 98F3              brlo L29
+ 016E           X8:
+ 016E                   .dbline 147
+ 016E           ;       // read 16-bit CRC
+ 016E           ;       spiTransferByte(0xFF);
+ 016E 0FEF              ldi R16,255
+ 0170 0E940000          xcall _spiTransferByte
+ 0174                   .dbline 148
+ 0174           ;       spiTransferByte(0xFF);
+ 0174 0FEF              ldi R16,255
+ 0176 0E940000          xcall _spiTransferByte
+ 017A                   .dbline 150
+ 017A           ;       // release chip select
+ 017A           ;       sbi(MMC_CS_PORT,MMC_CS_PIN);
+ 017A 80916500          lds R24,101
+ 017E 8860              ori R24,8
+ 0180 80936500          sts 101,R24
+ 0184                   .dbline 152
+ 0184           ;       // return success
+ 0184           ;       return 0;
+ 0184 0027              clr R16
+ 0186                   .dbline -2
+ 0186           L19:
+ 0186                   .dbline 0 ; func end
+ 0186 2296              adiw R28,2
+ 0188 0E940000          xcall pop_xgset303C
+ 018C 2496              adiw R28,4
+ 018E 0895              ret
+ 0190                   .dbsym r r1 12 c
+ 0190                   .dbsym r i 20 s
+ 0190                   .dbsym r buffer 10 pc
+ 0190                   .dbsym l sector 8 l
+ 0190                   .dbend
+ 0190                   .dbfunc e mmcWrite _mmcWrite fc
+ 0190           ;             r1 -> R20
+ 0190           ;              i -> R22,R23
+ 0190           ;         buffer -> y+12
+ 0190           ;         sector -> y+8
+                        .even
+ 0190           _mmcWrite::
+ 0190 0E940000          xcall push_arg4
+ 0194 0E940000          xcall push_xgsetF00C
+ 0198 2297              sbiw R28,2
+ 019A                   .dbline -1
+ 019A                   .dbline 159
+ 019A           ; }
+ 019A           ; 
+ 019A           ; //***********************************************************************
+ 019A           ; //                    向SD卡中指定地址写数据，扇区写，一次512个字节
+ 019A           ; //***********************************************************************
+ 019A           ; u08 mmcWrite(u32 sector, u08* buffer)
+ 019A           ; {
+ 019A                   .dbline 164
+ 019A           ;       u08 r1;
+ 019A           ;       u16 i;
+ 019A           ; 
+ 019A           ;       // assert chip select
+ 019A           ;       cbi(MMC_CS_PORT,MMC_CS_PIN);
+ 019A 80916500          lds R24,101
+ 019E 877F              andi R24,247
+ 01A0 80936500          sts 101,R24
+ 01A4                   .dbline 166
+ 01A4           ;       // issue command
+ 01A4           ;       r1 = mmcCommand(MMC_WRITE_BLOCK, sector<<9);
+ 01A4 89E0              ldi R24,9
+ 01A6 90E0              ldi R25,0
+ 01A8 0885              ldd R16,y+8
+ 01AA 1985              ldd R17,y+9
+ 01AC 2A85              ldd R18,y+10
+ 01AE 3B85              ldd R19,y+11
+ 01B0 8A93              st -y,R24
+ 01B2 0E940000          xcall lsl32
+ 01B6 2883              std y+0,R18
+ 01B8 3983              std y+1,R19
+ 01BA 9801              movw R18,R16
+ 01BC 08E1              ldi R16,24
+ 01BE 38D0              xcall _mmcCommand
+ 01C0 402F              mov R20,R16
+ 01C2                   .dbline 171
+ 01C2           ;       #ifdef MMC_DEBUG
+ 01C2           ;       //rprintf("MMC Write Block R1=0x%x\r\n", r1);
+ 01C2           ;       #endif
+ 01C2           ;       // check for valid response
+ 01C2           ;       if(r1 != 0x00)
+ 01C2 0023              tst R16
+ 01C4 09F0              breq L34
+ 01C6           X9:
+ 01C6                   .dbline 172
+ 01C6           ;               return r1;
+ 01C6 2FC0              xjmp L33
+ 01C8           L34:
+ 01C8                   .dbline 174
+ 01C8           ;       // send dummy
+ 01C8           ;       spiTransferByte(0xFF);
+ 01C8 0FEF              ldi R16,255
+ 01CA 0E940000          xcall _spiTransferByte
+ 01CE                   .dbline 176
+ 01CE           ;       // send data start token
+ 01CE           ;       spiTransferByte(MMC_STARTBLOCK_WRITE);
+ 01CE 0EEF              ldi R16,254
+ 01D0 0E940000          xcall _spiTransferByte
+ 01D4                   .dbline 178
+ 01D4           ;       // write data
+ 01D4           ;       for(i=0; i<0x200; i++)
+ 01D4 6627              clr R22
+ 01D6 7727              clr R23
+ 01D8 07C0              xjmp L39
+ 01DA           L36:
+ 01DA                   .dbline 179
+ 01DA           ;       {
+ 01DA                   .dbline 180
+ 01DA           ;               spiTransferByte(*buffer);   //为了节省空间，只写入buffer[0]的数据，若写入512个不同数据，改为*buffer++
+ 01DA EC85              ldd R30,y+12
+ 01DC FD85              ldd R31,y+13
+ 01DE 0081              ldd R16,z+0
+ 01E0 0E940000          xcall _spiTransferByte
+ 01E4                   .dbline 181
+ 01E4           ;       }
+ 01E4           L37:
+ 01E4                   .dbline 178
+ 01E4 6F5F              subi R22,255  ; offset = 1
+ 01E6 7F4F              sbci R23,255
+ 01E8           L39:
+ 01E8                   .dbline 178
+ 01E8 6030              cpi R22,0
+ 01EA E2E0              ldi R30,2
+ 01EC 7E07              cpc R23,R30
+ 01EE A8F3              brlo L36
+ 01F0           X10:
+ 01F0                   .dbline 183
+ 01F0           ;       // write 16-bit CRC (dummy values)
+ 01F0           ;       spiTransferByte(0xFF);
+ 01F0 0FEF              ldi R16,255
+ 01F2 0E940000          xcall _spiTransferByte
+ 01F6                   .dbline 184
+ 01F6           ;       spiTransferByte(0xFF);
+ 01F6 0FEF              ldi R16,255
+ 01F8 0E940000          xcall _spiTransferByte
+ 01FC                   .dbline 186
+ 01FC           ;       // read data response token
+ 01FC           ;       r1 = spiTransferByte(0xFF);
+ 01FC 0FEF              ldi R16,255
+ 01FE 0E940000          xcall _spiTransferByte
+ 0202 402F              mov R20,R16
+ 0204                   .dbline 187
+ 0204           ;       if( (r1&MMC_DR_MASK) != MMC_DR_ACCEPT)
+ 0204 842F              mov R24,R20
+ 0206 8F71              andi R24,31
+ 0208 8530              cpi R24,5
+ 020A 09F0              breq L43
+ 020C           X11:
+ 020C                   .dbline 188
+ 020C           ;               return r1;
+ 020C 0CC0              xjmp L33
+ 020E           L42:
+ 020E                   .dbline 193
+ 020E           ;       #ifdef MMC_DEBUG
+ 020E           ;       //rprintf("Data Response Token=0x%x\r\n", r1);
+ 020E           ;       #endif
+ 020E           ;       // wait until card not busy
+ 020E           ;       while(!spiTransferByte(0xFF));
+ 020E           L43:
+ 020E                   .dbline 193
+ 020E 0FEF              ldi R16,255
+ 0210 0E940000          xcall _spiTransferByte
+ 0214 A02E              mov R10,R16
+ 0216 0023              tst R16
+ 0218 D1F3              breq L42
+ 021A           X12:
+ 021A                   .dbline 195
+ 021A           ;       // release chip select
+ 021A           ;       sbi(MMC_CS_PORT,MMC_CS_PIN);
+ 021A 80916500          lds R24,101
+ 021E 8860              ori R24,8
+ 0220 80936500          sts 101,R24
+ 0224                   .dbline 197
+ 0224           ;       // return success
+ 0224           ;       return 0;
+ 0224 0027              clr R16
+ 0226                   .dbline -2
+ 0226           L33:
+ 0226                   .dbline 0 ; func end
+ 0226 2296              adiw R28,2
+ 0228 0E940000          xcall pop_xgsetF00C
+ 022C 2496              adiw R28,4
+ 022E 0895              ret
+ 0230                   .dbsym r r1 20 c
+ 0230                   .dbsym r i 22 s
+ 0230                   .dbsym l buffer 12 pc
+ 0230                   .dbsym l sector 8 l
+ 0230                   .dbend
+ 0230                   .dbfunc e mmcCommand _mmcCommand fc
+ 0230           ;          retry -> R20
+ 0230           ;             r1 -> R10
+ 0230           ;            arg -> y+6
+ 0230           ;            cmd -> R22
+                        .even
+ 0230           _mmcCommand::
+ 0230 3A93              st -y,r19
+ 0232 2A93              st -y,r18
+ 0234 0E940000          xcall push_xgsetF00C
+ 0238 602F              mov R22,R16
+ 023A                   .dbline -1
+ 023A                   .dbline 204
+ 023A           ; }
+ 023A           ; 
+ 023A           ; //***********************************************************************
+ 023A           ; //                    单命令传送函数
+ 023A           ; //***********************************************************************
+ 023A           ; u08 mmcCommand(u08 cmd, u32 arg)
+ 023A           ; {
+ 023A                   .dbline 206
+ 023A           ;       u08 r1;
+ 023A           ;       u08 retry=0;
+ 023A 4427              clr R20
+ 023C                   .dbline 208
+ 023C           ;       // send command
+ 023C           ;       spiTransferByte(cmd | 0x40);
+ 023C 062F              mov R16,R22
+ 023E 0064              ori R16,64
+ 0240 0E940000          xcall _spiTransferByte
+ 0244                   .dbline 209
+ 0244           ;       spiTransferByte(arg>>24);
+ 0244 88E1              ldi R24,24
+ 0246 90E0              ldi R25,0
+ 0248 0E81              ldd R16,y+6
+ 024A 1F81              ldd R17,y+7
+ 024C 2885              ldd R18,y+8
+ 024E 3985              ldd R19,y+9
+ 0250 8A93              st -y,R24
+ 0252 0E940000          xcall lsr32
+ 0256 0E940000          xcall _spiTransferByte
+ 025A                   .dbline 210
+ 025A           ;       spiTransferByte(arg>>16);
+ 025A 2E80              ldd R2,y+6
+ 025C 3F80              ldd R3,y+7
+ 025E 4884              ldd R4,y+8
+ 0260 5984              ldd R5,y+9
+ 0262 1201              movw R2,R4
+ 0264 4424              clr R4
+ 0266 5524              clr R5
+ 0268 022D              mov R16,R2
+ 026A 0E940000          xcall _spiTransferByte
+ 026E                   .dbline 211
+ 026E           ;       spiTransferByte(arg>>8);
+ 026E 88E0              ldi R24,8
+ 0270 90E0              ldi R25,0
+ 0272 0E81              ldd R16,y+6
+ 0274 1F81              ldd R17,y+7
+ 0276 2885              ldd R18,y+8
+ 0278 3985              ldd R19,y+9
+ 027A 8A93              st -y,R24
+ 027C 0E940000          xcall lsr32
+ 0280 0E940000          xcall _spiTransferByte
+ 0284                   .dbline 212
+ 0284           ;       spiTransferByte(arg);
+ 0284 0E81              ldd R16,y+6
+ 0286 0E940000          xcall _spiTransferByte
+ 028A                   .dbline 213
+ 028A           ;       spiTransferByte(0x95);  // crc valid only for MMC_GO_IDLE_STATE
+ 028A 05E9              ldi R16,149
+ 028C 0E940000          xcall _spiTransferByte
+ 0290 07C0              xjmp L47
+ 0292           L46:
+ 0292                   .dbline 219
+ 0292           ;       // end command
+ 0292           ;       // wait for response
+ 0292           ;       // if more than 8 retries, card has timed-out
+ 0292           ;       // return the received 0xFF
+ 0292           ;       while((r1 = spiTransferByte(0xFF)) == 0xFF)
+ 0292           ;               if(retry++ > 8) break;
+ 0292 242E              mov R2,R20
+ 0294 3324              clr R3
+ 0296 4F5F              subi R20,255    ; addi 1
+ 0298 88E0              ldi R24,8
+ 029A 8215              cp R24,R2
+ 029C 08F4              brsh L49
+ 029E           X13:
+ 029E                   .dbline 219
+ 029E 06C0              xjmp L48
+ 02A0           L49:
+ 02A0           L47:
+ 02A0                   .dbline 218
+ 02A0 0FEF              ldi R16,255
+ 02A2 0E940000          xcall _spiTransferByte
+ 02A6 A02E              mov R10,R16
+ 02A8 0F3F              cpi R16,255
+ 02AA 99F3              breq L46
+ 02AC           X14:
+ 02AC           L48:
+ 02AC                   .dbline 221
+ 02AC           ;       // return response
+ 02AC           ;       return r1;
+ 02AC 0A2D              mov R16,R10
+ 02AE                   .dbline -2
+ 02AE           L45:
+ 02AE                   .dbline 0 ; func end
+ 02AE 0E940000          xcall pop_xgsetF00C
+ 02B2 2296              adiw R28,2
+ 02B4 0895              ret
+ 02B6                   .dbsym r retry 20 c
+ 02B6                   .dbsym r r1 10 c
+ 02B6                   .dbsym l arg 6 l
+ 02B6                   .dbsym r cmd 22 c
+ 02B6                   .dbend
+ 02B6                   .dbfunc e mmcCapacity _mmcCapacity fl
+ 02B6           ;       Capacity -> y+18
+ 02B6           ;          retry -> R10,R11
+ 02B6           ;         buffer -> y+2
+ 02B6           ;           temp -> R10,R11
+ 02B6           ;             r1 -> R14
+ 02B6           ;              i -> R12,R13
+                        .even
+ 02B6           _mmcCapacity::
+ 02B6 0E940000          xcall push_xgsetF0FC
+ 02BA 6697              sbiw R28,22
+ 02BC                   .dbline -1
+ 02BC                   .dbline 229
+ 02BC           ; }
+ 02BC           ; 
+ 02BC           ; //***********************************************************************
+ 02BC           ; //                    SD卡容量读取函数，返回容量数
+ 02BC           ; //***********************************************************************
+ 02BC           ; 
+ 02BC           ; u32 mmcCapacity()
+ 02BC           ; {
+ 02BC                   .dbline 235
+ 02BC           ;       u08 r1;
+ 02BC           ;       u16 i;
+ 02BC           ;       u16 temp;
+ 02BC           ;       u08 buffer[16];
+ 02BC           ;       u32 Capacity;
+ 02BC           ;       u16 retry =0;
+ 02BC AA24              clr R10
+ 02BE BB24              clr R11
+ 02C0                   .dbline 237
+ 02C0           ; 
+ 02C0           ;       r1 = mmcSendCommand(9, 0);                                              //写命令        
+ 02C0 40E0              ldi R20,0
+ 02C2 50E0              ldi R21,0
+ 02C4 60E0              ldi R22,0
+ 02C6 70E0              ldi R23,0
+ 02C8 6883              std y+0,R22
+ 02CA 7983              std y+1,R23
+ 02CC 9A01              movw R18,R20
+ 02CE 09E0              ldi R16,9
+ 02D0 F2DE              xcall _mmcSendCommand
+ 02D2 E02E              mov R14,R16
+ 02D4                   .dbline 238
+ 02D4           ;       if(r1 != 0x00)
+ 02D4 0023              tst R16
+ 02D6 31F0              breq L52
+ 02D8           X15:
+ 02D8                   .dbline 239
+ 02D8           ;               return r1;
+ 02D8 8701              movw R16,R14
+ 02DA 9801              movw R18,R16
+ 02DC 1127              clr R17
+ 02DE 2227              clr R18
+ 02E0 3327              clr R19
+ 02E2 B1C0              xjmp L51
+ 02E4           L52:
+ 02E4                   .dbline 241
+ 02E4           ; 
+ 02E4           ;       cbi(MMC_CS_PORT,MMC_CS_PIN);
+ 02E4 80916500          lds R24,101
+ 02E8 877F              andi R24,247
+ 02EA 80936500          sts 101,R24
+ 02EE 13C0              xjmp L55
+ 02F0           L54:
+ 02F0                   .dbline 242
+ 02F0           ;       while(spiTransferByte(0xff) != 0xfe)if(retry++ > 0xfffe){sbi(MMC_CS_PORT,MMC_CS_PIN);return 1;}
+ 02F0 1501              movw R2,R10
+ 02F2 C101              movw R24,R2
+ 02F4 0196              adiw R24,1
+ 02F6 5C01              movw R10,R24
+ 02F8 8EEF              ldi R24,65534
+ 02FA 9FEF              ldi R25,255
+ 02FC 8215              cp R24,R2
+ 02FE 9305              cpc R25,R3
+ 0300 50F4              brsh L57
+ 0302           X16:
+ 0302                   .dbline 242
+ 0302                   .dbline 242
+ 0302 80916500          lds R24,101
+ 0306 8860              ori R24,8
+ 0308 80936500          sts 101,R24
+ 030C                   .dbline 242
+ 030C 01E0              ldi R16,1
+ 030E 10E0              ldi R17,0
+ 0310 20E0              ldi R18,0
+ 0312 30E0              ldi R19,0
+ 0314 98C0              xjmp L51
+ 0316           L57:
+ 0316           L55:
+ 0316                   .dbline 242
+ 0316 0FEF              ldi R16,255
+ 0318 0E940000          xcall _spiTransferByte
+ 031C C02E              mov R12,R16
+ 031E 0E3F              cpi R16,254
+ 0320 39F7              brne L54
+ 0322           X17:
+ 0322                   .dbline 245
+ 0322           ; 
+ 0322           ;       
+ 0322           ;       for(i=0;i<16;i++)
+ 0322 CC24              clr R12
+ 0324 DD24              clr R13
+ 0326 0DC0              xjmp L62
+ 0328           L59:
+ 0328                   .dbline 246
+ 0328           ;       {
+ 0328                   .dbline 247
+ 0328           ;               buffer[i]=spiTransferByte(0xff);
+ 0328 0FEF              ldi R16,255
+ 032A 0E940000          xcall _spiTransferByte
+ 032E A02E              mov R10,R16
+ 0330 CE01              movw R24,R28
+ 0332 0296              adiw R24,2
+ 0334 F601              movw R30,R12
+ 0336 E80F              add R30,R24
+ 0338 F91F              adc R31,R25
+ 033A A082              std z+0,R10
+ 033C                   .dbline 248
+ 033C           ;       }       
+ 033C           L60:
+ 033C                   .dbline 245
+ 033C C601              movw R24,R12
+ 033E 0196              adiw R24,1
+ 0340 6C01              movw R12,R24
+ 0342           L62:
+ 0342                   .dbline 245
+ 0342 C601              movw R24,R12
+ 0344 8031              cpi R24,16
+ 0346 E0E0              ldi R30,0
+ 0348 9E07              cpc R25,R30
+ 034A 70F3              brlo L59
+ 034C           X18:
+ 034C                   .dbline 250
+ 034C           ; 
+ 034C           ;       spiTransferByte(0xff);
+ 034C 0FEF              ldi R16,255
+ 034E 0E940000          xcall _spiTransferByte
+ 0352                   .dbline 251
+ 0352           ;       spiTransferByte(0xff);
+ 0352 0FEF              ldi R16,255
+ 0354 0E940000          xcall _spiTransferByte
+ 0358                   .dbline 253
+ 0358           ;       
+ 0358           ;       spiTransferByte(0xff);
+ 0358 0FEF              ldi R16,255
+ 035A 0E940000          xcall _spiTransferByte
+ 035E                   .dbline 255
+ 035E           ;       
+ 035E           ;       sbi(MMC_CS_PORT,MMC_CS_PIN);
+ 035E 80916500          lds R24,101
+ 0362 8860              ori R24,8
+ 0364 80936500          sts 101,R24
+ 0368                   .dbline 257
+ 0368           ; 
+ 0368           ;       spiTransferByte(0xff);// extra 8 CLK
+ 0368 0FEF              ldi R16,255
+ 036A 0E940000          xcall _spiTransferByte
+ 036E                   .dbline 261
+ 036E           ; 
+ 036E           ; /*********************************/
+ 036E           ; //    C_SIZE
+ 036E           ;       i = buffer[6]&0x03;
+ 036E 8885              ldd R24,y+8
+ 0370 9927              clr R25
+ 0372 8370              andi R24,3
+ 0374 9070              andi R25,0
+ 0376 6C01              movw R12,R24
+ 0378                   .dbline 262
+ 0378           ;       i<<=8;
+ 0378 DC2C              mov R13,R12
+ 037A CC24              clr R12
+ 037C                   .dbline 263
+ 037C           ;       i += buffer[7];
+ 037C 2984              ldd R2,y+9
+ 037E 3324              clr R3
+ 0380 C20C              add R12,R2
+ 0382 D31C              adc R13,R3
+ 0384                   .dbline 264
+ 0384           ;       i<<=2;
+ 0384 CC0C              lsl R12
+ 0386 DD1C              rol R13
+ 0388 CC0C              lsl R12
+ 038A DD1C              rol R13
+ 038C                   .dbline 265
+ 038C           ;       i += ((buffer[8]&0xc0)>>6);
+ 038C 26E0              ldi R18,6
+ 038E 30E0              ldi R19,0
+ 0390 0A85              ldd R16,y+10
+ 0392 1127              clr R17
+ 0394 007C              andi R16,192
+ 0396 1070              andi R17,0
+ 0398 0E940000          xcall asr16
+ 039C C00E              add R12,R16
+ 039E D11E              adc R13,R17
+ 03A0                   .dbline 270
+ 03A0           ; 
+ 03A0           ; /**********************************/
+ 03A0           ; //  C_SIZE_MULT
+ 03A0           ; 
+ 03A0           ;       r1 = buffer[9]&0x03;
+ 03A0 8B85              ldd R24,y+11
+ 03A2 8370              andi R24,3
+ 03A4 E82E              mov R14,R24
+ 03A6                   .dbline 271
+ 03A6           ;       r1<<=1;
+ 03A6 EE0C              lsl R14
+ 03A8                   .dbline 272
+ 03A8           ;       r1 += ((buffer[10]&0x80)>>7);
+ 03A8 8C85              ldd R24,y+12
+ 03AA 8078              andi R24,128
+ 03AC 8695              lsr R24
+ 03AE 8695              lsr R24
+ 03B0 8695              lsr R24
+ 03B2 8695              lsr R24
+ 03B4 8695              lsr R24
+ 03B6 8695              lsr R24
+ 03B8 8695              lsr R24
+ 03BA E80E              add R14,R24
+ 03BC                   .dbline 278
+ 03BC           ; 
+ 03BC           ; 
+ 03BC           ; /**********************************/
+ 03BC           ; // BLOCKNR
+ 03BC           ; 
+ 03BC           ;       r1+=2;
+ 03BC 8E2D              mov R24,R14
+ 03BE 8E5F              subi R24,254    ; addi 2
+ 03C0 E82E              mov R14,R24
+ 03C2                   .dbline 280
+ 03C2           ; 
+ 03C2           ;       temp = 1;
+ 03C2 81E0              ldi R24,1
+ 03C4 90E0              ldi R25,0
+ 03C6 5C01              movw R10,R24
+ 03C8 03C0              xjmp L69
+ 03CA           L68:
+ 03CA                   .dbline 282
+ 03CA           ;       while(r1)
+ 03CA           ;       {
+ 03CA                   .dbline 283
+ 03CA           ;               temp*=2;
+ 03CA AA0C              lsl R10
+ 03CC BB1C              rol R11
+ 03CE                   .dbline 284
+ 03CE           ;               r1--;
+ 03CE EA94              dec R14
+ 03D0                   .dbline 285
+ 03D0           ;       }
+ 03D0           L69:
+ 03D0                   .dbline 281
+ 03D0 EE20              tst R14
+ 03D2 D9F7              brne L68
+ 03D4           X19:
+ 03D4                   .dbline 287
+ 03D4           ;       
+ 03D4           ;       Capacity = ((u32)(i+1))*((u32)temp);
+ 03D4 1501              movw R2,R10
+ 03D6 4424              clr R4
+ 03D8 5524              clr R5
+ 03DA 8601              movw R16,R12
+ 03DC 0F5F              subi R16,255  ; offset = 1
+ 03DE 1F4F              sbci R17,255
+ 03E0 2227              clr R18
+ 03E2 3327              clr R19
+ 03E4 5A92              st -y,R5
+ 03E6 4A92              st -y,R4
+ 03E8 3A92              st -y,R3
+ 03EA 2A92              st -y,R2
+ 03EC 0E940000          xcall empy32u
+ 03F0 0A8B              std y+18,R16
+ 03F2 1B8B              std y+19,R17
+ 03F4 2C8B              std y+20,R18
+ 03F6 3D8B              std y+21,R19
+ 03F8                   .dbline 292
+ 03F8           ; 
+ 03F8           ; 
+ 03F8           ; // READ_BL_LEN
+ 03F8           ; 
+ 03F8           ;       i = buffer[5]&0x0f;
+ 03F8 8F81              ldd R24,y+7
+ 03FA 9927              clr R25
+ 03FC 8F70              andi R24,15
+ 03FE 9070              andi R25,0
+ 0400 6C01              movw R12,R24
+ 0402                   .dbline 297
+ 0402           ; 
+ 0402           ; 
+ 0402           ; //BLOCK_LEN
+ 0402           ; 
+ 0402           ;       temp = 1;
+ 0402 81E0              ldi R24,1
+ 0404 90E0              ldi R25,0
+ 0406 5C01              movw R10,R24
+ 0408 05C0              xjmp L73
+ 040A           L72:
+ 040A                   .dbline 299
+ 040A           ;       while(i)
+ 040A           ;       {
+ 040A                   .dbline 300
+ 040A           ;               temp*=2;
+ 040A AA0C              lsl R10
+ 040C BB1C              rol R11
+ 040E                   .dbline 301
+ 040E           ;               i--;
+ 040E C601              movw R24,R12
+ 0410 0197              sbiw R24,1
+ 0412 6C01              movw R12,R24
+ 0414                   .dbline 302
+ 0414           ;       }
+ 0414           L73:
+ 0414                   .dbline 298
+ 0414 CC20              tst R12
+ 0416 C9F7              brne L72
+ 0418 DD20              tst R13
+ 041A B9F7              brne L72
+ 041C           X20:
+ 041C                   .dbline 307
+ 041C           ; 
+ 041C           ; 
+ 041C           ; //The final result
+ 041C           ;       
+ 041C           ;       Capacity *= (u32)temp;   
+ 041C 1501              movw R2,R10
+ 041E 4424              clr R4
+ 0420 5524              clr R5
+ 0422 0A89              ldd R16,y+18
+ 0424 1B89              ldd R17,y+19
+ 0426 2C89              ldd R18,y+20
+ 0428 3D89              ldd R19,y+21
+ 042A 5A92              st -y,R5
+ 042C 4A92              st -y,R4
+ 042E 3A92              st -y,R3
+ 0430 2A92              st -y,R2
+ 0432 0E940000          xcall empy32u
+ 0436 0A8B              std y+18,R16
+ 0438 1B8B              std y+19,R17
+ 043A 2C8B              std y+20,R18
+ 043C 3D8B              std y+21,R19
+ 043E                   .dbline 308
+ 043E           ;       return Capacity;                
+ 043E 0A89              ldd R16,y+18
+ 0440 1B89              ldd R17,y+19
+ 0442 2C89              ldd R18,y+20
+ 0444 3D89              ldd R19,y+21
+ 0446                   .dbline -2
+ 0446           L51:
+ 0446                   .dbline 0 ; func end
+ 0446 6696              adiw R28,22
+ 0448 0C940000          xjmp pop_xgsetF0FC
+ 044C                   .dbsym l Capacity 18 l
+ 044C                   .dbsym r retry 10 s
+ 044C                   .dbsym l buffer 2 A[16:16]c
+ 044C                   .dbsym r temp 10 s
+ 044C                   .dbsym r r1 14 c
+ 044C                   .dbsym r i 12 s
+ 044C                   .dbend
+ 044C           ; }

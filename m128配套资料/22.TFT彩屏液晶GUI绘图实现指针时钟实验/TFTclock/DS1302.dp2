@@ -1,0 +1,1 @@
+DS1302.o: C:/icc/include/DS1302.h C:/icc/include/string.h C:/icc/include/_const.h C:/icc/include/stdio.h C:/icc/include/stdarg.h C:/icc/include/_const.h C:/icc/include/math.h C:/icc/include/iom128v.h

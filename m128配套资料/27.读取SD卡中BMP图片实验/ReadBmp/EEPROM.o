@@ -1,0 +1,46 @@
+XL
+H 1 areas 4 global symbols
+M EEPROM.C
+S push_gset1 Ref0000
+S pop_gset1 Ref0000
+A text size 30 flags 0
+dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\27.读取SD卡中BMP图片实验\ReadBmp\EEPROM.C
+dbfunc e eeprom_read_byte 0 fI
+dbsym r readtemp 14 c
+dbsym r addr 10 i
+dbline FFFFFFFF 4
+dbline 20 4
+dbline 22 4
+dbline 22 4
+dbline 24 8
+dbline 26 C
+dbline 27 E
+dbline 28 10
+dbline 29 12
+dbline FFFFFFFE 16
+dbline 0 1A
+dbfunc e eeprom_write_byte 1C fV
+dbsym r p_buff 12 c
+dbsym r addr 10 i
+dbline FFFFFFFF 1C
+dbline 31 1C
+dbline 33 1C
+dbline 36 20
+dbline 36 20
+dbline 37 24
+dbline 38 26
+dbline 39 28
+dbline 3A 2A
+dbline 3B 2C
+dbline FFFFFFFE 2E
+dbline 0 2E
+S _eeprom_write_byte Def001C
+S _eeprom_read_byte Def0000
+T 00 00 0E 94 00 00 E1 99 FE CF 22 24 2F BA 0E BB
+R 00 00 00 00 12 04 00 00
+T 0E 00 E0 9A 4D B3 04 2F 11 27 0E 94 00 00 08 95
+R 00 00 00 00 12 0C 01 00
+T 1C 00 22 24 2F BA E1 99 FE CF 0E BB 2D BB E2 9A
+R 00 00 00 00
+T 2A 00 E1 98 E1 9A 08 95
+R 00 00 00 00

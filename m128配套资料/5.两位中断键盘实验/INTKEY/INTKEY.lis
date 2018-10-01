@@ -1,0 +1,613 @@
+                        .module INTKEY.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128ÖÐ¶ÏÊ½¶ÀÁ¢¼üÅÌÊ¾Àý³ÌÐò£¬¼üÖµ±ä»¯¿ÉÄÜ²»ÎÈ£¬ÒòÎª¼üÅÌÓ²¼þµÄ¶¶¶¯Ô­Òò
+ 0000           ; //Á½¸öÖÐ¶Ï¼üÅÌ½øÐÐ¼Ó1»òÕß¼õ1¼ÆÊý
+ 0000           ; //×¢ÒâICCAVRÖÐ¶Ïº¯Êý´¦Àí·½·¨£¬ÖÐ¶ÏÏòÁ¿ºÅ¿ÉÒÔÔÚÍ·ÎÄ¼þiom128v.hÖÐ²éÕÒ
+ 0000           ; //±àÒë»·¾³ ICCAVR 
+ 0000           ; //ÏµÍ³Ê±ÖÓ7.3728MHZ£¬ÉèÖÃÈÛË¿Î»ÎªÍâ²¿¸ßÆµÊ¯Ó¢¾§ÌåÕñµ
+ 0000           ; //×÷Õß£ºÖÒÐËµç×ÓÔª¼þµê
+ 0000           ; //ÈÕÆÚ£º2010.05.24
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //                    °üº¬ÎÄ¼þ
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; 
+ 0000           ; #define Data_IO               PORTA                //Êý¾Ý¿Ú
+ 0000           ; #define Data_DDR        DDRA                 //Êý¾Ý¿Ú·½Ïò¼Ä´æÆ÷
+ 0000           ; #define D_LE0         PORTD &= ~(1 << PD4) //ÊýÂë¹Ü¶Î¿ØÖÆÎ»Îª0
+ 0000                   .dbline 21
+ 0000           ; #define D_LE1           PORTD |= (1 << PD4)  //ÊýÂë¹Ü¶Î¿ØÖÆÎ»Îª1
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; #define W_LE0         PORTD &= ~(1 << PD5) //ÊýÂë¹ÜÎ»¿ØÖÆÎ»Îª0
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; #define W_LE1           PORTD |= (1 << PD5)  //ÊýÂë¹ÜÎ»¿ØÖÆÎ»Îª1
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; 
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; #define uchar           unsigned char
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; #define uint            unsigned int
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; 
+ 000E           ; uchar count;                                  //¶¨Òå¼üÅÌ¼ÆÊý±äÁ¿
+ 000E           ; 
+ 000E           ; //***********************************************************************
+ 000E                   .dbline 32
+ 000E           ; //                    ¹²ÒõÊýÂë¹ÜÏÔÊ¾µÄ¶ÏÂë±í
+ 000E           ; //***********************************************************************
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; 
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ;                  0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; 
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; //***********************************************************************
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ; //                    IO¶Ë¿Ú³õÊ¼»¯
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ; //***********************************************************************
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ; 
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ; void System_Init()
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; {
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;     Data_IO=0xFF;             //Êý¾Ý¿ÚÎªÊä³ö
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ;     Data_DDR=0xFF;
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ; 
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ;       PORTD=0x7F;               //PD0 PD1ÉèÖÃÎªÊäÈë
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ;       DDRD=0x70;                //PD0 PD1ÉÏÀ­µç×èÊ¹ÄÜÓÐÐ§
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ;       
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ;       PORTB=0xFF;                               //¹Ø±Õ·¢¹â¶þ¼«¹Ü
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ;       DDRB=0xFF;
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ; }
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ; 
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ; //*************************************************************************
+ 003A           ; //                    74HC573¿ØÖÆÊýÂë¹Ü¶¯Ì¬É¨ÃèÏÔÊ¾º¯Êý
+ 003A           ; //*************************************************************************
+ 003A           ; 
+ 003A                   .dbline 57
+ 003A           ; void Display_Key(uchar num)
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ; {
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ;        uchar i,j;
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ;        System_Init();
+ 0042           ;      j=0x01;                   //´ËÊý¾ÝÓÃÀ´¿ØÖÆÎ»Ñ¡
+ 0042           ;   for(i=0;i<8;i++)
+ 0042           ;   {
+ 0042                   .dbline 64
+ 0042           ;     D_LE1;                    //¿ØÖÆÊýÂë¹Ü¶ÎÊý¾ÝµÄ74HC573µÄLE¹Ü½ÅÖÃ¸ß
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ;     W_LE1;                    //¿ØÖÆÊýÂë¹ÜÎ»µÄ74HC573µÄLE¹Ü½ÅÖÃ¸ß
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ;     Data_IO=0x00;             //ÉèÖÃÏÔÊ¾µÄÎ»£¬Ò²¾ÍÊÇÄÄ¸öÊýÂë¹ÜÁÁ£¬ÕâÀïÊÇ°Ë¸öÒ»ÆðÏÔÊ¾
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ;     W_LE0;                    //Ëø´æÎ»Êý¾Ý£¬ÏÂÃæËÍÉÏ¶ÎÊý¾ÝÒÔºó£¬¾ÍÏÔÊ¾³öÀ´ÁË
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;       j=(j<<1);
+ 004C           ;     Data_IO=table[num];       //ËÍÒªÏÔÊ¾µÄÊý¾Ý£¬¾ÍÊÇ¶ÎÊý¾Ý£¬ÈçÏÔÊ¾0ËÍµÄÊÇ0x3f
+ 004C           ;     D_LE0;                    //Ëø´æ¶ÎÊý¾Ý£¬ÊýÂë¹ÜÁÁÒ»¸öÊ±¼äÆ¬¿Ì
+ 004C                   .dbline 71
+ 004C           ;     delay_nms(1);             //ÏÔÊ¾Ò»¸öÊ±¼äÆ¬¿Ì£¬»áÓ°ÏìÁÁ¶ÈºÍÉÁË¸ÐÔ
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ; 
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ;   }
+ 0058           ; 
+ 0058           ; }
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ; 
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ; void Interrupt_Init()
+ 006C           ; {
+ 006C           ;   EIMSK|=0x03;                                     //Ê¹ÄÜÍâ²¿ÖÐ¶Ï0ºÍÍâ²¿ÖÐ¶Ï1
+ 006C           ;   EICRA=0x0A;                                     //ÏÂ½µÑØ´¥·¢·½Ê½
+ 006C           ;   MCUCSR=0x00;                                    //¿ØÖÆºÍ×´Ì¬¼Ä´æÆ÷³õÊ¼»¯
+ 006C           ; }
+ 006C           ; 
+ 006C           ; //*************************************************************************
+ 006C           ; //       ÖÐ¶Ï·þÎñ×Ó³ÌÐò
+ 006C           ; //*************************************************************************
+ 006C           ; 
+ 006C           ; #pragma interrupt_handler  INT0_ISR:iv_INT0 //int0_ISR£ºÖÐ¶Ïº¯ÊýÃû£¬½Ó×ÅÊÇÖÐ¶ÏÏòÁ¿ºÅ
+ 006C           ; void INT0_ISR()                                                       //ÖÐ¶Ï0·þÎñ³ÌÐò
+ 006C                   .dbline 90
+ 006C           ;    { 
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ;        if(++count>=16) 
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ;        count=0;
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ;    } 
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ; 
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ; #pragma interrupt_handler  INT1_ISR:iv_INT1
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ; void INT1_ISR()                                                  //ÖÐ¶Ï1·þÎñ³ÌÐò
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ;    { 
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ;        if(count) --count;
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ;        else count=15;
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ;   }
+ 0088           ; 
+ 0088           ; 
+ 0088           ; //*************************************************************************
+ 0088           ; //                    Ö÷³ÌÐò
+ 0088           ; //*************************************************************************
+ 0088           ; int main(void)
+ 0088           ; {
+ 0088           ;   System_Init();                             //ÏµÍ³³õÊ¼»¯
+ 0088           ;   Interrupt_Init();                          //ÖÐ¶ÏÅäÖÃ³õÊ¼»¯
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ;   SREG|=0x80;                                //¿ªÆôÈ«¾ÖÖÐ¶Ï
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ;   while(1)
+ 00A6           ;   {
+ 00A6           ;     Display_Key(count);                     //ÏÔÊ¾¼üÖµ
+ 00A6           ;   }
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; }
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000           _table::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 3F06              .byte 63,6
+                        .area data(ram, con, rel)
+ 0002                   .dbfile C:/icc/include/delay.h
+ 0002                   .blkb 2
+                        .area idata
+ 0002 5B4F              .byte 91,'O
+                        .area data(ram, con, rel)
+ 0004                   .dbfile C:/icc/include/delay.h
+ 0004                   .blkb 2
+                        .area idata
+ 0004 666D              .byte 'f,'m
+                        .area data(ram, con, rel)
+ 0006                   .dbfile C:/icc/include/delay.h
+ 0006                   .blkb 2
+                        .area idata
+ 0006 7D07              .byte 125,7
+                        .area data(ram, con, rel)
+ 0008                   .dbfile C:/icc/include/delay.h
+ 0008                   .blkb 2
+                        .area idata
+ 0008 7F6F              .byte 127,'o
+                        .area data(ram, con, rel)
+ 000A                   .dbfile C:/icc/include/delay.h
+ 000A                   .blkb 2
+                        .area idata
+ 000A 777C              .byte 'w,124
+                        .area data(ram, con, rel)
+ 000C                   .dbfile C:/icc/include/delay.h
+ 000C                   .blkb 2
+                        .area idata
+ 000C 395E              .byte 57,94
+                        .area data(ram, con, rel)
+ 000E                   .dbfile C:/icc/include/delay.h
+ 000E                   .blkb 2
+                        .area idata
+ 000E 7971              .byte 'y,'q
+                        .area data(ram, con, rel)
+ 0010                   .dbfile C:/icc/include/delay.h
+ 0010                   .dbfile E:\ATMEGA128¿ª·¢°å\ÎÒµÄATMEGA128×îÐ¡ÏµÍ³°å\M128_ZZX_1ÅäÌ××ÊÁÏ\5.Á½Î»ÖÐ¶Ï¼üÅÌÊµÑé\INTKEY\INTKEY.C
+ 0010                   .dbsym e table _table A[16:16]c
+                        .area text(rom, con, rel)
+ 00BE                   .dbfile E:\ATMEGA128¿ª·¢°å\ÎÒµÄATMEGA128×îÐ¡ÏµÍ³°å\M128_ZZX_1ÅäÌ××ÊÁÏ\5.Á½Î»ÖÐ¶Ï¼üÅÌÊµÑé\INTKEY\INTKEY.C
+ 00BE                   .dbfunc e System_Init _System_Init fV
+                        .even
+ 00BE           _System_Init::
+ 00BE                   .dbline -1
+ 00BE                   .dbline 42
+ 00BE                   .dbline 43
+ 00BE 8FEF              ldi R24,255
+ 00C0 8BBB              out 0x1b,R24
+ 00C2                   .dbline 44
+ 00C2 8ABB              out 0x1a,R24
+ 00C4                   .dbline 46
+ 00C4 8FE7              ldi R24,127
+ 00C6 82BB              out 0x12,R24
+ 00C8                   .dbline 47
+ 00C8 80E7              ldi R24,112
+ 00CA 81BB              out 0x11,R24
+ 00CC                   .dbline 49
+ 00CC 8FEF              ldi R24,255
+ 00CE 88BB              out 0x18,R24
+ 00D0                   .dbline 50
+ 00D0 87BB              out 0x17,R24
+ 00D2                   .dbline -2
+ 00D2           L19:
+ 00D2                   .dbline 0 ; func end
+ 00D2 0895              ret
+ 00D4                   .dbend
+ 00D4                   .dbfunc e Display_Key _Display_Key fV
+ 00D4           ;              j -> R20
+ 00D4           ;              i -> R22
+ 00D4           ;            num -> R10
+                        .even
+ 00D4           _Display_Key::
+ 00D4 0E940000          xcall push_gset3
+ 00D8 A02E              mov R10,R16
+ 00DA                   .dbline -1
+ 00DA                   .dbline 58
+ 00DA                   .dbline 60
+ 00DA F1DF              xcall _System_Init
+ 00DC                   .dbline 61
+ 00DC 41E0              ldi R20,1
+ 00DE                   .dbline 62
+ 00DE 6627              clr R22
+ 00E0 13C0              xjmp L24
+ 00E2           L21:
+ 00E2                   .dbline 63
+ 00E2                   .dbline 64
+ 00E2 949A              sbi 0x12,4
+ 00E4                   .dbline 65
+ 00E4 959A              sbi 0x12,5
+ 00E6                   .dbline 66
+ 00E6 2224              clr R2
+ 00E8 2BBA              out 0x1b,R2
+ 00EA                   .dbline 67
+ 00EA 9598              cbi 0x12,5
+ 00EC                   .dbline 68
+ 00EC 440F              lsl R20
+ 00EE                   .dbline 69
+ 00EE 80E0              ldi R24,<_table
+ 00F0 90E0              ldi R25,>_table
+ 00F2 EA2D              mov R30,R10
+ 00F4 FF27              clr R31
+ 00F6 E80F              add R30,R24
+ 00F8 F91F              adc R31,R25
+ 00FA 2080              ldd R2,z+0
+ 00FC 2BBA              out 0x1b,R2
+ 00FE                   .dbline 70
+ 00FE 9498              cbi 0x12,4
+ 0100                   .dbline 71
+ 0100 01E0              ldi R16,1
+ 0102 10E0              ldi R17,0
+ 0104 BEDF              xcall _delay_nms
+ 0106                   .dbline 73
+ 0106           L22:
+ 0106                   .dbline 62
+ 0106 6395              inc R22
+ 0108           L24:
+ 0108                   .dbline 62
+ 0108 6830              cpi R22,8
+ 010A 58F3              brlo L21
+ 010C                   .dbline -2
+ 010C           L20:
+ 010C 0E940000          xcall pop_gset3
+ 0110                   .dbline 0 ; func end
+ 0110 0895              ret
+ 0112                   .dbsym r j 20 c
+ 0112                   .dbsym r i 22 c
+ 0112                   .dbsym r num 10 c
+ 0112                   .dbend
+ 0112                   .dbfunc e Interrupt_Init _Interrupt_Init fV
+                        .even
+ 0112           _Interrupt_Init::
+ 0112                   .dbline -1
+ 0112                   .dbline 78
+ 0112                   .dbline 79
+ 0112 89B7              in R24,0x39
+ 0114 8360              ori R24,3
+ 0116 89BF              out 0x39,R24
+ 0118                   .dbline 80
+ 0118 8AE0              ldi R24,10
+ 011A 80936A00          sts 106,R24
+ 011E                   .dbline 81
+ 011E 2224              clr R2
+ 0120 24BE              out 0x34,R2
+ 0122                   .dbline -2
+ 0122           L25:
+ 0122                   .dbline 0 ; func end
+ 0122 0895              ret
+ 0124                   .dbend
+                        .area vector(rom, abs)
+                        .org 4
+ 0004 0C949200          jmp _INT0_ISR
+                        .area text(rom, con, rel)
+ 0124                   .dbfile E:\ATMEGA128¿ª·¢°å\ÎÒµÄATMEGA128×îÐ¡ÏµÍ³°å\M128_ZZX_1ÅäÌ××ÊÁÏ\5.Á½Î»ÖÐ¶Ï¼üÅÌÊµÑé\INTKEY\INTKEY.C
+ 0124                   .dbfunc e INT0_ISR _INT0_ISR fV
+                        .even
+ 0124           _INT0_ISR::
+ 0124 2A92              st -y,R2
+ 0126 8A93              st -y,R24
+ 0128 9A93              st -y,R25
+ 012A 2FB6              in R2,0x3f
+ 012C 2A92              st -y,R2
+ 012E                   .dbline -1
+ 012E                   .dbline 90
+ 012E                   .dbline 91
+ 012E 80910000          lds R24,_count
+ 0132 8F5F              subi R24,255    ; addi 1
+ 0134 282E              mov R2,R24
+ 0136 20920000          sts _count,R2
+ 013A 8031              cpi R24,16
+ 013C 18F0              brlo L27
+ 013E                   .dbline 92
+ 013E 2224              clr R2
+ 0140 20920000          sts _count,R2
+ 0144           L27:
+ 0144                   .dbline -2
+ 0144           L26:
+ 0144 2990              ld R2,y+
+ 0146 2FBE              out 0x3f,R2
+ 0148 9991              ld R25,y+
+ 014A 8991              ld R24,y+
+ 014C 2990              ld R2,y+
+ 014E                   .dbline 0 ; func end
+ 014E 1895              reti
+ 0150                   .dbend
+                        .area vector(rom, abs)
+                        .org 8
+ 0008 0C94A800          jmp _INT1_ISR
+                        .area text(rom, con, rel)
+ 0150                   .dbfile E:\ATMEGA128¿ª·¢°å\ÎÒµÄATMEGA128×îÐ¡ÏµÍ³°å\M128_ZZX_1ÅäÌ××ÊÁÏ\5.Á½Î»ÖÐ¶Ï¼üÅÌÊµÑé\INTKEY\INTKEY.C
+ 0150                   .dbfunc e INT1_ISR _INT1_ISR fV
+                        .even
+ 0150           _INT1_ISR::
+ 0150 2A92              st -y,R2
+ 0152 8A93              st -y,R24
+ 0154 2FB6              in R2,0x3f
+ 0156 2A92              st -y,R2
+ 0158                   .dbline -1
+ 0158                   .dbline 97
+ 0158                   .dbline 98
+ 0158 20900000          lds R2,_count
+ 015C 2220              tst R2
+ 015E 29F0              breq L30
+ 0160                   .dbline 98
+ 0160 822D              mov R24,R2
+ 0162 8150              subi R24,1
+ 0164 80930000          sts _count,R24
+ 0168 03C0              xjmp L31
+ 016A           L30:
+ 016A                   .dbline 99
+ 016A 8FE0              ldi R24,15
+ 016C 80930000          sts _count,R24
+ 0170           L31:
+ 0170                   .dbline -2
+ 0170           L29:
+ 0170 2990              ld R2,y+
+ 0172 2FBE              out 0x3f,R2
+ 0174 8991              ld R24,y+
+ 0176 2990              ld R2,y+
+ 0178                   .dbline 0 ; func end
+ 0178 1895              reti
+ 017A                   .dbend
+ 017A                   .dbfunc e main _main fI
+                        .even
+ 017A           _main::
+ 017A                   .dbline -1
+ 017A                   .dbline 107
+ 017A                   .dbline 108
+ 017A A1DF              xcall _System_Init
+ 017C                   .dbline 109
+ 017C CADF              xcall _Interrupt_Init
+ 017E                   .dbline 110
+ 017E 7894              bset 7
+ 0180 03C0              xjmp L34
+ 0182           L33:
+ 0182                   .dbline 112
+ 0182                   .dbline 113
+ 0182 00910000          lds R16,_count
+ 0186 A6DF              xcall _Display_Key
+ 0188                   .dbline 114
+ 0188           L34:
+ 0188                   .dbline 111
+ 0188 FCCF              xjmp L33
+ 018A           X1:
+ 018A                   .dbline -2
+ 018A           L32:
+ 018A                   .dbline 0 ; func end
+ 018A 0895              ret
+ 018C                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\ATMEGA128¿ª·¢°å\ÎÒµÄATMEGA128×îÐ¡ÏµÍ³°å\M128_ZZX_1ÅäÌ××ÊÁÏ\5.Á½Î»ÖÐ¶Ï¼üÅÌÊµÑé\INTKEY\INTKEY.C
+ 0000           _count::
+ 0000                   .blkb 1
+ 0001                   .dbsym e count _count c

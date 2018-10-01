@@ -1,0 +1,7 @@
+安装Setup.exe
+将内存补丁复制到ICC-AVR安装目录下的Bin目录内即可
+每次运行ICC-AVR只需运行内存补丁，它会自动启动ICC-AVR并使之成为无限制版。
+
+解压密码：　http://ycavr.cn
+
+宜昌AVR单片机

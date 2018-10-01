@@ -1,0 +1,4 @@
+"main.obj",
+"NBCTFT.obj" 
+TO "Ex1" 
+RAMSIZE(256) 

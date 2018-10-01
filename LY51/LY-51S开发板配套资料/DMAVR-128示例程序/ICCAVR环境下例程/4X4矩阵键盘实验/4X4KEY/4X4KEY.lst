@@ -1,0 +1,819 @@
+__text_start:
+__start:
+      5E EFCF      LDI	R28,0xFF
+      5F E1D0      LDI	R29,0x10
+      60 BFCD      OUT	0x3D,R28
+      61 BFDE      OUT	0x3E,R29
+      62 51CE      SUBI	R28,0x1E
+      63 40D0      SBCI	R29,0
+      64 EA0A      LDI	R16,0xAA
+      65 8308      STD	Y+0,R16
+      66 2400      CLR	R0
+      67 E1E0      LDI	R30,0x10
+      68 E0F1      LDI	R31,1
+      69 E011      LDI	R17,1
+      6A 31E1      CPI	R30,0x11
+      6B 07F1      CPC	R31,R17
+      6C F011      BEQ	0x006F
+      6D 9201      ST	R0,Z+
+      6E CFFB      RJMP	0x006A
+      6F 8300      STD	Z+0,R16
+      70 EAEC      LDI	R30,0xAC
+      71 E0F0      LDI	R31,0
+      72 E0A0      LDI	R26,0
+      73 E0B1      LDI	R27,1
+      74 E010      LDI	R17,0
+      75 E000      LDI	R16,0
+      76 BF0B      OUT	0x3B,R16
+      77 3BEC      CPI	R30,0xBC
+      78 07F1      CPC	R31,R17
+      79 F021      BEQ	0x007E
+      7A 95C8      LPM
+      7B 9631      ADIW	R30,1
+      7C 920D      ST	R0,X+
+      7D CFF9      RJMP	0x0077
+      7E 940E 01D3 CALL	_main
+_exit:
+      80 CFFF      RJMP	_exit
+FILE: F:\PROGRA~1\iccavr\include\delay.h
+(0001) //********************************************************************
+(0002) /*函 数 名：delay_us
+(0003) 建立日期：2010年1月28日
+(0004) 编译环境：ICCAVR7.16A
+(0005) 函数作用：微秒级的延时程序
+(0006) 说    明：7.3728M晶振下
+(0007) ********************************************************************/
+(0008) void delay_1us(void)                 //1us延时函数，不能连续调用， 
+(0009) { 
+(0010)    asm("nop");                       //1时钟周期
+_delay_1us:
+      81 0000      NOP
+(0011)    asm("nop");
+      82 0000      NOP
+(0012)    asm("nop");
+      83 0000      NOP
+(0013)    asm("nop");
+      84 0000      NOP
+(0014)    asm("nop");                       //1T
+      85 0000      NOP
+(0015)    asm("nop");
+      86 0000      NOP
+      87 9508      RET
+(0016) 
+(0017) }
+(0018) void delay_3us(void)                 //3us延时函数,,可重复调用不影响精度
+(0019) { 
+(0020)    
+(0021)    asm("nop");
+_delay_3us:
+      88 0000      NOP
+(0022)    asm("nop");
+      89 0000      NOP
+(0023)    asm("nop");                       
+      8A 0000      NOP
+(0024)    asm("nop");
+      8B 0000      NOP
+(0025)    asm("nop");
+      8C 0000      NOP
+(0026)    asm("nop");
+      8D 0000      NOP
+(0027)    asm("nop");                       
+      8E 0000      NOP
+(0028)    asm("nop");
+      8F 0000      NOP
+(0029)    asm("nop");
+      90 0000      NOP
+(0030)    asm("nop");
+      91 0000      NOP
+(0031)    asm("nop");                       
+      92 0000      NOP
+(0032)    asm("nop");
+      93 0000      NOP
+(0033)    asm("nop");
+      94 0000      NOP
+(0034)    asm("nop");
+      95 0000      NOP
+(0035)    asm("nop");                       
+      96 0000      NOP
+(0036)    asm("nop");
+      97 0000      NOP
+(0037)    asm("nop");
+      98 0000      NOP
+(0038)    asm("nop");
+      99 0000      NOP
+(0039)    asm("nop");
+      9A 0000      NOP
+(0040)    asm("nop");
+      9B 0000      NOP
+(0041)    asm("nop");                       
+      9C 0000      NOP
+      9D 9508      RET
+(0042) } 
+(0043) 
+(0044) void delay_10us(void)                 //10us延时函数,,可重复调用不影响精度
+(0045) {
+(0046)    delay_3us();
+_delay_10us:
+      9E DFE9      RCALL	_delay_3us
+(0047)    delay_3us(); 
+      9F DFE8      RCALL	_delay_3us
+(0048)    delay_3us();  
+      A0 CFE7      RJMP	_delay_3us
+(0049) }
+(0050)   
+(0051) void delay_50us(void)                 //48us延时函数,,可重复调用不影响精度
+(0052) { 
+(0053)    delay_10us();
+_delay_50us:
+      A1 DFFC      RCALL	_delay_10us
+(0054)    delay_10us(); 
+      A2 DFFB      RCALL	_delay_10us
+(0055)    delay_10us();
+      A3 DFFA      RCALL	_delay_10us
+(0056)    delay_10us();
+      A4 CFF9      RJMP	_delay_10us
+(0057) }
+(0058) void delay_100us(void)     //exactly 98us延时函数,,可重复调用不影响精度
+(0059) {
+(0060)  delay_50us();
+_delay_100us:
+      A5 DFFB      RCALL	_delay_50us
+(0061)  delay_50us();
+      A6 CFFA      RJMP	_delay_50us
+_delay_n100us:
+  n100us               --> R20
+      A7 934A      ST	R20,-Y
+      A8 2F40      MOV	R20,R16
+(0062) }
+(0063) void delay_n100us(unsigned char n100us)
+(0064) {
+      A9 C001      RJMP	0x00AB
+(0065)  while(n100us--)                          
+(0066)  delay_100us();
+      AA DFFA      RCALL	_delay_100us
+      AB 2E24      MOV	R2,R20
+      AC 2433      CLR	R3
+      AD 5041      SUBI	R20,1
+      AE 2022      TST	R2
+      AF F7D1      BNE	0x00AA
+      B0 9149      LD	R20,Y+
+      B1 9508      RET
+(0067) }
+(0068) /*delay_n100us(2)        250us
+(0069) delay_n100us(3)          360us
+(0070) delay_n100us(4)          470us
+(0071) delay_n100us(5)          580us
+(0072) delay_n100us(6)          690us
+(0073) delay_n100us(7)       800us
+(0074) delay_n100us(8)          900us              主要是由于函数声明及while,,,大概6us
+(0075) 
+(0076) */
+(0077) void delay_1ms()
+(0078) {
+(0079)  delay_100us();
+_delay_1ms:
+      B2 DFF2      RCALL	_delay_100us
+(0080)  delay_100us();
+      B3 DFF1      RCALL	_delay_100us
+(0081)  delay_100us();
+      B4 DFF0      RCALL	_delay_100us
+(0082)  delay_100us();
+      B5 DFEF      RCALL	_delay_100us
+(0083)  delay_100us();
+      B6 DFEE      RCALL	_delay_100us
+(0084)  delay_100us();
+      B7 DFED      RCALL	_delay_100us
+(0085)  delay_100us();
+      B8 DFEC      RCALL	_delay_100us
+(0086)  delay_100us();
+      B9 DFEB      RCALL	_delay_100us
+(0087)  delay_100us();
+      BA DFEA      RCALL	_delay_100us
+(0088)  delay_100us();
+      BB CFE9      RJMP	_delay_100us
+_delay_nms:
+  nms                  --> R20
+      BC 934A      ST	R20,-Y
+      BD 935A      ST	R21,-Y
+      BE 01A8      MOVW	R20,R16
+(0089) }
+(0090) /********************************************************************
+(0091) 函 数 名：Delay_ms
+(0092) 建立日期：2010年1月28日
+(0093) 修改日期：
+(0094) 函数作用：毫秒级的精确延时程序
+(0095) 说    明：
+(0096) ********************************************************************/
+(0097) void delay_nms(unsigned int nms)
+(0098) {
+      BF C001      RJMP	0x00C1
+(0099)  while(nms--) 
+(0100)  delay_1ms();
+      C0 DFF1      RCALL	_delay_1ms
+      C1 011A      MOVW	R2,R20
+      C2 5041      SUBI	R20,1
+      C3 4050      SBCI	R21,0
+      C4 2022      TST	R2
+      C5 F7D1      BNE	0x00C0
+      C6 2033      TST	R3
+      C7 F7C1      BNE	0x00C0
+      C8 9159      LD	R21,Y+
+      C9 9149      LD	R20,Y+
+      CA 9508      RET
+_delay_ns:
+  ns                   --> R20
+      CB 934A      ST	R20,-Y
+      CC 2F40      MOV	R20,R16
+(0101) }
+(0102) void delay_ns(unsigned char ns)
+(0103) {
+      CD C003      RJMP	0x00D1
+(0104)  while(ns--) 
+(0105)  delay_nms(1000);
+      CE EE08      LDI	R16,0xE8
+      CF E013      LDI	R17,3
+      D0 DFEB      RCALL	_delay_nms
+      D1 2E24      MOV	R2,R20
+      D2 2433      CLR	R3
+      D3 5041      SUBI	R20,1
+      D4 2022      TST	R2
+      D5 F7C1      BNE	0x00CE
+      D6 9149      LD	R20,Y+
+      D7 9508      RET
+FILE: E:\DMAVR-~3\4X4KEY\4X4KEY.C
+(0001) //DMAVR-128的4X4位矩阵键盘控制程序，显示键值
+(0002) //编译环境 ICCAVR 7.16A
+(0003) //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+(0004) //作者：阿迪 www.avrgcc.com
+(0005) //日期：2010.01.14
+(0006) //***********************************************************************
+(0007) //			包含文件
+(0008) //***********************************************************************
+(0009) 
+(0010) #include <string.h>
+(0011) #include <stdio.h>
+(0012) #include <delay.h>
+(0013) #include <iom128v.h>
+(0014) 
+(0015) 
+(0016) #define uchar           unsigned char
+(0017) #define uint            unsigned int
+(0018) 
+(0019) #define key_io          PORTC               //独立键盘与PC4和PC5连接
+(0020) #define key_ior         PINC                //读取IO口值为PINC的值
+(0021) #define Data_IO	        PORTA                //数码管数据口
+(0022) #define Data_DDR        DDRA                 //数码管数据口方向寄存器
+(0023) #define D_LE0	        PORTD &= ~(1 << PD4) //数码管段控制位为0，锁存端口数据
+(0024) #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1，锁存器输出与端口一致
+(0025) #define W_LE0	        PORTD &= ~(1 << PD5) //数码管位控制位为0
+(0026) #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+(0027) 
+(0028) 
+(0029) //***********************************************************************
+(0030) //			共阴数码管显示的断码表0～F
+(0031) //***********************************************************************
+(0032) 
+(0033) uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,
+(0034) 	           0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+(0035) uchar key;
+(0036) 
+(0037) //***********************************************************************
+(0038) //			IO端口初始化
+(0039) //***********************************************************************
+(0040) 
+(0041) void System_Init()
+(0042) {
+(0043)     Data_IO=0xFF;             //数据口为输出
+_System_Init:
+      D8 EF8F      LDI	R24,0xFF
+      D9 BB8B      OUT	0x1B,R24
+(0044)     Data_DDR=0xFF;
+      DA BB8A      OUT	0x1A,R24
+(0045) 
+(0046)     PORTD=0xFF;               //74HC573的控制口，设置为输出
+      DB BB82      OUT	0x12,R24
+(0047)     DDRD=0xFF;
+      DC BB81      OUT	0x11,R24
+      DD 9508      RET
+_Display_Key:
+  j                    --> R22
+  i                    --> R20
+  num                  --> R10
+      DE 940E 0256 CALL	push_xgsetF00C
+      E0 2EA0      MOV	R10,R16
+(0048) }
+(0049) 
+(0050) //*************************************************************************
+(0051) //			74HC573控制数码管动态扫描显示函数
+(0052) //*************************************************************************
+(0053) 
+(0054) void Display_Key(uchar num)
+(0055) {
+(0056) 	 uchar i,j;
+(0057) 	 System_Init();
+      E1 DFF6      RCALL	_System_Init
+(0058)    j=0x01;                    //此数据用来控制位选
+      E2 E061      LDI	R22,1
+(0059)   for(i=0;i<8;i++)
+      E3 2744      CLR	R20
+      E4 C013      RJMP	0x00F8
+(0060)   {
+(0061)     D_LE1;                    //控制数码管段数据的74HC573的LE管脚置高
+      E5 9A94      SBI	0x12,4
+(0062)     W_LE1;                    //控制数码管位的74HC573的LE管脚置高
+      E6 9A95      SBI	0x12,5
+(0063)     Data_IO=0x00;               //设置要显示的位，也就是哪一个数码管亮，这里是八个一起显示
+      E7 2422      CLR	R2
+      E8 BA2B      OUT	0x1B,R2
+(0064)     W_LE0;                    //锁存位数据，下面送上段数据以后，就显示出来了
+      E9 9895      CBI	0x12,5
+(0065) 	j=(j<<1);
+      EA 0F66      LSL	R22
+(0066)     Data_IO=table[num];         //送要显示的数据，就是段数据，如显示0送的是0x3f
+      EB E080      LDI	R24,0
+      EC E091      LDI	R25,1
+      ED 2DEA      MOV	R30,R10
+      EE 27FF      CLR	R31
+      EF 0FE8      ADD	R30,R24
+      F0 1FF9      ADC	R31,R25
+      F1 8020      LDD	R2,Z+0
+      F2 BA2B      OUT	0x1B,R2
+(0067)     D_LE0;                    //锁存段数据，数码管亮一个时间片刻
+      F3 9894      CBI	0x12,4
+(0068)     delay_nms(1);              //显示一个时间片刻，会影响亮度和闪烁性
+      F4 E001      LDI	R16,1
+      F5 E010      LDI	R17,0
+      F6 DFC5      RCALL	_delay_nms
+      F7 9543      INC	R20
+      F8 3048      CPI	R20,0x8
+      F9 F358      BCS	0x00E5
+      FA 940C 025D JMP	pop_xgsetF00C
+_keyboardscan:
+  statevalue           --> R20
+  key_check            --> R10
+  key_checkin          --> R20
+      FC 940E 024C CALL	push_xgset300C
+(0069) 
+(0070)   }
+(0071) 
+(0072) }
+(0073) 
+(0074) //**********************************************************************
+(0075) //	键盘扫描子程序，采用逐键扫描的方式
+(0076) //**********************************************************************
+(0077) uchar keyboardscan(void) 
+(0078) {
+(0079)   uchar statevalue,key_checkin,key_check;
+(0080)   key_io=0xf0;                    //在IO口由输出方式变为输入方式时要延迟一个周期
+      FE EF80      LDI	R24,0xF0
+      FF BB85      OUT	0x15,R24
+(0081)   key_io=0xf0;                    //采取写两次的方法延时
+     100 BB85      OUT	0x15,R24
+(0082)   key_checkin=key_ior;            //读取IO口状态，判断是否有键按下
+     101 B343      IN	R20,0x13
+(0083)   if(key_checkin!=0xf0)           //IO口值发生变化则表示有键按下
+     102 3F40      CPI	R20,0xF0
+     103 F409      BNE	0x0105
+     104 C0C8      RJMP	0x01CD
+(0084)   {
+(0085)     delay_nms(20);                 //键盘消抖，延时20MS
+     105 E104      LDI	R16,0x14
+     106 E010      LDI	R17,0
+     107 DFB4      RCALL	_delay_nms
+(0086)     key_checkin=key_ior;
+     108 B343      IN	R20,0x13
+(0087)     if(key_checkin!=0xf0)
+     109 3F40      CPI	R20,0xF0
+     10A F409      BNE	0x010C
+     10B C0C5      RJMP	0x01D1
+(0088)     {
+(0089)      key_io=0xfe;                 //逐行扫描开始
+     10C EF8E      LDI	R24,0xFE
+     10D BB85      OUT	0x15,R24
+(0090)      key_io=0xfe;                 //写两次延时，下同
+     10E BB85      OUT	0x15,R24
+(0091)      key_check=key_ior;
+     10F B2A3      IN	R10,0x13
+(0092)      switch (key_check)           //根据读到的IO口值判断按键的按下情况
+     110 2D4A      MOV	R20,R10
+     111 2755      CLR	R21
+     112 3B4E      CPI	R20,0xBE
+     113 E0E0      LDI	R30,0
+     114 075E      CPC	R21,R30
+     115 F0F9      BEQ	0x0135
+     116 EB8E      LDI	R24,0xBE
+     117 E090      LDI	R25,0
+     118 1784      CP	R24,R20
+     119 0795      CPC	R25,R21
+     11A F02C      BLT	0x0120
+     11B 374E      CPI	R20,0x7E
+     11C E0E0      LDI	R30,0
+     11D 075E      CPC	R21,R30
+     11E F0D1      BEQ	0x0139
+     11F C01C      RJMP	0x013C
+     120 3D4E      CPI	R20,0xDE
+     121 E0E0      LDI	R30,0
+     122 075E      CPC	R21,R30
+     123 F069      BEQ	0x0131
+     124 3D4E      CPI	R20,0xDE
+     125 E0E0      LDI	R30,0
+     126 075E      CPC	R21,R30
+     127 F0A4      BLT	0x013C
+     128 3E4E      CPI	R20,0xEE
+     129 E0E0      LDI	R30,0
+     12A 075E      CPC	R21,R30
+     12B F009      BEQ	0x012D
+     12C C00F      RJMP	0x013C
+(0093)      {
+(0094)      case 0xee:key=15;break;
+     12D E08F      LDI	R24,0xF
+     12E 9380 0110 STS	key,R24
+     130 C00B      RJMP	0x013C
+(0095)      case 0xde:key=11;break;
+     131 E08B      LDI	R24,0xB
+     132 9380 0110 STS	key,R24
+     134 C007      RJMP	0x013C
+(0096)      case 0xbe:key=8;break;
+     135 E088      LDI	R24,0x8
+     136 9380 0110 STS	key,R24
+     138 C003      RJMP	0x013C
+(0097)      case 0x7e:key=4;break;
+     139 E084      LDI	R24,4
+     13A 9380 0110 STS	key,R24
+(0098)      }
+(0099)      
+(0100)      key_io=0xfd;
+     13C EF8D      LDI	R24,0xFD
+     13D BB85      OUT	0x15,R24
+(0101)      key_io=0xfd;
+     13E BB85      OUT	0x15,R24
+(0102)      key_check=key_ior;
+     13F B2A3      IN	R10,0x13
+(0103)      switch (key_check)
+     140 2D4A      MOV	R20,R10
+     141 2755      CLR	R21
+     142 3B4D      CPI	R20,0xBD
+     143 E0E0      LDI	R30,0
+     144 075E      CPC	R21,R30
+     145 F0F9      BEQ	0x0165
+     146 EB8D      LDI	R24,0xBD
+     147 E090      LDI	R25,0
+     148 1784      CP	R24,R20
+     149 0795      CPC	R25,R21
+     14A F02C      BLT	0x0150
+     14B 374D      CPI	R20,0x7D
+     14C E0E0      LDI	R30,0
+     14D 075E      CPC	R21,R30
+     14E F0D1      BEQ	0x0169
+     14F C01C      RJMP	0x016C
+     150 3D4D      CPI	R20,0xDD
+     151 E0E0      LDI	R30,0
+     152 075E      CPC	R21,R30
+     153 F069      BEQ	0x0161
+     154 3D4D      CPI	R20,0xDD
+     155 E0E0      LDI	R30,0
+     156 075E      CPC	R21,R30
+     157 F0A4      BLT	0x016C
+     158 3E4D      CPI	R20,0xED
+     159 E0E0      LDI	R30,0
+     15A 075E      CPC	R21,R30
+     15B F009      BEQ	0x015D
+     15C C00F      RJMP	0x016C
+(0104)      {
+(0105)      case 0xed:key=14;break;
+     15D E08E      LDI	R24,0xE
+     15E 9380 0110 STS	key,R24
+     160 C00B      RJMP	0x016C
+(0106)      case 0xdd:key=10;break;
+     161 E08A      LDI	R24,0xA
+     162 9380 0110 STS	key,R24
+     164 C007      RJMP	0x016C
+(0107)      case 0xbd:key=7;break;
+     165 E087      LDI	R24,7
+     166 9380 0110 STS	key,R24
+     168 C003      RJMP	0x016C
+(0108)      case 0x7d:key=3;break;
+     169 E083      LDI	R24,3
+     16A 9380 0110 STS	key,R24
+(0109)      }
+(0110)      
+(0111)      key_io=0xfb;
+     16C EF8B      LDI	R24,0xFB
+     16D BB85      OUT	0x15,R24
+(0112)      key_io=0xfb;
+     16E BB85      OUT	0x15,R24
+(0113)     key_check=key_ior;
+     16F B2A3      IN	R10,0x13
+(0114)      switch (key_check)
+     170 2D4A      MOV	R20,R10
+     171 2755      CLR	R21
+     172 3B4B      CPI	R20,0xBB
+     173 E0E0      LDI	R30,0
+     174 075E      CPC	R21,R30
+     175 F0F9      BEQ	0x0195
+     176 EB8B      LDI	R24,0xBB
+     177 E090      LDI	R25,0
+     178 1784      CP	R24,R20
+     179 0795      CPC	R25,R21
+     17A F02C      BLT	0x0180
+     17B 374B      CPI	R20,0x7B
+     17C E0E0      LDI	R30,0
+     17D 075E      CPC	R21,R30
+     17E F0D1      BEQ	0x0199
+     17F C01C      RJMP	0x019C
+     180 3D4B      CPI	R20,0xDB
+     181 E0E0      LDI	R30,0
+     182 075E      CPC	R21,R30
+     183 F069      BEQ	0x0191
+     184 3D4B      CPI	R20,0xDB
+     185 E0E0      LDI	R30,0
+     186 075E      CPC	R21,R30
+     187 F0A4      BLT	0x019C
+     188 3E4B      CPI	R20,0xEB
+     189 E0E0      LDI	R30,0
+     18A 075E      CPC	R21,R30
+     18B F009      BEQ	0x018D
+     18C C00F      RJMP	0x019C
+(0115)      {
+(0116)      case 0xeb:key=13;break;
+     18D E08D      LDI	R24,0xD
+     18E 9380 0110 STS	key,R24
+     190 C00B      RJMP	0x019C
+(0117)      case 0xdb:key=0;break;
+     191 2422      CLR	R2
+     192 9220 0110 STS	key,R2
+     194 C007      RJMP	0x019C
+(0118)      case 0xbb:key=6;break;
+     195 E086      LDI	R24,6
+     196 9380 0110 STS	key,R24
+     198 C003      RJMP	0x019C
+(0119)      case 0x7b:key=2;break;
+     199 E082      LDI	R24,2
+     19A 9380 0110 STS	key,R24
+(0120)      }
+(0121)      
+(0122)       key_io=0xf7;
+     19C EF87      LDI	R24,0xF7
+     19D BB85      OUT	0x15,R24
+(0123)       key_io=0xf7;
+     19E BB85      OUT	0x15,R24
+(0124)      key_check=key_ior;
+     19F B2A3      IN	R10,0x13
+(0125)      switch (key_check)
+     1A0 2D4A      MOV	R20,R10
+     1A1 2755      CLR	R21
+     1A2 3B47      CPI	R20,0xB7
+     1A3 E0E0      LDI	R30,0
+     1A4 075E      CPC	R21,R30
+     1A5 F0F9      BEQ	0x01C5
+     1A6 EB87      LDI	R24,0xB7
+     1A7 E090      LDI	R25,0
+     1A8 1784      CP	R24,R20
+     1A9 0795      CPC	R25,R21
+     1AA F02C      BLT	0x01B0
+     1AB 3747      CPI	R20,0x77
+     1AC E0E0      LDI	R30,0
+     1AD 075E      CPC	R21,R30
+     1AE F0D1      BEQ	0x01C9
+     1AF C021      RJMP	0x01D1
+     1B0 3D47      CPI	R20,0xD7
+     1B1 E0E0      LDI	R30,0
+     1B2 075E      CPC	R21,R30
+     1B3 F069      BEQ	0x01C1
+     1B4 3D47      CPI	R20,0xD7
+     1B5 E0E0      LDI	R30,0
+     1B6 075E      CPC	R21,R30
+     1B7 F0CC      BLT	0x01D1
+     1B8 3E47      CPI	R20,0xE7
+     1B9 E0E0      LDI	R30,0
+     1BA 075E      CPC	R21,R30
+     1BB F009      BEQ	0x01BD
+     1BC C014      RJMP	0x01D1
+(0126)      {
+(0127)      case 0xe7:key=12;break;
+     1BD E08C      LDI	R24,0xC
+     1BE 9380 0110 STS	key,R24
+     1C0 C010      RJMP	0x01D1
+(0128)      case 0xd7:key=9;break;
+     1C1 E089      LDI	R24,0x9
+     1C2 9380 0110 STS	key,R24
+     1C4 C00C      RJMP	0x01D1
+(0129)      case 0xb7:key=5;break;
+     1C5 E085      LDI	R24,5
+     1C6 9380 0110 STS	key,R24
+     1C8 C008      RJMP	0x01D1
+(0130)      case 0x77:key=1;break;
+     1C9 E081      LDI	R24,1
+     1CA 9380 0110 STS	key,R24
+(0131)      }
+(0132)      
+(0133)     }
+(0134)   }
+     1CC C004      RJMP	0x01D1
+(0135)   else
+(0136)   {
+(0137)   statevalue=0xff;                      //无按键时返回值
+     1CD EF4F      LDI	R20,0xFF
+(0138)   key=statevalue;
+     1CE 9340 0110 STS	key,R20
+(0139)   return(key);
+     1D0 2F04      MOV	R16,R20
+     1D1 940C 0251 JMP	pop_xgset300C
+(0140)   }
+(0141) }
+(0142) 
+(0143) //*************************************************************************
+(0144) //			主程序
+(0145) //*************************************************************************
+(0146) 
+(0147) void main()
+(0148) 
+(0149) {         
+(0150) 	  uint key_store=0x01;
+_main:
+  key_store            --> R20
+     1D3 E041      LDI	R20,1
+     1D4 E050      LDI	R21,0
+(0151) 	  DDRC=0x0f;                        //PC口上拉电阻使能
+     1D5 E08F      LDI	R24,0xF
+     1D6 BB84      OUT	0x14,R24
+(0152)       PORTC=0xf0;                       //PC高四位输入低四位输出
+     1D7 EF80      LDI	R24,0xF0
+     1D8 BB85      OUT	0x15,R24
+     1D9 C070      RJMP	0x024A
+(0153) 
+(0154) 
+(0155) while(1)
+(0156)   {
+(0157) 
+(0158)   keyboardscan();                         //键盘扫描，看是否有按键按下
+     1DA DF21      RCALL	_keyboardscan
+(0159)     if(key!=0xff)                        //如果有按键按下，则显示该按键键值0~15
+     1DB 9180 0110 LDS	R24,key
+     1DD 3F8F      CPI	R24,0xFF
+     1DE F409      BNE	0x01E0
+     1DF C068      RJMP	0x0248
+(0160)       {
+(0161) 	      { switch(key)
+     1E0 2F68      MOV	R22,R24
+     1E1 2777      CLR	R23
+     1E2 3060      CPI	R22,0
+     1E3 E0E0      LDI	R30,0
+     1E4 077E      CPC	R23,R30
+     1E5 F40C      BGE	0x01E7
+     1E6 C063      RJMP	0x024A
+     1E7 E08F      LDI	R24,0xF
+     1E8 E090      LDI	R25,0
+     1E9 1786      CP	R24,R22
+     1EA 0797      CPC	R25,R23
+     1EB F40C      BGE	0x01ED
+     1EC C05D      RJMP	0x024A
+     1ED E88C      LDI	R24,0x8C
+     1EE E090      LDI	R25,0
+     1EF 01FB      MOVW	R30,R22
+     1F0 0FEE      LSL	R30
+     1F1 1FFF      ROL	R31
+     1F2 0FE8      ADD	R30,R24
+     1F3 1FF9      ADC	R31,R25
+     1F4 9027      ELPM	R2,Z+
+     1F5 9036      ELPM	R3,0(Z)
+     1F6 01F1      MOVW	R30,R2
+     1F7 9409      IJMP
+(0162) 		   {  
+(0163) 		     case 1: Display_Key(0x01);key_store=0x01;break;   //根据键值显示到数码管上
+     1F8 E001      LDI	R16,1
+     1F9 DEE4      RCALL	_Display_Key
+     1FA E041      LDI	R20,1
+     1FB E050      LDI	R21,0
+     1FC C04D      RJMP	0x024A
+(0164) 		     case 2: Display_Key(0x02);key_store=0x02;break;
+     1FD E002      LDI	R16,2
+     1FE DEDF      RCALL	_Display_Key
+     1FF E042      LDI	R20,2
+     200 E050      LDI	R21,0
+     201 C048      RJMP	0x024A
+(0165) 		     case 3: Display_Key(0x03);key_store=0x03;break;
+     202 E003      LDI	R16,3
+     203 DEDA      RCALL	_Display_Key
+     204 E043      LDI	R20,3
+     205 E050      LDI	R21,0
+     206 C043      RJMP	0x024A
+(0166) 		     case 4: Display_Key(0x04);key_store=0x04;break;
+     207 E004      LDI	R16,4
+     208 DED5      RCALL	_Display_Key
+     209 E044      LDI	R20,4
+     20A E050      LDI	R21,0
+     20B C03E      RJMP	0x024A
+(0167) 		     case 5: Display_Key(0x05);key_store=0x05;break;
+     20C E005      LDI	R16,5
+     20D DED0      RCALL	_Display_Key
+     20E E045      LDI	R20,5
+     20F E050      LDI	R21,0
+     210 C039      RJMP	0x024A
+(0168) 		     case 6: Display_Key(0x06);key_store=0x06;break;
+     211 E006      LDI	R16,6
+     212 DECB      RCALL	_Display_Key
+     213 E046      LDI	R20,6
+     214 E050      LDI	R21,0
+     215 C034      RJMP	0x024A
+(0169) 		     case 7: Display_Key(0x07);key_store=0x07;break;
+     216 E007      LDI	R16,7
+     217 DEC6      RCALL	_Display_Key
+     218 E047      LDI	R20,7
+     219 E050      LDI	R21,0
+     21A C02F      RJMP	0x024A
+(0170) 		     case 8: Display_Key(0x08);key_store=0x08;break;
+     21B E008      LDI	R16,0x8
+     21C DEC1      RCALL	_Display_Key
+     21D E048      LDI	R20,0x8
+     21E E050      LDI	R21,0
+     21F C02A      RJMP	0x024A
+(0171) 		     case 9: Display_Key(0x09);key_store=0x09;break;
+     220 E009      LDI	R16,0x9
+     221 DEBC      RCALL	_Display_Key
+     222 E049      LDI	R20,0x9
+     223 E050      LDI	R21,0
+     224 C025      RJMP	0x024A
+(0172) 		     case 0: Display_Key(0x00);key_store=0x00;break;
+     225 2700      CLR	R16
+     226 DEB7      RCALL	_Display_Key
+     227 2744      CLR	R20
+     228 2755      CLR	R21
+     229 C020      RJMP	0x024A
+(0173) 		     case 10: Display_Key(0x0a);key_store=0x0a;break;
+     22A E00A      LDI	R16,0xA
+     22B DEB2      RCALL	_Display_Key
+     22C E04A      LDI	R20,0xA
+     22D E050      LDI	R21,0
+     22E C01B      RJMP	0x024A
+(0174) 		     case 11: Display_Key(0x0b);key_store=0x0b;break;
+     22F E00B      LDI	R16,0xB
+     230 DEAD      RCALL	_Display_Key
+     231 E04B      LDI	R20,0xB
+     232 E050      LDI	R21,0
+     233 C016      RJMP	0x024A
+(0175) 		     case 12: Display_Key(0x0c);key_store=0x0c;break;
+     234 E00C      LDI	R16,0xC
+     235 DEA8      RCALL	_Display_Key
+     236 E04C      LDI	R20,0xC
+     237 E050      LDI	R21,0
+     238 C011      RJMP	0x024A
+(0176) 		     case 13: Display_Key(0x0d);key_store=0x0d;break;
+     239 E00D      LDI	R16,0xD
+     23A DEA3      RCALL	_Display_Key
+     23B E04D      LDI	R20,0xD
+     23C E050      LDI	R21,0
+     23D C00C      RJMP	0x024A
+(0177) 	         case 14: Display_Key(0x0e);key_store=0x0e;break;
+     23E E00E      LDI	R16,0xE
+     23F DE9E      RCALL	_Display_Key
+     240 E04E      LDI	R20,0xE
+     241 E050      LDI	R21,0
+     242 C007      RJMP	0x024A
+(0178)              case 15: Display_Key(0x0f);key_store=0x0f;break;
+     243 E00F      LDI	R16,0xF
+     244 DE99      RCALL	_Display_Key
+     245 E04F      LDI	R20,0xF
+     246 E050      LDI	R21,0
+(0179)            }
+(0180) 
+(0181)           }
+(0182) 	
+(0183)        }
+     247 C002      RJMP	0x024A
+(0184)   else
+(0185) 	 {
+(0186) 	 Display_Key(key_store);              //没有按键的时候显示上次的键值
+FILE: <library>
+     248 2F04      MOV	R16,R20
+     249 DE94      RCALL	_Display_Key
+     24A CF8F      RJMP	0x01DA
+     24B 9508      RET
+push_xgset300C:
+     24C 935A      ST	R21,-Y
+     24D 934A      ST	R20,-Y
+     24E 92BA      ST	R11,-Y
+     24F 92AA      ST	R10,-Y
+     250 9508      RET
+pop_xgset300C:
+     251 90A9      LD	R10,Y+
+     252 90B9      LD	R11,Y+
+     253 9149      LD	R20,Y+
+     254 9159      LD	R21,Y+
+     255 9508      RET
+push_xgsetF00C:
+     256 937A      ST	R23,-Y
+     257 936A      ST	R22,-Y
+     258 935A      ST	R21,-Y
+     259 934A      ST	R20,-Y
+     25A 92BA      ST	R11,-Y
+     25B 92AA      ST	R10,-Y
+     25C 9508      RET
+pop_xgsetF00C:
+     25D 90A9      LD	R10,Y+
+     25E 90B9      LD	R11,Y+
+     25F 9149      LD	R20,Y+
+     260 9159      LD	R21,Y+
+     261 9169      LD	R22,Y+
+     262 9179      LD	R23,Y+
+     263 9508      RET

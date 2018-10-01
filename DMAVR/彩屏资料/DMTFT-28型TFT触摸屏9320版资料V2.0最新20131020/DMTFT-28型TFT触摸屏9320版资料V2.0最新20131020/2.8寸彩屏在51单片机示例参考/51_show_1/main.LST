@@ -1,0 +1,134 @@
+C51 COMPILER V7.06   MAIN                                                                  12/13/2012 09:58:43 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          //公司：北方蓝芯科技开发有限公司
+   2          //网址：www.hrbnbc.com
+   3          /*===================================================================================================  
+   4          工程名称：  Ex1
+   5          功能描述：      控制TFT实现汉字，字符显示，和画点功能。
+   6          硬件连接：  查看和修改接口定义在NBCTFT.C中,请仔细检查接口连线。
+   7                ----------------------------------------
+   8               |     --------TFT控制接线----------      |
+   9               |                                        |
+  10               |          D10~D17   接   P0             |
+  11               |          RS        接   P2^5;          |
+  12               |                  RW        接   P2^4;          |
+  13               |                  RD        接   P2^3;          |
+  14               |              CS        接   P2^2;              |
+  15               |                  RES       接   P2^1;          |
+  16               |                                        |
+  17               |                  LE        接   P2^0;          |
+  18               |                                        |
+  19               |     --------电源供电接线---------      |
+  20               |          GND       接   电源负极       |
+  21               |          VIN       接   电源正极(5V)   |
+  22               |----------------------------------------|
+  23               | 如果在NBC开发板上使用，以上线不需用飞  |
+  24               | 线连接，直接插接在开发板上的12864接口  |
+  25                ----------------------------------------
+  26          维护记录：  2012-3-14
+  27          ====================================================================================================*/
+  28          
+  29          //******************包含头文件***************************
+  30          
+  31          #include<reg52.h>    //包含单片机头文件
+  32          #include"NBCTFT.h"   //包含TFT驱动头文件
+  33          
+  34          //******************全局变量***************************
+  35          
+  36          #define White          0xFFFF   //LCD color
+  37          #define Black          0x0000
+  38          #define Blue           0x001F
+  39          #define Blue2          0x051F
+  40          #define Red            0xF800
+  41          #define Magenta        0xF81F
+  42          #define Green          0x07E0
+  43          #define Cyan           0x7FFF
+  44          #define Yellow         0xFFE0
+  45          
+  46          unsigned int Device_code;      //TFT控制IC型号
+  47          
+  48          //**************声明外部函数和变量********************
+  49          
+  50          extern void delayms(unsigned int count);
+  51          
+  52          //================================================================================================
+  53          //      函数名称：      主函数
+  54          //      实现功能：      控制TFT实现汉字，字符显示.
+  55          //      参数：          无
+C51 COMPILER V7.06   MAIN                                                                  12/13/2012 09:58:43 PAGE 2   
+
+  56          //      返回值：        无
+  57          //================================================================================================
+  58          main()
+  59          {
+  60   1             unsigned int i;
+  61   1                 Device_code=0x9328;                //TFT控制IC型号
+  62   1             
+  63   1             TFT_Initial();                     //初始化LCD    
+  64   1      
+  65   1        while(1)                                //循环
+  66   1            {
+  67   2                 //5种颜色将屏分为5个区域
+  68   2                 Show_RGB(0,240,0,64,Blue);
+  69   2                 Show_RGB(0,240,64,128,Green);
+  70   2                 Show_RGB(0,240,128,192,Magenta);
+  71   2                 Show_RGB(0,240,192,256,Red);
+  72   2                 Show_RGB(0,240,256,320,Yellow);
+  73   2      
+  74   2             //第1个区域显示16x16汉字
+  75   2                 LCD_PutString(24,16,"北方蓝芯科技开发有限公司",White,Blue);
+  76   2             LCD_PutString(24,40,"   蓝芯科技  与您同行",White,Blue);
+  77   2      
+  78   2                 //第2个区域显示ascii字符中的数字和符号
+  79   2                 LCD_PutString(80,72,"0123456789",Black,Green);
+  80   2                 LCD_PutString(16,96,")(`,./<>';:[]{}\|?-=+*&^%$",Black,Green);
+  81   2      
+  82   2                 //第3个区域显示ascii字符中字母
+  83   2                 LCD_PutString(16,136,"abcdefghijklmnopqrstuvwxyz",Blue,Magenta);
+  84   2                 LCD_PutString(16,156,"ABCDEFGHIJKLMNOPQRSTUVWXYZ",Blue,Magenta);
+  85   2      
+  86   2                 //第4个区域显示TFT控制器IC型号
+  87   2                 LCD_PutString(16,200,"The Device IC Of TFT Is:",Black,Red);
+  88   2                 LCD_PutString(96,224,"ILI",Black,Red);
+  89   2                 LCD_PutChar(120, 224, 0x30+(Device_code>>12), Black, Red);
+  90   2                 LCD_PutChar(128, 224, 0x30+((Device_code>>8)&0x000f), Black, Red);
+  91   2                 LCD_PutChar(136, 224, 0x30+((Device_code>>4)&0x000f), Black, Red);
+  92   2                 LCD_PutChar(144, 224, 0x30+(Device_code&0x000f), Black, Red);
+  93   2             
+  94   2                 //第5个区域打点实现画线
+  95   2             for(i=312;i>264;i--){ Put_pixel(68,i,Blue);}
+  96   2                 for(i=68;i<172;i++) { Put_pixel(i,264,Blue);}
+  97   2             for(i=264;i<312;i++){ Put_pixel(172,i,Blue);} 
+  98   2                 for(i=172;i>68;i--) { Put_pixel(i,312,Blue);}
+  99   2       
+ 100   2                 delayms(20000);  //显示一段时间
+ 101   2                 CLR_Screen(Red); //用背景色清屏
+ 102   2                }
+ 103   1       
+ 104   1        }
+ 105          
+ 106          
+ 107          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    643    ----
+   CONSTANT SIZE    =    167    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V7.06   MAIN                                                                  12/13/2012 09:58:43 PAGE 3   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

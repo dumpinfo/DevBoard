@@ -1,0 +1,140 @@
+                        .module uart.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\23.SD卡数据读写实验\WRSD\uart.c
+ 0000                   .dbfunc e putchar _putchar fI
+ 0000           ;              c -> R20
+                        .even
+ 0000           _putchar::
+ 0000 0E940000          xcall push_gset1
+ 0004 402F              mov R20,R16
+ 0006                   .dbline -1
+ 0006                   .dbline 31
+ 0006           ; //串口发送接收驱动程序
+ 0006           ; //采用标准输入输出格式进行打印，与单独发送接收字符不同
+ 0006           ; //编译环境 AVR Studio 4.17/AVR GCC
+ 0006           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0006           ; //忠兴电子元件店编辑
+ 0006           ; //日期：2010.06.24
+ 0006           ; //***********************************************************************
+ 0006           ; //                    包含文件
+ 0006           ; //***********************************************************************
+ 0006           ; 
+ 0006           ; #include <stdio.h>
+ 0006           ; #include <string.h>
+ 0006           ; #include <iom128v.h>
+ 0006           ; 
+ 0006           ; #define uchar           unsigned char
+ 0006           ; #define uint            unsigned int
+ 0006           ; #define ulong           unsigned long
+ 0006           ; #define       F_CPU              7372800                                                                  // 单片机主频为7.3728MHz
+ 0006           ; #define baud           9600                                     //设置波特率的大小
+ 0006           ; #define baud_setting   (uint)((ulong)F_CPU/(16*(ulong)baud)-1)  //波特率计算公式
+ 0006           ; #define baud_h         (uchar)(baud_setting>>8)                 //提取高位
+ 0006           ; #define baud_l         (uchar)(baud_setting)                    //低位
+ 0006           ; 
+ 0006           ; //***********************************************************************
+ 0006           ; // 用于输出的标准格式函数，用printf输出到UART1
+ 0006           ; //***********************************************************************
+ 0006           ; 
+ 0006           ; extern int _textmode;
+ 0006           ; 
+ 0006           ; int putchar(char c)
+ 0006           ;     {
+ 0006                   .dbline 32
+ 0006           ;     if (_textmode && c == '\n')
+ 0006 20900000          lds R2,__textmode
+ 000A 30900100          lds R3,__textmode+1
+ 000E 2220              tst R2
+ 0010 11F4              brne X0
+ 0012 3320              tst R3
+ 0014 21F0              breq L5
+ 0016           X0:
+ 0016 4A30              cpi R20,10
+ 0018 11F4              brne L5
+ 001A                   .dbline 33
+ 001A           ;         putchar('\r');
+ 001A 0DE0              ldi R16,13
+ 001C F1DF              xcall _putchar
+ 001E           L4:
+ 001E                   .dbline 35
+ 001E           L5:
+ 001E                   .dbline 34
+ 001E           ;     while ( !(UCSR1A & (1<<UDRE1)) )   // UDRE, data register empty
+ 001E 20909B00          lds R2,155
+ 0022 25FE              sbrs R2,5
+ 0024 FCCF              rjmp L4
+ 0026                   .dbline 36
+ 0026           ;         ;
+ 0026           ;     UDR1 = c;
+ 0026 40939C00          sts 156,R20
+ 002A                   .dbline 37
+ 002A           ;     return c;
+ 002A 042F              mov R16,R20
+ 002C 1127              clr R17
+ 002E                   .dbline -2
+ 002E           L1:
+ 002E 0E940000          xcall pop_gset1
+ 0032                   .dbline 0 ; func end
+ 0032 0895              ret
+ 0034                   .dbsym r c 20 c
+ 0034                   .dbend
+ 0034                   .dbfunc e getchar _getchar fI
+                        .even
+ 0034           _getchar::
+ 0034                   .dbline -1
+ 0034                   .dbline 44
+ 0034           ;     }
+ 0034           ; //***********************************************************************
+ 0034           ; // 用于输入的标准格式函数，用getchar通过UART1输入到单片机，代替C中的scanf
+ 0034           ; //***********************************************************************
+ 0034           ; 
+ 0034           ; int getchar(void)
+ 0034           ;     {
+ 0034           L8:
+ 0034                   .dbline 46
+ 0034           L9:
+ 0034                   .dbline 45
+ 0034           ;     while ((UCSR1A & 0x80) == 0)
+ 0034 20909B00          lds R2,155
+ 0038 27FE              sbrs R2,7
+ 003A FCCF              rjmp L8
+ 003C                   .dbline 47
+ 003C           ;         ;
+ 003C           ;     return UDR1;
+ 003C 00919C00          lds R16,156
+ 0040 1127              clr R17
+ 0042                   .dbline -2
+ 0042           L7:
+ 0042                   .dbline 0 ; func end
+ 0042 0895              ret
+ 0044                   .dbend
+ 0044                   .dbfunc e UART_Init _UART_Init fV
+                        .even
+ 0044           _UART_Init::
+ 0044                   .dbline -1
+ 0044                   .dbline 54
+ 0044           ;     } 
+ 0044           ; //***********************************************************************
+ 0044           ; // 串口1初始化接口函数
+ 0044           ; // 初始化uart,查询方式读写
+ 0044           ; //***********************************************************************
+ 0044           ; void UART_Init(void)
+ 0044           ; {
+ 0044                   .dbline 56
+ 0044           ;  
+ 0044           ;   UCSR1B =(1<<RXEN1)|(1<<TXEN1);                      //发送接收使能
+ 0044 88E1              ldi R24,24
+ 0046 80939A00          sts 154,R24
+ 004A                   .dbline 57
+ 004A           ;   UBRR1H=baud_h;                                      //写波特率的值
+ 004A 2224              clr R2
+ 004C 20929800          sts 152,R2
+ 0050                   .dbline 58
+ 0050           ;   UBRR1L=baud_l; 
+ 0050 8FE2              ldi R24,47
+ 0052 80939900          sts 153,R24
+ 0056                   .dbline -2
+ 0056           L11:
+ 0056                   .dbline 0 ; func end
+ 0056 0895              ret
+ 0058                   .dbend

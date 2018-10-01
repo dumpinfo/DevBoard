@@ -1,0 +1,14 @@
+使用注意事项:
+
+1.仿真器的电源由USB提供;
+
+2.被仿真的芯片要设置熔丝使能JTAG(OCDEN及JTAGEN);
+
+3.使用前检查仿真器的接口与你目标板的接口是否一致;
+
+4.建议使用AVR studio4.18版本。
+
+5.AVR studio4.18下载地址：
+http://www.atmel.com/dyn/resources/prod_documents/AvrStudio4Setup.exe
+
+

@@ -1,0 +1,1 @@
+main.o FAT.o mmc.o spi.o TFT.o EEPROM.o uart.o 

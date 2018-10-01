@@ -1,0 +1,1 @@
+FAT.o main.o SD.o SPI.o uart.o 

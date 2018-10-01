@@ -1,0 +1,503 @@
+                        .module LEDSHOW.C
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; //ATMEGA128的8位数码管动态显示程序，显示01234567
+ 0000           ; //编译环境 ICCAVR 7.16A
+ 0000           ; //系统时钟7.3728MHZ，设置熔丝位为外部高频石英晶体振荡，启动时间4.1ms
+ 0000           ; //忠兴电子元件店编辑
+ 0000           ; //日期：2010.01.14
+ 0000           ; //***********************************************************************
+ 0000           ; //                    包含文件
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #include <string.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include <delay.h>
+ 0000           ; #include <iom128v.h>
+ 0000           ; 
+ 0000           ; //***********************************************************************
+ 0000           ; //                    定义变量区
+ 0000           ; //***********************************************************************
+ 0000           ; 
+ 0000           ; #define uchar           unsigned char
+ 0000           ; #define uint            unsigned int
+ 0000                   .dbline 21
+ 0000           ; 
+ 0000 0000              nop
+ 0002                   .dbline 22
+ 0002           ; #define Data_IO               PORTA                //数据口
+ 0002 0000              nop
+ 0004                   .dbline 23
+ 0004           ; #define Data_DDR        DDRA                 //数据口方向寄存器
+ 0004 0000              nop
+ 0006                   .dbline 24
+ 0006           ; #define D_LE0         PORTD &= ~(1 << PD4) //数码管段控制位为0
+ 0006 0000              nop
+ 0008                   .dbline 25
+ 0008           ; #define D_LE1           PORTD |= (1 << PD4)  //数码管段控制位为1
+ 0008 0000              nop
+ 000A                   .dbline 26
+ 000A           ; #define W_LE0         PORTD &= ~(1 << PD5) //数码管位控制位为0
+ 000A 0000              nop
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e delay_3us _delay_3us fV
+                        .even
+ 000E           _delay_3us::
+ 000E                   .dbline -1
+ 000E                   .dbline 30
+ 000E           ; #define W_LE1           PORTD |= (1 << PD5)  //数码管位控制位为1
+ 000E           ; 
+ 000E           ; #define W0                            0xfe                 //数码管各位单独选中时应送的位数据
+ 000E           ; #define W1              0xfd
+ 000E                   .dbline 32
+ 000E           ; #define W2                            0xfb
+ 000E           ; #define W3              0xf7
+ 000E 0000              nop
+ 0010                   .dbline 33
+ 0010           ; #define W4                            0xef
+ 0010 0000              nop
+ 0012                   .dbline 34
+ 0012           ; #define W5              0xdf
+ 0012 0000              nop
+ 0014                   .dbline 35
+ 0014           ; #define W6                            0xbf
+ 0014 0000              nop
+ 0016                   .dbline 36
+ 0016           ; #define W7              0x7f
+ 0016 0000              nop
+ 0018                   .dbline 37
+ 0018           ; 
+ 0018 0000              nop
+ 001A                   .dbline 38
+ 001A           ; //***********************************************************************
+ 001A 0000              nop
+ 001C                   .dbline 39
+ 001C           ; //                    共阴数码管显示的断码表
+ 001C 0000              nop
+ 001E                   .dbline 40
+ 001E           ; //***********************************************************************
+ 001E 0000              nop
+ 0020                   .dbline 41
+ 0020           ; 
+ 0020 0000              nop
+ 0022                   .dbline 42
+ 0022           ; uchar table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,
+ 0022 0000              nop
+ 0024                   .dbline 43
+ 0024           ;                0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+ 0024 0000              nop
+ 0026                   .dbline 44
+ 0026           ; 
+ 0026 0000              nop
+ 0028                   .dbline 45
+ 0028           ; //***********************************************************************
+ 0028 0000              nop
+ 002A                   .dbline 46
+ 002A           ; //                    IO端口初始化
+ 002A 0000              nop
+ 002C                   .dbline 47
+ 002C           ; //***********************************************************************
+ 002C 0000              nop
+ 002E                   .dbline 48
+ 002E           ; 
+ 002E 0000              nop
+ 0030                   .dbline 49
+ 0030           ; void System_Init()
+ 0030 0000              nop
+ 0032                   .dbline 50
+ 0032           ; {
+ 0032 0000              nop
+ 0034                   .dbline 51
+ 0034           ;     Data_IO=0xFF;             //数据口为输出
+ 0034 0000              nop
+ 0036                   .dbline 52
+ 0036           ;     Data_DDR=0xFF;
+ 0036 0000              nop
+ 0038                   .dbline -2
+ 0038           L2:
+ 0038                   .dbline 0 ; func end
+ 0038 0895              ret
+ 003A                   .dbend
+ 003A                   .dbfunc e delay_10us _delay_10us fV
+                        .even
+ 003A           _delay_10us::
+ 003A                   .dbline -1
+ 003A                   .dbline 56
+ 003A           ; 
+ 003A           ;     PORTD=0xFF;               //74HC573的控制口，设置为输出
+ 003A           ;     DDRD=0xFF;
+ 003A           ;       
+ 003A                   .dbline 57
+ 003A           ;       PORTB=0xFF;                               //关闭发光二极管
+ 003A E9DF              xcall _delay_3us
+ 003C                   .dbline 58
+ 003C           ;       DDRB=0xFF;
+ 003C E8DF              xcall _delay_3us
+ 003E                   .dbline 59
+ 003E           ; }
+ 003E E7DF              xcall _delay_3us
+ 0040                   .dbline -2
+ 0040           L3:
+ 0040                   .dbline 0 ; func end
+ 0040 0895              ret
+ 0042                   .dbend
+ 0042                   .dbfunc e delay_50us _delay_50us fV
+                        .even
+ 0042           _delay_50us::
+ 0042                   .dbline -1
+ 0042                   .dbline 63
+ 0042           ; 
+ 0042           ; //***********************************************************************
+ 0042           ; //                    74HC573控制数码管动态扫描
+ 0042           ; //***********************************************************************
+ 0042                   .dbline 64
+ 0042           ; 
+ 0042 FBDF              xcall _delay_10us
+ 0044                   .dbline 65
+ 0044           ; void Write_LED()
+ 0044 FADF              xcall _delay_10us
+ 0046                   .dbline 66
+ 0046           ; {
+ 0046 F9DF              xcall _delay_10us
+ 0048                   .dbline 67
+ 0048           ;    uchar i,j;
+ 0048 F8DF              xcall _delay_10us
+ 004A                   .dbline -2
+ 004A           L4:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbend
+ 004C                   .dbfunc e delay_100us _delay_100us fV
+                        .even
+ 004C           _delay_100us::
+ 004C                   .dbline -1
+ 004C                   .dbline 70
+ 004C           ;    j=0x01;                    //此数据用来控制位选
+ 004C           ;   for(i=0;i<8;i++)
+ 004C           ;   {
+ 004C                   .dbline 71
+ 004C           ;     D_LE1;                    //控制数码管段数据的74HC573的LE管脚置高
+ 004C FADF              xcall _delay_50us
+ 004E                   .dbline 72
+ 004E           ;     W_LE1;                    //控制数码管位的74HC573的LE管脚置高
+ 004E F9DF              xcall _delay_50us
+ 0050                   .dbline -2
+ 0050           L5:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbend
+ 0052                   .dbfunc e delay_n100us _delay_n100us fV
+ 0052           ;         n100us -> R20
+                        .even
+ 0052           _delay_n100us::
+ 0052 0E940000          xcall push_gset1
+ 0056 402F              mov R20,R16
+ 0058                   .dbline -1
+ 0058                   .dbline 75
+ 0058           ;     Data_IO=~j;               //设置要显示的位，也就是哪一个数码管亮
+ 0058           ;     W_LE0;                    //锁存位数据，下面送上段数据以后，就显示出来了
+ 0058           ;       j=(j<<1);
+ 0058 01C0              xjmp L8
+ 005A           L7:
+ 005A                   .dbline 77
+ 005A F8DF              xcall _delay_100us
+ 005C           L8:
+ 005C                   .dbline 76
+ 005C           ;     Data_IO=table[i];         //送要显示的数据，就是段数据，如显示0送的是0x3f
+ 005C 242E              mov R2,R20
+ 005E 3324              clr R3
+ 0060 4150              subi R20,1
+ 0062 2220              tst R2
+ 0064 D1F7              brne L7
+ 0066                   .dbline -2
+ 0066           L6:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r n100us 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e delay_1ms _delay_1ms fV
+                        .even
+ 006C           _delay_1ms::
+ 006C                   .dbline -1
+ 006C                   .dbline 89
+ 006C           ;     D_LE0;                    //锁存段数据，数码管亮一个时间片刻
+ 006C           ;     delay_nms(1);              //显示一个时间片刻，会影响亮度和闪烁性
+ 006C           ; 
+ 006C           ;   }
+ 006C           ; }
+ 006C           ; 
+ 006C           ; //***********************************************************************
+ 006C           ; //                    主程序
+ 006C           ; //***********************************************************************
+ 006C           ; 
+ 006C           ; void main(void)
+ 006C           ; {
+ 006C           ; 
+ 006C                   .dbline 90
+ 006C           ;      System_Init();             //初始化
+ 006C EFDF              xcall _delay_100us
+ 006E                   .dbline 91
+ 006E           ; 
+ 006E EEDF              xcall _delay_100us
+ 0070                   .dbline 92
+ 0070           ;  while(1)
+ 0070 EDDF              xcall _delay_100us
+ 0072                   .dbline 93
+ 0072           ;    {
+ 0072 ECDF              xcall _delay_100us
+ 0074                   .dbline 94
+ 0074           ;      Write_LED();               //调用函数，显示
+ 0074 EBDF              xcall _delay_100us
+ 0076                   .dbline 95
+ 0076           ;    }
+ 0076 EADF              xcall _delay_100us
+ 0078                   .dbline 96
+ 0078           ; 
+ 0078 E9DF              xcall _delay_100us
+ 007A                   .dbline 97
+ 007A           ; }
+ 007A E8DF              xcall _delay_100us
+ 007C                   .dbline 98
+ 007C           ; }
+ 007C E7DF              xcall _delay_100us
+ 007E                   .dbline 99
+ 007E           ; }
+ 007E E6DF              xcall _delay_100us
+ 0080                   .dbline -2
+ 0080           L10:
+ 0080                   .dbline 0 ; func end
+ 0080 0895              ret
+ 0082                   .dbend
+ 0082                   .dbfunc e delay_nms _delay_nms fV
+ 0082           ;            nms -> R20,R21
+                        .even
+ 0082           _delay_nms::
+ 0082 0E940000          xcall push_gset1
+ 0086 A801              movw R20,R16
+ 0088                   .dbline -1
+ 0088                   .dbline 109
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088           ; }
+ 0088 01C0              xjmp L13
+ 008A           L12:
+ 008A                   .dbline 111
+ 008A F0DF              xcall _delay_1ms
+ 008C           L13:
+ 008C                   .dbline 110
+ 008C           ; }
+ 008C 1A01              movw R2,R20
+ 008E 4150              subi R20,1
+ 0090 5040              sbci R21,0
+ 0092 2220              tst R2
+ 0094 D1F7              brne L12
+ 0096 3320              tst R3
+ 0098 C1F7              brne L12
+ 009A           X0:
+ 009A                   .dbline -2
+ 009A           L11:
+ 009A 0E940000          xcall pop_gset1
+ 009E                   .dbline 0 ; func end
+ 009E 0895              ret
+ 00A0                   .dbsym r nms 20 i
+ 00A0                   .dbend
+ 00A0                   .dbfunc e delay_ns _delay_ns fV
+ 00A0           ;             ns -> R20
+                        .even
+ 00A0           _delay_ns::
+ 00A0 0E940000          xcall push_gset1
+ 00A4 402F              mov R20,R16
+ 00A6                   .dbline -1
+ 00A6                   .dbline 114
+ 00A6           ; }
+ 00A6           ; }
+ 00A6           ; }
+ 00A6           ; }
+ 00A6 03C0              xjmp L17
+ 00A8           L16:
+ 00A8                   .dbline 116
+ 00A8 08EE              ldi R16,1000
+ 00AA 13E0              ldi R17,3
+ 00AC EADF              xcall _delay_nms
+ 00AE           L17:
+ 00AE                   .dbline 115
+ 00AE           ; }
+ 00AE 242E              mov R2,R20
+ 00B0 3324              clr R3
+ 00B2 4150              subi R20,1
+ 00B4 2220              tst R2
+ 00B6 C1F7              brne L16
+ 00B8                   .dbline -2
+ 00B8           L15:
+ 00B8 0E940000          xcall pop_gset1
+ 00BC                   .dbline 0 ; func end
+ 00BC 0895              ret
+ 00BE                   .dbsym r ns 20 c
+ 00BE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:/icc/include/delay.h
+ 0000           _table::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 3F06              .byte 63,6
+                        .area data(ram, con, rel)
+ 0002                   .dbfile C:/icc/include/delay.h
+ 0002                   .blkb 2
+                        .area idata
+ 0002 5B4F              .byte 91,'O
+                        .area data(ram, con, rel)
+ 0004                   .dbfile C:/icc/include/delay.h
+ 0004                   .blkb 2
+                        .area idata
+ 0004 666D              .byte 'f,'m
+                        .area data(ram, con, rel)
+ 0006                   .dbfile C:/icc/include/delay.h
+ 0006                   .blkb 2
+                        .area idata
+ 0006 7D07              .byte 125,7
+                        .area data(ram, con, rel)
+ 0008                   .dbfile C:/icc/include/delay.h
+ 0008                   .blkb 2
+                        .area idata
+ 0008 7F6F              .byte 127,'o
+                        .area data(ram, con, rel)
+ 000A                   .dbfile C:/icc/include/delay.h
+ 000A                   .blkb 2
+                        .area idata
+ 000A 777C              .byte 'w,124
+                        .area data(ram, con, rel)
+ 000C                   .dbfile C:/icc/include/delay.h
+ 000C                   .blkb 2
+                        .area idata
+ 000C 395E              .byte 57,94
+                        .area data(ram, con, rel)
+ 000E                   .dbfile C:/icc/include/delay.h
+ 000E                   .blkb 2
+                        .area idata
+ 000E 7971              .byte 'y,'q
+                        .area data(ram, con, rel)
+ 0010                   .dbfile C:/icc/include/delay.h
+ 0010                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\9.八位数码管显示实验\LEDSHOW\LEDSHOW.C
+ 0010                   .dbsym e table _table A[16:16]c
+                        .area text(rom, con, rel)
+ 00BE                   .dbfile E:\ATMEGA128开发板\我的ATMEGA128最小系统板\M128_ZZX_1配套资料\9.八位数码管显示实验\LEDSHOW\LEDSHOW.C
+ 00BE                   .dbfunc e System_Init _System_Init fV
+                        .even
+ 00BE           _System_Init::
+ 00BE                   .dbline -1
+ 00BE                   .dbline 50
+ 00BE                   .dbline 51
+ 00BE 8FEF              ldi R24,255
+ 00C0 8BBB              out 0x1b,R24
+ 00C2                   .dbline 52
+ 00C2 8ABB              out 0x1a,R24
+ 00C4                   .dbline 54
+ 00C4 82BB              out 0x12,R24
+ 00C6                   .dbline 55
+ 00C6 81BB              out 0x11,R24
+ 00C8                   .dbline 57
+ 00C8 88BB              out 0x18,R24
+ 00CA                   .dbline 58
+ 00CA 87BB              out 0x17,R24
+ 00CC                   .dbline -2
+ 00CC           L19:
+ 00CC                   .dbline 0 ; func end
+ 00CC 0895              ret
+ 00CE                   .dbend
+ 00CE                   .dbfunc e Write_LED _Write_LED fV
+ 00CE           ;              j -> R20
+ 00CE           ;              i -> R22
+                        .even
+ 00CE           _Write_LED::
+ 00CE 0E940000          xcall push_gset2
+ 00D2                   .dbline -1
+ 00D2                   .dbline 66
+ 00D2                   .dbline 68
+ 00D2 41E0              ldi R20,1
+ 00D4                   .dbline 69
+ 00D4 6627              clr R22
+ 00D6 14C0              xjmp L24
+ 00D8           L21:
+ 00D8                   .dbline 70
+ 00D8                   .dbline 71
+ 00D8 949A              sbi 0x12,4
+ 00DA                   .dbline 72
+ 00DA 959A              sbi 0x12,5
+ 00DC                   .dbline 73
+ 00DC 242E              mov R2,R20
+ 00DE 2094              com R2
+ 00E0 2BBA              out 0x1b,R2
+ 00E2                   .dbline 74
+ 00E2 9598              cbi 0x12,5
+ 00E4                   .dbline 75
+ 00E4 440F              lsl R20
+ 00E6                   .dbline 76
+ 00E6 80E0              ldi R24,<_table
+ 00E8 90E0              ldi R25,>_table
+ 00EA E62F              mov R30,R22
+ 00EC FF27              clr R31
+ 00EE E80F              add R30,R24
+ 00F0 F91F              adc R31,R25
+ 00F2 2080              ldd R2,z+0
+ 00F4 2BBA              out 0x1b,R2
+ 00F6                   .dbline 77
+ 00F6 9498              cbi 0x12,4
+ 00F8                   .dbline 78
+ 00F8 01E0              ldi R16,1
+ 00FA 10E0              ldi R17,0
+ 00FC C2DF              xcall _delay_nms
+ 00FE                   .dbline 80
+ 00FE           L22:
+ 00FE                   .dbline 69
+ 00FE 6395              inc R22
+ 0100           L24:
+ 0100                   .dbline 69
+ 0100 6830              cpi R22,8
+ 0102 50F3              brlo L21
+ 0104                   .dbline -2
+ 0104           L20:
+ 0104 0E940000          xcall pop_gset2
+ 0108                   .dbline 0 ; func end
+ 0108 0895              ret
+ 010A                   .dbsym r j 20 c
+ 010A                   .dbsym r i 22 c
+ 010A                   .dbend
+ 010A                   .dbfunc e main _main fV
+                        .even
+ 010A           _main::
+ 010A                   .dbline -1
+ 010A                   .dbline 88
+ 010A                   .dbline 90
+ 010A D9DF              xcall _System_Init
+ 010C 01C0              xjmp L27
+ 010E           L26:
+ 010E                   .dbline 93
+ 010E                   .dbline 94
+ 010E DFDF              xcall _Write_LED
+ 0110                   .dbline 95
+ 0110           L27:
+ 0110                   .dbline 92
+ 0110 FECF              xjmp L26
+ 0112           X1:
+ 0112                   .dbline -2
+ 0112           L25:
+ 0112                   .dbline 0 ; func end
+ 0112 0895              ret
+ 0114                   .dbend
